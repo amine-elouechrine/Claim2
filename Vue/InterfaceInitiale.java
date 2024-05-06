@@ -1,4 +1,9 @@
 package Vue;
 
-public class InterfaceInitiale {
+import javax.swing.*;
+
+public class InterfaceInitiale extends JFrame {
+    public static void demarrer() {
+        SwingUtilities.invokeLater(InterfaceInitiale::new);
+    }
 }
