@@ -1,9 +1,14 @@
 package org.example;
 
+import org.example.Controleur.ControleurMediateur;
+import org.example.Modele.Jeu;
+import org.example.Vue.CollecteurEvenements;
 import org.example.Vue.InterfaceGraphique;
 
 public class Claim {
     public static void main(String[] args) {
-        InterfaceGraphique.demarrer();
+        Jeu jeu = new Jeu();
+        CollecteurEvenements control = new ControleurMediateur();
+        InterfaceGraphique.demarrer(jeu, control);
     }
 }

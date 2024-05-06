@@ -7,12 +7,21 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+
 public class InterfaceGraphique implements Runnable {
 
+    Jeu j;
     JFrame fenetre;
+    CollecteurEvenements control;
 
-    public static void demarrer() {
-        SwingUtilities.invokeLater(new InterfaceGraphique());
+
+    InterfaceGraphique(Jeu jeu, CollecteurEvenements c) {
+        j = jeu;
+        control = c;
+    }
+
+    public static void demarrer(Jeu jeu, CollecteurEvenements control) {
+        SwingUtilities.invokeLater(new InterfaceGraphique(jeu, control));
     }
 
     @Override
@@ -26,8 +35,17 @@ public class InterfaceGraphique implements Runnable {
         } catch (IOException exc) {
             System.out.println("Erreur de chargement de l'icone");
         }
+
+        // Dessin du NiveauGraphique
+        NiveauGraphique niv = new NiveauGraphique(j);
+        niv.setFocusable(true);
+        niv.requestFocusInWindow();
+
+        // Fenetre InterfaceGraphique
+        fenetre.add(niv);
         fenetre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         fenetre.setSize(500, 500);
         fenetre.setVisible(true);
+
     }
 }
