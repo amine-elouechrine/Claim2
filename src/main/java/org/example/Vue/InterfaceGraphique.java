@@ -37,7 +37,7 @@ public class InterfaceGraphique implements Runnable {
         }
 
         // Dessin du NiveauGraphique
-        NiveauGraphique niv = new NiveauGraphique(j);
+        NiveauGraphique niv = new NiveauGraphique(j, control);
         niv.setFocusable(true);
         niv.requestFocusInWindow();
 

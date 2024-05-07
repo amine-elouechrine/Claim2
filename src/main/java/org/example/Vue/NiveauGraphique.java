@@ -21,7 +21,9 @@ public class NiveauGraphique extends JComponent implements Observateur {
     /* Load assets */
     BufferedImage gaufre;
     BufferedImage claim;
-    public NiveauGraphique(Jeu j) {
+    public NiveauGraphique(Jeu j, CollecteurEvenements cont) {
+
+        control = cont;
         jeu = j;
         jeu.ajouteObservateur(this);
 
@@ -40,9 +42,6 @@ public class NiveauGraphique extends JComponent implements Observateur {
     public void paintComponent(Graphics g) {
         // Paint the game board area
         paintGameBoard(g);
-
-        // Paint the score area
-        paintScoreArea(g);
     }
 
     private void paintGameBoard(Graphics g) {
@@ -52,14 +51,14 @@ public class NiveauGraphique extends JComponent implements Observateur {
         largeurCase = getWidth() / colonnes;
         hauteurCase = getHeight() / lignes;
 
-        // Draw the poison image
-        g.drawImage(claim, 0, 0, largeurCase, hauteurCase, this);
-    }
+        // Phase 1
+        if(control.getPhase() == 1) {
+            g.drawRect(getWidth(), getHeight(), 20, 20);
+        }
 
-    private void paintScoreArea(Graphics g) {
-        Font scoreFont = new Font("Arial", Font.PLAIN, 20);
-        g.setFont(scoreFont);
-        g.setColor(Color.BLACK);
+        // Draw image at 0 0
+        g.drawImage(claim, 0, 0, largeurCase, hauteurCase, this);
+
     }
 
     int largeur() {
