@@ -41,10 +41,12 @@ public class InterfaceGraphique implements Runnable {
         niv.setFocusable(true);
         niv.requestFocusInWindow();
 
+        fenetre.getContentPane().setBackground(Color.WHITE);
+
         // Fenetre InterfaceGraphique
         fenetre.add(niv);
         fenetre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        fenetre.setSize(640, 480);
+        fenetre.setSize(1280, 960);
         fenetre.setVisible(true);
 
     }
