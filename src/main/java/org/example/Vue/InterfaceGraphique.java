@@ -44,7 +44,7 @@ public class InterfaceGraphique implements Runnable {
         // Fenetre InterfaceGraphique
         fenetre.add(niv);
         fenetre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        fenetre.setSize(500, 500);
+        fenetre.setSize(640, 480);
         fenetre.setVisible(true);
 
     }
