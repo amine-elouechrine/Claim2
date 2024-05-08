@@ -12,10 +12,19 @@ public class Player {
         score = 0;
         scoreInCurrentGame = 0;
         this.hand = hand;
+        this.pileDeScore = new PileDeScore();
     }
 
     String getName(){
         return Name;
+    }
+
+    public PileDeScore getPileDeScore() {
+        return pileDeScore;
+    }
+
+    public Hand getHand() {
+        return hand;
     }
 
     int  getScore(){
