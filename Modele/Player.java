@@ -5,6 +5,7 @@ public class Player {
     int score ;
     int scoreInCurrentGame;
     Hand hand;
+    PileDeScore pileDeScore;
 
     Player(String Name, Hand hand) {
         this.Name = Name;
