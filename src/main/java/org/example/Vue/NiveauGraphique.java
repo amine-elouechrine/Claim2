@@ -63,24 +63,12 @@ public class NiveauGraphique extends JComponent implements Observateur {
         largeurCase = getWidth() / colonnes;
         hauteurCase = getHeight() / lignes;
 
-        g.setColor(Color.BLACK);
-
-        setBackground(Color.YELLOW);
-
-        g.drawRect(getWidth() - largeurCase, 0, largeurCase, hauteurCase);
-        // Calculate oval dimensions based on panel size
-        int ovalWidth = (int) (largeur() * 0.075);
-        int ovalHeight = (int) (hauteur() * 0.05);
-        int ovalX = largeur() - ovalWidth - 10; // 10 pixels from the right edge
-        int ovalY = 10; // 10 pixels from the top edge
-        g.setColor(Color.GREEN);
-        g.fillOval(ovalX, ovalY, ovalWidth, ovalHeight);
-
         // Set bigger font size
         Font font = g.getFont().deriveFont(Font.BOLD, largeur() / 25f); // Adjust font size based on panel width
         g.setFont(font);
 
-        // Draw "Menu" text centered within the oval
+        /*
+        Draw "Menu" text centered within the oval
         String text = "Menu";
         FontMetrics fontMetrics = g.getFontMetrics();
         int textWidth = fontMetrics.stringWidth(text);
@@ -89,6 +77,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
         int textY = ovalY + (ovalHeight - textHeight) / 2 + fontMetrics.getAscent();
         g.setColor(Color.BLACK);
         g.drawString(text, textX, textY);
+        */
 
 
         int panelWidth = getWidth();
@@ -162,7 +151,6 @@ public class NiveauGraphique extends JComponent implements Observateur {
             // g.drawImage(gaufre, x, y, rectWidth, rectHeight, this);
             g.drawRect(x, y, rectWidth, rectHeight);
         }
-
     }
 
     int largeur() {

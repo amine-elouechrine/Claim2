@@ -40,8 +40,8 @@ public class InterfaceGraphique implements Runnable {
         NiveauGraphique niv = new NiveauGraphique(j, control);
         niv.setFocusable(true);
         niv.requestFocusInWindow();
-
         fenetre.getContentPane().setBackground(Color.WHITE);
+
 
         // Fenetre InterfaceGraphique
         fenetre.add(niv);
@@ -49,5 +49,14 @@ public class InterfaceGraphique implements Runnable {
         fenetre.setSize(1280, 960);
         fenetre.setVisible(true);
 
+        /*
+        // Aligning the vertical panel to the right side
+        JPanel verticalPanel = new JPanel();
+        verticalPanel.setLayout(new BoxLayout(verticalPanel, BoxLayout.Y_AXIS));
+        verticalPanel.add(new ComposantMenuPartie(BoxLayout.Y_AXIS, control, j));
+        JPanel wrapperPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        wrapperPanel.add(verticalPanel);
+        fenetre.add(wrapperPanel, BorderLayout.CENTER);
+        */
     }
 }
