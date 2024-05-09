@@ -36,18 +36,27 @@ public class InterfaceGraphique implements Runnable {
             System.out.println("Erreur de chargement de l'icone");
         }
 
+
         // Dessin du NiveauGraphique
         NiveauGraphique niv = new NiveauGraphique(j, control);
         niv.setFocusable(true);
         niv.requestFocusInWindow();
-        fenetre.getContentPane().setBackground(Color.WHITE);
 
 
         // Fenetre InterfaceGraphique
         fenetre.add(niv);
+        // fenetre.add(barreHaute, BorderLayout.PAGE_START);
+        JToggleButton menu = new JToggleButton("Menu");
+        ComposantMenuPartie menuPartie = new ComposantMenuPartie(BoxLayout.Y_AXIS, control, j);
+        menu.addActionListener(new AdaptateurOuvreMenu(menu, menuPartie));
+        fenetre.add(menu, BorderLayout.EAST);
+
+        fenetre.pack();
         fenetre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         fenetre.setSize(1280, 960);
+        fenetre.getContentPane().setBackground(Color.WHITE);
         fenetre.setVisible(true);
+
 
         /*
         // Aligning the vertical panel to the right side

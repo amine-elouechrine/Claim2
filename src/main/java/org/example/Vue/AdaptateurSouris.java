@@ -8,10 +8,6 @@ import java.util.EventListener;
 
 public class AdaptateurSouris extends MouseAdapter implements MouseListener {
 
-    @Override
-    public void mouseClicked(MouseEvent e) {
-        
-    }
 
     @Override
     public void mousePressed(MouseEvent e) {
@@ -21,6 +17,11 @@ public class AdaptateurSouris extends MouseAdapter implements MouseListener {
     @Override
     public void mouseReleased(MouseEvent e) {
 
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        
     }
 
     @Override
