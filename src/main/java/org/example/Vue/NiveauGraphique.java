@@ -11,6 +11,8 @@ import java.awt.font.ShapeGraphicAttribute;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class NiveauGraphique extends JComponent implements Observateur {
     CollecteurEvenements control;
@@ -22,26 +24,35 @@ public class NiveauGraphique extends JComponent implements Observateur {
 
     private static final double RECTANGLE_SCALE_FACTOR = 0.05; // Adjust this value for scaling
     /* Load assets */
-    BufferedImage gaufre;
-
-    BufferedImage carte;
-    BufferedImage claim;
-
+    Map<String, BufferedImage> imageMap = new HashMap<>();
     public NiveauGraphique(Jeu j, CollecteurEvenements cont) {
 
         control = cont;
         jeu = j;
         jeu.ajouteObservateur(this);
 
-        try {
-            carte = ImageIO.read(new File("src/main/resources/dwarve_0.png"));
-            // for(int i =0;i<52;i++){
-            //BufferedImage files[i].getname
-            // }
-            gaufre = ImageIO.read(new File("src/main/resources/gaufre.png"));
-            claim = ImageIO.read(new File("src/main/resources/Claim.png"));
-        } catch (IOException exc) {
-            System.out.println("Erreur de chargement des assets");
+        String directoryPath = "src/main/resources/";
+        File directory = new File(directoryPath);
+        File[] files = directory.listFiles();
+
+        //Chargez l'image et le nom correspondant dans un hashmap
+        if (files != null) {
+            for (File file : files) {
+                if (file.isFile()) {
+                    String fileName = file.getName();
+                    if (fileName.endsWith(".png")) {
+                        String imageName = fileName.substring(0, fileName.lastIndexOf("."));
+                        try {
+                            BufferedImage image = ImageIO.read(file);
+                            imageMap.put(imageName, image);
+                        } catch (IOException e) {
+                            System.out.println("Error loading image: " + e.getMessage());
+                        }
+                    }
+                }
+            }
+        } else {
+            System.out.println("No files found in the directory.");
         }
     }
 
@@ -114,7 +125,8 @@ public class NiveauGraphique extends JComponent implements Observateur {
                 int x = startX + i * (rectWidth + spacing);
                 int y = hauteur() - rectHeight - 10;
                 g.setColor(Color.BLUE);
-                g.drawImage(carte, x, y, rectWidth, rectHeight, this);
+                BufferedImage image = imageMap.get("dwarve_9");
+                g.drawImage(image, x, y, rectWidth, rectHeight, this);
                 // g.fillRect(x, y, rectWidth, rectHeight);
             }
 
@@ -132,8 +144,8 @@ public class NiveauGraphique extends JComponent implements Observateur {
             y = hauteur() / 2 - rectHeight / 2;
             g.fillRect(x, y, rectWidth, rectHeight);
 
-            g.setColor(Color.ORANGE);
             // Draw deck
+            g.setColor(Color.ORANGE);
             x = 2 * rectHeight + 20 + largeur() / 2;
             y = hauteur() / 2 - rectHeight * 3 / 4;
             g.fillRect(x, y, rectHeight, rectWidth);
@@ -150,8 +162,54 @@ public class NiveauGraphique extends JComponent implements Observateur {
 
             // g.drawImage(gaufre, x, y, rectWidth, rectHeight, this);
             g.drawRect(x, y, rectWidth, rectHeight);
+        }else if (control.getPhase() == 2) {
+
+            // Dessin des cartes de l'adversaire (IA)
+            // Calculate rectangle dimensions based on panel size
+            int rectWidth = (int) (panelWidth * 0.05);
+            int rectHeight = Math.max(2 * rectWidth, (int) (panelHeight * RECTANGLE_SCALE_FACTOR)); // Ensure height is always greater than width
+
+            // Calculate spacing between rectangles
+            int spacing = 1;
+
+            // Calculate total width of all rectangles and spacing
+            int totalWidth = totalCards * rectWidth + (totalCards - 1) * spacing;
+
+            // Calculate starting x position to center the rectangles
+            int startX = (panelWidth - totalWidth) / 2;
+
+            // Draw rectangles
+            for (int i = 0; i < totalCards; i++) {
+                int x = startX + i * (rectWidth + spacing);
+                int y = 10;
+                g.setColor(Color.GRAY);
+                g.fillRect(x, y, rectWidth, rectHeight);
+            }
+            // Dessin des cartes de la main du joueur
+
+            // Draw rectangles
+            for (int i = 0; i < totalCards; i++) {
+                int x = startX + i * (rectWidth + spacing);
+                int y = hauteur() - rectHeight - 10;
+                g.setColor(Color.BLUE);
+                BufferedImage image = imageMap.get("dwarve_5");
+                g.drawImage(image, x, y, rectWidth, rectHeight, this);
+                // g.fillRect(x, y, rectWidth, rectHeight);
+            }
+
+            int x = startX - 20 - rectWidth;
+            int y = 20;
+
+            // Draw Feedfoward Carte joué
+            g.setColor(Color.DARK_GRAY);
+            x = largeur() / 2;
+            y = hauteur() - rectHeight * 11 / 5;
+
+            // g.drawImage(gaufre, x, y, rectWidth, rectHeight, this);
+            g.drawRect(x, y, rectWidth, rectHeight);
         }
     }
+
 
     int largeur() {
         return getWidth();
