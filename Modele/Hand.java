@@ -15,6 +15,9 @@ public class Hand {
     }
 
     // Retirer une carte de la main
+    public Card removeCard(int i) {
+        return cards.remove(i);
+    }
     public void removeCard(Card card) {
         cards.remove(card);
     }

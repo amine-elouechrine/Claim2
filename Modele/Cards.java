@@ -73,13 +73,13 @@ public class Cards {
     }
 
     // Méthode pour obtenir une main de 13 cartes à partir de la pile
-    public List<Card> getHandOf13Cards() {
+    public Hand getHandOf13Cards() {
         if (pile.size() < 13) {
             throw new IllegalStateException("La pile de cartes contient moins de 13 cartes.");
         }
-        List<Card> hand = new ArrayList<>();
+        Hand hand = new Hand();
         for (int i = 0; i < 13; i++) {
-            hand.add(getCard());
+            hand.addCard(getCard());
         }
         return hand;
     }

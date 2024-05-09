@@ -5,6 +5,7 @@ public class Player {
     int score ;
     int scoreInCurrentGame;
     Hand hand;
+    Hand handScndPhase;
     PileDeScore pileDeScore;
 
     Player(String Name, Hand hand) {
@@ -13,6 +14,7 @@ public class Player {
         scoreInCurrentGame = 0;
         this.hand = hand;
         this.pileDeScore = new PileDeScore();
+        this.handScndPhase = new Hand();
     }
 
     String getName(){

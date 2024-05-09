@@ -22,4 +22,8 @@ public abstract class Card {
     public String getFaction() {
         return faction;
     }
+    @Override
+    public String toString() {
+        return "Card{" + "faction=" + faction + ", value=" + value + '}';
+    }
 }

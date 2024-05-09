@@ -5,7 +5,7 @@ import java.util.Arrays;
 public class ReglesDeJeu {
 
     // Méthode pour déterminer quelle carte l'emporte entre deux cartes selon les règles du jeu
-    public static Card carteGagnante(Card carte1, Card carte2) {
+    public Card carteGagnante(Card carte1, Card carte2) {
         String faction1 = carte1.getFaction();
         String faction2 = carte2.getFaction();
 
@@ -28,7 +28,7 @@ public class ReglesDeJeu {
     }
 
     // Méthode pour déterminer le gagnant d'une manche
-    public static Player determinerGagnantManche(Player joueur1, Player joueur2, Card carteJoueur1, Card carteJoueur2) {
+    public  Player determinerGagnantManche(Player joueur1, Player joueur2, Card carteJoueur1, Card carteJoueur2) {
         Card carteGagnante = carteGagnante(carteJoueur1, carteJoueur2);
         
         if (carteGagnante == carteJoueur1) {
@@ -41,7 +41,7 @@ public class ReglesDeJeu {
     }
 
     // Méthode pour déterminer quelles cartes le deuxième joueur peut jouer en fonction de la carte jouée par le premier joueur
-    public static List<Card> cartesJouables(Card carteAdversaire, Hand mainJoueur) {
+    public  List<Card> cartesJouables(Card carteAdversaire, Hand mainJoueur) {
         List<Card> cartesJouables = new ArrayList<>();
 
         // Vérifier si le joueur possède une carte de la même faction que celle jouée par l'adversaire
@@ -55,12 +55,11 @@ public class ReglesDeJeu {
         if (cartesJouables.isEmpty()) {
             cartesJouables.addAll(mainJoueur.getAllCards());
         }
-
         return cartesJouables;
     }
 
     // Méthode pour déterminer le gagnant d'une partie
-    public static String determinerGagnantPartie(Player joueur1, Player joueur2) {
+    public  String determinerGagnantPartie(Player joueur1, Player joueur2) {
         PileDeScore pileDeScoreJoueur1 = joueur1.getPileDeScore();
         PileDeScore pileDeScoreJoueur2 = joueur2.getPileDeScore();
         
@@ -100,7 +99,7 @@ public class ReglesDeJeu {
     }
 
     // Fonction pour obtenir la valeur maximale d'une liste de cartes
-    static int getMaxCardValue(List<Card> cartes) {
+     int getMaxCardValue(List<Card> cartes) {
         int max = Integer.MIN_VALUE;
         for (Card carte : cartes) {
             if (carte.getValeur() > max) {
