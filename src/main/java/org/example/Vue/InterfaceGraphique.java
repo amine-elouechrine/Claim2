@@ -46,10 +46,13 @@ public class InterfaceGraphique implements Runnable {
         // Fenetre InterfaceGraphique
         fenetre.add(niv);
         // fenetre.add(barreHaute, BorderLayout.PAGE_START);
+        JPanel menuPanel = new JPanel(new BorderLayout());
+        menuPanel.setBackground(Color.WHITE);
         JToggleButton menu = new JToggleButton("Menu");
+        menuPanel.add(menu, BorderLayout.NORTH);
         ComposantMenuPartie menuPartie = new ComposantMenuPartie(BoxLayout.Y_AXIS, control, j);
         menu.addActionListener(new AdaptateurOuvreMenu(menu, menuPartie));
-        fenetre.add(menu, BorderLayout.EAST);
+        fenetre.add(menuPanel, BorderLayout.EAST);
 
         fenetre.pack();
         fenetre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
