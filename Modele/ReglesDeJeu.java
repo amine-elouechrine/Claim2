@@ -186,6 +186,29 @@ public class ReglesDeJeu {
     }
 
     /**
+     * Méthode pour appliquer les règles spéciales des factions à une manche dans la 1ere phase.
+     * @param trickWinner Le joueur remportant le tour.
+     * @param plateau Le plateau de jeu.
+     */
+    public void applyFirstPhaseRules(Player trickWinner, Plateau plateau){
+        if(plateau.getCarteJoueur1().getFaction().equals("Undead") || plateau.getCarteJoueur2().getFaction().equals("Undead")){
+            applyUndeadRule(trickWinner, plateau);
+        }else{
+            ApplyStandardRule(trickWinner, plateau);
+        }
+    }
+
+    /**
+     * Méthode pour appliquer les règles spéciales des factions à une manche dans la 2eme phase.
+     * @param trickWinner Le joueur remportant le tour.
+     * @param plateau Le plateau de jeu.
+     */
+    public void applySecondPhaseRules(Player trickWinner, Plateau plateau){
+        ApplyDwarvesRules(trickWinner, plateau);
+    }
+
+
+    /**
      * Méthode pour appliquer les règles spéciales des factions (2ème phase uniquement).
      * @param trickwinner Le joueur remportant le tour.
      * @param trickLoser Le joueur perdant le tour.
@@ -212,6 +235,27 @@ public class ReglesDeJeu {
             trickwinner.getPileDeScore().addCard(plateau.getCarteJoueur1());}
         
     }
+
+    /**
+     * Méthode pour appliquer les règles spéciales des factions (1ere phase uniquement).
+     * le joueur qui gagne le tour prends la carte affichée et la carte de l'adversaire si elle est de la faction Dwarves
+     * le joueur qui perd le tour prends une carte de la pioche sans la regarder
+     * @param trickWinner Le joueur remportant le tour.
+     * @param plateau Le plateau de jeu.
+     */
+    public void playerWinsFirstPhaseManche(Plateau plateau , ReglesDeJeu r){
+        r.applyFirstPhaseRules(plateau.joueurCourant, plateau);
+        plateau.getJoueurCourant().handScndPhase.addCard(plateau.getCarteAffichee()); // le gagnant prends la carte affichee
+        r.switchJoueur(plateau); //passe le tour a l'autre joueur
+        plateau.joueurCourant.handScndPhase.addCard(plateau.getPioche().getCard());// il prends une carte de la pile
+        r.switchJoueur(plateau);//c'est fait pour que le joueur commence le premier dans le prochain coup
+
+    }
+
+    /**
+     * methode pour changer le joueur qui tient le tour
+     * @param p le plateau de jeu
+     */
     public void switchJoueur(Plateau p){
         if (p.joueurCourant==p.joueur1){
             p.joueurCourant = p.joueur2;
@@ -220,6 +264,12 @@ public class ReglesDeJeu {
             p.joueurCourant = p.joueur1;
         }
     }
+
+    /**
+     * Méthode pour attribuer une carte à un joueur.
+     * @param plateau Le plateau de jeu.
+     * @param card La carte à attribuer.
+     */
     public void attributCard(Plateau plateau , Card card){
         if (plateau.joueurCourant == plateau.joueur1) {
             plateau.carteJoueur1 = card;

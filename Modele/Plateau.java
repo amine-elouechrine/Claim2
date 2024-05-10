@@ -54,6 +54,14 @@ public class Plateau {
     }
 
     /**
+     * Renvoie le joueur courant.
+     * @return Le joueur courant.
+     */
+    public Player getJoueurCourant() {
+        return joueurCourant;
+    }
+
+    /**
      * Renvoie le joueur 1.
      * @return Le joueur 1.
      */

@@ -14,16 +14,12 @@ public class firstPhase {
             r.attributCard(plateau,choosenCard);// attribuer la carte a un joueur(voir ReglesdeJeux)
             r.switchJoueur(plateau); //passer au joueur adversaire
             List<Card> preselectedCards = r.cartesJouables(choosenCard, plateau.joueurCourant.getHand());//on affiche les cartes que le joueur adversaire peut les jouer
-            int choosenCounterCardIndex = s.nextInt();
-            Card conterCard = plateau.joueurCourant.getHand().removeCard(choosenCounterCardIndex);
+            int choosenCounterCardIndex = s.nextInt(); //choisir une carte parmi les cartes affichées par son indice
+            Card conterCard = plateau.joueurCourant.getHand().removeCard(choosenCounterCardIndex); // carte jouer par le deuxieme joueur
             r.attributCard(plateau,conterCard);
             Card winningCard = r.carteGagnante(choosenCard, conterCard);//determiner la carte gagante entre les deux cartes joués
             if (winningCard == conterCard) { //si le gagnant c'est le joueur qui a joué au deuxieme tour
-                r.applyUndeadRule(plateau.joueurCourant,plateau);
-                plateau.joueurCourant.handScndPhase.addCard(plateau.carteAffichee); // ce dernier prends la carte affiche
-                r.switchJoueur(plateau);//passe le tour a l'autre joueur
-                plateau.joueurCourant.handScndPhase.addCard(plateau.getPioche().getCard());// il prends une carte de la pile
-                r.switchJoueur(plateau);//c'est fait pour que le joueur commence le premier dans le prochain coup
+                r.playerWinsFirstPhaseManche(plateau, r);
             } else { // si le gagnant c'est le joueeur qui a joué au premier
                 plateau.joueurCourant.handScndPhase.addCard(plateau.getPioche().getCard());//le joueur adversaire prend une carte de la pile
                 r.switchJoueur(plateau);//passer au joueeur qui a joué au premier
