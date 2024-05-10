@@ -13,6 +13,7 @@ public class Plateau {
     Defausse defausse; // Pile de cartes défaussées
     Player joueur1;
     Player joueur2;
+    Player joueurCourant ;
 
     /**
      * Constructeur de la classe Plateau.
@@ -83,6 +84,6 @@ public class Plateau {
     public List<Card> getDefausse() {
         return defausse.getCartes();
     }
-
+    public Cards getPioche() {return pioche;}
 
 }

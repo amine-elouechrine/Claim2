@@ -70,7 +70,7 @@ public class ReglesDeJeu {
 
         // Vérifier si le joueur possède une carte de la même faction que celle jouée par l'adversaire
         for (Card carte : mainJoueur.getAllCards()) {
-            if (carte.getFaction().equals(carteAdversaire.getFaction())) {
+            if ((carte.getFaction().equals(carteAdversaire.getFaction())) || (carte.getFaction().equals("Doppelganger"))) {
                 cartesJouables.add(carte);
             }
         }
@@ -212,4 +212,21 @@ public class ReglesDeJeu {
             trickwinner.getPileDeScore().addCard(plateau.getCarteJoueur1());}
         
     }
+    public void switchJoueur(Plateau p){
+        if (p.joueurCourant==p.joueur1){
+            p.joueurCourant = p.joueur2;
+        }
+        else if (p.joueurCourant==p.joueur2) {
+            p.joueurCourant = p.joueur1;
+        }
+    }
+    public void attributCard(Plateau plateau , Card card){
+        if (plateau.joueurCourant == plateau.joueur1) {
+            plateau.carteJoueur1 = card;
+        }
+        else{
+            plateau.carteJoueur2 = card;
+        }
+    }
+
 }

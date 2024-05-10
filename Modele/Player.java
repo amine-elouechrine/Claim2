@@ -36,7 +36,9 @@ public class Player {
     int getScoreInCurrentGame(){
         return scoreInCurrentGame;
     }
-
+    Hand getHandScndPhase() {
+        return handScndPhase;
+    }
     /*Card getCardFromHand(){
         return hand.get(hand.size()-1);
     }*/
@@ -52,7 +54,7 @@ public class Player {
 
     /**
      * Joue une carte de la main du joueur et la retire de sa main.
-     * @param Card La carte à jouer.
+     * @param carte carte à jouer.
      * @return La carte jouée, ou null si la carte n'est pas dans la main du joueur.
      */
     public Card jouerCarte(Card carte , Hand main) {

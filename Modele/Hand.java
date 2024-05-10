@@ -22,7 +22,7 @@ public class Hand {
         cards.add(card);
     }
 
-    /**
+    /*
      * Retire une carte de la main.
      * @param card La carte à retirer de la main.
      */

@@ -1,13 +1,13 @@
 import java.util.List;
 import java.util.Scanner;
 
-public class FirstPhase {
+public class TestFirstPhase {
     Cards cards ;
     Player joueur1;
     Player joueur2;
     Player joueurCourant;
     ReglesDeJeu reglesDeJeu;
-    FirstPhase(){
+    TestFirstPhase(){
         reglesDeJeu = new ReglesDeJeu();
         cards = new Cards();
         cards.shuffle();
@@ -81,7 +81,7 @@ public class FirstPhase {
         }
     }
     public static void main(String[] args) {
-        FirstPhase firstPhase = new FirstPhase();
+        TestFirstPhase TestFirstPhase = new TestFirstPhase();
     }
     }
 
