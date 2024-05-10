@@ -122,15 +122,23 @@ public class ReglesDeJeu {
     // Méthode pour appliquer les règles spéciales des factions (1er phase uniquement)
     // 1er phase si une carte de type undead etait jouer par l'un des joueur celui qui gagne le tour gagne les cartes undead (de lui meme et la carte de l'adversaire si elle est undead)
     public void applyUndeadRule(Player trickWinner, Plateau plateau) {
-        // Vérifier si la carte jouée par l'un des joueur est de la faction Undead
+        // Ajouter la carte afficher de la pioche à la pile de score du joueur qui a remporté le tour
+        trickWinner.getPileDeScore().addCard(plateau.getCarteAffichee());
 
+    // Vérifier si la carte jouée par l'un des joueur est de la faction Undead
         if (plateau.getCarteJoueur1().getFaction().equals("Undead")) {
             // Ajouter la carte à la pile de score du joueur qui a remporté le tour
             trickWinner.getPileDeScore().addCard(plateau.getCarteJoueur1());
+        }else{
+            // ajouter la carte à la défausse
+            plateau.addToDefausse(plateau.getCarteJoueur1());
         }
         if (plateau.getCarteJoueur2().getFaction().equals("Undead")) {
             // Ajouter la carte à la pile de score du joueur qui a remporté le tour
             trickWinner.getPileDeScore().addCard(plateau.getCarteJoueur2());
+        }else{
+            // ajouter la carte à la défausse
+            plateau.addToDefausse(plateau.getCarteJoueur2());
         }
     }
 
