@@ -50,4 +50,24 @@ public class Player {
         scoreInCurrentGame += points;
     }
 
+    /**
+     * Joue une carte de la main du joueur et la retire de sa main.
+     * @param Card La carte à jouer.
+     * @return La carte jouée, ou null si la carte n'est pas dans la main du joueur.
+     */
+    public Card jouerCarte(Card carte , Hand main) {
+        // Vérifie si la carte est présente dans la main du joueur
+        if (main.contains(carte)) {
+            // Retire la carte de la main du joueur
+            main.removeCard(carte);
+            return carte;
+        } else {
+            System.out.println("La carte n'est pas dans la main du joueur.");
+            // Si la carte n'est pas dans la main du joueur, retourne null
+            return null;
+        }
+    }
+
 }
+
+
