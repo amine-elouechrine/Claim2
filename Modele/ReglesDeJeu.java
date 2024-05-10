@@ -203,8 +203,8 @@ public class ReglesDeJeu {
      * @param trickWinner Le joueur remportant le tour.
      * @param plateau Le plateau de jeu.
      */
-    public void applySecondPhaseRules(Player trickWinner, Plateau plateau){
-        ApplyDwarvesRules(trickWinner, plateau);
+    public void applySecondPhaseRules(Player trickWinner, Player trickLoser, Plateau plateau){
+        ApplyDwarvesRules(trickWinner, trickLoser , plateau);
     }
 
 
