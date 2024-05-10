@@ -19,6 +19,11 @@ public class Hand {
         cards.remove(card);
     }
 
+    // Vérifier si une carte est dans la main
+    public boolean contains(Card card) {
+        return cards.contains(card);
+    }
+
     // Obtenir toutes les cartes de la main
     public List<Card> getAllCards() {
         return cards;
