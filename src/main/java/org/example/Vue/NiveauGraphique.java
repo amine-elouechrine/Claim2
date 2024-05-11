@@ -1,8 +1,8 @@
 package org.example.Vue;
 
 
-import org.example.Patternes.Observateur;
 import org.example.Modele.Jeu;
+import org.example.Patternes.Observateur;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -14,14 +14,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class NiveauGraphique extends JComponent implements Observateur {
+    private static final double RECTANGLE_SCALE_FACTOR = 0.05; // Adjust this value for scaling
     CollecteurEvenements control;
-
     int largeurCase;
     int hauteurCase;
-
     Jeu jeu;
-
-    private static final double RECTANGLE_SCALE_FACTOR = 0.05; // Adjust this value for scaling
     /* Load assets */
     Map<String, BufferedImage> imageMap = new HashMap<>();
 
@@ -77,6 +74,8 @@ public class NiveauGraphique extends JComponent implements Observateur {
         // Set bigger font size
         Font font = g.getFont().deriveFont(Font.BOLD, largeur() / 25f); // Adjust font size based on panel width
         g.setFont(font);
+
+
         /*
         Draw "Menu" text centered within the oval
         String text = "Menu";
@@ -124,8 +123,8 @@ public class NiveauGraphique extends JComponent implements Observateur {
                 g.setColor(Color.GRAY);
                 g.fillRect(x, y, rectWidth, rectHeight);
             }
-            // Dessin des cartes de la main du joueur
 
+            // Dessin des cartes de la main du joueur
             // Draw rectangles
             for (int i = 0; i < totalCards; i++) {
                 int x = startX + i * (rectWidth + spacing);
@@ -152,12 +151,12 @@ public class NiveauGraphique extends JComponent implements Observateur {
 
             // Draw deck
             g.setColor(Color.ORANGE);
-            x = 2 * rectHeight + 20 + largeur() / 2;
+            x = largeur() - largeur() / 8;
             y = hauteur() / 2 - rectHeight * 3 / 4;
             g.fillRect(x, y, rectHeight, rectWidth);
 
             // Draw defausse
-            x = 2 * rectHeight + 20 + largeur() / 2;
+            x = largeur() - largeur() / 8;
             y = hauteur() / 2 + rectHeight / 4;
             g.fillRect(x, y, rectHeight, rectWidth);
 
@@ -186,7 +185,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
 
             for (int i = 0; i < numRows; i++) {
                 int lineY = y + i * cellHeight;
-                //int score = getScoreForFaction(i);
+                // int score = getScoreForFaction(i);
                 int score = 2;
                 if (i > 0) {
                     if (score > 0) {

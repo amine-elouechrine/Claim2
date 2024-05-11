@@ -36,6 +36,8 @@ public class InterfaceGraphique implements Runnable {
             System.out.println("Erreur de chargement de l'icone");
         }
 
+        // BarreHaute
+        ComposantBarreHaute bh = new ComposantBarreHaute(BoxLayout.X_AXIS, control, j);
 
         // Dessin du NiveauGraphique
         NiveauGraphique niv = new NiveauGraphique(j, control);
@@ -50,16 +52,17 @@ public class InterfaceGraphique implements Runnable {
         menuPanel.setBackground(Color.WHITE);
         JToggleButton menu = new JToggleButton("Menu");
         menuPanel.add(menu, BorderLayout.NORTH);
-        ComposantMenuPartie menuPartie = new ComposantMenuPartie(BoxLayout.Y_AXIS, control, j);
+        ComposantMenuPartie menuPartie = new ComposantMenuPartie(BoxLayout.PAGE_AXIS, control, j);
         menu.addActionListener(new AdaptateurOuvreMenu(menu, menuPartie));
         fenetre.add(menuPanel, BorderLayout.EAST);
+        fenetre.add(bh, BorderLayout.NORTH);
 
         fenetre.pack();
         fenetre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         fenetre.setSize(1280, 960);
         fenetre.getContentPane().setBackground(Color.WHITE);
         fenetre.setVisible(true);
-
+        fenetre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         /*
         // Aligning the vertical panel to the right side
