@@ -7,7 +7,6 @@ import org.example.Modele.Jeu;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.font.ShapeGraphicAttribute;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -25,6 +24,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
     private static final double RECTANGLE_SCALE_FACTOR = 0.05; // Adjust this value for scaling
     /* Load assets */
     Map<String, BufferedImage> imageMap = new HashMap<>();
+
     public NiveauGraphique(Jeu j, CollecteurEvenements cont) {
 
         control = cont;
@@ -77,7 +77,6 @@ public class NiveauGraphique extends JComponent implements Observateur {
         // Set bigger font size
         Font font = g.getFont().deriveFont(Font.BOLD, largeur() / 25f); // Adjust font size based on panel width
         g.setFont(font);
-
         /*
         Draw "Menu" text centered within the oval
         String text = "Menu";
@@ -94,6 +93,14 @@ public class NiveauGraphique extends JComponent implements Observateur {
         int panelWidth = getWidth();
         int panelHeight = getHeight();
         int totalCards = 13; // Nombre total de carte à recupérer du modele à chaque tour de jeu
+
+        // Definition of font
+        int fontSize_1 = (int) (panelWidth * 0.02);
+        Font font_1 = new Font("Arial", Font.PLAIN, fontSize_1);
+
+        int fontSize_2 = (int) (panelWidth * 0.015);
+        Font font_2 = new Font("Arial", Font.PLAIN, fontSize_2);
+
         // Phase 1
         if (control.getPhase() == 1) {
 
@@ -101,7 +108,6 @@ public class NiveauGraphique extends JComponent implements Observateur {
             // Calculate rectangle dimensions based on panel size
             int rectWidth = (int) (panelWidth * 0.05);
             int rectHeight = Math.max(2 * rectWidth, (int) (panelHeight * RECTANGLE_SCALE_FACTOR)); // Ensure height is always greater than width
-
             // Calculate spacing between rectangles
             int spacing = 1;
 
@@ -162,7 +168,132 @@ public class NiveauGraphique extends JComponent implements Observateur {
 
             // g.drawImage(gaufre, x, y, rectWidth, rectHeight, this);
             g.drawRect(x, y, rectWidth, rectHeight);
-        }else if (control.getPhase() == 2) {
+
+            // Draw score pile
+            x = rectWidth;
+            y = hauteur() / 2 - rectHeight;
+            g.drawRect(x, y, rectWidth * 2, rectHeight * 2);
+
+            int numRows = 6;
+            int cellHeight = rectHeight * 2 / numRows;
+            int imageX, imageY, textX, textY;
+            Color bgColor;
+            BufferedImage icon_goblin = imageMap.get("icon_goblin");
+            BufferedImage icon_knight = imageMap.get("icon_knight");
+            BufferedImage icon_undead = imageMap.get("icon_undead");
+            BufferedImage icon_dwarve = imageMap.get("icon_dwarve");
+            BufferedImage icon_doppleganger = imageMap.get("icon_doppleganger");
+
+            for (int i = 0; i < numRows; i++) {
+                int lineY = y + i * cellHeight;
+                //int score = getScoreForFaction(i);
+                int score = 2;
+                if (i > 0) {
+                    if (score > 0) {
+                        bgColor = Color.GREEN;
+                    } else if (score == 0) {
+                        bgColor = Color.GRAY;
+                    } else {
+                        bgColor = Color.RED;
+                    }
+                } else {
+                    bgColor = Color.WHITE;
+                }
+
+                g.setColor(bgColor);
+                g.fillRect(x, lineY, rectWidth * 2, cellHeight);
+                g.setColor(Color.BLACK);
+                g.drawLine(x, lineY, x + rectWidth * 2, lineY);
+
+                if (i == 0) {
+                    FontMetrics fm = g.getFontMetrics(font_1);
+                    int textWidth = fm.stringWidth("SCORE");
+                    int textHeight = fm.getHeight();
+
+                    textX = x + (rectWidth * 2 - textWidth) / 2;
+                    textY = lineY + (cellHeight + textHeight) / 2;
+                    g.setFont(font_1);
+                    g.drawString("SCORE", textX, textY);
+                }
+                if (i == 1) {
+                    //Draw icon goblin
+                    imageX = x + 5;
+                    imageY = lineY + (cellHeight - rectWidth) / 2;
+                    g.drawImage(icon_goblin, imageX, imageY, rectWidth * 5 / 8, rectWidth, this);
+
+                    FontMetrics fm = g.getFontMetrics(font_2);
+                    int textWidth = fm.stringWidth(Integer.toString(score));
+                    int textHeight = fm.getHeight();
+
+                    textX = x + rectWidth * 2 - textWidth * 4;
+                    textY = lineY + (cellHeight + textHeight * 2 / 3) / 2;
+                    g.setFont(font_2);
+                    g.drawString(Integer.toString(score), textX, textY);
+                }
+                if (i == 2) {
+                    //Draw icon knight
+                    imageX = x + 5;
+                    imageY = lineY + (cellHeight - rectWidth) / 2;
+                    g.drawImage(icon_knight, imageX, imageY, rectWidth * 5 / 8, rectWidth, this);
+
+                    FontMetrics fm = g.getFontMetrics(font_2);
+                    int textWidth = fm.stringWidth(Integer.toString(score));
+                    int textHeight = fm.getHeight();
+
+                    textX = x + rectWidth * 2 - textWidth * 4;
+                    textY = lineY + (cellHeight + textHeight * 2 / 3) / 2;
+                    g.setFont(font_2);
+                    g.drawString(Integer.toString(score), textX, textY);
+                }
+                if (i == 3) {
+                    //Draw icon undead
+                    imageX = x + 5;
+                    imageY = lineY + (cellHeight - rectWidth) / 2;
+                    g.drawImage(icon_undead, imageX, imageY, rectWidth * 5 / 8, rectWidth, this);
+
+                    FontMetrics fm = g.getFontMetrics(font_2);
+                    int textWidth = fm.stringWidth(Integer.toString(score));
+                    int textHeight = fm.getHeight();
+
+                    textX = x + rectWidth * 2 - textWidth * 4;
+                    textY = lineY + (cellHeight + textHeight * 2 / 3) / 2;
+                    g.setFont(font_2);
+                    g.drawString(Integer.toString(score), textX, textY);
+                }
+                if (i == 4) {
+                    //Draw icon dwarve
+                    imageX = x + 5;
+                    imageY = lineY + (cellHeight - rectWidth) / 2;
+                    g.drawImage(icon_dwarve, imageX, imageY, rectWidth * 5 / 8, rectWidth, this);
+
+                    FontMetrics fm = g.getFontMetrics(font_2);
+                    int textWidth = fm.stringWidth(Integer.toString(score));
+                    int textHeight = fm.getHeight();
+
+                    textX = x + rectWidth * 2 - textWidth * 4;
+                    textY = lineY + (cellHeight + textHeight * 2 / 3) / 2;
+                    g.setFont(font_2);
+                    g.drawString(Integer.toString(score), textX, textY);
+                }
+                if (i == 5) {
+                    //Draw icon dopplegagner
+                    imageX = x + 5;
+                    imageY = lineY + (cellHeight - rectWidth) / 2;
+                    g.drawImage(icon_doppleganger, imageX, imageY, rectWidth * 5 / 8, rectWidth, this);
+
+                    FontMetrics fm = g.getFontMetrics(font_2);
+                    int textWidth = fm.stringWidth(Integer.toString(score));
+                    int textHeight = fm.getHeight();
+
+                    textX = x + rectWidth * 2 - textWidth * 4;
+                    textY = lineY + (cellHeight + textHeight * 2 / 3) / 2;
+                    g.setFont(font_2);
+                    g.drawString(Integer.toString(score), textX, textY);
+                }
+
+
+            }
+        } else if (control.getPhase() == 2) {
 
             // Dessin des cartes de l'adversaire (IA)
             // Calculate rectangle dimensions based on panel size
@@ -207,6 +338,129 @@ public class NiveauGraphique extends JComponent implements Observateur {
 
             // g.drawImage(gaufre, x, y, rectWidth, rectHeight, this);
             g.drawRect(x, y, rectWidth, rectHeight);
+
+            // Draw score pile
+            x = rectWidth;
+            y = hauteur() / 2 - rectHeight;
+            g.drawRect(x, y, rectWidth * 2, rectHeight * 2);
+
+            int numRows = 6;
+            int cellHeight = rectHeight * 2 / numRows;
+            int imageX, imageY, textX, textY;
+            Color bgColor;
+            BufferedImage icon_goblin = imageMap.get("icon_goblin");
+            BufferedImage icon_knight = imageMap.get("icon_knight");
+            BufferedImage icon_undead = imageMap.get("icon_undead");
+            BufferedImage icon_dwarve = imageMap.get("icon_dwarve");
+            BufferedImage icon_doppleganger = imageMap.get("icon_doppleganger");
+
+            for (int i = 0; i < numRows; i++) {
+                int lineY = y + i * cellHeight;
+                //int score = getScoreForFaction(i);
+                int score = 2;
+                if (i > 0) {
+                    if (score > 0) {
+                        bgColor = Color.GREEN;
+                    } else if (score == 0) {
+                        bgColor = Color.GRAY;
+                    } else {
+                        bgColor = Color.RED;
+                    }
+                } else {
+                    bgColor = Color.WHITE;
+                }
+
+                g.setColor(bgColor);
+                g.fillRect(x, lineY, rectWidth * 2, cellHeight);
+                g.setColor(Color.BLACK);
+                g.drawLine(x, lineY, x + rectWidth * 2, lineY);
+
+                if (i == 0) {
+                    FontMetrics fm = g.getFontMetrics(font_1);
+                    int textWidth = fm.stringWidth("SCORE");
+                    int textHeight = fm.getHeight();
+
+                    textX = x + (rectWidth * 2 - textWidth) / 2;
+                    textY = lineY + (cellHeight + textHeight) / 2;
+                    g.setFont(font_1);
+                    g.drawString("SCORE", textX, textY);
+                }
+                if (i == 1) {
+                    //Draw icon goblin
+                    imageX = x + 5;
+                    imageY = lineY + (cellHeight - rectWidth) / 2;
+                    g.drawImage(icon_goblin, imageX, imageY, rectWidth * 5 / 8, rectWidth, this);
+
+                    FontMetrics fm = g.getFontMetrics(font_2);
+                    int textWidth = fm.stringWidth(Integer.toString(score));
+                    int textHeight = fm.getHeight();
+
+                    textX = x + rectWidth * 2 - textWidth * 4;
+                    textY = lineY + (cellHeight + textHeight * 2 / 3) / 2;
+                    g.setFont(font_2);
+                    g.drawString(Integer.toString(score), textX, textY);
+                }
+                if (i == 2) {
+                    //Draw icon knight
+                    imageX = x + 5;
+                    imageY = lineY + (cellHeight - rectWidth) / 2;
+                    g.drawImage(icon_knight, imageX, imageY, rectWidth * 5 / 8, rectWidth, this);
+
+                    FontMetrics fm = g.getFontMetrics(font_2);
+                    int textWidth = fm.stringWidth(Integer.toString(score));
+                    int textHeight = fm.getHeight();
+
+                    textX = x + rectWidth * 2 - textWidth * 4;
+                    textY = lineY + (cellHeight + textHeight * 2 / 3) / 2;
+                    g.setFont(font_2);
+                    g.drawString(Integer.toString(score), textX, textY);
+                }
+                if (i == 3) {
+                    //Draw icon undead
+                    imageX = x + 5;
+                    imageY = lineY + (cellHeight - rectWidth) / 2;
+                    g.drawImage(icon_undead, imageX, imageY, rectWidth * 5 / 8, rectWidth, this);
+
+                    FontMetrics fm = g.getFontMetrics(font_2);
+                    int textWidth = fm.stringWidth(Integer.toString(score));
+                    int textHeight = fm.getHeight();
+
+                    textX = x + rectWidth * 2 - textWidth * 4;
+                    textY = lineY + (cellHeight + textHeight * 2 / 3) / 2;
+                    g.setFont(font_2);
+                    g.drawString(Integer.toString(score), textX, textY);
+                }
+                if (i == 4) {
+                    //Draw icon dwarve
+                    imageX = x + 5;
+                    imageY = lineY + (cellHeight - rectWidth) / 2;
+                    g.drawImage(icon_dwarve, imageX, imageY, rectWidth * 5 / 8, rectWidth, this);
+
+                    FontMetrics fm = g.getFontMetrics(font_2);
+                    int textWidth = fm.stringWidth(Integer.toString(score));
+                    int textHeight = fm.getHeight();
+
+                    textX = x + rectWidth * 2 - textWidth * 4;
+                    textY = lineY + (cellHeight + textHeight * 2 / 3) / 2;
+                    g.setFont(font_2);
+                    g.drawString(Integer.toString(score), textX, textY);
+                }
+                if (i == 5) {
+                    //Draw icon dopplegagner
+                    imageX = x + 5;
+                    imageY = lineY + (cellHeight - rectWidth) / 2;
+                    g.drawImage(icon_doppleganger, imageX, imageY, rectWidth * 5 / 8, rectWidth, this);
+
+                    FontMetrics fm = g.getFontMetrics(font_2);
+                    int textWidth = fm.stringWidth(Integer.toString(score));
+                    int textHeight = fm.getHeight();
+
+                    textX = x + rectWidth * 2 - textWidth * 4;
+                    textY = lineY + (cellHeight + textHeight * 2 / 3) / 2;
+                    g.setFont(font_2);
+                    g.drawString(Integer.toString(score), textX, textY);
+                }
+            }
         }
     }
 
