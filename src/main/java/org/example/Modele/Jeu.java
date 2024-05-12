@@ -1,7 +1,6 @@
 package org.example.Modele;
 
 import org.example.Patternes.Observable;
-import org.example.Vue.NiveauGraphique;
 
 public class Jeu extends Observable {
 

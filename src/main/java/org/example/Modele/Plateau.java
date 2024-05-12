@@ -51,5 +51,5 @@ public class Plateau {
 
     //clearDefausse
     //isDefausseEmpty
-
+    //shufflePioche
 }
