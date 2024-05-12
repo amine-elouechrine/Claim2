@@ -13,6 +13,6 @@ public class ControleurMediateur implements CollecteurEvenements {
     }
 
     public int getPhase() {
-        return 1;//jeu.getPhase();
+        return jeu.getPhase();
     }
 }

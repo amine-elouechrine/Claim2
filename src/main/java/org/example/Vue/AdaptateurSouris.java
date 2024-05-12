@@ -23,17 +23,21 @@ public class AdaptateurSouris extends MouseAdapter implements MouseListener {
         int largeurR, hauteurR;
         i = e.getX();
         j = e.getY();
-        hauteurR = niv.rectHeight;
-        largeurR = niv.rectWidth;
+        hauteurR = niv.hauteurCarte();
+        largeurR = niv.largeurCarte();
+        double valeur_carte = 0f;
         int carte = 0;
 
         if (i > niv.posXMain() && i < (niv.getLargeurMain() + niv.posXMain()) && j > niv.posYMain() && j < (niv.posYMain() + niv.getHauteurMain())) {
-            carte = ((i - niv.posXMain()) / niv.getTotalCards()) / 4;
+            valeur_carte = (double) (i - niv.posXMain()) / largeurR; // Il faut diviser par la taille des cartes
+            carte = (int) Math.floor(valeur_carte);
         }
+
+        System.out.println("double : " + valeur_carte);
         System.out.println("carte : " + carte);
         System.out.println("posX : " + i + " posY : " + j + "\n posXMain : " + niv.posXMain() + " posYMain : " + niv.posYMain());
         System.out.println("Largeur Main : " + niv.getLargeurMain() + " Hauteur Main : " + (niv.posYMain() + niv.getHauteurMain()));
-
+        System.out.println("largeur carte : " + largeurR);
 
     }
 

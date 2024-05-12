@@ -27,7 +27,7 @@ public class InterfaceGraphique implements Runnable {
 
     @Override
     public void run() {
-        // Nom de la fenÃªtre
+        // Nom de la fenêtre
         fenetre = new JFrame("Claim incroyable jeu de carte");
 
         // Change l'icone de la fenetre principale
