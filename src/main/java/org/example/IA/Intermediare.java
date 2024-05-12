@@ -8,8 +8,6 @@ import java.util.List;
 public class Intermediare {
     Player joueur1;
     Player IA;
-    List<Card> mainJoueur1;
-    List<Card> mainIA;
 
     public Intermediare(Player j1, Player ia) {
         joueur1 = j1;
@@ -54,7 +52,7 @@ public class Intermediare {
                     }
                     if (!carteJouable.isEmpty()) {
                         //jouer la carte la plus petite des dopplegangers
-                        Card min = carteJouable.getMin();
+                        Card min = carteJouable.getLowestValueCard();
                         //jouer min
                         System.out.println("jouer min ");
                     } else {
@@ -75,7 +73,7 @@ public class Intermediare {
                 } else {
                     //jouer la carte la plus petite parcequ'on peux pas gagner la faction
 
-                    System.out.println(carteJouable.getMin().getFaction() + "-" + carteJouable.getMin().getValeur());
+                    System.out.println(carteJouable.getLowestValueCard().getFaction() + "-" + carteJouable.getLowestValueCard().getValeur());
 
                 }
             }
@@ -83,45 +81,45 @@ public class Intermediare {
             //je commence le tour
             //A modifier: je joue la carte la plus null
             //jouer  mainIA.min_valeur() il manque la fonction jouer carte
-            System.out.println("La carte jouer est :" + mainIA.getMin().getValeur() + " " + mainIA.getMin().getFaction());
+            System.out.println("La carte jouer est :" + mainIA.getLowestValueCard().getValeur() + " " + mainIA.getLowestValueCard().getFaction());
         }
     }
 
-    public void jouer_coup_phase2(Cards mainIA, boolean suivre_faction, Card carte_adversaire) {
+    public void jouer_coup_phase2(Hand mainIA, boolean suivre_faction, Card carte_adversaire) {
         if (suivre_faction) {
             //l'adversaire a jouer une carte je dois jouer une carte de la meme faction
             //si la faction de la carte adversaire est un nain
             if (carte_adversaire.getFaction().equals("Nains")) {
                 //je dois jouer le plus petit nains possible pour gagner la faction
                 Cards carteJouable = new Cards();
-                for (Card c : mainIA.getCards()) {
+                for (Card c : mainIA.getAllCards()) {
                     if (c.getFaction().equals("Nains")) {
                         carteJouable.setCard(c);
                     }
                 }
                 if (carteJouable.min_valeur().getValeur() > carte_adversaire.getValeur()) {
                     //jouer la carte la plus grande
-                    //il manque la fonction pour jouer une carte :carteJouable.max_valeur();
+                    System.out.println(carteJouable.max_valeur());
                 } else {
                     //jouer la carte la plus petite mais plus grande que le nain de l'adversaire
-                    //jouer  carteJouable.getHighestCardSmallerThan(carte_adversaire);
+                    System.out.println( carteJouable.getHighestCardSmallerThan(carte_adversaire));
                 }
             } else {
                 //suivre la faction de l'adversaire
-                Cards cartesJouables = mainIA.getCardsOfSameFactionAs(carte_adversaire);
+                Hand cartesJouables = mainIA.getCardsOfSameFaction(carte_adversaire);
                 if (cartesJouables.isEmpty()) {
                     //si on a pas de carte de la meme faction
                     //jouer la carte la plus petite
-                    mainIA.getLowestCardWithFactionScore();
+                    System.out.println(cartesJouables.getLowestValueCard());
                 } else {
                     //jouer la carte la plus petite plus grande que celle de l'adversaire de la meme faction
-                    cartesJouables.getHighestCardSmallerThan(carte_adversaire);
+                    System.out.println(cartesJouables.getLargestSmallerCard(carte_adversaire));
                 }
             }
         } else {
             //je commence le tour
             //A modifier: je joue la carte la plus null
-            mainIA.min_valeur();
+            System.out.println(mainIA.getLowestValueCard());
         }
     }
 
@@ -133,8 +131,8 @@ public class Intermediare {
         Intermediare i = new Intermediare(new Player("Joueur1", hand1), new Player("IA", handIA));
         handIA.printHand();
         Card cartejouer = hand1.getRandomCard();
-        //System.out.println("La carte jouer par le joueur 1 est : "+cartejouer.getFaction()+" "+cartejouer.getValeur());
-        i.jouer_coup_phase1(handIA, false, cartejouer);
+        System.out.println("La carte jouer par le joueur 1 est : "+cartejouer.getFaction()+" "+cartejouer.getValeur());
+        i.jouer_coup_phase2(handIA, false, cartejouer);
     }
 
 }
