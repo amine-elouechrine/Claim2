@@ -60,6 +60,14 @@ public class ReglesDeJeu {
             return null; // En cas d'égalité
         }
     }
+    public static Player determinerPerdantManche(Player joueur1, Player joueur2,Player gagnant) {
+        if (gagnant == joueur1){
+            return joueur2;
+        }
+        else {
+            return joueur1;
+        }
+    }
 
     /**
      * Méthode pour déterminer quelles cartes le deuxième joueur peut jouer en fonction de la carte jouée par le premier joueur.
@@ -242,8 +250,8 @@ public class ReglesDeJeu {
      * Méthode pour appliquer les règles spéciales des factions (1ere phase uniquement).
      * le joueur qui gagne le tour prends la carte affichée et la carte de l'adversaire si elle est de la faction Dwarves
      * le joueur qui perd le tour prends une carte de la pioche sans la regarder
-     * @param trickWinner Le joueur remportant le tour.
      * @param plateau Le plateau de jeu.
+     * @param r Les regles du jeu.
      */
     public void playerWinsFirstPhaseManche(Plateau plateau , ReglesDeJeu r){
         r.applyFirstPhaseRules(plateau.joueurCourant, plateau);
