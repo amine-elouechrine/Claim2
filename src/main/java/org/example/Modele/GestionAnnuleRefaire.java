@@ -76,6 +76,12 @@ public class GestionAnnuleRefaire {
     }
 
 
+    public void saveHand(){
+
+    }
+    public void restoreHand(){
+
+    }
     /* pour sauve restaure il faut stocker le plateau actuell les piles de refaire & annule mais il faut aussi stocker la main de chaque joueur  */
     public void sauve(String fileName){
         try {

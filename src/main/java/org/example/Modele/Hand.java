@@ -4,11 +4,14 @@ import java.util.List;
 import java.util.Random;
 
 public class Hand {
-    public List<Card> cards;
+    private List<Card> cards;
 
-    // Constructeur
+
+    /**
+     * Constructeur de la classe Hand.
+     * Initialise une liste vide pour stocker les cartes.
+     */
     public Hand() {
-
         cards = new ArrayList<>();
     }
     public Card getSmallestHigherCard(Card card) {
@@ -36,12 +39,23 @@ public class Hand {
         this.cards = cards;
     }
 
+    /**
+     * Ajoute une carte à la main.
+     * @param card La carte à ajouter à la main.
+     */
     // Ajouter une carte à la main
     public void addCard(Card card) {
         cards.add(card);
     }
 
+    /*
+     * Retire une carte de la main.
+     * @param card La carte à retirer de la main.
+     */
     // Retirer une carte de la main
+    public Card removeCard(int i) {
+        return cards.remove(i);
+    }
     public void removeCard(Card card) {
         cards.remove(card);
     }
@@ -71,6 +85,13 @@ public class Hand {
         if (cards == null || cards.isEmpty()) {
             throw new IllegalStateException("La main est vide ou nulle.");
         }
+    /*
+     * verifie si la carte est dans la main
+     * @param card La carte à verifier s'il est dans la main.
+     */
+    public boolean contains(Card card) {
+        return cards.contains(card);
+    }
 
         Card minCard = cards.get(0);
 
@@ -93,6 +114,10 @@ public class Hand {
             }
         }
     }
+    /**
+     * Récupère toutes les cartes de la main.
+     * @return La liste des cartes dans la main.
+     */
     // Obtenir toutes les cartes de la main
     public List<Card> getAllCards() {
         return cards;
@@ -109,6 +134,9 @@ public class Hand {
         cards.remove(randomIndex);
         return randomCard;
     }
+    /**
+     * Vide la main en supprimant toutes les cartes.
+     */
     // Vider la main
     public void clear() {
         cards.clear();
@@ -126,6 +154,10 @@ public class Hand {
 
         return false;
     }
+    /**
+     * Renvoie le nombre de cartes dans la main.
+     * @return Le nombre de cartes dans la main.
+     */
     // Obtenir le nombre de cartes dans la main
     public int size() {
         return cards.size();
