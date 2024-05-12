@@ -25,7 +25,7 @@ public class Plateau {
      * @param joueur2 Le joueur 2
      * @param pioche La pioche de cartes
      */
-    Plateau(Player joueur1, Player joueur2, Cards pioche) {
+    public Plateau(Player joueur1, Player joueur2, Cards pioche) {
         this.joueur1 = joueur1;
         this.joueur2 = joueur2;
         this.pioche = pioche;

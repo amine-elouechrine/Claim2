@@ -1,3 +1,4 @@
+package org.example.Modele;
 import java.util.List;
 import java.util.Scanner;
 

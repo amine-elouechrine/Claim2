@@ -56,7 +56,7 @@ public abstract class Card {
                 return 1;
             default:
                 return 0;
-        }
+        }}
     @Override
     public String toString() {
         return "Card{" + "faction=" + faction + ", value=" + value + '}';

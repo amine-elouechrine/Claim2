@@ -8,7 +8,7 @@ public class Player {
     Hand handScndPhase;
     PileDeScore pileDeScore;
 
-    Player(String Name, Hand hand) {
+    public Player(String Name, Hand hand) {
         this.Name = Name;
         score = 0;
         scoreInCurrentGame = 0;
@@ -73,3 +73,4 @@ public class Player {
             return null;
         }
     }
+}

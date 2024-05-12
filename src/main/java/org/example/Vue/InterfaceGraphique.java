@@ -27,7 +27,7 @@ public class InterfaceGraphique implements Runnable {
 
     @Override
     public void run() {
-        // Nom de la fenêtre
+        // Nom de la fenÃªtre
         fenetre = new JFrame("Claim incroyable jeu de carte");
 
         // Change l'icone de la fenetre principale
@@ -49,7 +49,7 @@ public class InterfaceGraphique implements Runnable {
         // Fenetre InterfaceGraphique
         fenetre.add(niv);
         JPanel menuPanel = new JPanel(new BorderLayout());
-        menuPanel.setBackground(Color.WHITE);
+        menuPanel.setBackground(Color.GRAY);
         JToggleButton menu = new JToggleButton("Menu");
         menuPanel.add(menu, BorderLayout.NORTH);
         ComposantMenuPartie menuPartie = new ComposantMenuPartie(BoxLayout.PAGE_AXIS, control, j);
@@ -60,7 +60,7 @@ public class InterfaceGraphique implements Runnable {
         fenetre.pack();
         fenetre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         fenetre.setSize(1280, 960);
-        fenetre.getContentPane().setBackground(Color.WHITE);
+        fenetre.getContentPane().setBackground(Color.DARK_GRAY);
         fenetre.setVisible(true);
         fenetre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
