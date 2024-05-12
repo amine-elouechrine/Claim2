@@ -1,4 +1,4 @@
- 
+package org.example.Modele;
 
 public abstract class Card {
     private int value;
@@ -21,5 +21,21 @@ public abstract class Card {
 
     public String getFaction() {
         return faction;
+    }
+    public int getFactionScore() {
+        switch (faction) {
+            case "Undead":
+                return 5;
+            case "Doppelganger":
+                return 4;
+            case "Chevalier":
+                return 3;
+            case "Nains":
+                return 2;
+            case "Goblins":
+                return 1;
+            default:
+                return 0;
+        }
     }
 }

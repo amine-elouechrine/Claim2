@@ -1,4 +1,4 @@
-
+package org.example.Modele;
 public class Gobelin extends Card {
 
 

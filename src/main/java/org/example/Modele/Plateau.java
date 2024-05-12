@@ -1,3 +1,6 @@
+package org.example.Modele;
+
+//import javax.smartcardio.Card;
 import java.util.List;
 
 public class Plateau {  
@@ -9,9 +12,11 @@ public class Plateau {
     Player joueur1;
     Player joueur2;
 
-    Plateau(Player joueur1, Player joueur2, Cards pioche) {
+    Plateau(Player joueur1, Player joueur2, Cards pioche,boolean ia) {
         this.joueur1 = joueur1;
-        this.joueur2 = joueur2;
+        if(!ia) {
+            this.joueur2 = joueur2;
+        }
         this.pioche = pioche;
         this.defausse = new Defausse();
     }
