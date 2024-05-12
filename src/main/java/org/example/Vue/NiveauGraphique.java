@@ -18,6 +18,13 @@ public class NiveauGraphique extends JComponent implements Observateur {
     CollecteurEvenements control;
     int largeurCase;
     int hauteurCase;
+    int rectHeight;
+    int rectWidth;
+    int posX;
+    int posY;
+    int totalWidth;
+    int totalHeight;
+    int totalCards;
     Jeu jeu;
     /* Load assets */
     Map<String, BufferedImage> imageMap = new HashMap<>();
@@ -75,7 +82,6 @@ public class NiveauGraphique extends JComponent implements Observateur {
         Font font = g.getFont().deriveFont(Font.BOLD, largeur() / 25f); // Adjust font size based on panel width
         g.setFont(font);
 
-
         /*
         Draw "Menu" text centered within the oval
         String text = "Menu";
@@ -88,10 +94,9 @@ public class NiveauGraphique extends JComponent implements Observateur {
         g.drawString(text, textX, textY);
         */
 
-
         int panelWidth = getWidth();
         int panelHeight = getHeight();
-        int totalCards = 13; // Nombre total de carte à recupérer du modele à chaque tour de jeu
+        totalCards = 13; // Nombre total de carte à recupérer du modele à chaque tour de jeu
 
         // Definition of font
         int fontSize_1 = (int) (panelWidth * 0.02);
@@ -100,21 +105,26 @@ public class NiveauGraphique extends JComponent implements Observateur {
         int fontSize_2 = (int) (panelWidth * 0.015);
         Font font_2 = new Font("Arial", Font.PLAIN, fontSize_2);
 
+        // Dessin des cartes de l'adversaire (IA)
+        // Calculate rectangle dimensions based on panel size
+        int rectWidth = (int) (panelWidth * 0.05);
+        int rectHeight = Math.max(2 * rectWidth, (int) (panelHeight * RECTANGLE_SCALE_FACTOR)); // Ensure height is always greater than width
+
+        // Calculate spacing between rectangles
+        int spacing = 0;
+
+        // Calculate total width of all rectangles and spacing
+        totalWidth = totalCards * rectWidth + (totalCards - 1) * spacing;
+
+        // Calculate starting x position to center the rectangles
+        int startX = (panelWidth - totalWidth) / 2;
+
+        posX = startX;
+        posY = hauteur() - rectHeight - 10;
+        totalHeight = rectHeight;
+
         // Phase 1
         if (control.getPhase() == 1) {
-
-            // Dessin des cartes de l'adversaire (IA)
-            // Calculate rectangle dimensions based on panel size
-            int rectWidth = (int) (panelWidth * 0.05);
-            int rectHeight = Math.max(2 * rectWidth, (int) (panelHeight * RECTANGLE_SCALE_FACTOR)); // Ensure height is always greater than width
-            // Calculate spacing between rectangles
-            int spacing = 1;
-
-            // Calculate total width of all rectangles and spacing
-            int totalWidth = totalCards * rectWidth + (totalCards - 1) * spacing;
-
-            // Calculate starting x position to center the rectangles
-            int startX = (panelWidth - totalWidth) / 2;
 
             // Draw rectangles
             for (int i = 0; i < totalCards; i++) {
@@ -294,20 +304,6 @@ public class NiveauGraphique extends JComponent implements Observateur {
             }
         } else if (control.getPhase() == 2) {
 
-            // Dessin des cartes de l'adversaire (IA)
-            // Calculate rectangle dimensions based on panel size
-            int rectWidth = (int) (panelWidth * 0.05);
-            int rectHeight = Math.max(2 * rectWidth, (int) (panelHeight * RECTANGLE_SCALE_FACTOR)); // Ensure height is always greater than width
-
-            // Calculate spacing between rectangles
-            int spacing = 1;
-
-            // Calculate total width of all rectangles and spacing
-            int totalWidth = totalCards * rectWidth + (totalCards - 1) * spacing;
-
-            // Calculate starting x position to center the rectangles
-            int startX = (panelWidth - totalWidth) / 2;
-
             // Draw rectangles
             for (int i = 0; i < totalCards; i++) {
                 int x = startX + i * (rectWidth + spacing);
@@ -478,6 +474,34 @@ public class NiveauGraphique extends JComponent implements Observateur {
 
     public int hauteurCase() {
         return hauteurCase;
+    }
+
+    public int largeurCarte() {
+        return rectWidth;
+    }
+
+    public int hauteurCarte() {
+        return rectHeight;
+    }
+
+    public int posYMain() {
+        return posY;
+    }
+
+    public int posXMain() {
+        return posX;
+    }
+
+    public int getLargeurMain() {
+        return totalWidth;
+    }
+
+    public int getTotalCards() {
+        return totalCards;
+    }
+
+    public int getHauteurMain() {
+        return totalHeight;
     }
 
     @Override

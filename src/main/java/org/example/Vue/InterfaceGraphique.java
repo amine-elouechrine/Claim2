@@ -5,6 +5,7 @@ import org.example.Modele.Jeu;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
 import java.io.File;
 import java.io.IOException;
 
@@ -43,11 +44,10 @@ public class InterfaceGraphique implements Runnable {
         NiveauGraphique niv = new NiveauGraphique(j, control);
         niv.setFocusable(true);
         niv.requestFocusInWindow();
-
+        niv.addMouseListener(new AdaptateurSouris(niv, control));
 
         // Fenetre InterfaceGraphique
         fenetre.add(niv);
-        // fenetre.add(barreHaute, BorderLayout.PAGE_START);
         JPanel menuPanel = new JPanel(new BorderLayout());
         menuPanel.setBackground(Color.WHITE);
         JToggleButton menu = new JToggleButton("Menu");
