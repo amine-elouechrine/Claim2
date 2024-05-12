@@ -1,5 +1,4 @@
 package org.example.Modele;
-import org.example.Modele.*;
 import org.example.Patternes.Observable;
 
 public class Jeu extends Observable {
@@ -16,7 +15,7 @@ public class Jeu extends Observable {
         joueur2 = new Player("joueur2", secondHand);
         plateau = new Plateau(joueur1,joueur2,cards);
         ReglesDeJeu r = new ReglesDeJeu();
-        firstPhase firstPhase = new firstPhase();
+        FirstPhase firstPhase = new FirstPhase();
         firstPhase.playFirstPhase(r,plateau);
         secondPhase secondPhase = new secondPhase();
         secondPhase.playSecondPhase(r,plateau);

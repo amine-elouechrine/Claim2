@@ -1,87 +1,33 @@
-import java.util.List;
+package org.example.Modele;
 import java.util.Scanner;
+import java.util.List;
 
 public class FirstPhase {
-    Cards cards ;
-    Player joueur1;
-    Player joueur2;
-    Player joueurCourant;
-    ReglesDeJeu reglesDeJeu;
-    FirstPhase(){
-        reglesDeJeu = new ReglesDeJeu();  //on initialise les regles de jeu
-        cards = new Cards(); //on initialise le paquet de cartes
-        cards.shuffle();  //on mélange les cartes
-        Hand firstHand =cards.getHandOf13Cards(); //on distribue 13 cartes à chaque joueur
-        Hand secondHand =cards.getHandOf13Cards(); //on distribue 13 cartes à chaque joueur
-        joueur1 = new Player("joueur1", firstHand); //on crée le joueur 1
-        joueur2 = new Player("joueur2", secondHand); //on crée le joueur 2
-        joueurCourant = joueur1;  //on initialise le joueur courant au 1er joueur
-        Scanner s  = new Scanner(System.in);
-        while (joueur1.hand.size()>0 && joueur2.hand.size()>0){
-            System.out.println("c'est le tour du joueur "+ joueurCourant.getName());
-            Card playingCard = cards.getCard();
-            System.out.println("on va jouer sur la carte : " + playingCard);
-            System.out.println("voici les cartes du joueur : " + joueurCourant.getName());
-            for(Card card : joueurCourant.getHand().getAllCards()){
-                System.out.println(card);
+
+    public void playFirstPhase(ReglesDeJeu r,Plateau plateau) {
+        plateau.joueurCourant = plateau.joueur1; // on suppose que le joueur1 commence toujours le premier
+        Scanner s = new Scanner(System.in); // le sanner pour taper l'indice des cartes dans la list des cartes des mains de chaque joueur
+        int i = 0;//compteur pour calculer combien de partie on a joué
+        while (i < 13) {
+            plateau.carteAffichee = plateau.getPioche().getCard(); // on prends une carte de la pile
+            int numCard = s.nextInt();//le choix de n'importe carte de la main du joueeur courant
+            Card choosenCard = plateau.joueurCourant.getHand().removeCard(numCard); // on l'extrait de la list
+            r.attributCard(plateau,choosenCard);// attribuer la carte a un joueur(voir ReglesdeJeux)
+            r.switchJoueur(plateau); //passer au joueur adversaire
+            List<Card> preselectedCards = r.cartesJouables(choosenCard, plateau.joueurCourant.getHand());//on affiche les cartes que le joueur adversaire peut les jouer
+            int choosenCounterCardIndex = s.nextInt(); //choisir une carte parmi les cartes affichées par son indice
+            Card conterCard = plateau.joueurCourant.getHand().removeCard(choosenCounterCardIndex); // carte jouer par le deuxieme joueur
+            r.attributCard(plateau,conterCard);
+            Card winningCard = r.carteGagnante(choosenCard, conterCard);//determiner la carte gagante entre les deux cartes joués
+            if (winningCard == conterCard) { //si le gagnant c'est le joueur qui a joué au deuxieme tour
+                r.playerWinsFirstPhaseManche(plateau, r);
+            } else { // si le gagnant c'est le joueeur qui a joué au premier
+                plateau.joueurCourant.handScndPhase.addCard(plateau.getPioche().getCard());//le joueur adversaire prend une carte de la pile
+                r.switchJoueur(plateau);//passer au joueeur qui a joué au premier
+                plateau.joueurCourant.handScndPhase.addCard(plateau.carteAffichee);// lui passer la carte affiché et c'est lui qui va commencer le prochai coup
+                r.applyUndeadRule(plateau.joueurCourant,plateau);//applier la regle des Undead sur les cartes joués
             }
-            int numCard = s.nextInt();
-            Card choosenCard = joueurCourant.getHand().getAllCards().remove(numCard);
-            System.out.println("le joueur "+joueurCourant.getName()+" a choisi la carte : "+choosenCard);
-            switchJoueur();
-            System.out.println("c'est le tour du joueur "+joueurCourant.getName());
-            List<Card> preselectedCards = reglesDeJeu.cartesJouables(choosenCard, joueurCourant.hand);
-            System.out.println("le joueur "+joueurCourant.getName()+" peux chosir une de ces cartes :" );
-            for(Card card : preselectedCards){
-                System.out.println(card);
-            }
-            int choosenContreCardNumber = s.nextInt();
-
-            Card conterCard = preselectedCards.get(choosenContreCardNumber);
-            joueurCourant.getHand().getAllCards().remove(conterCard);
-            System.out.println("le joueur "+joueurCourant.getName() + " a choisi la carte : "+conterCard );
-            Card winningCard = reglesDeJeu.carteGagnante(choosenCard, conterCard);
-            System.out.println("la carte gagnante est "+ winningCard);
-            if (winningCard==conterCard){//si le joueur courant a gagné le coup
-                if (choosenCard.getFaction().equals("Dwarve")){//on ajoute les cartes dans la pile de score du joueur gagnant si elles sont de type dwarve
-                    joueurCourant.getPileDeScore().addCard(choosenCard);
-                }
-                if (conterCard.getFaction().equals("Dwarve")){
-                    joueurCourant.getPileDeScore().addCard(conterCard);
-                }
-                joueurCourant.handScndPhase.addCard(playingCard);
-                switchJoueur();
-                joueurCourant.handScndPhase.addCard(cards.getCard());
-                switchJoueur();
-
-            }
-            else{
-                if (choosenCard.getFaction().equals("Dwarve")){
-                    joueurCourant.getPileDeScore().addCard(choosenCard);
-                }
-                if (conterCard.getFaction().equals("Dwarve")){
-                    joueurCourant.getPileDeScore().addCard(conterCard);
-                }
-                joueurCourant.handScndPhase.addCard(cards.getCard());
-                switchJoueur();
-                joueurCourant.handScndPhase.addCard(playingCard);
-            }
-
-
-        }
-
-
-        }
-    public void switchJoueur(){
-        if (joueurCourant==joueur1){
-            joueurCourant = joueur2;
-        }
-        else if (joueurCourant==joueur2) {
-            joueurCourant = joueur1;
+        i++;
         }
     }
-    public static void main(String[] args) {
-        FirstPhase firstPhase = new FirstPhase();
-    }
-    }
-
+}
