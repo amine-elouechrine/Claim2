@@ -1,4 +1,4 @@
-
+package org.example.Modele;
 
 public class Player {
     String Name ;
@@ -7,12 +7,16 @@ public class Player {
     Hand hand;
     PileDeScore pileDeScore;
 
-    Player(String Name, Hand hand) {
+    public Player(String Name, Hand hand) {
         this.Name = Name;
         score = 0;
         scoreInCurrentGame = 0;
         this.hand = hand;
         this.pileDeScore = new PileDeScore();
+    }
+
+    public void setHand(Hand hand) {
+        this.hand = hand;
     }
 
     String getName(){

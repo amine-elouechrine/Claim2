@@ -1,3 +1,4 @@
+package org.example.Modele;
 public class Doppelganger extends Card {
 
     // Constructeur
