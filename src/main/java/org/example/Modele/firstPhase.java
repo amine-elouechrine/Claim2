@@ -1,9 +1,13 @@
+import org.example.Modele.Card;
+import org.example.Modele.Plateau;
+import org.example.Modele.ReglesDeJeu;
+
 import java.util.Scanner;
 import java.util.List;
 
 public class firstPhase {
 
-    public void playFirstPhase(ReglesDeJeu r,Plateau plateau) {
+    public void playFirstPhase(ReglesDeJeu r, Plateau plateau) {
         plateau.joueurCourant = plateau.joueur1; // on suppose que le joueur1 commence toujours le premier
         Scanner s = new Scanner(System.in); // le sanner pour taper l'indice des cartes dans la list des cartes des mains de chaque joueur
         int i = 0;//compteur pour calculer combien de partie on a joué
