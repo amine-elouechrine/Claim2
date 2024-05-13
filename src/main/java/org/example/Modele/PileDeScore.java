@@ -14,7 +14,9 @@ public class PileDeScore {
     public Map<String, List<Card>> getCartesGagnees() {
         return cartesGagnees;
     }
-
+    public Map<String, List<Card>> getPileDeScore() {
+        return cartesGagnees;
+    }
     // getCardFaction(String faction) : List<Card> return tous les cartes de cette faction dans cartes gagnées
     // Récupère toutes les cartes d'une faction donnée
     public List<Card> getCardFaction(String faction) {
