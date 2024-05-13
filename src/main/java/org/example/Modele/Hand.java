@@ -1,4 +1,5 @@
 package org.example.Modele;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -14,6 +15,7 @@ public class Hand {
     public Hand() {
         cards = new ArrayList<>();
     }
+
     public Card getSmallestHigherCard(Card card) {
         if (cards == null || cards.isEmpty()) {
             throw new IllegalStateException("La main est vide ou nulle.");
@@ -34,13 +36,13 @@ public class Hand {
     }
 
 
-
     public void setHand(List<Card> cards) {
         this.cards = cards;
     }
 
     /**
      * Ajoute une carte à la main.
+     *
      * @param card La carte à ajouter à la main.
      */
     // Ajouter une carte à la main
@@ -56,6 +58,7 @@ public class Hand {
     public Card removeCard(int i) {
         return cards.remove(i);
     }
+
     public void removeCard(Card card) {
         cards.remove(card);
     }
@@ -81,17 +84,16 @@ public class Hand {
     public boolean isEmpty() {
         return cards.isEmpty();
     }
+
+
+    public boolean contains(Card card) {
+        return cards.contains(card);
+    }
+
     public Card getMin() {
         if (cards == null || cards.isEmpty()) {
             throw new IllegalStateException("La main est vide ou nulle.");
         }
-    /*
-     * verifie si la carte est dans la main
-     * @param card La carte à verifier s'il est dans la main.
-     */
-    public boolean contains(Card card) {
-        return cards.contains(card);
-    }
 
         Card minCard = cards.get(0);
 
@@ -110,12 +112,14 @@ public class Hand {
         } else {
             System.out.println("Cartes dans la main :");
             for (Card card : cards) {
-                System.out.println(card.getFaction()+" "+card.getValeur());
+                System.out.println(card.getFaction() + " " + card.getValeur());
             }
         }
     }
+
     /**
      * Récupère toutes les cartes de la main.
+     *
      * @return La liste des cartes dans la main.
      */
     // Obtenir toutes les cartes de la main
@@ -134,6 +138,7 @@ public class Hand {
         cards.remove(randomIndex);
         return randomCard;
     }
+
     /**
      * Vide la main en supprimant toutes les cartes.
      */
@@ -141,6 +146,7 @@ public class Hand {
     public void clear() {
         cards.clear();
     }
+
     public boolean containsKnight() {
         if (cards == null || cards.isEmpty()) {
             return false;
@@ -154,14 +160,17 @@ public class Hand {
 
         return false;
     }
+
     /**
      * Renvoie le nombre de cartes dans la main.
+     *
      * @return Le nombre de cartes dans la main.
      */
     // Obtenir le nombre de cartes dans la main
     public int size() {
         return cards.size();
     }
+
     public Card getLowestValueCard() {
         if (cards == null || cards.isEmpty()) {
             throw new IllegalStateException("La liste de cartes est vide ou nulle.");

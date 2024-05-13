@@ -1,9 +1,8 @@
-
+package org.example.Modele;
 /**
  * Cette classe représente une carte dans le jeu. Chaque carte a une valeur numérique et une faction associée.
  */
 
-package org.example.Modele;
 
 public abstract class Card {
     private int value;// La valeur de la carte
@@ -56,7 +55,7 @@ public abstract class Card {
                 return 1;
             default:
                 return 0;
-        }
+        }}
     @Override
     public String toString() {
         return "Card{" + "faction=" + faction + ", value=" + value + '}';

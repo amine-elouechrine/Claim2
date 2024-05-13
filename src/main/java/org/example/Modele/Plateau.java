@@ -3,6 +3,9 @@ package org.example.Modele;
 //import javax.smartcardio.Card;
 import java.util.List;
 
+import org.example.Modele.Cards;
+import org.example.Modele.Defausse;
+
 /**
  * Cette classe représente le plateau de jeu dans lequel les cartes sont placées pendant la partie.
  * Elle contient la carte affichée, les cartes des joueurs, la pioche, la défausse et les joueurs.
@@ -25,7 +28,7 @@ public class Plateau {
      * @param joueur2 Le joueur 2
      * @param pioche La pioche de cartes
      */
-    Plateau(Player joueur1, Player joueur2, Cards pioche) {
+    public Plateau(Player joueur1, Player joueur2, Cards pioche) {
         this.joueur1 = joueur1;
         this.joueur2 = joueur2;
         this.pioche = pioche;

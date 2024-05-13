@@ -107,8 +107,8 @@ public class NiveauGraphique extends JComponent implements Observateur {
 
         // Dessin des cartes de l'adversaire (IA)
         // Calculate rectangle dimensions based on panel size
-        int rectWidth = (int) (panelWidth * 0.05);
-        int rectHeight = Math.max(2 * rectWidth, (int) (panelHeight * RECTANGLE_SCALE_FACTOR)); // Ensure height is always greater than width
+        rectWidth = (int) (panelWidth * 0.05);
+        rectHeight = Math.max(2 * rectWidth, (int) (panelHeight * RECTANGLE_SCALE_FACTOR)); // Ensure height is always greater than width
 
         // Calculate spacing between rectangles
         int spacing = 0;
@@ -163,12 +163,12 @@ public class NiveauGraphique extends JComponent implements Observateur {
             g.setColor(Color.ORANGE);
             x = largeur() - largeur() / 8;
             y = hauteur() / 2 - rectHeight * 3 / 4;
-            g.fillRect(x, y, rectHeight, rectWidth);
+            g.fillRect(x, y, rectHeight, rectWidth); // Rectangle latéral
 
             // Draw defausse
             x = largeur() - largeur() / 8;
             y = hauteur() / 2 + rectHeight / 4;
-            g.fillRect(x, y, rectHeight, rectWidth);
+            g.fillRect(x, y, rectHeight, rectWidth); // Rectangle latéral
 
             // Draw Feedfoward Carte joué
             g.setColor(Color.DARK_GRAY);
@@ -351,7 +351,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
 
             for (int i = 0; i < numRows; i++) {
                 int lineY = y + i * cellHeight;
-                //int score = getScoreForFaction(i);
+                // int score = getScoreForFaction(i);
                 int score = 2;
                 if (i > 0) {
                     if (score > 0) {
