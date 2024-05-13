@@ -92,9 +92,36 @@ public class Plateau {
      * Renvoie la liste des cartes dans la défausse.
      * @return La liste des cartes dans la défausse.
      */
-    public List<Card> getDefausse() {
-        return defausse.getCartes();
+    public Defausse getDefausse() {
+        return defausse;
     }
     public Cards getPioche() {return pioche;}
+
+    public void attribuerCarteFirstPhase(Card winningCard) {
+        if (winningCard==carteJoueur1){
+            joueur1.getHandScndPhase().addCard(winningCard);
+            joueur2.getHandScndPhase().addCard(pioche.getCard());
+            joueurCourant=joueur1;
+        }
+        else{
+            joueur2.getHandScndPhase().addCard(winningCard);
+            joueur1.getHandScndPhase().addCard(pioche.getCard());
+            joueurCourant=joueur2;
+        }
+    }
+    public void attribuerCarteSecondPhase(Card winningCard,ReglesDeJeu r){// on doit changer la fonction ApplyDwarveRule:c'est fait
+        if (winningCard==carteJoueur1){
+            r.ApplyDwarvesRules(joueur1,joueur2, carteJoueur1,carteJoueur2);
+        }
+        else{
+            r.ApplyDwarvesRules(joueur2,joueur1,carteJoueur2,carteJoueur1);
+        }
+    }
+    public boolean coupJouable(List<Card> preselected , int indice,Hand hand ) {
+        return preselected.contains(hand.getCard(indice));
+    }
+    public Boolean estPhase1(){
+        return !(joueur1.getHand().isEmpty() && joueur2.getHand().isEmpty());
+    }
 
 }

@@ -10,6 +10,7 @@ public class TestFirstPhase {
 
         plateau.joueurCourant = plateau.joueur1;
         Scanner s  = new Scanner(System.in);
+        System.out.println("bienvenue dans la premiere phase");
         while (plateau.joueur1.hand.size()>0 && plateau.joueur2.hand.size()>0){
             System.out.println("c'est le tour du joueur "+ plateau.joueurCourant.getName());
             Card playingCard = cards.getCard();

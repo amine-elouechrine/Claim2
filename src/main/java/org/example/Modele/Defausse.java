@@ -20,7 +20,7 @@ public class Defausse {
 
     /**
      * Ajoute une carte à la défausse.
-     * @param Card La carte à ajouter à la défausse.
+     * @param carte La carte à ajouter à la défausse.
      */
     public void ajouterCarte(Card carte) {
         cartes.add(carte);

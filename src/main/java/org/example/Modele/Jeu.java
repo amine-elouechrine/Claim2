@@ -21,6 +21,7 @@ public class Jeu extends Observable {
         plateau = new Plateau(joueur1, joueur2, cards);
         ReglesDeJeu r = new ReglesDeJeu();
         FirstPhase firstPhase = new FirstPhase();
+        phase1 = false;
         //firstPhase.playFirstPhase(r, plateau);
         secondPhase secondPhase = new secondPhase();
         //secondPhase.playSecondPhase(r, plateau);
