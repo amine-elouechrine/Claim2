@@ -1,4 +1,4 @@
-
+package org.example.Modele;
 
 public class Player {
     String Name ;
@@ -15,6 +15,10 @@ public class Player {
         this.hand = hand;
         this.pileDeScore = new PileDeScore();
         this.handScndPhase = new Hand();
+    }
+
+    public void setHand(Hand hand) {
+        this.hand = hand;
     }
 
     String getName(){
@@ -69,7 +73,3 @@ public class Player {
             return null;
         }
     }
-
-}
-
-

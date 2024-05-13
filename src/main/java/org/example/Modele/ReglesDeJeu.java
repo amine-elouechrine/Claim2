@@ -1,3 +1,4 @@
+package org.example.Modele;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Arrays;
@@ -11,6 +12,7 @@ import java.util.Arrays;
  */
 public class ReglesDeJeu {
 
+    // Méthode pour déterminer quelle carte l'emporte entre deux cartes selon les règles du jeu
     /**
      * Méthode pour déterminer quelle carte l'emporte entre deux cartes selon les règles du jeu.
      * @param carte1 La première carte.
@@ -233,7 +235,7 @@ public class ReglesDeJeu {
         }else{ // si la carte jouée par le joueur gagnant n'est pas de la faction Dwarves
             // Ajouter la carte jouée par le joueur gagnant à sa pile de score
             trickwinner.getPileDeScore().addCard(plateau.getCarteJoueur1());}
-        
+
     }
 
     /**

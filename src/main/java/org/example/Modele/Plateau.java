@@ -1,3 +1,6 @@
+package org.example.Modele;
+
+//import javax.smartcardio.Card;
 import java.util.List;
 
 /**
@@ -5,11 +8,11 @@ import java.util.List;
  * Elle contient la carte affichée, les cartes des joueurs, la pioche, la défausse et les joueurs.
  */
 
-public class Plateau {  
+public class Plateau {
     Card carteAffichee; // Carte affichée sur le plateau
     Card carteJoueur1;
     Card carteJoueur2;
-    Cards pioche; 
+    Cards pioche;
     Defausse defausse; // Pile de cartes défaussées
     Player joueur1;
     Player joueur2;

@@ -1,4 +1,4 @@
-package Patternes;
+package org.example.Patternes;
 
 import java.util.ArrayList;
 import java.util.Iterator;

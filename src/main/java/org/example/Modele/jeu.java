@@ -1,3 +1,5 @@
+import org.example.Modele.*;
+
 public class jeu {
     Plateau plateau;
     Player joueur1 ;
