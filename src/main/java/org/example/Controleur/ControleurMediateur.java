@@ -33,7 +33,12 @@ public class ControleurMediateur implements CollecteurEvenements {
     }
 
     public void clicSouris(int index) {
-        jeu.getPlateau().jouerCarte(index);
-        jeu.metAJour();
+        if(index == -1) {
+            ;
+        }
+        else {
+            jeu.getPlateau().jouerCarte(index);
+            jeu.metAJour();
+        }
     }
 }

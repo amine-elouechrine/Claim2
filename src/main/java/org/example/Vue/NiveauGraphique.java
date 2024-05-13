@@ -32,6 +32,8 @@ public class NiveauGraphique extends JComponent implements Observateur {
     int HandJ2P1;
     int HandJ2P2;
 
+    BufferedImage image;
+
     Jeu jeu;
     /* Load assets */
     Map<String, BufferedImage> imageMap = new HashMap<>();
@@ -135,7 +137,8 @@ public class NiveauGraphique extends JComponent implements Observateur {
                 int x = startXJ2 + i * (rectWidth + spacing);
                 int y = 10;
                 g.setColor(Color.GRAY);
-                g.fillRect(x, y, rectWidth, rectHeight);
+                image = imageMap.get("Claim");
+                g.drawImage(image, x, y, rectWidth, rectHeight, this);
             }
 
             // Dessin des cartes de la main du joueur
@@ -144,7 +147,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
                 int x = startXJ1 + i * (rectWidth + spacing);
                 int y = hauteur() - rectHeight - 10;
                 g.setColor(Color.BLUE);
-                BufferedImage image = imageMap.get("dwarve_9");
+                image = imageMap.get("dwarve_9");
                 g.drawImage(image, x, y, rectWidth, rectHeight, this);
                 // g.fillRect(x, y, rectWidth, rectHeight);
             }
