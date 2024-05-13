@@ -31,7 +31,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
     int HandJ1P2;
     int HandJ2P1;
     int HandJ2P2;
-
+    Color bgColor;
     int[][] main;
     BufferedImage image;
 
@@ -113,6 +113,13 @@ public class NiveauGraphique extends JComponent implements Observateur {
         int fontSize_2 = (int) (panelWidth * 0.015);
         Font font_2 = new Font("Arial", Font.PLAIN, fontSize_2);
 
+        // Chargement icons
+        BufferedImage icon_goblin = imageMap.get("icon_goblin");
+        BufferedImage icon_knight = imageMap.get("icon_knight");
+        BufferedImage icon_undead = imageMap.get("icon_undead");
+        BufferedImage icon_dwarve = imageMap.get("icon_dwarve");
+        BufferedImage icon_doppleganger = imageMap.get("icon_doppleganger");
+
         // Dessin des cartes de l'adversaire (IA)
         // Calculate rectangle dimensions based on panel size
         rectWidth = (int) (panelWidth * 0.05);
@@ -149,8 +156,26 @@ public class NiveauGraphique extends JComponent implements Observateur {
                 int y = hauteur() - rectHeight - 10;
                 g.setColor(Color.BLUE);
                 main = jeu.getMainJoueur1Phase1();
-
-                image = imageMap.get("dwarve_9");
+                String strImage="";
+                switch (main[i][1]){
+                    case 1:
+                        strImage = "goblin";
+                        break;
+                    case 2:
+                        strImage = "dwarve";
+                        break;
+                    case 3:
+                        strImage = "knight";
+                        break;
+                    case 4:
+                        strImage = "doppelganger";
+                        break;
+                    case 5:
+                        strImage = "undead";
+                        break;
+                }
+                strImage += "_"+main[i][0];
+                image = imageMap.get(strImage);
                 g.drawImage(image, x, y, rectWidth, rectHeight, this);
                 // g.fillRect(x, y, rectWidth, rectHeight);
             }
@@ -199,12 +224,6 @@ public class NiveauGraphique extends JComponent implements Observateur {
             int numRows = 6;
             int cellHeight = rectHeight * 2 / numRows;
             int imageX, imageY, textX, textY;
-            Color bgColor;
-            BufferedImage icon_goblin = imageMap.get("icon_goblin");
-            BufferedImage icon_knight = imageMap.get("icon_knight");
-            BufferedImage icon_undead = imageMap.get("icon_undead");
-            BufferedImage icon_dwarve = imageMap.get("icon_dwarve");
-            BufferedImage icon_doppleganger = imageMap.get("icon_doppleganger");
 
             for (int i = 0; i < numRows; i++) {
                 int lineY = y + i * cellHeight;
@@ -355,12 +374,6 @@ public class NiveauGraphique extends JComponent implements Observateur {
             int numRows = 6;
             int cellHeight = rectHeight * 2 / numRows;
             int imageX, imageY, textX, textY;
-            Color bgColor;
-            BufferedImage icon_goblin = imageMap.get("icon_goblin");
-            BufferedImage icon_knight = imageMap.get("icon_knight");
-            BufferedImage icon_undead = imageMap.get("icon_undead");
-            BufferedImage icon_dwarve = imageMap.get("icon_dwarve");
-            BufferedImage icon_doppleganger = imageMap.get("icon_doppleganger");
 
             for (int i = 0; i < numRows; i++) {
                 int lineY = y + i * cellHeight;
