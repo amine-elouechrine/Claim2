@@ -62,6 +62,7 @@ public class Hand {
     public void removeCard(Card card) {
         cards.remove(card);
     }
+    public Card getCard(int i) {return cards.get(i);}
 
     // Obtenir les cartes de la même faction qu'une carte donnée
     public Hand getCardsOfSameFaction(Card card) {
@@ -139,9 +140,7 @@ public class Hand {
         return randomCard;
     }
 
-    public Card getCard(int i) {
-        return cards.get(i);
-    }
+
 
     /**
      * Vide la main en supprimant toutes les cartes.
