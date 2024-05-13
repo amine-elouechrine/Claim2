@@ -20,38 +20,38 @@ public class Cards {
     // Méthode pour créer les cartes Gobelin
     private void createGobelinCards() {
         for (int i = 0; i < 5; i++) {
-            pile.push(new Gobelin(0));
+            pile.push(new Card(0, "Goblins"));
         }
         for (int i = 1; i < 10; i++) {
-            pile.push(new Gobelin(i));
+            pile.push(new Card(i , "Goblins"));
         }
     }
 
     // Méthode pour créer les cartes Knight
     private void createKnightCards() {
         for (int i = 2; i < 10; i++) {
-            pile.push(new Knight(i));
+            pile.push(new Card(i , "Knight"));
         }
     }
 
     // Méthode pour créer les cartes Undead
     private void createUndeadCards() {
         for (int i = 0; i < 10; i++) {
-            pile.push(new Undead(i));
+            pile.push(new Card(i, "Undead"));
         }
     }
 
     // Méthode pour créer les cartes Dwarve
     private void createDwarveCards() {
         for (int i = 0; i < 10; i++) {
-            pile.push(new Dwarve(i));
+            pile.push(new Card(i, "Dwarves"));
         }
     }
 
     // Méthode pour créer les cartes Doppelganger
     private void createDoppelgangerCards() {
         for (int i = 0; i < 10; i++) {
-            pile.push(new Doppelganger(i));
+            pile.push(new Card(i , "Doppelganger"));
         }
     }
     public Card max_valeur() {
@@ -121,61 +121,12 @@ public class Cards {
         return minCard;
     }
 
-    // Méthode pour vérifier si la pile contient des cartes Knight
-    public boolean containsKnight() {
-        for (Card card : pile) {
-            if (card instanceof Knight) {
-                return true;
-            }
-        }
-        return false;
-    }
-    public int getFactionScore(Card card) {
-        switch (card.getFaction()) {
-            case "Undead":
-                return 5;
-            case "Doppelganger":
-                return 4;
-            case "Chevalier":
-                return 3;
-            case "Nains":
-                return 2;
-            case "Goblins":
-                return 1;
-            default:
-                return 0;
-        }
-    }
+
     // Méthode pour mélanger les cartes dans la pile
     public void shuffle() {
         Collections.shuffle(pile);
     }
 
-    public Card getLowestCardWithFactionScore() {
-        if (pile.isEmpty()) {
-            throw new IllegalStateException("La pile de cartes est vide.");
-        }
-
-        Card lowestCard = null;
-        int lowestValue = Integer.MAX_VALUE;
-        int lowestFactionScore = Integer.MAX_VALUE;
-
-        for (Card card : pile) {
-            int cardValue = card.getValeur();
-            int cardFactionScore = getFactionScore(card);
-
-            if (cardValue < lowestValue) {
-                lowestCard = card;
-                lowestValue = cardValue;
-                lowestFactionScore = cardFactionScore;
-            } else if (cardValue == lowestValue && cardFactionScore < lowestFactionScore) {
-                lowestCard = card;
-                lowestFactionScore = cardFactionScore;
-            }
-        }
-
-        return lowestCard;
-    }
     // Méthode pour obtenir une carte de la pile
     public Card getCard() {
         if (pile.isEmpty()) {

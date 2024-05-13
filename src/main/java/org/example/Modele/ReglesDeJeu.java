@@ -31,13 +31,23 @@ public class ReglesDeJeu {
         }
 
         // Comparaison basée sur les valeurs des cartes si les factions ne sont pas Goblins ou Knights
+        return determinerCarteGagnante(carte1, carte2);
+    }
+
+
+    public static Card determinerCarteGagnante(Card carte1, Card carte2) {
         if (carte1.getValeur() > carte2.getValeur()) {
             return carte1;
         } else if (carte1.getValeur() < carte2.getValeur()) {
             return carte2;
         } else {
-            // En cas d'égalité, aucune carte ne l'emporte
-            return null;
+            // En cas d'égalité, c'est le leader qui gagne le trick (carte affichée)
+            Plateau plateau = new Plateau();
+            if(plateau.estLeader()){
+                return plateau.getCarteJoueur1();
+            }else{
+                return plateau.getCarteJoueur2();
+            }
         }
     }
 
