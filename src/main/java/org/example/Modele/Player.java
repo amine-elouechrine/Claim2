@@ -21,21 +21,46 @@ public class Player {
         this.hand = hand;
     }
 
+    /**
+     * Ajoute une carte à la pile de score du joueur.
+     * @param carte
+     */
     public void addPileDeScore(Card carte){
         pileDeScore.addCard(carte);
     }
 
-
+    /**
+     * Renvoie le nom du joueur.
+     * @return Le nom du joueur.
+     */
     String getName(){
         return Name;
     }
 
+    /**
+     * Renvoie la pile de score du joueur.
+     * @return La pile de score du joueur.
+     */
     public PileDeScore getPileDeScore() {
         return pileDeScore;
     }
 
     public Hand getHand() {
         return hand;
+    }
+
+    /**
+     * verifie si la main du joueur est vide selon la phase
+     * si on est dans la 1er phase est verifie hand sinon handScndPhase
+     * @param Phase
+     * @return true si la main est vide, false sinon
+     */
+    public boolean isHandEmpty(boolean phase){
+        if(phase == true ){
+            return hand.isEmpty();
+        }else{
+            return handScndPhase.isEmpty();
+        }
     }
 
     int  getScore(){

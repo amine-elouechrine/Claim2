@@ -17,16 +17,54 @@ public class Plateau {
     Player joueur1;
     Player joueur2;
     Player joueurCourant ;
+    Boolean phase; // true si on est dans la phase 1, false sinon
 
     /**
      * Constructeur de la classe Plateau.
-     * Initialise les joueurs, la pioche et la défausse.
-     * @param joueur1 Le joueur 1
-     * @param joueur2 Le joueur 2
-     * @param pioche La pioche de cartes
+     * Initialise la défausse .
      */
     public Plateau() {
         this.defausse = new Defausse();
+        this.phase = true; // commancer a la phase 1
+    }
+
+    /**
+     * passer a la phase 2.
+     */
+    public void switchPhase(){
+        if(phase == true){
+            phase = !phase;
+        }else{
+            System.out.println("Vous etes deja dans la phase 2");
+        }
+    }
+
+    public boolean getPhase(){
+        return phase;
+    }
+
+    /**
+     * verifie si c'est la fin de la phase ou pas 
+     * @param phase
+     * @return true si c'est la fin de la phase, false sinon
+     */
+    public boolean estFinPhase(boolean phase ){
+        if(joueur1.isHandEmpty(phase) && joueur2.isHandEmpty(phase)){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    /**
+     * verifier si c'est la fin du jeu
+     * @return true si c'est la fin du jeu, false sinon
+     */
+    public boolean isEndOfGame(){
+        if(phase == false){ // si on est dans la 2eme phase     
+            return estFinPhase(getPhase());
+        }
+        return false;
     }
 
     /**
