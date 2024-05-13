@@ -140,9 +140,7 @@ public class Hand {
         return randomCard;
     }
 
-    public Card getCard(int i) {
-        return cards.get(i);
-    }
+
 
     /**
      * Vide la main en supprimant toutes les cartes.
