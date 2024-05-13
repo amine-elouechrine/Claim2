@@ -123,7 +123,7 @@ public class Intermediare {
         }
     }
 
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         Cards pioche = new Cards();
         pioche.shuffle();
         Hand hand1 = pioche.getHandOf13Cards();
@@ -133,7 +133,7 @@ public class Intermediare {
         Card cartejouer = hand1.getRandomCard();
         System.out.println("La carte jouer par le joueur 1 est : "+cartejouer.getFaction()+" "+cartejouer.getValeur());
         i.jouer_coup_phase2(handIA, false, cartejouer);
-    }
+    }*/
 
 }
 
