@@ -62,6 +62,7 @@ public class Hand {
     public void removeCard(Card card) {
         cards.remove(card);
     }
+    public Card getCard(int i) {return cards.get(i);}
 
     // Obtenir les cartes de la même faction qu'une carte donnée
     public Hand getCardsOfSameFaction(Card card) {
@@ -139,6 +140,7 @@ public class Hand {
         return randomCard;
     }
 
+
     /**
      * Vide la main en supprimant toutes les cartes.
      */
@@ -159,6 +161,46 @@ public class Hand {
         }
 
         return false;
+    }
+
+    public boolean containsDoppelganger() {
+        if (cards == null || cards.isEmpty()) {
+            return false;
+        }
+
+        for (Card card : cards) {
+            if (card instanceof Doppelganger) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+    
+    public Card getLowestCardWithFactionScore() {
+        if (cards.isEmpty()) {
+            throw new IllegalStateException("La pile de cartes est vide.");
+        }
+
+        Card lowestCard = null;
+        int lowestValue = Integer.MAX_VALUE;
+        int lowestFactionScore = Integer.MAX_VALUE;
+
+        for (Card card : cards) {
+            int cardValue = card.getValeur();
+            int cardFactionScore = card.getFactionScore();
+
+            if (cardValue < lowestValue) {
+                lowestCard = card;
+                lowestValue = cardValue;
+                lowestFactionScore = cardFactionScore;
+            } else if (cardValue == lowestValue && cardFactionScore < lowestFactionScore) {
+                lowestCard = card;
+                lowestFactionScore = cardFactionScore;
+            }
+        }
+
+        return lowestCard;
     }
 
     /**

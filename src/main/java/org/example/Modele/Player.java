@@ -1,30 +1,46 @@
 package org.example.Modele;
 
+import java.util.List;
+
 public class Player {
     String Name ;
     int score ;
-    int scoreInCurrentGame;
     Hand hand;
     Hand handScndPhase;
     PileDeScore pileDeScore;
 
-    public Player(String Name, Hand hand) {
-        this.Name = Name;
-        score = 0;
-        scoreInCurrentGame = 0;
-        this.hand = hand;
-        this.pileDeScore = new PileDeScore();
-        this.handScndPhase = new Hand();
+    public Player(String Name) {
+        this.Name = Name; // initialiser le nom du joueur
+        score = 0; // initialiser le score a 0
+        this.hand = new Hand(); // initialiser de hand vide
+        this.pileDeScore = new PileDeScore(); // initialiser la pile de score vide
+        this.handScndPhase = new Hand(); // initialiser la main de la seconde phase vide
     }
 
     public void setHand(Hand hand) {
         this.hand = hand;
     }
 
+    /**
+     * Ajoute une carte à la pile de score du joueur.
+     * @param carte
+     */
+    public void addPileDeScore(Card carte){
+        pileDeScore.addCard(carte);
+    }
+
+    /**
+     * Renvoie le nom du joueur.
+     * @return Le nom du joueur.
+     */
     String getName(){
         return Name;
     }
 
+    /**
+     * Renvoie la pile de score du joueur.
+     * @return La pile de score du joueur.
+     */
     public PileDeScore getPileDeScore() {
         return pileDeScore;
     }
@@ -33,13 +49,24 @@ public class Player {
         return hand;
     }
 
+    /**
+     * verifie si la main du joueur est vide selon la phase
+     * si on est dans la 1er phase est verifie hand sinon handScndPhase
+     * @param Phase
+     * @return true si la main est vide, false sinon
+     */
+    public boolean isHandEmpty(boolean phase){
+        if(phase == true ){
+            return hand.isEmpty();
+        }else{
+            return handScndPhase.isEmpty();
+        }
+    }
+
     int  getScore(){
         return score;
     }
 
-    int getScoreInCurrentGame(){
-        return scoreInCurrentGame;
-    }
     Hand getHandScndPhase() {
         return handScndPhase;
     }
@@ -48,12 +75,13 @@ public class Player {
     }*/
     // passer en paramettre la carte a retirer
 
+
+    /**
+     * incremente le score du joueur
+     * @param points
+     */
     public void updateScore(int points) {
         score += points;
-    }
-
-    public void updateScoreInCurrentGame(int points) {
-        scoreInCurrentGame += points;
     }
 
     /**
@@ -61,11 +89,12 @@ public class Player {
      * @param carte carte à jouer.
      * @return La carte jouée, ou null si la carte n'est pas dans la main du joueur.
      */
-    public Card jouerCarte(Card carte , Hand main) {
+    public Card jouerCarte(int indexCard) {
+        Card carte = hand.getCard(indexCard);
         // Vérifie si la carte est présente dans la main du joueur
-        if (main.contains(carte)) {
+        if (hand.contains(carte)) {
             // Retire la carte de la main du joueur
-            main.removeCard(carte);
+            hand.removeCard(carte);
             return carte;
         } else {
             System.out.println("La carte n'est pas dans la main du joueur.");
@@ -73,4 +102,5 @@ public class Player {
             return null;
         }
     }
+
 }

@@ -8,7 +8,7 @@ public class TestSecondPhase {
         Player trickWinner;
         Player trickLoser ;
         Scanner s = new Scanner(System.in);
-        System.out.println("Welcome to second phase");
+        System.out.println("bienvenue dans la seconde phase");
         int i=0 ;
         while (i<13){
             System.out.println("voici les cartes que le joueeur courant peut les jouer");
@@ -36,18 +36,19 @@ public class TestSecondPhase {
             if (winningCard == counterCard){
                 trickWinner = r.determinerGagnantManche(plateau.getJoueur1(),plateau.getJoueur2(),plateau.carteJoueur1,plateau.carteJoueur2);
                 trickLoser = r.determinerPerdantManche(plateau.getJoueur1(),plateau.getJoueur2(),trickWinner);
-                r.ApplyDwarvesRules(trickWinner,trickLoser,plateau);
+                r.ApplyDwarvesRules(trickWinner,trickLoser,counterCard,choosenCard);
             }
             else{
                 trickLoser = plateau.joueurCourant;
                 r.switchJoueur(plateau);
                 trickWinner=plateau.joueurCourant;
-                r.ApplyDwarvesRules(trickWinner,trickLoser,plateau);
+                r.ApplyDwarvesRules(trickWinner,trickLoser,choosenCard,counterCard);
             }
             i++;
 
         }
     }
+    /*
     public static void main(String[] args){
         Cards cards = new Cards();
         cards.shuffle();
@@ -62,5 +63,8 @@ public class TestSecondPhase {
         String Gagnant = r.determinerGagnantPartie(plateau.getJoueur1(),plateau.getJoueur2());
         System.out.println(Gagnant);
     }
+
+     */
+
 }
 

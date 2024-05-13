@@ -31,13 +31,23 @@ public class ReglesDeJeu {
         }
 
         // Comparaison basée sur les valeurs des cartes si les factions ne sont pas Goblins ou Knights
+        return determinerCarteGagnante(carte1, carte2);
+    }
+
+
+    public static Card determinerCarteGagnante(Card carte1, Card carte2) {
         if (carte1.getValeur() > carte2.getValeur()) {
             return carte1;
         } else if (carte1.getValeur() < carte2.getValeur()) {
             return carte2;
         } else {
-            // En cas d'égalité, aucune carte ne l'emporte
-            return null;
+            // En cas d'égalité, c'est le leader qui gagne le trick (carte affichée)
+            Plateau plateau = new Plateau();
+            if(plateau.estLeader()){
+                return plateau.getCarteJoueur1();
+            }else{
+                return plateau.getCarteJoueur2();
+            }
         }
     }
 
@@ -213,36 +223,36 @@ public class ReglesDeJeu {
      * @param trickWinner Le joueur remportant le tour.
      * @param plateau Le plateau de jeu.
      */
-    public void applySecondPhaseRules(Player trickWinner, Player trickLoser, Plateau plateau){
+    /*public void applySecondPhaseRules(Player trickWinner, Player trickLoser, Plateau plateau){
         ApplyDwarvesRules(trickWinner, trickLoser , plateau);
-    }
+    }*/
 
 
     /**
      * Méthode pour appliquer les règles spéciales des factions (2ème phase uniquement).
      * @param trickwinner Le joueur remportant le tour.
      * @param trickLoser Le joueur perdant le tour.
-     * @param plateau Le plateau de jeu.
+     * @param /plateau Le plateau de jeu.
      */
     // Méthode pour appliquer les règles spéciales des factions (2eme phase uniquement)
     // 2eme phase si une carte de type Dwarves etait jouer par l'un des joueur celui qui perd le tour gagne les cartes dwarves (de lui meme et la carte de l'adversaire si elle est dwarves)
-    public void ApplyDwarvesRules(Player trickwinner , Player trickLoser , Plateau plateau){
+    public void ApplyDwarvesRules(Player trickwinner , Player trickLoser , Card trickWinnerCard,Card trickLoserCard){
         // Vérifier si la carte jouée par le joueur perdant est de la faction Dwarves
-        if (plateau.getCarteJoueur2().getFaction().equals("Dwarves")) {
+        if (trickWinnerCard.getFaction().equals("Dwarves")) {
             // Ajouter la carte jouée par le joueur perdant à sa pile de score
-            trickLoser.getPileDeScore().addCard(plateau.getCarteJoueur2());
+            trickLoser.getPileDeScore().addCard(trickWinnerCard);
         }else{ // si la carte jouée par le joueur perdant n'est pas de la faction Dwarves
             // Ajouter la carte jouée par le joueur perdant à la pile de score du joueur gagnant
-            trickwinner.getPileDeScore().addCard(plateau.getCarteJoueur2());
+            trickwinner.getPileDeScore().addCard(trickWinnerCard);
         }
 
         // Vérifier si la carte jouée par le joueur gagnant est de la faction Dwarves
-        if (plateau.getCarteJoueur1().getFaction().equals("Dwarves")) {
+        if (trickLoserCard.getFaction().equals("Dwarves")) {
             // Ajouter la carte jouée par le joueur gagnant à la pile de score du joueur perdant
-            trickLoser.getPileDeScore().addCard(plateau.getCarteJoueur1());
+            trickLoser.getPileDeScore().addCard(trickLoserCard);
         }else{ // si la carte jouée par le joueur gagnant n'est pas de la faction Dwarves
             // Ajouter la carte jouée par le joueur gagnant à sa pile de score
-            trickwinner.getPileDeScore().addCard(plateau.getCarteJoueur1());}
+            trickwinner.getPileDeScore().addCard(trickLoserCard);}
 
     }
 

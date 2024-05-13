@@ -22,9 +22,16 @@ public class NiveauGraphique extends JComponent implements Observateur {
     int rectWidth;
     int posX;
     int posY;
-    int totalWidth;
+    int totalWidthJ1P1;
+    int totalWidthJ2P1;
+    int totalWidthJ1P2;
+    int totalWidthJ2P2;
     int totalHeight;
-    int totalCards;
+    int HandJ1P1;
+    int HandJ1P2;
+    int HandJ2P1;
+    int HandJ2P2;
+
     Jeu jeu;
     /* Load assets */
     Map<String, BufferedImage> imageMap = new HashMap<>();
@@ -73,11 +80,6 @@ public class NiveauGraphique extends JComponent implements Observateur {
 
     private void paintGameBoard(Graphics g) {
 
-        int lignes = jeu.getLignes();
-        int colonnes = jeu.getColonnes();
-        largeurCase = getWidth() / colonnes;
-        hauteurCase = getHeight() / lignes;
-
         // Set bigger font size
         Font font = g.getFont().deriveFont(Font.BOLD, largeur() / 25f); // Adjust font size based on panel width
         g.setFont(font);
@@ -96,7 +98,10 @@ public class NiveauGraphique extends JComponent implements Observateur {
 
         int panelWidth = getWidth();
         int panelHeight = getHeight();
-        totalCards = 13; // Nombre total de carte à recupérer du modele à chaque tour de jeu
+        HandJ1P1 = control.getNbCardsJ1P1(); // Nombre total de carte dans la main du joueur 1 du modele à chaque tour de jeu
+        HandJ1P2 = control.getNbCardsJ1P2(); // Nombre total de carte dans la main du joueur 2 à recupérer du modele à chaque tour de jeu
+        HandJ2P1 = control.getNbCardsJ2P1();
+        HandJ2P2 = control.getNbCardsJ2P2();
 
         // Definition of font
         int fontSize_1 = (int) (panelWidth * 0.02);
@@ -114,21 +119,20 @@ public class NiveauGraphique extends JComponent implements Observateur {
         int spacing = 0;
 
         // Calculate total width of all rectangles and spacing
-        totalWidth = totalCards * rectWidth + (totalCards - 1) * spacing;
-
+        totalWidthJ1P1 = HandJ1P1 * rectWidth + (HandJ1P1 - 1) * spacing;
+        totalWidthJ2P1 = HandJ2P1 * rectWidth + (HandJ1P2 - 1) * spacing;
         // Calculate starting x position to center the rectangles
-        int startX = (panelWidth - totalWidth) / 2;
-
-        posX = startX;
+        int startXJ1 = (panelWidth - totalWidthJ1P1) / 2;
+        int startXJ2 = (panelWidth - totalWidthJ2P1) / 2;
         posY = hauteur() - rectHeight - 10;
         totalHeight = rectHeight;
 
         // Phase 1
-        if (control.getPhase() == 1) {
+        if (control.getPhase()) {
 
             // Draw rectangles
-            for (int i = 0; i < totalCards; i++) {
-                int x = startX + i * (rectWidth + spacing);
+            for (int i = 0; i < HandJ2P1; i++) {
+                int x = startXJ2 + i * (rectWidth + spacing);
                 int y = 10;
                 g.setColor(Color.GRAY);
                 g.fillRect(x, y, rectWidth, rectHeight);
@@ -136,21 +140,24 @@ public class NiveauGraphique extends JComponent implements Observateur {
 
             // Dessin des cartes de la main du joueur
             // Draw rectangles
-            for (int i = 0; i < totalCards; i++) {
-                int x = startX + i * (rectWidth + spacing);
+            for (int i = 0; i < HandJ1P1; i++) {
+                int x = startXJ1 + i * (rectWidth + spacing);
                 int y = hauteur() - rectHeight - 10;
                 g.setColor(Color.BLUE);
                 BufferedImage image = imageMap.get("dwarve_9");
                 g.drawImage(image, x, y, rectWidth, rectHeight, this);
                 // g.fillRect(x, y, rectWidth, rectHeight);
             }
+            posX = startXJ1;
 
-            // Draw follower deck
-            int x = startX - 20 - rectWidth;
+
+            // Draw follower deck Joueur 2
+            int x = startXJ2 - 20 - rectWidth;
             int y = 20;
             g.fillRect(x, y, rectWidth, rectHeight);
 
-            x = startX - 20 - rectWidth;
+            // Draw follower deck Joueur 1
+            x = startXJ1 - 20 - rectWidth;
             y = hauteur() - rectHeight - 20;
             g.fillRect(x, y, rectWidth, rectHeight);
 
@@ -302,20 +309,20 @@ public class NiveauGraphique extends JComponent implements Observateur {
 
 
             }
-        } else if (control.getPhase() == 2) {
+            // Phase 2
+        } else if (!control.getPhase()) {
 
             // Draw rectangles
-            for (int i = 0; i < totalCards; i++) {
-                int x = startX + i * (rectWidth + spacing);
+            for (int i = 0; i < HandJ1P2; i++) {
+                int x = startXJ1 + i * (rectWidth + spacing);
                 int y = 10;
                 g.setColor(Color.GRAY);
                 g.fillRect(x, y, rectWidth, rectHeight);
             }
             // Dessin des cartes de la main du joueur
-
             // Draw rectangles
-            for (int i = 0; i < totalCards; i++) {
-                int x = startX + i * (rectWidth + spacing);
+            for (int i = 0; i < HandJ1P2; i++) {
+                int x = startXJ1 + i * (rectWidth + spacing);
                 int y = hauteur() - rectHeight - 10;
                 g.setColor(Color.BLUE);
                 BufferedImage image = imageMap.get("dwarve_5");
@@ -323,7 +330,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
                 // g.fillRect(x, y, rectWidth, rectHeight);
             }
 
-            int x = startX - 20 - rectWidth;
+            int x = startXJ1 - 20 - rectWidth;
             int y = 20;
 
             // Draw Feedfoward Carte joué
@@ -492,12 +499,16 @@ public class NiveauGraphique extends JComponent implements Observateur {
         return posX;
     }
 
-    public int getLargeurMain() {
-        return totalWidth;
+    public int getLargeurMainJ1() {
+        return totalWidthJ1P1;
     }
 
-    public int getTotalCards() {
-        return totalCards;
+    public int getHandJ1P1() {
+        return HandJ1P1;
+    }
+
+    public int getHandJ1P2() {
+        return HandJ1P2;
     }
 
     public int getHauteurMain() {

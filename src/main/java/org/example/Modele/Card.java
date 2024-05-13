@@ -5,7 +5,7 @@
 
 package org.example.Modele;
 
-public abstract class Card {
+public class Card {
     private int value;// La valeur de la carte
     private String faction; // La faction à laquelle appartient la carte
 
@@ -42,15 +42,16 @@ public abstract class Card {
     public String getFaction() {
         return faction;
     }
+    
     public int getFactionScore() {
         switch (faction) {
             case "Undead":
                 return 5;
             case "Doppelganger":
                 return 4;
-            case "Chevalier":
+            case "Knight":
                 return 3;
-            case "Nains":
+            case "Dwarves":
                 return 2;
             case "Goblins":
                 return 1;

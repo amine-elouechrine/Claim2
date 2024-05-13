@@ -1,6 +1,7 @@
 package org.example.Modele;
 
 //import javax.smartcardio.Card;
+
 import java.util.List;
 
 /**
@@ -16,24 +17,62 @@ public class Plateau {
     Defausse defausse; // Pile de cartes défaussées
     Player joueur1;
     Player joueur2;
-    Player joueurCourant ;
+    Player joueurCourant;
+    Boolean phase; // true si on est dans la phase 1, false sinon
 
     /**
      * Constructeur de la classe Plateau.
-     * Initialise les joueurs, la pioche et la défausse.
-     * @param joueur1 Le joueur 1
-     * @param joueur2 Le joueur 2
-     * @param pioche La pioche de cartes
+     * Initialise la défausse .
      */
-    public Plateau(Player joueur1, Player joueur2, Cards pioche) {
-        this.joueur1 = joueur1;
-        this.joueur2 = joueur2;
-        this.pioche = pioche;
+    public Plateau() {
         this.defausse = new Defausse();
+        this.phase = true; // commancer a la phase 1
+    }
+
+    /**
+     * passer a la phase 2.
+     */
+    public void switchPhase() {
+        if (phase == true) {
+            phase = !phase;
+        } else {
+            System.out.println("Vous etes deja dans la phase 2");
+        }
+    }
+
+    public boolean getPhase() {
+        return phase;
+    }
+
+    /**
+     * verifie si c'est la fin de la phase ou pas
+     *
+     * @param phase
+     * @return true si c'est la fin de la phase, false sinon
+     */
+    public boolean estFinPhase(boolean phase) {
+        if (joueur1.isHandEmpty(phase) && joueur2.isHandEmpty(phase)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * verifier si c'est la fin du jeu
+     *
+     * @return true si c'est la fin du jeu, false sinon
+     */
+    public boolean isEndOfGame() {
+        if (phase == false) { // si on est dans la 2eme phase
+            return estFinPhase(getPhase());
+        }
+        return false;
     }
 
     /**
      * Renvoie la carte affichée sur le plateau.
+     *
      * @return La carte affichée sur le plateau.
      */
     public Card getCarteAffichee() {
@@ -42,6 +81,7 @@ public class Plateau {
 
     /**
      * Renvoie la carte du joueur 1.
+     *
      * @return La carte du joueur 1.
      */
     public Card getCarteJoueur1() {
@@ -50,6 +90,7 @@ public class Plateau {
 
     /**
      * Renvoie la carte du joueur 2.
+     *
      * @return La carte du joueur 2.
      */
     public Card getCarteJoueur2() {
@@ -58,6 +99,7 @@ public class Plateau {
 
     /**
      * Renvoie le joueur courant.
+     *
      * @return Le joueur courant.
      */
     public Player getJoueurCourant() {
@@ -66,6 +108,7 @@ public class Plateau {
 
     /**
      * Renvoie le joueur 1.
+     *
      * @return Le joueur 1.
      */
     public Player getJoueur1() {
@@ -74,6 +117,7 @@ public class Plateau {
 
     /**
      * Renvoie le joueur 2.
+     *
      * @return Le joueur 2.
      */
     public Player getJoueur2() {
@@ -82,6 +126,7 @@ public class Plateau {
 
     /**
      * Ajoute une carte à la défausse.
+     *
      * @param card La carte à ajouter à la défausse.
      */
     public void addToDefausse(Card card) {
@@ -90,11 +135,95 @@ public class Plateau {
 
     /**
      * Renvoie la liste des cartes dans la défausse.
+     *
      * @return La liste des cartes dans la défausse.
      */
-    public List<Card> getDefausse() {
-        return defausse.getCartes();
+    public Defausse getDefausse() {
+        return defausse;
     }
-    public Cards getPioche() {return pioche;}
+
+    /**
+     * Renvoie la pioche.
+     *
+     * @return
+     */
+    public Cards getPioche() {
+        return pioche;
+    }
+
+    /**
+     *
+     */
+    public void initialiserJeu() {
+        //creation des cartes de jeu et shuffle (pioche)
+        pioche = new Cards();
+        pioche.shuffle();
+        //creation & initialiser les mains 
+        Hand mainJoueur1 = pioche.getHandOf13Cards();
+        Hand mainJoueur2 = pioche.getHandOf13Cards();
+        //creation des joueurs
+        joueur1 = new Player("Joueur 1");
+        joueur2 = new Player("Joueur 2");
+        //initialiser les mains des joueurs
+        joueur1.setHand(mainJoueur1);
+        joueur2.setHand(mainJoueur2);
+
+        // Init joueur courant
+        joueurCourant = joueur1;
+        //initialiser la carte affichee
+        carteAffichee = pioche.getCard();
+    }
+
+    /**
+     * Joue une carte de la main du joueur leader (qui commance le tour) et la retire de sa main.
+     *
+     * @param indexCard
+     * @return La carte jouée.
+     */
+    public Card jouerCarte(int indexCard) {
+        // jouer une carte quelconque de sa main
+        return joueurCourant.jouerCarte(indexCard);
+    }
+
+    /**
+     * verifierle joueur courant est le leader
+     *
+     * @return true si le joueur courant est le leader, false sinon
+     */
+    public boolean estLeader() {
+        if (carteJoueur1 == null && carteJoueur2 == null) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public void attribuerCarteFirstPhase(Card winningCard) {
+        if (winningCard == carteJoueur1) {
+            joueur1.getHandScndPhase().addCard(winningCard);
+            joueur2.getHandScndPhase().addCard(pioche.getCard());
+            joueurCourant = joueur1;
+        } else {
+            joueur2.getHandScndPhase().addCard(winningCard);
+            joueur1.getHandScndPhase().addCard(pioche.getCard());
+            joueurCourant = joueur2;
+        }
+    }
+
+    public void attribuerCarteSecondPhase(Card winningCard, ReglesDeJeu r) {// on doit changer la fonction ApplyDwarveRule:c'est fait
+        if (winningCard == carteJoueur1) {
+            r.ApplyDwarvesRules(joueur1, joueur2, carteJoueur1, carteJoueur2);
+        } else {
+            r.ApplyDwarvesRules(joueur2, joueur1, carteJoueur2, carteJoueur1);
+        }
+    }
+
+    public boolean coupJouable(List<Card> preselected, int indice, Hand hand) {
+        return preselected.contains(hand.getCard(indice));
+    }
+
+    public Boolean estPhase1() {
+        return !(joueur1.getHand().isEmpty() && joueur2.getHand().isEmpty());
+    }
 
 }

@@ -28,13 +28,13 @@ public class secondPhase {
                 r.switchJoueur(plateau);
                 trickLoser = plateau.joueurCourant;
                 r.switchJoueur(plateau);
-                r.ApplyDwarvesRules(trickWinner,trickLoser,plateau);
+                r.ApplyDwarvesRules(trickWinner,trickLoser,counterCard,choosenCard);
             }
             else{
                 trickLoser = plateau.joueurCourant;
                 r.switchJoueur(plateau);
                 trickWinner=plateau.joueurCourant;
-                r.ApplyDwarvesRules(trickWinner,trickLoser,plateau);
+                r.ApplyDwarvesRules(trickWinner,trickLoser,choosenCard,counterCard);
             }
         i++;
         }
