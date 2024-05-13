@@ -25,10 +25,7 @@ public class Plateau {
      * @param joueur2 Le joueur 2
      * @param pioche La pioche de cartes
      */
-    public Plateau(Player joueur1, Player joueur2, Cards pioche) {
-        this.joueur1 = joueur1;
-        this.joueur2 = joueur2;
-        this.pioche = pioche;
+    public Plateau() {
         this.defausse = new Defausse();
     }
 
@@ -95,6 +92,55 @@ public class Plateau {
     public List<Card> getDefausse() {
         return defausse.getCartes();
     }
-    public Cards getPioche() {return pioche;}
+
+    /**
+     * Renvoie la pioche.
+     * @return
+     */
+    public Cards getPioche() {
+        return pioche;
+    }
+
+    /**
+     * 
+     */
+    public void initialiserJeu(){
+        //creation des cartes de jeu et shuffle (pioche)
+        pioche = new Cards();
+        pioche.shuffle();
+        //creation & initialiser les mains 
+        Hand mainJoueur1 = pioche.getHandOf13Cards();
+        Hand mainJoueur2 = pioche.getHandOf13Cards();
+        //creation des joueurs
+        joueur1 = new Player("Joueur 1");
+        joueur2 = new Player("Joueur 2");
+        //initialiser les mains des joueurs
+        joueur1.setHand(mainJoueur1);
+        joueur2.setHand(mainJoueur2);
+        //initialiser la carte affichee
+        carteAffichee = pioche.getCard();
+    }
+
+    /**
+     * Joue une carte de la main du joueur leader (qui commance le tour) et la retire de sa main.
+     * @param indexCard
+     * @return La carte jouée.
+     */
+    public Card jouerCarte(int indexCard){
+        // jouer une carte quelconque de sa main
+        return joueurCourant.jouerCarte(indexCard);
+    }
+
+    /**
+     * verifierle joueur courant est le leader 
+     * @return true si le joueur courant est le leader, false sinon
+     */
+    public boolean estLeader(){
+        if(carteJoueur1 == null && carteJoueur2 == null){
+            return true;
+        }else{
+            return false;
+        }
+    }
 
 }
