@@ -48,6 +48,7 @@ public class TestSecondPhase {
 
         }
     }
+    /*
     public static void main(String[] args){
         Cards cards = new Cards();
         cards.shuffle();
@@ -62,6 +63,8 @@ public class TestSecondPhase {
         String Gagnant = r.determinerGagnantPartie(plateau.getJoueur1(),plateau.getJoueur2());
         System.out.println(Gagnant);
     }
+
+     */
 
 }
 

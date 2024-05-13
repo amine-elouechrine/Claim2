@@ -1,51 +1,61 @@
 package org.example.Modele;
+
 import org.example.Vue.NiveauGraphique;
 import org.example.Patternes.Observable;
+
+import java.util.List;
 
 public class Jeu extends Observable {
     Plateau plateau;
     Player joueur1;
     Player joueur2;
     Cards cards;
-    boolean phase1;
+
+    ReglesDeJeu r;
+
 
     public Jeu() {
-        phase1 = true;
-        cards = new Cards();
-        cards.shuffle();
-        Hand firstHand = cards.getHandOf13Cards();
-        Hand secondHand = cards.getHandOf13Cards();
-
-        joueur1 = new Player("joueur1", firstHand);
-        joueur2 = new Player("joueur2", secondHand);
-        plateau = new Plateau(joueur1, joueur2, cards);
-        ReglesDeJeu r = new ReglesDeJeu();
-        FirstPhase firstPhase = new FirstPhase();
-        phase1 = false;
-        //firstPhase.playFirstPhase(r, plateau);
-        secondPhase secondPhase = new secondPhase();
-        //secondPhase.playSecondPhase(r, plateau);
-        String Gagnant = r.determinerGagnantPartie(plateau.getJoueur1(), plateau.getJoueur2());
-        System.out.println(Gagnant);
-
-
+        plateau = new Plateau();
+        plateau.initialiserJeu();
+        r = new ReglesDeJeu();
     }
-    public int getPhase() {
-        if(phase1) {
-            return 1;
-        }
-        return 2;
+
+    public boolean getPhase() {
+        return plateau.getPhase();
     }
 
     public void switchPhase() {
-        phase1 = !phase1;
+        plateau.switchPhase();
     }
 
-    public int getLignes() {
-        return 4;
+    public Hand getHandJ1P1() {
+        return plateau.getJoueur1().getHand();
     }
 
-    public int getColonnes() {
-        return 6;
+    public Hand getHandJ2P1() {
+        return plateau.getJoueur2().getHand();
+    }
+
+    public Hand getHandJ1P2() {
+        return plateau.getJoueur1().getHandScndPhase();
+    }
+
+    public Hand getHandJ2P2() {
+        return plateau.getJoueur2().getHandScndPhase();
+    }
+
+    public Plateau getPlateau() {
+        return plateau;
+    }
+
+    public int[][] getListCardJouable(Card carteAdversaire, Hand mainJoueur) {
+        List<Card> listeCarte = r.cartesJouables(carteAdversaire, mainJoueur);
+        int[][] tableauCartes = new int[listeCarte.size()][2];
+        int i = 0;
+        for(Card carte : listeCarte) {
+            tableauCartes[i][0] = carte.getValeur();
+            tableauCartes[i][1] = carte.getFactionScore();
+        }
+        return tableauCartes;
     }
 }

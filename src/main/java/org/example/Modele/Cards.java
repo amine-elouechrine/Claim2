@@ -113,7 +113,7 @@ public class Cards {
             // Si la valeur de la carte actuelle est inférieure à la valeur de la carte minimale
             // ou si la valeur est égale mais la faction a un score plus bas, mettre à jour la carte minimale
             if (card.getValeur() < minCard.getValeur() ||
-                    (card.getValeur() == minCard.getValeur() && getFactionScore(card) < getFactionScore(minCard))) {
+                    (card.getValeur() == minCard.getValeur() && card.getFactionScore() < minCard.getFactionScore())) {
                 minCard = card;
             }
         }

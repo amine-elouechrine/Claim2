@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Intermediare {
+
+    /*
     Player joueur1;
     Player IA;
     List<Card> mainJoueur1;
@@ -137,5 +139,7 @@ public class Intermediare {
         i.jouer_coup_phase1(handIA, false, cartejouer);
     }
 
+
+     */
 }
 
