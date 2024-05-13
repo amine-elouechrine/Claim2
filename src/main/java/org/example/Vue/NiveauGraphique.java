@@ -32,6 +32,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
     int HandJ2P1;
     int HandJ2P2;
 
+    int[][] main;
     BufferedImage image;
 
     Jeu jeu;
@@ -147,6 +148,8 @@ public class NiveauGraphique extends JComponent implements Observateur {
                 int x = startXJ1 + i * (rectWidth + spacing);
                 int y = hauteur() - rectHeight - 10;
                 g.setColor(Color.BLUE);
+                main = jeu.getMainJoueur1Phase1();
+
                 image = imageMap.get("dwarve_9");
                 g.drawImage(image, x, y, rectWidth, rectHeight, this);
                 // g.fillRect(x, y, rectWidth, rectHeight);

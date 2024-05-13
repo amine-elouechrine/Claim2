@@ -52,9 +52,24 @@ public class Jeu extends Observable {
         List<Card> listeCarte = r.cartesJouables(carteAdversaire, mainJoueur);
         int[][] tableauCartes = new int[listeCarte.size()][2];
         int i = 0;
-        for(Card carte : listeCarte) {
+        for (Card carte : listeCarte) {
             tableauCartes[i][0] = carte.getValeur();
             tableauCartes[i][1] = carte.getFactionScore();
+            i++;
+        }
+        return tableauCartes;
+    }
+
+    public int[][] getMainJoueur1Phase1() {
+
+        int i = 0;
+        Hand main = getHandJ1P1();
+        List<Card> cartes = main.getAllCards();
+        int[][] tableauCartes = new int[cartes.size()][2];
+        for (Card carte : cartes) {
+            tableauCartes[i][0] = carte.getValeur();
+            tableauCartes[i][1] = carte.getFactionScore();
+            i++;
         }
         return tableauCartes;
     }
