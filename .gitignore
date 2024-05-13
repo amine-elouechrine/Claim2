@@ -37,3 +37,8 @@ build/
 ### Mac OS ###
 .DS_Store
 /.idea/
+/src/main/resources/maquette_carte_Claim.xcf
+/src/main/java/org/example/Modele/out/production/Modele/
+/src/main/java/org/example/Modele/.idea/
+/src/main/java/org/example/Modele/out/production/Modele/
+/.idea/
