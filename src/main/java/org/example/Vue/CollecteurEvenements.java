@@ -14,4 +14,5 @@ public interface CollecteurEvenements {
     int getNbCardsJ2P2();
 
     void clicSouris(int index);
+    void clicSourisJ2(int index);
 }

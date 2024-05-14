@@ -21,7 +21,8 @@ public class NiveauGraphique extends JComponent implements Observateur {
     int rectHeight;
     int rectWidth;
     int posX;
-    int posY;
+    int posYJ1;
+    int posYJ2;
     int totalWidthJ1P1;
     int totalWidthJ2P1;
     int totalWidthJ1P2;
@@ -31,8 +32,22 @@ public class NiveauGraphique extends JComponent implements Observateur {
     int HandJ1P2;
     int HandJ2P1;
     int HandJ2P2;
+    int x, y;
+
+    int positionCarteJoueJ1X, positionCarteJoueJ1Y;
+    int positionCarteJoueJ2X, positionCarteJoueJ2Y;
+
+    Color bgColor;
+    int[][] main;
+    int[][] mainJ2;
+    BufferedImage image;
+    String strImage = "";
+
+    int carteJ1V = -1, carteJ1F = -1;
+    int carteJ2V = -1, carteJ2F = -1;
 
     Jeu jeu;
+
     /* Load assets */
     Map<String, BufferedImage> imageMap = new HashMap<>();
 
@@ -96,12 +111,26 @@ public class NiveauGraphique extends JComponent implements Observateur {
         g.drawString(text, textX, textY);
         */
 
+
         int panelWidth = getWidth();
         int panelHeight = getHeight();
-        HandJ1P1 = control.getNbCardsJ1P1(); // Nombre total de carte dans la main du joueur 1 du modele à chaque tour de jeu
-        HandJ1P2 = control.getNbCardsJ1P2(); // Nombre total de carte dans la main du joueur 2 à recupérer du modele à chaque tour de jeu
-        HandJ2P1 = control.getNbCardsJ2P1();
-        HandJ2P2 = control.getNbCardsJ2P2();
+
+        // Taille de la main
+        HandJ1P1 = control.getNbCardsJ1P1(); // Nombre de carte dans la main du joueur 1 à la phase 1
+        HandJ1P2 = control.getNbCardsJ1P2(); // Nombre de carte dans la main du joueur 1 à la phase 2
+        HandJ2P1 = control.getNbCardsJ2P1(); // Nombre de carte dans la main du joueur 2 à la phase 1
+        HandJ2P2 = control.getNbCardsJ2P2(); // Nombre de carte dans la main du joueur 2 à la phase 2
+
+        // Si une carte est jouée :
+        carteJ1V = jeu.getCarteJoueur1V();
+        carteJ1F = jeu.getCarteJoueur1F();
+        carteJ2V = jeu.getCarteJoueur2V();
+        carteJ2F = jeu.getCarteJoueur2F();
+
+        System.out.println("Valeur carte J1 : " + carteJ1V);
+        System.out.println(carteJ1F);
+
+
 
         // Definition of font
         int fontSize_1 = (int) (panelWidth * 0.02);
@@ -109,6 +138,13 @@ public class NiveauGraphique extends JComponent implements Observateur {
 
         int fontSize_2 = (int) (panelWidth * 0.015);
         Font font_2 = new Font("Arial", Font.PLAIN, fontSize_2);
+
+        // Chargement icons
+        BufferedImage icon_goblin = imageMap.get("icon_goblin");
+        BufferedImage icon_knight = imageMap.get("icon_knight");
+        BufferedImage icon_undead = imageMap.get("icon_undead");
+        BufferedImage icon_dwarve = imageMap.get("icon_dwarve");
+        BufferedImage icon_doppleganger = imageMap.get("icon_doppleganger");
 
         // Dessin des cartes de l'adversaire (IA)
         // Calculate rectangle dimensions based on panel size
@@ -124,48 +160,125 @@ public class NiveauGraphique extends JComponent implements Observateur {
         // Calculate starting x position to center the rectangles
         int startXJ1 = (panelWidth - totalWidthJ1P1) / 2;
         int startXJ2 = (panelWidth - totalWidthJ2P1) / 2;
-        posY = hauteur() - rectHeight - 10;
+        posYJ1 = hauteur() - rectHeight - 10;
+        posYJ2 = 10;
         totalHeight = rectHeight;
 
         // Phase 1
         if (control.getPhase()) {
 
-            // Draw rectangles
+
+            positionCarteJoueJ1X = totalWidthJ1P1 / 2 + startXJ1;
+            positionCarteJoueJ1Y = totalHeight * 5;
+            positionCarteJoueJ2X = totalWidthJ2P1 / 2 + startXJ2;
+            positionCarteJoueJ2Y = totalHeight + 70;
+
+
+
+            /*
+            // Dessin de la main du joueur 2 si il est une IA
             for (int i = 0; i < HandJ2P1; i++) {
                 int x = startXJ2 + i * (rectWidth + spacing);
                 int y = 10;
                 g.setColor(Color.GRAY);
-                g.fillRect(x, y, rectWidth, rectHeight);
+                image = imageMap.get("Claim");
+                g.drawImage(image, x, y, rectWidth, rectHeight, this);
+            }
+            */
+
+            // Dessin de la main du joueur 2
+            for (int i = 0; i < HandJ2P1; i++) {
+                int x = startXJ2 + i * (rectWidth + spacing);
+                int y = 10;
+                g.setColor(Color.BLUE);
+                mainJ2 = jeu.getMainJoueur2Phase1();
+                switch (mainJ2[i][1]) {
+                    case 1:
+                        strImage = "goblin";
+                        break;
+                    case 2:
+                        strImage = "dwarve";
+                        break;
+                    case 3:
+                        strImage = "knight";
+                        break;
+                    case 4:
+                        strImage = "doppelganger";
+                        break;
+                    case 5:
+                        strImage = "undead";
+                        break;
+                }
+                strImage += "_" + mainJ2[i][0];
+                image = imageMap.get(strImage);
+                g.drawImage(image, x, y, rectWidth, rectHeight, this);
+                // g.fillRect(x, y, rectWidth, rectHeight);
             }
 
-            // Dessin des cartes de la main du joueur
-            // Draw rectangles
+            // Dessin des cartes de la main du joueur 1
             for (int i = 0; i < HandJ1P1; i++) {
                 int x = startXJ1 + i * (rectWidth + spacing);
                 int y = hauteur() - rectHeight - 10;
                 g.setColor(Color.BLUE);
-                BufferedImage image = imageMap.get("dwarve_9");
+                main = jeu.getMainJoueur1Phase1();
+                switch (main[i][1]) {
+                    case 1:
+                        strImage = "goblin";
+                        break;
+                    case 2:
+                        strImage = "dwarve";
+                        break;
+                    case 3:
+                        strImage = "knight";
+                        break;
+                    case 4:
+                        strImage = "doppelganger";
+                        break;
+                    case 5:
+                        strImage = "undead";
+                        break;
+                }
+                strImage += "_" + main[i][0];
+                image = imageMap.get(strImage);
                 g.drawImage(image, x, y, rectWidth, rectHeight, this);
                 // g.fillRect(x, y, rectWidth, rectHeight);
             }
             posX = startXJ1;
 
-
             // Draw follower deck Joueur 2
-            int x = startXJ2 - 20 - rectWidth;
-            int y = 20;
+            //x = startXJ2 - 20 - rectWidth;
+            x = panelWidth / 9;
+            y = 20;
             g.fillRect(x, y, rectWidth, rectHeight);
 
             // Draw follower deck Joueur 1
-            x = startXJ1 - 20 - rectWidth;
+            //x = startXJ1 - 20 - rectWidth;
             y = hauteur() - rectHeight - 20;
             g.fillRect(x, y, rectWidth, rectHeight);
 
             // Draw carte a gagne
             x = rectWidth * 5 / 2 + largeur() / 2;
             y = hauteur() / 2 - rectHeight / 2;
-            g.fillRect(x, y, rectWidth, rectHeight);
-
+            switch (jeu.getPlateau().getCarteAffichee().getFaction()) {
+                case "Goblins":
+                    strImage = "goblin";
+                    break;
+                case "Dwarves":
+                    strImage = "dwarve";
+                    break;
+                case "Knight":
+                    strImage = "knight";
+                    break;
+                case "Doppelganger":
+                    strImage = "doppelganger";
+                    break;
+                case "Undead":
+                    strImage = "undead";
+                    break;
+            }
+            strImage += "_" + jeu.getPlateau().getCarteAffichee().getValeur();
+            image = imageMap.get(strImage);
+            g.drawImage(image, x, y, rectWidth, rectHeight, this);
             // Draw deck
             g.setColor(Color.ORANGE);
             x = largeur() - largeur() / 8;
@@ -193,22 +306,40 @@ public class NiveauGraphique extends JComponent implements Observateur {
             int numRows = 6;
             int cellHeight = rectHeight * 2 / numRows;
             int imageX, imageY, textX, textY;
-            Color bgColor;
-            BufferedImage icon_goblin = imageMap.get("icon_goblin");
-            BufferedImage icon_knight = imageMap.get("icon_knight");
-            BufferedImage icon_undead = imageMap.get("icon_undead");
-            BufferedImage icon_dwarve = imageMap.get("icon_dwarve");
-            BufferedImage icon_doppleganger = imageMap.get("icon_doppleganger");
 
             for (int i = 0; i < numRows; i++) {
                 int lineY = y + i * cellHeight;
-                // int score = getScoreForFaction(i);
-                int score = 2;
+                String faction = "";
+                switch (i) {
+                    case 1:
+                        faction = "Goblins";
+                        break;
+                    case 2:
+                        faction = "Dwarves";
+                        break;
+                    case 3:
+                        faction = "Knight";
+                        break;
+                    case 4:
+                        faction = "Doppelganger";
+                        break;
+                    case 5:
+                        faction = "Undead";
+                        break;
+                }
+                // Calcul de score
+                int score = jeu.getPlateau().getJoueur1().getPileDeScore().getCardFaction(faction).size() - jeu.getPlateau().getJoueur2().getPileDeScore().getCardFaction(faction).size();
                 if (i > 0) {
                     if (score > 0) {
                         bgColor = Color.GREEN;
                     } else if (score == 0) {
-                        bgColor = Color.GRAY;
+                        if (jeu.getPlateau().getJoueur1().getPileDeScore().maxValueOfFaction(faction) > jeu.getPlateau().getJoueur2().getPileDeScore().maxValueOfFaction(faction)) {
+                            bgColor = Color.GREEN;
+                        } else if (jeu.getPlateau().getJoueur1().getPileDeScore().maxValueOfFaction(faction) < jeu.getPlateau().getJoueur2().getPileDeScore().maxValueOfFaction(faction)) {
+                            bgColor = Color.RED;
+                        } else {
+                            bgColor = Color.GRAY;
+                        }
                     } else {
                         bgColor = Color.RED;
                     }
@@ -312,6 +443,10 @@ public class NiveauGraphique extends JComponent implements Observateur {
             // Phase 2
         } else if (!control.getPhase()) {
 
+            positionCarteJoueJ1X = totalWidthJ1P2 / 2 + startXJ1;
+            positionCarteJoueJ1Y = totalHeight + 70;
+            positionCarteJoueJ2X = totalWidthJ2P2 / 2 + startXJ2;
+            positionCarteJoueJ2Y = totalHeight + 70;
             // Draw rectangles
             for (int i = 0; i < HandJ1P2; i++) {
                 int x = startXJ1 + i * (rectWidth + spacing);
@@ -319,16 +454,38 @@ public class NiveauGraphique extends JComponent implements Observateur {
                 g.setColor(Color.GRAY);
                 g.fillRect(x, y, rectWidth, rectHeight);
             }
+
             // Dessin des cartes de la main du joueur
-            // Draw rectangles
             for (int i = 0; i < HandJ1P2; i++) {
                 int x = startXJ1 + i * (rectWidth + spacing);
                 int y = hauteur() - rectHeight - 10;
                 g.setColor(Color.BLUE);
-                BufferedImage image = imageMap.get("dwarve_5");
+                main = jeu.getMainJoueur1Phase1();
+                String strImage = "";
+                switch (main[i][1]) {
+                    case 1:
+                        strImage = "goblin";
+                        break;
+                    case 2:
+                        strImage = "dwarve";
+                        break;
+                    case 3:
+                        strImage = "knight";
+                        break;
+                    case 4:
+                        strImage = "doppelganger";
+                        break;
+                    case 5:
+                        strImage = "undead";
+                        break;
+                }
+                strImage += "_" + main[i][0];
+                image = imageMap.get(strImage);
                 g.drawImage(image, x, y, rectWidth, rectHeight, this);
                 // g.fillRect(x, y, rectWidth, rectHeight);
             }
+            posX = startXJ1;
+
 
             int x = startXJ1 - 20 - rectWidth;
             int y = 20;
@@ -349,22 +506,41 @@ public class NiveauGraphique extends JComponent implements Observateur {
             int numRows = 6;
             int cellHeight = rectHeight * 2 / numRows;
             int imageX, imageY, textX, textY;
-            Color bgColor;
-            BufferedImage icon_goblin = imageMap.get("icon_goblin");
-            BufferedImage icon_knight = imageMap.get("icon_knight");
-            BufferedImage icon_undead = imageMap.get("icon_undead");
-            BufferedImage icon_dwarve = imageMap.get("icon_dwarve");
-            BufferedImage icon_doppleganger = imageMap.get("icon_doppleganger");
 
             for (int i = 0; i < numRows; i++) {
                 int lineY = y + i * cellHeight;
-                // int score = getScoreForFaction(i);
-                int score = 2;
+                String faction = "";
+                switch (i) {
+                    case 1:
+                        faction = "Goblins";
+                        break;
+                    case 2:
+                        faction = "Dwarves";
+                        break;
+                    case 3:
+                        faction = "Knight";
+                        break;
+                    case 4:
+                        faction = "Doppelganger";
+                        break;
+                    case 5:
+                        faction = "Undead";
+                        break;
+                }
+                // Calcul de score
+                // Modifier en ajoutant des getteurs dans controleurMediateur pour modifier l'appel pour score
+                int score = jeu.getPlateau().getJoueur1().getPileDeScore().getCardFaction(faction).size() - jeu.getPlateau().getJoueur2().getPileDeScore().getCardFaction(faction).size();
                 if (i > 0) {
                     if (score > 0) {
                         bgColor = Color.GREEN;
                     } else if (score == 0) {
-                        bgColor = Color.GRAY;
+                        if (jeu.getPlateau().getJoueur1().getPileDeScore().maxValueOfFaction(faction) > jeu.getPlateau().getJoueur2().getPileDeScore().maxValueOfFaction(faction)) {
+                            bgColor = Color.GREEN;
+                        } else if (jeu.getPlateau().getJoueur1().getPileDeScore().maxValueOfFaction(faction) < jeu.getPlateau().getJoueur2().getPileDeScore().maxValueOfFaction(faction)) {
+                            bgColor = Color.RED;
+                        } else {
+                            bgColor = Color.GRAY;
+                        }
                     } else {
                         bgColor = Color.RED;
                     }
@@ -464,6 +640,57 @@ public class NiveauGraphique extends JComponent implements Observateur {
                 }
             }
         }
+        g.setColor(Color.RED);
+        if (carteJ1F != -1 && carteJ1V != -1) {
+            // dessin de la carte jouée
+            switch (carteJ1F) {
+                case 1:
+                    strImage = "goblin";
+                    break;
+                case 2:
+                    strImage = "dwarve";
+                    break;
+                case 3:
+                    strImage = "knight";
+                    break;
+                case 4:
+                    strImage = "doppelganger";
+                    break;
+                case 5:
+                    strImage = "undead";
+                    break;
+            }
+            strImage += "_" + carteJ1V;
+            image = imageMap.get(strImage);
+            g.drawImage(image, positionCarteJoueJ1X, positionCarteJoueJ1Y, rectWidth, rectHeight, this);
+        }
+        g.drawRect(positionCarteJoueJ1X, positionCarteJoueJ1Y, rectWidth, rectHeight);
+
+        System.out.println("Faction et valeur de carte : " + carteJ2F + " " + carteJ2V);
+        if (carteJ2F != -1 && carteJ2V != -1) {
+            // dessin de la carte jouée par l'IA
+            switch (carteJ2F) {
+                case 1:
+                    strImage = "goblin";
+                    break;
+                case 2:
+                    strImage = "dwarve";
+                    break;
+                case 3:
+                    strImage = "knight";
+                    break;
+                case 4:
+                    strImage = "doppelganger";
+                    break;
+                case 5:
+                    strImage = "undead";
+                    break;
+            }
+            strImage += "_" + carteJ2V;
+            image = imageMap.get(strImage);
+            g.drawImage(image, positionCarteJoueJ2X, positionCarteJoueJ2Y, rectWidth, rectHeight, this);
+        }
+        g.drawRect(positionCarteJoueJ2X, positionCarteJoueJ2Y, rectWidth, rectHeight);
     }
 
 
@@ -491,16 +718,23 @@ public class NiveauGraphique extends JComponent implements Observateur {
         return rectHeight;
     }
 
-    public int posYMain() {
-        return posY;
+    public int posYMainJ1() {
+        return posYJ1;
     }
 
+    public int posYMainJ2() {
+        return posYJ2;
+    }
     public int posXMain() {
         return posX;
     }
 
     public int getLargeurMainJ1() {
         return totalWidthJ1P1;
+    }
+
+    public int getLargeurMainJ2() {
+        return totalWidthJ2P1;
     }
 
     public int getHandJ1P1() {

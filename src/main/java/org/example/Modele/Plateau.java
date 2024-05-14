@@ -219,7 +219,23 @@ public class Plateau {
      */
     public Card jouerCarte(int indexCard) {
         // jouer une carte quelconque de sa main
-        return joueurCourant.jouerCarte(indexCard);
+        Card carteJoue;
+        carteJoue = joueurCourant.jouerCarte(indexCard);
+        if(joueurCourant == joueur1) {
+            setCarteJoueur1(carteJoue);
+        }
+        else if (joueurCourant == joueur2) {
+            setCarteJoueur2(carteJoue);
+        }
+        return carteJoue;
+    }
+
+    public void setCarteJoueur1(Card carte) {
+        carteJoueur1 = carte;
+    }
+
+    public void setCarteJoueur2(Card carte) {
+        carteJoueur2 = carte;
     }
 
     /**
@@ -237,11 +253,11 @@ public class Plateau {
 
     public void attribuerCarteFirstPhase(Card winningCard) {
         if (winningCard == carteJoueur1) {
-            joueur1.getHandScndPhase().addCard(winningCard);
+            joueur1.getHandScndPhase().addCard(carteAffichee);
             joueur2.getHandScndPhase().addCard(pioche.getCard());
             joueurCourant = joueur1;
         } else {
-            joueur2.getHandScndPhase().addCard(winningCard);
+            joueur2.getHandScndPhase().addCard(carteAffichee);
             joueur1.getHandScndPhase().addCard(pioche.getCard());
             joueurCourant = joueur2;
         }
