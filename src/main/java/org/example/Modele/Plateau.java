@@ -188,7 +188,7 @@ public class Plateau {
             setCarteJoueur1(carteJoue);
         }
         else if (joueurCourant == joueur2) {
-            setCarteJoueur1(carteJoue);
+            setCarteJoueur2(carteJoue);
         }
         return carteJoue;
     }

@@ -21,7 +21,8 @@ public class NiveauGraphique extends JComponent implements Observateur {
     int rectHeight;
     int rectWidth;
     int posX;
-    int posY;
+    int posYJ1;
+    int posYJ2;
     int totalWidthJ1P1;
     int totalWidthJ2P1;
     int totalWidthJ1P2;
@@ -38,6 +39,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
 
     Color bgColor;
     int[][] main;
+    int[][] mainJ2;
     BufferedImage image;
     String strImage = "";
 
@@ -45,6 +47,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
     int carteJ2V = -1, carteJ2F = -1;
 
     Jeu jeu;
+
     /* Load assets */
     Map<String, BufferedImage> imageMap = new HashMap<>();
 
@@ -157,7 +160,8 @@ public class NiveauGraphique extends JComponent implements Observateur {
         // Calculate starting x position to center the rectangles
         int startXJ1 = (panelWidth - totalWidthJ1P1) / 2;
         int startXJ2 = (panelWidth - totalWidthJ2P1) / 2;
-        posY = hauteur() - rectHeight - 10;
+        posYJ1 = hauteur() - rectHeight - 10;
+        posYJ2 = 10;
         totalHeight = rectHeight;
 
         // Phase 1
@@ -168,7 +172,11 @@ public class NiveauGraphique extends JComponent implements Observateur {
             positionCarteJoueJ1Y = totalHeight * 5;
             positionCarteJoueJ2X = totalWidthJ2P1 / 2 + startXJ2;
             positionCarteJoueJ2Y = totalHeight + 70;
-            // Draw rectangles
+
+
+
+            /*
+            // Dessin de la main du joueur 2 si il est une IA
             for (int i = 0; i < HandJ2P1; i++) {
                 int x = startXJ2 + i * (rectWidth + spacing);
                 int y = 10;
@@ -176,8 +184,38 @@ public class NiveauGraphique extends JComponent implements Observateur {
                 image = imageMap.get("Claim");
                 g.drawImage(image, x, y, rectWidth, rectHeight, this);
             }
+            */
 
-            // Dessin des cartes de la main du joueur
+            // Dessin de la main du joueur 2
+            for (int i = 0; i < HandJ2P1; i++) {
+                int x = startXJ2 + i * (rectWidth + spacing);
+                int y = 10;
+                g.setColor(Color.BLUE);
+                mainJ2 = jeu.getMainJoueur2Phase1();
+                switch (mainJ2[i][1]) {
+                    case 1:
+                        strImage = "goblin";
+                        break;
+                    case 2:
+                        strImage = "dwarve";
+                        break;
+                    case 3:
+                        strImage = "knight";
+                        break;
+                    case 4:
+                        strImage = "doppelganger";
+                        break;
+                    case 5:
+                        strImage = "undead";
+                        break;
+                }
+                strImage += "_" + mainJ2[i][0];
+                image = imageMap.get(strImage);
+                g.drawImage(image, x, y, rectWidth, rectHeight, this);
+                // g.fillRect(x, y, rectWidth, rectHeight);
+            }
+
+            // Dessin des cartes de la main du joueur 1
             for (int i = 0; i < HandJ1P1; i++) {
                 int x = startXJ1 + i * (rectWidth + spacing);
                 int y = hauteur() - rectHeight - 10;
@@ -490,6 +528,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
                         break;
                 }
                 // Calcul de score
+                // Modifier en ajoutant des getteurs dans controleurMediateur pour modifier l'appel pour score
                 int score = jeu.getPlateau().getJoueur1().getPileDeScore().getCardFaction(faction).size() - jeu.getPlateau().getJoueur2().getPileDeScore().getCardFaction(faction).size();
                 if (i > 0) {
                     if (score > 0) {
@@ -626,6 +665,8 @@ public class NiveauGraphique extends JComponent implements Observateur {
             g.drawImage(image, positionCarteJoueJ1X, positionCarteJoueJ1Y, rectWidth, rectHeight, this);
         }
         g.drawRect(positionCarteJoueJ1X, positionCarteJoueJ1Y, rectWidth, rectHeight);
+
+        System.out.println("Faction et valeur de carte : " + carteJ2F + " " + carteJ2V);
         if (carteJ2F != -1 && carteJ2V != -1) {
             // dessin de la carte jouée par l'IA
             switch (carteJ2F) {
@@ -647,7 +688,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
             }
             strImage += "_" + carteJ2V;
             image = imageMap.get(strImage);
-            g.drawImage(image, positionCarteJoueJ1X, positionCarteJoueJ1Y, rectWidth, rectHeight, this);
+            g.drawImage(image, positionCarteJoueJ2X, positionCarteJoueJ2Y, rectWidth, rectHeight, this);
         }
         g.drawRect(positionCarteJoueJ2X, positionCarteJoueJ2Y, rectWidth, rectHeight);
     }
@@ -677,16 +718,23 @@ public class NiveauGraphique extends JComponent implements Observateur {
         return rectHeight;
     }
 
-    public int posYMain() {
-        return posY;
+    public int posYMainJ1() {
+        return posYJ1;
     }
 
+    public int posYMainJ2() {
+        return posYJ2;
+    }
     public int posXMain() {
         return posX;
     }
 
     public int getLargeurMainJ1() {
         return totalWidthJ1P1;
+    }
+
+    public int getLargeurMainJ2() {
+        return totalWidthJ2P1;
     }
 
     public int getHandJ1P1() {

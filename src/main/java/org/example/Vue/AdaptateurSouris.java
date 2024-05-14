@@ -28,18 +28,28 @@ public class AdaptateurSouris extends MouseAdapter implements MouseListener {
         double valeur_carte = 0f;
         int carte = -1;
 
-        if (i > niv.posXMain() && i < (niv.getLargeurMainJ1() + niv.posXMain()) && j > niv.posYMain() && j < (niv.posYMain() + niv.getHauteurMain())) {
+        if (i > niv.posXMain() && i < (niv.getLargeurMainJ1() + niv.posXMain()) && j > niv.posYMainJ1() && j < (niv.posYMainJ1() + niv.getHauteurMain())) {
             valeur_carte = (double) (i - niv.posXMain()) / largeurR; // Il faut diviser par la taille des cartes
             carte = (int) Math.floor(valeur_carte);
+            control.clicSouris(carte);
         }
 
+        if (i > niv.posXMain() && i < (niv.getLargeurMainJ2() + niv.posXMain()) && j > niv.posYMainJ2() && j < (niv.posYMainJ2() + niv.getHauteurMain())) {
+            valeur_carte = (double) (i - niv.posXMain()) / largeurR; // Il faut diviser par la taille des cartes
+            carte = (int) Math.floor(valeur_carte);
+            control.clicSourisJ2(carte);
+        }
+
+        /*
         System.out.println("double : " + valeur_carte);
         System.out.println("carte : " + carte);
         System.out.println("posX : " + i + " posY : " + j + "\n posXMain : " + niv.posXMain() + " posYMain : " + niv.posYMain());
         System.out.println("Largeur Main : " + niv.getLargeurMainJ1() + " Hauteur Main : " + (niv.posYMain() + niv.getHauteurMain()));
         System.out.println("largeur carte : " + largeurR);
+         */
 
-        control.clicSouris(carte);
+
+
     }
 
     @Override

@@ -28,6 +28,16 @@ public class Jeu extends Observable {
         plateau.switchPhase();
     }
 
+    public void switchJoueur() {
+        r.switchJoueur(plateau);
+    }
+
+    public void afficherMain() {
+        plateau.joueur1.getHand().printHand();
+        plateau.joueur2.getHand().printHand();
+
+    }
+
     public Hand getHandJ1P1() {
         return plateau.getJoueur1().getHand();
     }
@@ -48,6 +58,14 @@ public class Jeu extends Observable {
         return plateau;
     }
 
+    public boolean estFinPhase1() {
+        return plateau.estFinPhase(plateau.phase);
+    }
+
+    public boolean estFinPartie() {
+        return plateau.isEndOfGame();
+    }
+
     public int[][] getListCardJouable(Card carteAdversaire, Hand mainJoueur) {
         List<Card> listeCarte = r.cartesJouables(carteAdversaire, mainJoueur);
         int[][] tableauCartes = new int[listeCarte.size()][2];
@@ -64,6 +82,20 @@ public class Jeu extends Observable {
 
         int i = 0;
         Hand main = getHandJ1P1();
+        List<Card> cartes = main.getAllCards();
+        int[][] tableauCartes = new int[cartes.size()][2];
+        for (Card carte : cartes) {
+            tableauCartes[i][0] = carte.getValeur();
+            tableauCartes[i][1] = carte.getFactionScore();
+            i++;
+        }
+        return tableauCartes;
+    }
+
+    public int[][] getMainJoueur2Phase1() {
+
+        int i = 0;
+        Hand main = getHandJ2P1();
         List<Card> cartes = main.getAllCards();
         int[][] tableauCartes = new int[cartes.size()][2];
         for (Card carte : cartes) {
@@ -113,6 +145,14 @@ public class Jeu extends Observable {
             return plateau.getCarteJoueur2().getValeur();
         else
             return -1;
+    }
+
+    public boolean estCarteJoueJ1() {
+        return (plateau.getCarteJoueur1() != null);
+    }
+
+    public boolean estCarteJoueJ2() {
+        return (plateau.getCarteJoueur2() != null);
     }
 
     public void playTrick() {

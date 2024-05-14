@@ -33,14 +33,56 @@ public class ControleurMediateur implements CollecteurEvenements {
         return jeu.getHandJ2P2().size();
     }
 
-    public void clicSouris(int index) {
-        if(index == -1) {
-            ;
+
+    public void clicSourisJ2(int index) {
+        // jeu.afficherMain();
+        System.out.println(jeu.getCardtoString(index));
+
+        // Application des règles de jeu pour la selection de carte
+        Card carteJoue = jeu.getPlateau().jouerCarte(index);
+        jeu.switchJoueur();
+
+        if (jeu.estCarteJoueJ1() && jeu.estCarteJoueJ2()) {
+            jeu.playTrick();
+            jeu.setCarteJouer();
         }
-        else {
-            jeu.getHandtoString();
+        if(jeu.estFinPhase1()) {
+            jeu.switchPhase();
+            // Fin de la phase 1
+        }
+
+        if(jeu.estFinPartie()) {
+            // Calcul des scores
+        }
+
+        jeu.metAJour();
+    }
+
+    public void clicSouris(int index) {
+        if (index == -1) {
+            ;
+        } else {
+            // jeu.getHandtoString();
+            // jeu.afficherMain();
             System.out.println(jeu.getCardtoString(index));
+
+            // Application des règles de jeu pour la selection de carte
             Card carteJoue = jeu.getPlateau().jouerCarte(index);
+
+            jeu.switchJoueur();
+            if (jeu.estCarteJoueJ1() && jeu.estCarteJoueJ2()) {
+                jeu.playTrick();
+                jeu.setCarteJouer();
+            }
+
+            if(jeu.estFinPhase1()) {
+                jeu.switchPhase();
+                // Fin de la phase 1
+            }
+
+            if(jeu.estFinPartie()) {
+                // Calcul des scores
+            }
 
             // Ajouter temporisation / animation
 
