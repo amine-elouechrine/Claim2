@@ -230,14 +230,6 @@ public class Plateau {
         return carteJoue;
     }
 
-    public void setCarteJoueur1(Card carte) {
-        carteJoueur1 = carte;
-    }
-
-    public void setCarteJoueur2(Card carte) {
-        carteJoueur2 = carte;
-    }
-
     /**
      * verifierle joueur courant est le leader
      *
