@@ -1,5 +1,4 @@
 package org.example.Modele;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Stack;
@@ -54,21 +53,9 @@ public class Cards {
             pile.push(new Card(i , "Doppelganger"));
         }
     }
-    public Card max_valeur() {
-        if (pile.isEmpty()) {
-            throw new IllegalStateException("La pile de cartes est vide.");
-        }
-
-        Card maxCard = pile.firstElement();
-        for (Card card : pile) {
-            if (card.getValeur() > maxCard.getValeur()) {
-                maxCard = card;
-            }
-        }
-
-        return maxCard;
-    }
-    public Cards getCardsOfSameFactionAs(Card opponentCard) {
+    
+    
+    /*public Cards getCardsOfSameFactionAs(Card opponentCard) {
         if (pile.isEmpty()) {
             throw new IllegalStateException("La pile de cartes est vide.");
         }
@@ -83,43 +70,7 @@ public class Cards {
         }
 
         return cardsOfSameFaction;
-    }
-    // Méthode pour obtenir la carte la plus grande qui est plus petite que la carte jouée par l'adversaire
-    public Card getHighestCardSmallerThan(Card opponentCard) {
-        if (pile.isEmpty()) {
-            throw new IllegalStateException("La pile de cartes est vide.");
-        }
-
-        Card highestSmallerCard = null;
-        int opponentValue = opponentCard.getValeur();
-
-        for (Card card : pile) {
-            int cardValue = card.getValeur();
-            if (cardValue < opponentValue && (highestSmallerCard == null || cardValue > highestSmallerCard.getValeur())) {
-                highestSmallerCard = card;
-            }
-        }
-
-        return highestSmallerCard;
-    }
-
-    public Card min_valeur() {
-        if (pile.isEmpty()) {
-            throw new IllegalStateException("La pile de cartes est vide.");
-        }
-
-        Card minCard = pile.firstElement();
-        for (Card card : pile) {
-            // Si la valeur de la carte actuelle est inférieure à la valeur de la carte minimale
-            // ou si la valeur est égale mais la faction a un score plus bas, mettre à jour la carte minimale
-            if (card.getValeur() < minCard.getValeur() ||
-                    (card.getValeur() == minCard.getValeur() && card.getFactionScore() < minCard.getFactionScore())) {
-                minCard = card;
-            }
-        }
-
-        return minCard;
-    }
+    }*/
 
 
     // Méthode pour mélanger les cartes dans la pile

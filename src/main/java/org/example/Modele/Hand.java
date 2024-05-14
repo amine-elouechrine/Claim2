@@ -16,6 +16,7 @@ public class Hand {
         cards = new ArrayList<>();
     }
 
+    
     public Card getSmallestHigherCard(Card card) {
         if (cards == null || cards.isEmpty()) {
             throw new IllegalStateException("La main est vide ou nulle.");
@@ -155,7 +156,7 @@ public class Hand {
         }
 
         for (Card card : cards) {
-            if (card instanceof Knight) {
+            if (card.getFaction().equals("Knight")) {
                 return true;
             }
         }
@@ -169,12 +170,27 @@ public class Hand {
         }
 
         for (Card card : cards) {
-            if (card instanceof Doppelganger) {
+            if (card.getFaction().equals("Doppelganger")) {
                 return true;
             }
         }
 
         return false;
+    }
+
+    public Card max_valeur() {
+        if (cards.isEmpty()) {
+            throw new IllegalStateException("La pile de cartes est vide.");
+        }
+
+        Card maxCard = cards.get(0);
+        for (Card card : cards) {
+            if (card.getValeur() > maxCard.getValeur()) {
+                maxCard = card;
+            }
+        }
+
+        return maxCard;
     }
     
     public Card getLowestCardWithFactionScore() {
@@ -201,6 +217,43 @@ public class Hand {
         }
 
         return lowestCard;
+    }
+
+    // Méthode pour obtenir la carte la plus grande qui est plus petite que la carte jouée par l'adversaire
+    public Card getHighestCardSmallerThan(Card opponentCard) {
+        if (cards.isEmpty()) {
+            throw new IllegalStateException("La pile de cartes est vide.");
+        }
+
+        Card highestSmallerCard = null;
+        int opponentValue = opponentCard.getValeur();
+
+        for (Card card : cards) {
+            int cardValue = card.getValeur();
+            if (cardValue < opponentValue && (highestSmallerCard == null || cardValue > highestSmallerCard.getValeur())) {
+                highestSmallerCard = card;
+            }
+        }
+
+        return highestSmallerCard;
+    }
+
+    public Card min_valeur() {
+        if (cards.isEmpty()) {
+            throw new IllegalStateException("La pile de cartes est vide.");
+        }
+
+        Card minCard = cards.get(0);
+        for (Card card : cards) {
+            // Si la valeur de la carte actuelle est inférieure à la valeur de la carte minimale
+            // ou si la valeur est égale mais la faction a un score plus bas, mettre à jour la carte minimale
+            if (card.getValeur() < minCard.getValeur() ||
+                    (card.getValeur() == minCard.getValeur() && card.getFactionScore() < minCard.getFactionScore())) {
+                minCard = card;
+            }
+        }
+
+        return minCard;
     }
 
     /**
