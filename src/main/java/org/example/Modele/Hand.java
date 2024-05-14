@@ -180,7 +180,7 @@ public class Hand {
         }
 
         for (Card card : cards) {
-            if (card instanceof Knight) {
+            if (card.getFaction().equals("Knight")) {
                 return true;
             }
         }
@@ -194,7 +194,7 @@ public class Hand {
         }
 
         for (Card card : cards) {
-            if (card instanceof Doppelganger) {
+            if (card.getFaction().equals("Doppelganger")) {
                 return true;
             }
         }
@@ -256,4 +256,12 @@ public class Hand {
 
         return lowestCard;
     }
+
+    public Card get(int i) {
+        if (i < 0 || i >= cards.size()) {
+            throw new IndexOutOfBoundsException("Index hors limites: " + i);
+        }
+        return cards.get(i);
+    }
+    
 }

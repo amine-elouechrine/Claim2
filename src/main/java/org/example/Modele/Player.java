@@ -1,7 +1,5 @@
 package org.example.Modele;
 
-import java.util.List;
-
 public class Player {
     String Name ;
     int score ;
