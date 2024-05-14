@@ -128,6 +128,31 @@ public class Hand {
         return cards;
     }
 
+    public Card getLargestSmallerCard(Card card) {
+        if (cards == null || cards.isEmpty()) {
+            throw new IllegalStateException("La main est vide ou nulle.");
+        }
+
+        Card largestSmallerCard = null;
+
+        for (Card handCard : cards) {
+            // Vérifier si la carte est plus grande que celle passée en paramètre
+            if (handCard.getValeur() > card.getValeur()) {
+                // Vérifier si la carte trouvée est plus petite que la carte actuellement retenue
+                if (largestSmallerCard == null || handCard.getValeur() < largestSmallerCard.getValeur()) {
+                    largestSmallerCard = handCard;
+                }
+            }
+        }
+
+        if (largestSmallerCard == null) {
+            throw new IllegalStateException("Aucune carte plus grande mais plus petite trouvée.");
+        }
+
+        return largestSmallerCard;
+    }
+
+
     public Card getRandomCard() {
         if (cards == null || cards.isEmpty()) {
             throw new IllegalStateException("La main est vide ou nulle.");
