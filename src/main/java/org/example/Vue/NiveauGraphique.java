@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class NiveauGraphique extends JComponent implements Observateur {
-    private static final double RECTANGLE_SCALE_FACTOR = 0.05; // Adjust this value for scaling
+    //private static final double RECTANGLE_SCALE_FACTOR = 0.05; // Adjust this value for scaling
     CollecteurEvenements control;
     int largeurCase;
     int hauteurCase;
@@ -131,12 +131,11 @@ public class NiveauGraphique extends JComponent implements Observateur {
         System.out.println(carteJ1F);
 
 
-
         // Definition of font
-        int fontSize_1 = (int) (panelWidth * 0.02);
+        int fontSize_1 = Math.min((int) (panelWidth * 0.02), (int) (panelHeight * 0.035));
         Font font_1 = new Font("Arial", Font.PLAIN, fontSize_1);
 
-        int fontSize_2 = (int) (panelWidth * 0.015);
+        int fontSize_2 = fontSize_1*3/4;
         Font font_2 = new Font("Arial", Font.PLAIN, fontSize_2);
 
         // Chargement icons
@@ -149,7 +148,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
         // Dessin des cartes de l'adversaire (IA)
         // Calculate rectangle dimensions based on panel size
         rectWidth = (int) (panelWidth * 0.05);
-        rectHeight = Math.max(2 * rectWidth, (int) (panelHeight * RECTANGLE_SCALE_FACTOR)); // Ensure height is always greater than width
+        rectHeight = Math.max(rectWidth, (int) (panelHeight * 4 / 30)); // Ensure height is always greater than width
 
         // Calculate spacing between rectangles
         int spacing = 0;
@@ -169,11 +168,9 @@ public class NiveauGraphique extends JComponent implements Observateur {
 
 
             positionCarteJoueJ1X = totalWidthJ1P1 / 2 + startXJ1;
-            positionCarteJoueJ1Y = totalHeight * 5;
+            positionCarteJoueJ1Y = totalHeight * 3 / 2 + 10;
             positionCarteJoueJ2X = totalWidthJ2P1 / 2 + startXJ2;
-            positionCarteJoueJ2Y = totalHeight + 70;
-
-
+            positionCarteJoueJ2Y = panelHeight - totalHeight * 5 / 2 - 10;
 
             /*
             // Dessin de la main du joueur 2 si il est une IA
@@ -725,6 +722,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
     public int posYMainJ2() {
         return posYJ2;
     }
+
     public int posXMain() {
         return posX;
     }
