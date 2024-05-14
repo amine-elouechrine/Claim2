@@ -31,9 +31,12 @@ public class NiveauGraphique extends JComponent implements Observateur {
     int HandJ1P2;
     int HandJ2P1;
     int HandJ2P2;
+    int x, y;
+
     Color bgColor;
     int[][] main;
     BufferedImage image;
+    String strImage = "";
 
     Jeu jeu;
     /* Load assets */
@@ -156,8 +159,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
                 int y = hauteur() - rectHeight - 10;
                 g.setColor(Color.BLUE);
                 main = jeu.getMainJoueur1Phase1();
-                String strImage="";
-                switch (main[i][1]){
+                switch (main[i][1]) {
                     case 1:
                         strImage = "goblin";
                         break;
@@ -174,29 +176,47 @@ public class NiveauGraphique extends JComponent implements Observateur {
                         strImage = "undead";
                         break;
                 }
-                strImage += "_"+main[i][0];
+                strImage += "_" + main[i][0];
                 image = imageMap.get(strImage);
                 g.drawImage(image, x, y, rectWidth, rectHeight, this);
                 // g.fillRect(x, y, rectWidth, rectHeight);
             }
             posX = startXJ1;
 
-
             // Draw follower deck Joueur 2
-            int x = startXJ2 - 20 - rectWidth;
-            int y = 20;
+            //x = startXJ2 - 20 - rectWidth;
+            x = panelWidth / 9;
+            y = 20;
             g.fillRect(x, y, rectWidth, rectHeight);
 
             // Draw follower deck Joueur 1
-            x = startXJ1 - 20 - rectWidth;
+            //x = startXJ1 - 20 - rectWidth;
             y = hauteur() - rectHeight - 20;
             g.fillRect(x, y, rectWidth, rectHeight);
 
             // Draw carte a gagne
             x = rectWidth * 5 / 2 + largeur() / 2;
             y = hauteur() / 2 - rectHeight / 2;
-            g.fillRect(x, y, rectWidth, rectHeight);
-
+            switch (jeu.getPlateau().getCarteAffichee().getFaction()) {
+                case "Goblins":
+                    strImage = "goblin";
+                    break;
+                case "Dwarves":
+                    strImage = "dwarve";
+                    break;
+                case "Knight":
+                    strImage = "knight";
+                    break;
+                case "Doppelganger":
+                    strImage = "doppelganger";
+                    break;
+                case "Undead":
+                    strImage = "undead";
+                    break;
+            }
+            strImage+= "_" + jeu.getPlateau().getCarteAffichee().getValeur();
+            image = imageMap.get(strImage);
+            g.drawImage(image, x, y, rectWidth, rectHeight, this);
             // Draw deck
             g.setColor(Color.ORANGE);
             x = largeur() - largeur() / 8;
@@ -227,8 +247,8 @@ public class NiveauGraphique extends JComponent implements Observateur {
 
             for (int i = 0; i < numRows; i++) {
                 int lineY = y + i * cellHeight;
-                String faction="";
-                switch (i){
+                String faction = "";
+                switch (i) {
                     case 1:
                         faction = "Goblins";
                         break;
@@ -246,16 +266,16 @@ public class NiveauGraphique extends JComponent implements Observateur {
                         break;
                 }
                 // Calcul de score
-                int score = jeu.getPlateau().getJoueur1().getPileDeScore().getCardFaction(faction).size()-jeu.getPlateau().getJoueur2().getPileDeScore().getCardFaction(faction).size();
+                int score = jeu.getPlateau().getJoueur1().getPileDeScore().getCardFaction(faction).size() - jeu.getPlateau().getJoueur2().getPileDeScore().getCardFaction(faction).size();
                 if (i > 0) {
                     if (score > 0) {
                         bgColor = Color.GREEN;
                     } else if (score == 0) {
-                        if(jeu.getPlateau().getJoueur1().getPileDeScore().maxValueOfFaction(faction)>jeu.getPlateau().getJoueur2().getPileDeScore().maxValueOfFaction(faction)){
+                        if (jeu.getPlateau().getJoueur1().getPileDeScore().maxValueOfFaction(faction) > jeu.getPlateau().getJoueur2().getPileDeScore().maxValueOfFaction(faction)) {
                             bgColor = Color.GREEN;
-                        }else if(jeu.getPlateau().getJoueur1().getPileDeScore().maxValueOfFaction(faction)<jeu.getPlateau().getJoueur2().getPileDeScore().maxValueOfFaction(faction)){
+                        } else if (jeu.getPlateau().getJoueur1().getPileDeScore().maxValueOfFaction(faction) < jeu.getPlateau().getJoueur2().getPileDeScore().maxValueOfFaction(faction)) {
                             bgColor = Color.RED;
-                        }else{
+                        } else {
                             bgColor = Color.GRAY;
                         }
                     } else {
@@ -376,8 +396,8 @@ public class NiveauGraphique extends JComponent implements Observateur {
                 int y = hauteur() - rectHeight - 10;
                 g.setColor(Color.BLUE);
                 main = jeu.getMainJoueur1Phase1();
-                String strImage="";
-                switch (main[i][1]){
+                String strImage = "";
+                switch (main[i][1]) {
                     case 1:
                         strImage = "goblin";
                         break;
@@ -394,7 +414,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
                         strImage = "undead";
                         break;
                 }
-                strImage += "_"+main[i][0];
+                strImage += "_" + main[i][0];
                 image = imageMap.get(strImage);
                 g.drawImage(image, x, y, rectWidth, rectHeight, this);
                 // g.fillRect(x, y, rectWidth, rectHeight);
@@ -424,8 +444,8 @@ public class NiveauGraphique extends JComponent implements Observateur {
 
             for (int i = 0; i < numRows; i++) {
                 int lineY = y + i * cellHeight;
-                String faction="";
-                switch (i){
+                String faction = "";
+                switch (i) {
                     case 1:
                         faction = "Goblins";
                         break;
@@ -443,16 +463,16 @@ public class NiveauGraphique extends JComponent implements Observateur {
                         break;
                 }
                 // Calcul de score
-                int score = jeu.getPlateau().getJoueur1().getPileDeScore().getCardFaction(faction).size()-jeu.getPlateau().getJoueur2().getPileDeScore().getCardFaction(faction).size();
+                int score = jeu.getPlateau().getJoueur1().getPileDeScore().getCardFaction(faction).size() - jeu.getPlateau().getJoueur2().getPileDeScore().getCardFaction(faction).size();
                 if (i > 0) {
                     if (score > 0) {
                         bgColor = Color.GREEN;
                     } else if (score == 0) {
-                        if(jeu.getPlateau().getJoueur1().getPileDeScore().maxValueOfFaction(faction)>jeu.getPlateau().getJoueur2().getPileDeScore().maxValueOfFaction(faction)){
+                        if (jeu.getPlateau().getJoueur1().getPileDeScore().maxValueOfFaction(faction) > jeu.getPlateau().getJoueur2().getPileDeScore().maxValueOfFaction(faction)) {
                             bgColor = Color.GREEN;
-                        }else if(jeu.getPlateau().getJoueur1().getPileDeScore().maxValueOfFaction(faction)<jeu.getPlateau().getJoueur2().getPileDeScore().maxValueOfFaction(faction)){
+                        } else if (jeu.getPlateau().getJoueur1().getPileDeScore().maxValueOfFaction(faction) < jeu.getPlateau().getJoueur2().getPileDeScore().maxValueOfFaction(faction)) {
                             bgColor = Color.RED;
-                        }else{
+                        } else {
                             bgColor = Color.GRAY;
                         }
                     } else {
