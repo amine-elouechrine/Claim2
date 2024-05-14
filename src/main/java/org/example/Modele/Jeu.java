@@ -73,4 +73,61 @@ public class Jeu extends Observable {
         }
         return tableauCartes;
     }
+
+    public String getCardtoString(int index) {
+        Card carte = plateau.joueurCourant.hand.getCard(index);
+        int valeur = carte.getValeur();
+        String faction = carte.getFaction();
+        return "\nCarte jouée : " + faction + " " + valeur;
+    }
+
+    public int getCarteFaction(int index) {
+        return plateau.joueurCourant.hand.getCard(index).getFactionScore();
+    }
+
+    public int getCarteValeur(int index) {
+        return plateau.joueurCourant.hand.getCard(index).getValeur();
+    }
+
+    public int getCarteJoueur1F() {
+        if(plateau.getCarteJoueur1() != null)
+            return plateau.getCarteJoueur1().getFactionScore();
+        else
+            return -1;
+    }
+
+    public int getCarteJoueur1V() {
+        if(plateau.getCarteJoueur1() != null)
+            return plateau.getCarteJoueur1().getValeur();
+        else
+            return -1;
+    }
+    public int getCarteJoueur2F() {
+        if(plateau.getCarteJoueur2() != null)
+            return plateau.getCarteJoueur2().getFactionScore();
+        else
+            return -1;
+    }
+    public int getCarteJoueur2V() {
+        if(plateau.getCarteJoueur2() != null)
+            return plateau.getCarteJoueur2().getValeur();
+        else
+            return -1;
+    }
+
+    public void playTrick() {
+        Card carteGagnante = r.carteGagnante(plateau.getCarteJoueur1(), plateau.getCarteJoueur2());
+        plateau.attribuerCarteFirstPhase(carteGagnante);
+        plateau.carteAffichee = plateau.pioche.getCard();
+    }
+
+    public void setCarteJouer() {
+        plateau.setCarteJoueur1(null);
+        plateau.setCarteJoueur2(null);
+    }
+
+
+    public void getHandtoString() {
+        plateau.joueurCourant.hand.printHand();
+    }
 }

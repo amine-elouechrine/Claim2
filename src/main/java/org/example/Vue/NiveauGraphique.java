@@ -33,10 +33,16 @@ public class NiveauGraphique extends JComponent implements Observateur {
     int HandJ2P2;
     int x, y;
 
+    int positionCarteJoueJ1X, positionCarteJoueJ1Y;
+    int positionCarteJoueJ2X, positionCarteJoueJ2Y;
+
     Color bgColor;
     int[][] main;
     BufferedImage image;
     String strImage = "";
+
+    int carteJ1V = -1, carteJ1F = -1;
+    int carteJ2V = -1, carteJ2F = -1;
 
     Jeu jeu;
     /* Load assets */
@@ -102,12 +108,26 @@ public class NiveauGraphique extends JComponent implements Observateur {
         g.drawString(text, textX, textY);
         */
 
+
         int panelWidth = getWidth();
         int panelHeight = getHeight();
-        HandJ1P1 = control.getNbCardsJ1P1(); // Nombre total de carte dans la main du joueur 1 du modele à chaque tour de jeu
-        HandJ1P2 = control.getNbCardsJ1P2(); // Nombre total de carte dans la main du joueur 2 à recupérer du modele à chaque tour de jeu
-        HandJ2P1 = control.getNbCardsJ2P1();
-        HandJ2P2 = control.getNbCardsJ2P2();
+
+        // Taille de la main
+        HandJ1P1 = control.getNbCardsJ1P1(); // Nombre de carte dans la main du joueur 1 à la phase 1
+        HandJ1P2 = control.getNbCardsJ1P2(); // Nombre de carte dans la main du joueur 1 à la phase 2
+        HandJ2P1 = control.getNbCardsJ2P1(); // Nombre de carte dans la main du joueur 2 à la phase 1
+        HandJ2P2 = control.getNbCardsJ2P2(); // Nombre de carte dans la main du joueur 2 à la phase 2
+
+        // Si une carte est jouée :
+        carteJ1V = jeu.getCarteJoueur1V();
+        carteJ1F = jeu.getCarteJoueur1F();
+        carteJ2V = jeu.getCarteJoueur2V();
+        carteJ2F = jeu.getCarteJoueur2F();
+
+        System.out.println("Valeur carte J1 : " + carteJ1V);
+        System.out.println(carteJ1F);
+
+
 
         // Definition of font
         int fontSize_1 = (int) (panelWidth * 0.02);
@@ -143,6 +163,11 @@ public class NiveauGraphique extends JComponent implements Observateur {
         // Phase 1
         if (control.getPhase()) {
 
+
+            positionCarteJoueJ1X = totalWidthJ1P1 / 2 + startXJ1;
+            positionCarteJoueJ1Y = totalHeight * 5;
+            positionCarteJoueJ2X = totalWidthJ2P1 / 2 + startXJ2;
+            positionCarteJoueJ2Y = totalHeight + 70;
             // Draw rectangles
             for (int i = 0; i < HandJ2P1; i++) {
                 int x = startXJ2 + i * (rectWidth + spacing);
@@ -153,7 +178,6 @@ public class NiveauGraphique extends JComponent implements Observateur {
             }
 
             // Dessin des cartes de la main du joueur
-            // Draw rectangles
             for (int i = 0; i < HandJ1P1; i++) {
                 int x = startXJ1 + i * (rectWidth + spacing);
                 int y = hauteur() - rectHeight - 10;
@@ -214,7 +238,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
                     strImage = "undead";
                     break;
             }
-            strImage+= "_" + jeu.getPlateau().getCarteAffichee().getValeur();
+            strImage += "_" + jeu.getPlateau().getCarteAffichee().getValeur();
             image = imageMap.get(strImage);
             g.drawImage(image, x, y, rectWidth, rectHeight, this);
             // Draw deck
@@ -381,6 +405,10 @@ public class NiveauGraphique extends JComponent implements Observateur {
             // Phase 2
         } else if (!control.getPhase()) {
 
+            positionCarteJoueJ1X = totalWidthJ1P2 / 2 + startXJ1;
+            positionCarteJoueJ1Y = totalHeight + 70;
+            positionCarteJoueJ2X = totalWidthJ2P2 / 2 + startXJ2;
+            positionCarteJoueJ2Y = totalHeight + 70;
             // Draw rectangles
             for (int i = 0; i < HandJ1P2; i++) {
                 int x = startXJ1 + i * (rectWidth + spacing);
@@ -390,7 +418,6 @@ public class NiveauGraphique extends JComponent implements Observateur {
             }
 
             // Dessin des cartes de la main du joueur
-            // Draw rectangles
             for (int i = 0; i < HandJ1P2; i++) {
                 int x = startXJ1 + i * (rectWidth + spacing);
                 int y = hauteur() - rectHeight - 10;
@@ -572,10 +599,57 @@ public class NiveauGraphique extends JComponent implements Observateur {
                     g.setFont(font_2);
                     g.drawString(Integer.toString(score), textX, textY);
                 }
-
-
             }
         }
+        g.setColor(Color.RED);
+        if (carteJ1F != -1 && carteJ1V != -1) {
+            // dessin de la carte jouée
+            switch (carteJ1F) {
+                case 1:
+                    strImage = "goblin";
+                    break;
+                case 2:
+                    strImage = "dwarve";
+                    break;
+                case 3:
+                    strImage = "knight";
+                    break;
+                case 4:
+                    strImage = "doppelganger";
+                    break;
+                case 5:
+                    strImage = "undead";
+                    break;
+            }
+            strImage += "_" + carteJ1V;
+            image = imageMap.get(strImage);
+            g.drawImage(image, positionCarteJoueJ1X, positionCarteJoueJ1Y, rectWidth, rectHeight, this);
+        }
+        g.drawRect(positionCarteJoueJ1X, positionCarteJoueJ1Y, rectWidth, rectHeight);
+        if (carteJ2F != -1 && carteJ2V != -1) {
+            // dessin de la carte jouée par l'IA
+            switch (carteJ2F) {
+                case 1:
+                    strImage = "goblin";
+                    break;
+                case 2:
+                    strImage = "dwarve";
+                    break;
+                case 3:
+                    strImage = "knight";
+                    break;
+                case 4:
+                    strImage = "doppelganger";
+                    break;
+                case 5:
+                    strImage = "undead";
+                    break;
+            }
+            strImage += "_" + carteJ2V;
+            image = imageMap.get(strImage);
+            g.drawImage(image, positionCarteJoueJ1X, positionCarteJoueJ1Y, rectWidth, rectHeight, this);
+        }
+        g.drawRect(positionCarteJoueJ2X, positionCarteJoueJ2Y, rectWidth, rectHeight);
     }
 
 

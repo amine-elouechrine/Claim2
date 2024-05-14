@@ -1,5 +1,6 @@
 package org.example.Controleur;
 
+import org.example.Modele.Card;
 import org.example.Vue.CollecteurEvenements;
 import org.example.Modele.Jeu;
 import org.example.Patternes.Observable;
@@ -37,7 +38,23 @@ public class ControleurMediateur implements CollecteurEvenements {
             ;
         }
         else {
-            jeu.getPlateau().jouerCarte(index);
+            jeu.getHandtoString();
+            System.out.println(jeu.getCardtoString(index));
+            Card carteJoue = jeu.getPlateau().jouerCarte(index);
+
+            // Ajouter temporisation / animation
+
+            // L'IA joue une carte
+            // IA.joue() ?
+
+            // Ajouter temporisation / animation pour la carte jouer par l'IA
+
+            // On joue le plie
+            // jeu.playTrick();
+
+            // Ajouter temporisation / Animation pour la bataille et l'attribution des cartes après le plie
+
+            // jeu.setCarteJouer();
             jeu.metAJour();
         }
     }
