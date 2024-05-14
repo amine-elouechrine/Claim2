@@ -36,18 +36,22 @@ public class ReglesDeJeu {
 
 
     public static Card determinerCarteGagnante(Card carte1, Card carte2) {
-        if (carte1.getValeur() > carte2.getValeur()) {
-            return carte1;
-        } else if (carte1.getValeur() < carte2.getValeur()) {
-            return carte2;
-        } else {
-            // En cas d'égalité, c'est le leader qui gagne le trick (carte affichée)
-            Plateau plateau = new Plateau();
-            if(plateau.estLeader()){
-                return plateau.getCarteJoueur1();
-            }else{
-                return plateau.getCarteJoueur2();
+        if(carte1.getFaction().equals(carte2.getFaction())) {
+            if (carte1.getValeur() > carte2.getValeur()) {
+                return carte1;
+            } else if (carte1.getValeur() < carte2.getValeur()) {
+                return carte2;
+            } else {
+                // En cas d'égalité, c'est le leader qui gagne le trick (carte affichée)
+                Plateau plateau = new Plateau();
+                if (plateau.estLeader()) {
+                    return plateau.getCarteJoueur1();
+                } else {
+                    return plateau.getCarteJoueur2();
+                }
             }
+        }else{
+            return carte1;
         }
     }
 
@@ -70,6 +74,8 @@ public class ReglesDeJeu {
             return null; // En cas d'égalité
         }
     }
+
+
     public static Player determinerPerdantManche(Player joueur1, Player joueur2,Player gagnant) {
         if (gagnant == joueur1){
             return joueur2;
@@ -153,7 +159,7 @@ public class ReglesDeJeu {
      * @param cartes La liste de cartes.
      * @return La valeur maximale.
      */
-    static int getMaxCardValue(List<Card> cartes) {
+    public static int getMaxCardValue(List<Card> cartes) {
         int max = Integer.MIN_VALUE;
         for (Card carte : cartes) {
             if (carte.getValeur() > max) {

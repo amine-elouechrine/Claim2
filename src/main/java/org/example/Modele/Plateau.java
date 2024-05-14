@@ -133,6 +133,9 @@ public class Plateau {
         defausse.ajouterCarte(card);
     }
 
+    public void setJoueurCourant(Player joueurCourant) {
+        this.joueurCourant = joueurCourant;
+    }
     /**
      * Renvoie la liste des cartes dans la défausse.
      *
@@ -224,6 +227,14 @@ public class Plateau {
 
     public Boolean estPhase1() {
         return !(joueur1.getHand().isEmpty() && joueur2.getHand().isEmpty());
+    }
+
+    public Player getJoueurNonCourant() {
+        if (joueurCourant == joueur1) {
+            return joueur2;
+        } else {
+            return joueur1;
+        }
     }
 
 }
