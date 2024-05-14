@@ -36,6 +36,9 @@ public class Player {
     String getName(){
         return Name;
     }
+    public void setName(String name){
+        Name = name;
+    }
 
     /**
      * Renvoie la pile de score du joueur.
@@ -43,6 +46,9 @@ public class Player {
      */
     public PileDeScore getPileDeScore() {
         return pileDeScore;
+    }
+    public void setPileDeScore(PileDeScore pileDeScore) {
+        this.pileDeScore = pileDeScore;
     }
 
     public Hand getHand() {
@@ -52,7 +58,7 @@ public class Player {
     /**
      * verifie si la main du joueur est vide selon la phase
      * si on est dans la 1er phase est verifie hand sinon handScndPhase
-     * @param Phase
+     * @param /Phase
      * @return true si la main est vide, false sinon
      */
     public boolean isHandEmpty(boolean phase){
@@ -67,6 +73,10 @@ public class Player {
         return score;
     }
 
+    public void setScore(int score) {
+        this.score = score;
+    }
+
     Hand getHandScndPhase() {
         return handScndPhase;
     }
@@ -74,7 +84,9 @@ public class Player {
         return hand.get(hand.size()-1);
     }*/
     // passer en paramettre la carte a retirer
-
+    public void setHandScndPhase(Hand handScndPhase) {
+        this.handScndPhase = handScndPhase;
+    }
 
     /**
      * incremente le score du joueur
@@ -86,7 +98,7 @@ public class Player {
 
     /**
      * Joue une carte de la main du joueur et la retire de sa main.
-     * @param carte carte à jouer.
+     * @param /carte carte à jouer.
      * @return La carte jouée, ou null si la carte n'est pas dans la main du joueur.
      */
     public Card jouerCarte(int indexCard) {

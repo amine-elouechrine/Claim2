@@ -51,6 +51,7 @@ public class TestSecondPhase {
     /*
     public static void main(String[] args){
         Cards cards = new Cards();
+        cards.addAllCards();
         cards.shuffle();
         Hand firstHand =cards.getHandOf13Cards();
         Hand secondHand =cards.getHandOf13Cards();

@@ -19,6 +19,7 @@ public class Plateau {
     Player joueur2;
     Player joueurCourant;
     Boolean phase; // true si on est dans la phase 1, false sinon
+    int numberCardPlayed;
 
     /**
      * Constructeur de la classe Plateau.
@@ -28,7 +29,9 @@ public class Plateau {
         this.defausse = new Defausse();
         this.phase = true; // commancer a la phase 1
     }
-
+    public void setPhase (boolean val){
+        phase=val;
+    }
     /**
      * passer a la phase 2.
      */
@@ -79,6 +82,10 @@ public class Plateau {
         return carteAffichee;
     }
 
+    public void setCarteAffichee(Card carteAffichee) {
+        this.carteAffichee = carteAffichee;
+    }
+
     /**
      * Renvoie la carte du joueur 1.
      *
@@ -86,6 +93,10 @@ public class Plateau {
      */
     public Card getCarteJoueur1() {
         return carteJoueur1;
+    }
+
+    public void setCarteJoueur1(Card carteJoueur1) {
+        this.carteJoueur1 = carteJoueur1;
     }
 
     /**
@@ -97,6 +108,10 @@ public class Plateau {
         return carteJoueur2;
     }
 
+    public void setCarteJoueur2(Card carteJoueur2) {
+        this.carteJoueur2 = carteJoueur2;
+    }
+
     /**
      * Renvoie le joueur courant.
      *
@@ -104,6 +119,10 @@ public class Plateau {
      */
     public Player getJoueurCourant() {
         return joueurCourant;
+    }
+
+    public void setJoueurCourant(Player joueurCourant) {
+        this.joueurCourant = joueurCourant;
     }
 
     /**
@@ -115,6 +134,10 @@ public class Plateau {
         return joueur1;
     }
 
+    public void setJoueur1(Player joueur1) {
+        this.joueur1 = joueur1;
+    }
+
     /**
      * Renvoie le joueur 2.
      *
@@ -122,6 +145,10 @@ public class Plateau {
      */
     public Player getJoueur2() {
         return joueur2;
+    }
+
+    public void setJoueur2(Player joueur2) {
+        this.joueur2 = joueur2;
     }
 
     /**
@@ -133,6 +160,8 @@ public class Plateau {
         defausse.ajouterCarte(card);
     }
 
+
+
     /**
      * Renvoie la liste des cartes dans la défausse.
      *
@@ -140,6 +169,9 @@ public class Plateau {
      */
     public Defausse getDefausse() {
         return defausse;
+    }
+    public void setDefausse(Defausse defausse) {
+        this.defausse = defausse;
     }
 
     /**
@@ -151,12 +183,17 @@ public class Plateau {
         return pioche;
     }
 
+    public void setPioche(Cards pioche) {
+        this.pioche = pioche;
+    }
+
     /**
      *
      */
     public void initialiserJeu() {
         //creation des cartes de jeu et shuffle (pioche)
         pioche = new Cards();
+        pioche.addAllCards();
         pioche.shuffle();
         //creation & initialiser les mains 
         Hand mainJoueur1 = pioche.getHandOf13Cards();
