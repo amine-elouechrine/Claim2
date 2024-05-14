@@ -49,7 +49,7 @@ public class InterfaceGraphique implements Runnable {
         // Fenetre InterfaceGraphique
         fenetre.add(niv);
         JPanel menuPanel = new JPanel(new BorderLayout());
-        menuPanel.setBackground(Color.GRAY);
+        menuPanel.setBackground(Color.DARK_GRAY);
         JToggleButton menu = new JToggleButton("Menu");
         menuPanel.add(menu, BorderLayout.NORTH);
         ComposantMenuPartie menuPartie = new ComposantMenuPartie(BoxLayout.PAGE_AXIS, control, j);
