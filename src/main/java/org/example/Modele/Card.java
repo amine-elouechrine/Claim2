@@ -19,6 +19,10 @@ public class Card {
         this.faction = faction;
     }
 
+    public Card() {
+        // Constructeur vide pour les tests
+    }
+
     /**
      * Getter pour la valeur de la carte.
      * @return La valeur numérique de la carte.
@@ -33,6 +37,14 @@ public class Card {
      */
     public void setValue(int value) {
         this.value = value;
+    }
+
+    /**
+     * Setter pour la faction de la carte.
+     * @param faction
+     */
+    public void setFaction(String faction) {
+        this.faction = faction;
     }
 
     /**

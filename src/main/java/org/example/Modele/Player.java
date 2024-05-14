@@ -33,7 +33,7 @@ public class Player {
      * Renvoie le nom du joueur.
      * @return Le nom du joueur.
      */
-    String getName(){
+    public String getName(){
         return Name;
     }
 
@@ -63,7 +63,7 @@ public class Player {
         }
     }
 
-    int  getScore(){
+    public int  getScore(){
         return score;
     }
 
