@@ -2,6 +2,7 @@ package org.example.IA;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 import java.util.ArrayList;
 
 import org.example.Modele.*;
@@ -23,8 +24,12 @@ public abstract class IA {
         this.pileFollower = new Hand();
         
     }
-    public abstract Card jouer_coup_phase1(Hand mainIA, boolean suivre_faction, Card carte_adversaire);
-    public abstract Card jouer_coup_phase2(Hand mainIA, boolean suivre_faction, Card carte_adversaire);
+    //public abstract Card jouer_coup_phase1(Hand mainIA, boolean suivre_faction, Card carte_adversaire);
+    public abstract Card jouerCoupPhase1(Hand mainIA, boolean suivre_faction, Card carte_adversaire);
+    //public abstract Card jouer_coup_phase2(Hand mainIA, boolean suivre_faction, Card carte_adversaire);
+    public abstract Card jouerCoupPhase2(Hand mainIA, boolean suivre_faction, Card carte_adversaire);
+
+    
     /**
      * renvoie les cartes de la meme faction que la carte passée en paramètre (opponentCard)
      * @param opponentCard
@@ -166,6 +171,44 @@ public abstract class IA {
         return lowestCard;
     }
 
+    public Card getHighestValueCard(List<Card> hand) {
+        if (hand == null || hand.isEmpty()) {
+            throw new IllegalStateException("La liste de cartes est vide ou nulle.");
+        }
+
+        Card highestCard = hand.get(0);
+        int highestValue = highestCard.getValeur();
+
+        for (Card card : hand) {
+            int cardValue = card.getValeur();
+            if (cardValue > highestValue) {
+                highestCard = card;
+                highestValue = cardValue;
+            }
+        }
+
+        return highestCard;
+    }
+
+    // Méthode pour obtenir la carte la plus grande qui est plus petite que la carte jouée par l'adversaire
+    public Card getHighestCardSmallerThan(Card opponentCard , List<Card> carteJouable) {
+        if (carteJouable.isEmpty()) {
+            throw new IllegalStateException("La liste des cartes jouable est vide !");
+        }
+
+        Card highestSmallerCard = null;
+        int opponentValue = opponentCard.getValeur();
+
+        for (Card card : carteJouable) {
+            int cardValue = card.getValeur();
+            if (cardValue < opponentValue && (highestSmallerCard == null || cardValue > highestSmallerCard.getValeur())) {
+                highestSmallerCard = card;
+            }
+        }
+
+        return highestSmallerCard;
+    }
+
 
     public boolean containsKnight() {
         if (hand == null || hand.getAllCards().isEmpty()) {
@@ -180,5 +223,6 @@ public abstract class IA {
 
         return false;
     }
+
 
 }

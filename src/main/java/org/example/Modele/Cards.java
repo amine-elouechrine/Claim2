@@ -9,6 +9,10 @@ public class Cards {
     // Constructeur
     public Cards() {
         pile = new Stack<>();
+        creatPioche();
+    }
+
+    public void creatPioche(){
         createGobelinCards();
         createKnightCards();
         createUndeadCards();
@@ -53,6 +57,8 @@ public class Cards {
             pile.push(new Card(i , "Doppelganger"));
         }
     }
+
+
     public Card max_valeur() {
         if (pile.isEmpty()) {
             throw new IllegalStateException("La pile de cartes est vide.");

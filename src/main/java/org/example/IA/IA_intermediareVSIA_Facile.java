@@ -32,12 +32,14 @@ public class IA_intermediareVSIA_Facile {
         while(i<13){//phase 1
 
             if(Facile.amoi){
-                Card cartejouefacile=Facile.jouer_coup_phase1(null,false,null);
+                //Card cartejouefacile=Facile.jouer_coup_phase1(null,false,null);
+                Card cartejouefacile=Facile.jouerCoupPhase1(null,false,null);
                 System.out.println("Carte jouée par Facile : "+cartejouefacile);
                 Facile.hand.removeCard(cartejouefacile);
                 //l'ia intermediare repond avec une carte
                 //Intermediare.hand.printHand();
-                Card carteadversaire=Intermediare.jouer_coup_phase1(null,true,cartejouefacile);
+                //Card carteadversaire=Intermediare.jouer_coup_phase1(null,true,cartejouefacile);
+                Card carteadversaire=Intermediare.jouerCoupPhase1(null,true,cartejouefacile);
                 System.out.println("Carte jouée par Intermediare : "+carteadversaire);
                 Intermediare.hand.removeCard(carteadversaire);
 
@@ -65,11 +67,13 @@ public class IA_intermediareVSIA_Facile {
                 i++;
 
              }else{
-                Card cartejoueintermediare=Intermediare.jouer_coup_phase1(null,false,null);
+                //Card cartejoueintermediare=Intermediare.jouer_coup_phase1(null,false,null);
+                Card cartejoueintermediare=Intermediare.jouerCoupPhase1(null,false,null);
                 System.out.println("Carte jouée par Intermediare : "+cartejoueintermediare);
                 Intermediare.hand.removeCard(cartejoueintermediare);
                 //Intermediare..removeCard(cartejoueintermediare);
-                Card carteadversaire=Facile.jouer_coup_phase2(Facile.hand,true,cartejoueintermediare);
+                //Card carteadversaire=Facile.jouer_coup_phase2(Facile.hand,true,cartejoueintermediare);
+                Card carteadversaire=Facile.jouerCoupPhase2(Facile.hand,true,cartejoueintermediare);
                 System.out.println("Carte jouée par Facile : "+carteadversaire);
                 Facile.hand.removeCard(carteadversaire);
                 //FacileP.removeCardFromHand(carteadversaire);
@@ -111,13 +115,15 @@ public class IA_intermediareVSIA_Facile {
         while(i<13){
             System.out.println("i= "+i);
             if(Facile.amoi){
-                Card cartejouefacile=Facile.jouer_coup_phase2(null,false,null);
-
+                //Card cartejouefacile=Facile.jouer_coup_phase2(null,false,null);
+                Card cartejouefacile=Facile.jouerCoupPhase2(null,false,null);
+                
                 System.out.println("Carte jouée par Facile : "+cartejouefacile);
                 Facile.hand.removeCard(cartejouefacile);
                 //plateau.joueurCourant.getHandScndPhase().removeCard(cartejouefacile);
 
-                Card carteadversaire=Intermediare.jouer_coup_phase2(null,true,cartejouefacile);
+                //Card carteadversaire=Intermediare.jouer_coup_phase2(null,true,cartejouefacile);
+                Card carteadversaire=Intermediare.jouerCoupPhase2(null,true,cartejouefacile);
 
 
                 System.out.println("Carte jouée par Intermediare : "+carteadversaire);
@@ -147,12 +153,14 @@ public class IA_intermediareVSIA_Facile {
                 System.out.println("\n"+i);
                 i++;
             }else{
-                Card cartejoueintermediare=Intermediare.jouer_coup_phase2(null,false,null);
+                //Card cartejoueintermediare=Intermediare.jouer_coup_phase2(null,false,null);
+                Card cartejoueintermediare=Intermediare.jouerCoupPhase2(null,false,null);
                 System.out.println("Carte jouée par Intermediare : "+cartejoueintermediare);
 
                 Intermediare.hand.removeCard(cartejoueintermediare);
 
-                Card carteadversaire=Facile.jouer_coup_phase2(null, true,cartejoueintermediare);
+                //Card carteadversaire=Facile.jouer_coup_phase2(null, true,cartejoueintermediare);
+                Card carteadversaire=Facile.jouerCoupPhase2(null, true,cartejoueintermediare);
                 System.out.println("Carte jouée par Facile : "+carteadversaire);
 
                 Facile.hand.removeCard(carteadversaire);

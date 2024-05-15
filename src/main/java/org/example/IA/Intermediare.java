@@ -2,7 +2,6 @@ package org.example.IA;
 
 import org.example.Modele.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Intermediare extends IA {
@@ -11,7 +10,58 @@ public class Intermediare extends IA {
           super("Intermediare");
      }
 
-     public Card jouer_coup_phase1(Hand mainIA, boolean suivre_faction, Card carte_adversaire) {
+     public Card jouerCoupPhase1(Hand mainIA, boolean suivre_faction, Card carte_adversaire) {
+          if (suivre_faction) {
+               return jouerAvecSuiviFaction(mainIA, carte_adversaire);
+          } else {
+               return getLowestValueCard(mainIA.getAllCards());
+          }
+     }
+
+     public Card jouerAvecSuiviFaction(Hand mainIA, Card carte_adversaire) {
+          List<Card> cartesJouables = getCardsOfSameFactionAs(carte_adversaire);
+      
+          if (cartesJouables.isEmpty()) {
+              return jouerSansCarteDeMemeFaction(mainIA, carte_adversaire);
+          } else {
+              return jouerAvecCarteDeMemeFaction(cartesJouables, carte_adversaire);
+          }
+     }
+
+     private Card jouerAvecCarteDeMemeFaction(List<Card> cartesJouables, Card carte_adversaire) {
+          Card reponse = getSmallestHigherCard(carte_adversaire, cartesJouables);
+          if (reponse != null && reponse.getValeur() > carte_adversaire.getValeur()) {
+              return reponse;
+          } else {
+              return getLowestValueCard(cartesJouables);
+          }
+      }
+
+     private Card jouerSansCarteDeMemeFaction(Hand mainIA, Card carte_adversaire) {
+          if (carte_adversaire.getFaction().equals("Goblins") && containsKnight()) {
+              return jouerChevalier(mainIA);
+          } else {
+              return jouerDoppelgangerOuMin(mainIA);
+          }
+     }
+
+     private Card jouerDoppelgangerOuMin(Hand mainIA) {
+          Hand doppelgangers = hand.getCardsOfSameFaction("Doppelganger");
+          if (doppelgangers.isEmpty()) {
+              return getLowestValueCard(doppelgangers.getAllCards());
+          } else {
+              return getLowestValueCard(hand.getAllCards());
+          }
+      }
+
+
+     public Card jouerChevalier(Hand mainIA) {
+          Hand chevaliers = hand.getCardsOfSameFaction("Chevalier");
+          return chevaliers.getMin();
+     }
+     
+
+     /*public Card jouer_coup_phase1(Hand mainIA, boolean suivre_faction, Card carte_adversaire) {
 
           if (suivre_faction) {
                //jouer la carte la plus petite plus grande que celle de l'adversaire
@@ -22,22 +72,9 @@ public class Intermediare extends IA {
                     //Regarder si la carte jouer est un Gobelin
                     if (carte_adversaire.getFaction().equals("Goblins") && containsKnight()) {
                          //verifier si on a pas de gobelin avant de jouer le chevalier
-                         List<Card> Chevalier = new ArrayList<>();
-                         for (Card c : hand.getAllCards()) {
-                              if (c.getFaction().equals("Chevalier")) {
-                                   Chevalier.add(c);
-                              }
-                         }
+                         Hand Chevalier = hand.getCardsOfSameFaction("Chevalier");
+                         return Chevalier.getMin();
 
-                         Card Chevaliermin = Chevalier.get(0);
-                         for (Card c : Chevalier) {
-                              if (c.getValeur() < Chevaliermin.getValeur()) {
-                                   Chevaliermin = c;
-                              }
-                              return Chevaliermin;
-                              //JOUER LA CARTE IL MANQUE LA FONCTION JOUER CARTE
-                              //il faut jouer le Chevaliermin
-                         }
                     } else {
                          //Regarder si on a des Doppelgängers
                          for (Card c : hand.getAllCards()) {
@@ -79,9 +116,51 @@ public class Intermediare extends IA {
                //System.out.println("La carte jouer est :" + mainIA.getLowestValueCard().getValeur() + " " + mainIA.getLowestValueCard().getFaction());
           }
           return null;
+     }*/
+
+
+     public Card jouerCoupPhase2(Hand mainI, boolean suivre_faction, Card carte_adversaire) {
+          if (suivre_faction) {
+              return jouerAvecSuiviFactionPhase2(carte_adversaire);
+          } else {
+              return handScndPhase.getLowestValueCard();
+          }
      }
 
-     public Card jouer_coup_phase2(Hand mainI, boolean suivre_faction, Card carte_adversaire) {
+     private Card jouerAvecSuiviFactionPhase2(Card carte_adversaire) {
+          if (carte_adversaire.getFaction().equals("Nains")) {
+              return jouerAvecNains(carte_adversaire);
+          } else {
+              return suivreFactionAdversaire(carte_adversaire);
+          }
+     }
+
+     private Card suivreFactionAdversaire(Card carte_adversaire) {
+          Hand cartesJouables = handScndPhase.getCardsOfSameFaction(carte_adversaire.getFaction());
+      
+          if (cartesJouables.isEmpty()) {
+              return handScndPhase.getLowestValueCard();
+          } else {
+               return cartesJouables.getSmallestHigherCard(carte_adversaire);
+          }
+      }
+
+
+     private Card jouerAvecNains(Card carte_adversaire) {
+          List<Card> carteJouable = hand.getCardsOfSameFaction("Nains").getAllCards();
+      
+          if (getLowestValueCard(carteJouable).getValeur() > carte_adversaire.getValeur()) {
+              return getHighestValueCard(carteJouable);
+          } else {
+              return getHighestCardSmallerThan(carte_adversaire, carteJouable);
+          }
+     }
+
+
+
+
+
+     /*public Card jouer_coup_phase2(Hand mainI, boolean suivre_faction, Card carte_adversaire) {
           if (suivre_faction) {
                //l'adversaire a jouer une carte je dois jouer une carte de la meme faction
                //si la faction de la carte adversaire est un nain
@@ -104,7 +183,7 @@ public class Intermediare extends IA {
                     }
                } else {
                     //suivre la faction de l'adversaire
-                    Hand cartesJouables = handScndPhase.getCardsOfSameFaction(carte_adversaire);
+                    Hand cartesJouables = handScndPhase.getCardsOfSameFaction(carte_adversaire.getFaction());
                     if (cartesJouables.isEmpty()) {
                          //si on a pas de carte de la meme faction
                          //jouer la carte la plus petite
@@ -122,7 +201,7 @@ public class Intermediare extends IA {
                return handScndPhase.getLowestValueCard();
                //System.out.println(mainIA.getLowestValueCard());
           }
-     }
+     }*/
 
      public static void main(String[] args) {;
           Cards pioche = new Cards();
@@ -134,7 +213,8 @@ public class Intermediare extends IA {
           Card cartejouer = hand1.getRandomCard();
           i.hand.printHand();
           System.out.println("La carte jouer par le joueur 1 est : "+cartejouer.getFaction()+" "+cartejouer.getValeur());
-          Card card=i.jouer_coup_phase1(handIA, true, cartejouer);
+          //Card card=i.jouer_coup_phase1(handIA, true, cartejouer);
+          Card card=i.jouerCoupPhase1(handIA, true, cartejouer);
           System.out.println("La carte jouer par l'IA est : "+card.getFaction()+" "+card.getValeur());
      }
 
