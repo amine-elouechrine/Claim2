@@ -440,25 +440,47 @@ public class NiveauGraphique extends JComponent implements Observateur {
             // Phase 2
         } else if (!control.getPhase()) {
 
-            positionCarteJoueJ1X = totalWidthJ1P2 / 2 + startXJ1;
-            positionCarteJoueJ1Y = totalHeight + 70;
-            positionCarteJoueJ2X = totalWidthJ2P2 / 2 + startXJ2;
-            positionCarteJoueJ2Y = totalHeight + 70;
-            // Draw rectangles
-            for (int i = 0; i < HandJ1P2; i++) {
-                int x = startXJ1 + i * (rectWidth + spacing);
+            positionCarteJoueJ1X = totalWidthJ1P1 / 2 + startXJ1;
+            positionCarteJoueJ1Y = totalHeight * 3 / 2 + 10;
+            positionCarteJoueJ2X = totalWidthJ2P1 / 2 + startXJ2;
+            positionCarteJoueJ2Y = panelHeight - totalHeight * 5 / 2 - 10;
+
+
+            // Dessin de la main du joueur 2
+            for (int i = 0; i < HandJ2P2; i++) {
+                int x = startXJ2 + i * (rectWidth + spacing);
                 int y = 10;
-                g.setColor(Color.GRAY);
-                g.fillRect(x, y, rectWidth, rectHeight);
+                g.setColor(Color.BLUE);
+                mainJ2 = jeu.getMainJoueur2Phase2();
+                switch (mainJ2[i][1]) {
+                    case 1:
+                        strImage = "goblin";
+                        break;
+                    case 2:
+                        strImage = "dwarve";
+                        break;
+                    case 3:
+                        strImage = "knight";
+                        break;
+                    case 4:
+                        strImage = "doppelganger";
+                        break;
+                    case 5:
+                        strImage = "undead";
+                        break;
+                }
+                strImage += "_" + mainJ2[i][0];
+                image = imageMap.get(strImage);
+                g.drawImage(image, x, y, rectWidth, rectHeight, this);
+                // g.fillRect(x, y, rectWidth, rectHeight);
             }
 
-            // Dessin des cartes de la main du joueur
+            // Dessin des cartes de la main du joueur 1
             for (int i = 0; i < HandJ1P2; i++) {
                 int x = startXJ1 + i * (rectWidth + spacing);
                 int y = hauteur() - rectHeight - 10;
                 g.setColor(Color.BLUE);
-                main = jeu.getMainJoueur1Phase1();
-                String strImage = "";
+                main = jeu.getMainJoueur1Phase2();
                 switch (main[i][1]) {
                     case 1:
                         strImage = "goblin";
@@ -483,9 +505,8 @@ public class NiveauGraphique extends JComponent implements Observateur {
             }
             posX = startXJ1;
 
-
-            int x = startXJ1 - 20 - rectWidth;
-            int y = 20;
+            x = startXJ1 - 20 - rectWidth;
+            y = 20;
 
             // Draw Feedfoward Carte joué
             g.setColor(Color.DARK_GRAY);

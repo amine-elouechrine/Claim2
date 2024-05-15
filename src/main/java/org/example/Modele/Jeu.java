@@ -106,6 +106,32 @@ public class Jeu extends Observable {
         return tableauCartes;
     }
 
+    public int[][] getMainJoueur1Phase2() {
+        int i = 0;
+        Hand main = getHandJ1P2();
+        List<Card> cartes = main.getAllCards();
+        int[][] tableauCartes = new int[cartes.size()][2];
+        for (Card carte : cartes) {
+            tableauCartes[i][0] = carte.getValeur();
+            tableauCartes[i][1] = carte.getFactionScore();
+            i++;
+        }
+        return tableauCartes;
+    }
+
+    public int[][] getMainJoueur2Phase2() {
+        int i = 0;
+        Hand main = getHandJ2P2();
+        List<Card> cartes = main.getAllCards();
+        int[][] tableauCartes = new int[cartes.size()][2];
+        for (Card carte : cartes) {
+            tableauCartes[i][0] = carte.getValeur();
+            tableauCartes[i][1] = carte.getFactionScore();
+            i++;
+        }
+        return tableauCartes;
+    }
+
     public String getCardtoString(int index) {
         Card carte = plateau.joueurCourant.hand.getCard(index);
         int valeur = carte.getValeur();
