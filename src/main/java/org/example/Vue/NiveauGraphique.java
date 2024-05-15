@@ -169,10 +169,9 @@ public class NiveauGraphique extends JComponent implements Observateur {
         if (control.getPhase()) {
 
             positionCarteJoueJ1X = totalWidthJ1P1 / 2 + startXJ1;
-            positionCarteJoueJ1Y = totalHeight * 5;
+            positionCarteJoueJ1Y = panelHeight - totalHeight * 5 / 2 - 10;
             positionCarteJoueJ2X = totalWidthJ2P1 / 2 + startXJ2;
-            positionCarteJoueJ2Y = totalHeight+ 70;
-
+            positionCarteJoueJ2Y = totalHeight * 3 / 2 + 10;
             /*
             // Dessin de la main du joueur 2 si il est une IA
             for (int i = 0; i < HandJ2P1; i++) {
@@ -444,9 +443,9 @@ public class NiveauGraphique extends JComponent implements Observateur {
         } else if (!control.getPhase()) {
 
             positionCarteJoueJ1X = totalWidthJ1P1 / 2 + startXJ1;
-            positionCarteJoueJ1Y = totalHeight * 3 / 2 + 10;
+            positionCarteJoueJ1Y = panelHeight - totalHeight * 5 / 2 - 10;
             positionCarteJoueJ2X = totalWidthJ2P1 / 2 + startXJ2;
-            positionCarteJoueJ2Y = panelHeight - totalHeight * 5 / 2 - 10;
+            positionCarteJoueJ2Y = totalHeight * 3 / 2 + 10;
 
 
             // Dessin de la main du joueur 2
