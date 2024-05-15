@@ -128,6 +128,31 @@ public class Hand {
         return cards;
     }
 
+    public Card getLargestSmallerCard(Card card) {
+        if (cards == null || cards.isEmpty()) {
+            throw new IllegalStateException("La main est vide ou nulle.");
+        }
+
+        Card largestSmallerCard = null;
+
+        for (Card handCard : cards) {
+            // Vérifier si la carte est plus grande que celle passée en paramètre
+            if (handCard.getValeur() > card.getValeur()) {
+                // Vérifier si la carte trouvée est plus petite que la carte actuellement retenue
+                if (largestSmallerCard == null || handCard.getValeur() < largestSmallerCard.getValeur()) {
+                    largestSmallerCard = handCard;
+                }
+            }
+        }
+
+        if (largestSmallerCard == null) {
+            throw new IllegalStateException("Aucune carte plus grande mais plus petite trouvée.");
+        }
+
+        return largestSmallerCard;
+    }
+
+
     public Card getRandomCard() {
         if (cards == null || cards.isEmpty()) {
             throw new IllegalStateException("La main est vide ou nulle.");
@@ -155,7 +180,7 @@ public class Hand {
         }
 
         for (Card card : cards) {
-            if (card instanceof Knight) {
+            if (card.getFaction().equals("Knight")) {
                 return true;
             }
         }
@@ -169,7 +194,7 @@ public class Hand {
         }
 
         for (Card card : cards) {
-            if (card instanceof Doppelganger) {
+            if (card.getFaction().equals("Doppelganger")) {
                 return true;
             }
         }
@@ -231,4 +256,12 @@ public class Hand {
 
         return lowestCard;
     }
+
+    public Card get(int i) {
+        if (i < 0 || i >= cards.size()) {
+            throw new IndexOutOfBoundsException("Index hors limites: " + i);
+        }
+        return cards.get(i);
+    }
+    
 }
