@@ -1,0 +1,30 @@
+Structure de sauve
+si on est dans la phase 1:
+ecrire le nombre de tour joué
+ecrire le nom du joueeur 1
+ecrire la main de du joueeur 1 (si phase 1)
+ligne vide
+ecrire la main de la second phase
+ligne vide
+ecrire la pile de score du joueur 1
+ligne vide
+ecrire le score du joueeur 1
+ecrire le nom du joueeur 2
+ecrire la main de du joueeur 2 (si phase 1)
+ligne vide
+ecrire la main de la second phase
+ligne vide
+ecrire la pile de score du joueur 2
+ligne vide
+ecrire le score du joueeur 2
+ecrire le nom du joueur courant
+ecrire la pioche
+ligne vide
+ecrire la defausse
+ecrire la carte affiche
+ecrire la carte joué par le premier joueur (si elle existe sinon ligne vide  )
+ecrire la carte joué par le deuxieme joueur(si elle existe sinon ligne vide )
+
+
+
+

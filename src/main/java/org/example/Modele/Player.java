@@ -34,6 +34,9 @@ public class Player {
     public String getName(){
         return Name;
     }
+    public void setName(String name){
+        Name = name;
+    }
 
     /**
      * Renvoie la pile de score du joueur.
@@ -41,6 +44,9 @@ public class Player {
      */
     public PileDeScore getPileDeScore() {
         return pileDeScore;
+    }
+    public void setPileDeScore(PileDeScore pileDeScore) {
+        this.pileDeScore = pileDeScore;
     }
 
     public Hand getHand() {
@@ -65,6 +71,10 @@ public class Player {
         return score;
     }
 
+    public void setScore(int score) {
+        this.score = score;
+    }
+
     Hand getHandScndPhase() {
         return handScndPhase;
     }
@@ -72,7 +82,9 @@ public class Player {
         return hand.get(hand.size()-1);
     }*/
     // passer en paramettre la carte a retirer
-
+    public void setHandScndPhase(Hand handScndPhase) {
+        this.handScndPhase = handScndPhase;
+    }
 
     /**
      * incremente le score du joueur

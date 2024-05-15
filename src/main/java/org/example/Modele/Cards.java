@@ -9,10 +9,10 @@ public class Cards {
     // Constructeur
     public Cards() {
         pile = new Stack<>();
-        creatPioche();
     }
 
-    public void creatPioche(){
+    // Méthode pour créer les cartes Gobelin
+    public void addAllCards(){
         createGobelinCards();
         createKnightCards();
         createUndeadCards();
@@ -20,7 +20,6 @@ public class Cards {
         createDoppelgangerCards();
     }
 
-    // Méthode pour créer les cartes Gobelin
     private void createGobelinCards() {
         for (int i = 0; i < 5; i++) {
             pile.push(new Card(0, "Goblins"));
