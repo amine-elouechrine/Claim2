@@ -9,6 +9,7 @@ public class Cards {
     // Constructeur
     public Cards() {
         pile = new Stack<>();
+
     }
 
     // Méthode pour créer les cartes Gobelin
@@ -154,6 +155,7 @@ public class Cards {
     // Méthode pour obtenir une main de 13 cartes à partir de la pile
     public Hand getHandOf13Cards() {
         if (pile.size() < 13) {
+            System.out.println(pile.size());
             throw new IllegalStateException("La pile de cartes contient moins de 13 cartes.");
         }
         Hand hand = new Hand();

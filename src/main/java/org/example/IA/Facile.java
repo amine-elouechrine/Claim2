@@ -18,11 +18,11 @@ public class Facile extends IA {
 
 
     public Card joueCoupPhase1F(Hand mainIA, boolean suivre_faction, Card carte_adversaire) {
-        System.out.println(";;;''''''" + hand.size());
+        //System.out.println(";;;''''''" + hand.size());
         if (suivre_faction) {
             return jouerAvecSuiviFaction(carte_adversaire);
         } else {
-            return jouerCarteAleatoire(hand);
+            return jouerCarteAleatoire();
         }
     }
 
@@ -30,13 +30,13 @@ public class Facile extends IA {
         Hand carteJouable = hand.getCardsOfSameFaction(carte_adversaire.getFaction());
 
         if (carteJouable.isEmpty()) {
-            return jouerCarteAleatoire(hand);
+            return jouerCarteAleatoire();
         } else {
             return choisirCarteAleatoire(carteJouable);
         }
     }
 
-    private Card jouerCarteAleatoire(Hand hand) {
+    private Card jouerCarteAleatoire() {
         int index = rand.nextInt(hand.getAllCards().size());
         Card carte = hand.getAllCards().get(index);
         System.out.println("jouer carte : " + carte.getFaction() + " " + carte.getValeur());
