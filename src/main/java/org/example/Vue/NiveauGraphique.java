@@ -41,6 +41,8 @@ public class NiveauGraphique extends JComponent implements Observateur {
     int[][] main;
     int[][] mainJ2;
     BufferedImage image;
+    BufferedImage grayImage;
+
     String strImage = "";
 
     int carteJ1V = -1, carteJ1F = -1;
@@ -166,11 +168,10 @@ public class NiveauGraphique extends JComponent implements Observateur {
         // Phase 1
         if (control.getPhase()) {
 
-
             positionCarteJoueJ1X = totalWidthJ1P1 / 2 + startXJ1;
-            positionCarteJoueJ1Y = totalHeight * 3 / 2 + 10;
+            positionCarteJoueJ1Y = totalHeight * 5;
             positionCarteJoueJ2X = totalWidthJ2P1 / 2 + startXJ2;
-            positionCarteJoueJ2Y = panelHeight - totalHeight * 5 / 2 - 10;
+            positionCarteJoueJ2Y = totalHeight+ 70;
 
             /*
             // Dessin de la main du joueur 2 si il est une IA
@@ -208,7 +209,8 @@ public class NiveauGraphique extends JComponent implements Observateur {
                 }
                 strImage += "_" + mainJ2[i][0];
                 image = imageMap.get(strImage);
-                g.drawImage(image, x, y, rectWidth, rectHeight, this);
+                grayImage = toGrayScale(image);
+                g.drawImage(grayImage, x, y, rectWidth, rectHeight, this);
                 // g.fillRect(x, y, rectWidth, rectHeight);
             }
 
@@ -237,6 +239,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
                 }
                 strImage += "_" + main[i][0];
                 image = imageMap.get(strImage);
+                grayImage = toGrayScale(image);
                 g.drawImage(image, x, y, rectWidth, rectHeight, this);
                 // g.fillRect(x, y, rectWidth, rectHeight);
             }
@@ -471,7 +474,10 @@ public class NiveauGraphique extends JComponent implements Observateur {
                 }
                 strImage += "_" + mainJ2[i][0];
                 image = imageMap.get(strImage);
-                g.drawImage(image, x, y, rectWidth, rectHeight, this);
+                grayImage = toGrayScale(image);
+                //si une carte est jouable, draw image, sinon draw grayImage
+                g.drawImage(grayImage, x, y, rectWidth, rectHeight, this);
+                //g.drawImage(image, x, y, rectWidth, rectHeight, this);
                 // g.fillRect(x, y, rectWidth, rectHeight);
             }
 
@@ -500,6 +506,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
                 }
                 strImage += "_" + main[i][0];
                 image = imageMap.get(strImage);
+                grayImage = toGrayScale(image);
                 g.drawImage(image, x, y, rectWidth, rectHeight, this);
                 // g.fillRect(x, y, rectWidth, rectHeight);
             }
@@ -768,9 +775,25 @@ public class NiveauGraphique extends JComponent implements Observateur {
         return totalHeight;
     }
 
+    private BufferedImage toGrayScale(BufferedImage originalImage) {
+        // Crée une nouvelle image en niveaux de gris de la même taille que l'image originale
+        int width = originalImage.getWidth();
+        int height = originalImage.getHeight();
+
+        BufferedImage grayImage = new BufferedImage(width, height, BufferedImage.TYPE_BYTE_GRAY);
+
+        Graphics g = grayImage.getGraphics();
+        g.drawImage(originalImage, 0, 0, null);
+        g.dispose();
+
+        return grayImage;
+    }
+
     @Override
     public void miseAJour() {
         repaint();
     }
+
+
 }
 
