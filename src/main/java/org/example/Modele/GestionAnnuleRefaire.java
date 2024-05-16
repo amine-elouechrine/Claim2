@@ -127,20 +127,22 @@ public class GestionAnnuleRefaire {
 
     public Hand restaureHand (BufferedReader r) throws IOException {
         Hand hand = new Hand();
-        String [] card = r.readLine().split(":");
-        while (!(card[0].isEmpty())) {
+        String line = r.readLine();
+        while (!(line.isEmpty())) {
+            String [] card = line.split(":");
             String faction = card[0];
             int valeur = Integer.parseInt(card[1]);
             Card carte = new Card(valeur,faction);
             hand.addCard(carte);
-            card = r.readLine().split(":");
+            line = r.readLine();
         }
         return hand;
     }
     public PileDeScore restaurePileDeScore (BufferedReader r) throws IOException {//restaurer la pile de score
         PileDeScore pileDeScore = new PileDeScore();
-        String [] line = r.readLine().split(":");
-        while (!(line[0].isEmpty())) {
+        String  l = r.readLine();
+        while (!(l.isEmpty())) {
+            String [] line = l.split(":");
             int taille = Integer.parseInt(line[1]);
             for (int i = 0; i < taille; i++) {
                 String [] carte = r.readLine().split(":");
@@ -149,31 +151,33 @@ public class GestionAnnuleRefaire {
                 Card card = new Card(valeur,faction);
                 pileDeScore.addCard(card);
             }
-            line = r.readLine().split(":");
+            l = r.readLine();
         }
         return pileDeScore;
     }
     public Defausse restaureDefausse (BufferedReader r) throws IOException {
         Defausse defausse = new Defausse();
-        String[] line = r.readLine().split(":");
-        while (!(line[0].isEmpty())) {
+        String l = r.readLine();
+        while (!(l.isEmpty())) {
+            String [] line = l.split(":");
             String faction =line[0];
             int valeur = Integer.parseInt(line[1]);
             Card card = new Card(valeur,faction);
             defausse.ajouterCarte(card);
-            line = r.readLine().split(":");
+            l = r.readLine();
         }
         return defausse;
     }
     public Cards restaureCards (BufferedReader r) throws IOException {
         ArrayList<Card> list = new ArrayList<>();
-        String [] line = r.readLine().split(":");
-        while (!(line[0].isEmpty())) {
+        String l = r.readLine();
+        while (!(l.isEmpty())) {
+            String [] line = l.split(":");
             String faction =line[0];
             int valeur = Integer.parseInt(line[1]);
             Card card = new Card(valeur,faction);
             list.add(card);
-            line = r.readLine().split(":");
+            l = r.readLine();
         }
         Cards cards = new Cards();
         while(!(list.isEmpty())){
