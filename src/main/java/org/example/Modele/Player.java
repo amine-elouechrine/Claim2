@@ -11,6 +11,23 @@ public class Player extends GeneralPlayer{
         super(Name);
     }
 
-    // il faut faire overide de jouer carte et implementer la logique de jouer une carte pr n joueur humain
+    /**
+     * Joue une carte de la main du joueur et la retire de sa main.
+     * @param indexCard carte à jouer.
+     * @return La carte jouée, ou null si la carte n'est pas dans la main du joueur.
+     */
 
+    public Card jouerCarte(int indexCard) {
+        Card carte = hand.getCard(indexCard);
+        // Vérifie si la carte est présente dans la main du joueur
+        if (hand.contains(carte)) {
+            // Retire la carte de la main du joueur
+            hand.removeCard(carte);
+            return carte;
+        } else {
+            System.out.println("La carte n'est pas dans la main du joueur.");
+            // Si la carte n'est pas dans la main du joueur, retourne null
+            return null;
+        }
+    }
 }
