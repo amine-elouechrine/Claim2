@@ -326,12 +326,12 @@ public class NiveauGraphique extends JComponent implements Observateur {
                 drawScore(g, faction, i, lineY, cellHeight, font_1, icon_goblin, font_2, icon_knight, icon_undead, icon_dwarve, icon_doppleganger);
             }
 
-        /* Phase 2 */
+            /* Phase 2 */
         } else if (!control.getPhase()) {
 
-            positionCarteJoueJ1X = totalWidthJ1P1 / 2 + startXJ1P2;
+            positionCarteJoueJ1X = totalWidthJ1P2 / 2 + startXJ1P2;
             positionCarteJoueJ1Y = panelHeight - totalHeight * 5 / 2 - 10;
-            positionCarteJoueJ2X = totalWidthJ2P1 / 2 + startXJ2P2;
+            positionCarteJoueJ2X = totalWidthJ2P2 / 2 + startXJ2P2;
             positionCarteJoueJ2Y = totalHeight * 3 / 2 + 10;
 
             // Dessin des cartes de la main du joueur 1
@@ -611,7 +611,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
             int textWidth = fm.stringWidth(Integer.toString(score));
             int textHeight = fm.getHeight();
 
-            textX = x + rectWidth * 2 - textWidth * 4;
+            textX = x + (rectWidth * 2 - textWidth) * 2 / 3;
             textY = lineY + (cellHeight + textHeight * 2 / 3) / 2;
             g.setFont(font_2);
             g.drawString(Integer.toString(score), textX, textY);
@@ -626,7 +626,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
             int textWidth = fm.stringWidth(Integer.toString(score));
             int textHeight = fm.getHeight();
 
-            textX = x + rectWidth * 2 - textWidth * 4;
+            textX = x + (rectWidth * 2 - textWidth) * 2 / 3;
             textY = lineY + (cellHeight + textHeight * 2 / 3) / 2;
             g.setFont(font_2);
             g.drawString(Integer.toString(score), textX, textY);
@@ -641,7 +641,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
             int textWidth = fm.stringWidth(Integer.toString(score));
             int textHeight = fm.getHeight();
 
-            textX = x + rectWidth * 2 - textWidth * 4;
+            textX = x + (rectWidth * 2 - textWidth) * 2 / 3;
             textY = lineY + (cellHeight + textHeight * 2 / 3) / 2;
             g.setFont(font_2);
             g.drawString(Integer.toString(score), textX, textY);
@@ -656,7 +656,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
             int textWidth = fm.stringWidth(Integer.toString(score));
             int textHeight = fm.getHeight();
 
-            textX = x + rectWidth * 2 - textWidth * 4;
+            textX = x + (rectWidth * 2 - textWidth) * 2 / 3;
             textY = lineY + (cellHeight + textHeight * 2 / 3) / 2;
             g.setFont(font_2);
             g.drawString(Integer.toString(score), textX, textY);
@@ -671,13 +671,13 @@ public class NiveauGraphique extends JComponent implements Observateur {
             int textWidth = fm.stringWidth(Integer.toString(score));
             int textHeight = fm.getHeight();
 
-            textX = x + rectWidth * 2 - textWidth * 4;
+            textX = x + (rectWidth * 2 - textWidth) * 2 / 3;
             textY = lineY + (cellHeight + textHeight * 2 / 3) / 2;
             g.setFont(font_2);
             g.drawString(Integer.toString(score), textX, textY);
         }
     }
-    
+
     private BufferedImage toGrayScale(BufferedImage originalImage) {
         // Crée une nouvelle image en niveaux de gris de la même taille que l'image originale
         int width = originalImage.getWidth();
