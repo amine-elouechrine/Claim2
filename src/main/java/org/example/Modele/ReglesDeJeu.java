@@ -166,55 +166,53 @@ public class ReglesDeJeu {
      /**
      * Méthode pour appliquer les règles standard à une manche.
      * @param trickWinner Le joueur remportant le tour.
-     * @param plateau Le plateau de jeu.
+     * @param /plateau Le plateau de jeu.
      */
-    public void ApplyStandardRule(Player trickWinner, Plateau plateau){
+    public void ApplyStandardRule(Player trickWinner,Card carteAffiche,Defausse defausse,Card cardPlayer1,Card cardPlayer2 ){
         // Ajouter la carte afficher de la pioche à la pile de score du joueur qui a remporté le tour
-        trickWinner.getPileDeScore().addCard(plateau.getCarteAffichee());
+        trickWinner.getPileDeScore().addCard(carteAffiche);
 
         // jeter les cartes jouées par les joueurs dans la défausse
-        plateau.addToDefausse(plateau.getCarteJoueur1());
-        plateau.addToDefausse(plateau.getCarteJoueur2());
+        defausse.ajouterCarte(cardPlayer1);
+        defausse.ajouterCarte( cardPlayer2 );
     }
 
     /**
      * Méthode pour appliquer les règles spéciales des factions (1ère phase uniquement).
      * @param trickWinner Le joueur remportant le tour.
-     * @param plateau Le plateau de jeu.
+     * @param /plateau Le plateau de jeu.
      */
     // Méthode pour appliquer les règles spéciales des factions (1er phase uniquement)
     // 1er phase si une carte de type undead etait jouer par l'un des joueur celui qui gagne le tour gagne les cartes undead (de lui meme et la carte de l'adversaire si elle est undead)
-    public void applyUndeadRule(Player trickWinner, Plateau plateau) {
-        // Ajouter la carte afficher de la pioche à la pile de score du joueur qui a remporté le tour
-        trickWinner.getPileDeScore().addCard(plateau.getCarteAffichee());
+    public void applyUndeadRule(Player trickWinner,Card cardPlayer1 , Card cardPlayer2,Defausse defausse) {
 
     // Vérifier si la carte jouée par l'un des joueur est de la faction Undead
-        if (plateau.getCarteJoueur1().getFaction().equals("Undead")) {
+        if (cardPlayer1.getFaction().equals("Undead")) {
             // Ajouter la carte à la pile de score du joueur qui a remporté le tour
-            trickWinner.getPileDeScore().addCard(plateau.getCarteJoueur1());
+            trickWinner.getPileDeScore().addCard(cardPlayer1);
         }else{
             // ajouter la carte à la défausse
-            plateau.addToDefausse(plateau.getCarteJoueur1());
+            defausse.ajouterCarte(cardPlayer1);
         }
-        if (plateau.getCarteJoueur2().getFaction().equals("Undead")) {
+        if (cardPlayer2.getFaction().equals("Undead")) {
             // Ajouter la carte à la pile de score du joueur qui a remporté le tour
-            trickWinner.getPileDeScore().addCard(plateau.getCarteJoueur2());
+            trickWinner.getPileDeScore().addCard(cardPlayer2);
         }else{
             // ajouter la carte à la défausse
-            plateau.addToDefausse(plateau.getCarteJoueur2());
+            defausse.ajouterCarte(cardPlayer2);
         }
     }
 
     /**
      * Méthode pour appliquer les règles spéciales des factions à une manche dans la 1ere phase.
      * @param trickWinner Le joueur remportant le tour.
-     * @param plateau Le plateau de jeu.
+     * @param / Le plateau de jeu.
      */
-    public void applyFirstPhaseRules(Player trickWinner, Plateau plateau){
-        if(plateau.getCarteJoueur1().getFaction().equals("Undead") || plateau.getCarteJoueur2().getFaction().equals("Undead")){
-            applyUndeadRule(trickWinner, plateau);
+    public void applyFirstPhaseRules(Player trickWinner, Card cardPlayer1 , Card cardPlayer2,Defausse defausse,Card carteAffiche){
+        if(cardPlayer1.getFaction().equals("Undead") || cardPlayer2.getFaction().equals("Undead")){
+            applyUndeadRule(trickWinner, cardPlayer1,cardPlayer2,defausse);
         }else{
-            ApplyStandardRule(trickWinner, plateau);
+            ApplyStandardRule(trickWinner, carteAffiche,defausse,cardPlayer1,cardPlayer2);
         }
     }
 
@@ -263,14 +261,14 @@ public class ReglesDeJeu {
      * @param plateau Le plateau de jeu.
      * @param r Les regles du jeu.
      */
-    public void playerWinsFirstPhaseManche(Plateau plateau , ReglesDeJeu r){
+    /*public void playerWinsFirstPhaseManche(Plateau plateau , ReglesDeJeu r){
         r.applyFirstPhaseRules(plateau.joueurCourant, plateau);
         plateau.getJoueurCourant().handScndPhase.addCard(plateau.getCarteAffichee()); // le gagnant prends la carte affichee
         r.switchJoueur(plateau); //passe le tour a l'autre joueur
         plateau.joueurCourant.handScndPhase.addCard(plateau.getPioche().getCard());// il prends une carte de la pile
         r.switchJoueur(plateau);//c'est fait pour que le joueur commence le premier dans le prochain coup
 
-    }
+    }*/
 
     /**
      * methode pour changer le joueur qui tient le tour

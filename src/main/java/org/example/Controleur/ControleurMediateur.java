@@ -6,6 +6,7 @@ import org.example.Modele.Jeu;
 import org.example.Patternes.Observable;
 
 import java.util.List;
+import java.util.Map;
 
 public class ControleurMediateur implements CollecteurEvenements {
 
@@ -111,6 +112,15 @@ public class ControleurMediateur implements CollecteurEvenements {
                 // Application des règles de jeu pour la selection de carte
                 if(carteLeader != null) {
                     jouable = jeu.estCarteJouable(carteLeader, index);
+                    for(Map.Entry<String ,List<Card>> entry :jeu.getPlateau().getJoueurCourant().getPileDeScore().getPileDeScore().entrySet()){
+                        String key = entry.getKey();
+                        List<Card> cards = entry.getValue();
+                        System.out.println(key+":"+cards.size());
+                        for(Card card : cards){
+                            System.out.println(card.getFaction()+":"+card.getValeur());
+                        }
+
+                    }
                 }
 
                 if(jouable) {

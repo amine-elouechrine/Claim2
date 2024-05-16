@@ -186,7 +186,7 @@ public class Jeu extends Observable {
     public void playTrick() {
         if (getPhase()) {
             Card carteGagnante = r.carteGagnante(plateau.getCarteJoueur1(), plateau.getCarteJoueur2());
-            plateau.attribuerCarteFirstPhase(carteGagnante);
+            plateau.attribuerCarteFirstPhase(carteGagnante,r);
             System.out.println("Nombre carte dans la main " + plateau.getJoueurCourant().getHand().size());
 
             if (estFinPhase1()) {

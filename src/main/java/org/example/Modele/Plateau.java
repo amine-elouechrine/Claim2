@@ -252,14 +252,16 @@ public class Plateau {
         }
     }
 
-    public void attribuerCarteFirstPhase(Card winningCard) {
+    public void attribuerCarteFirstPhase(Card winningCard, ReglesDeJeu r) {
         if (winningCard == carteJoueur1) {
             joueur1.getHandScndPhase().addCard(carteAffichee);
             joueur2.getHandScndPhase().addCard(pioche.getCard());
+            r.applyUndeadRule(joueur1,carteJoueur1,carteJoueur2,defausse);
             joueurCourant = joueur1;
         } else {
             joueur2.getHandScndPhase().addCard(carteAffichee);
             joueur1.getHandScndPhase().addCard(pioche.getCard());
+            r.applyUndeadRule(joueur2,carteJoueur2,carteJoueur1,defausse);
             joueurCourant = joueur2;
         }
     }

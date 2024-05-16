@@ -616,7 +616,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
             g.setFont(font_2);
             g.drawString(Integer.toString(score), textX, textY);
         }
-        if (i == 2) {
+        if (i == 3) {
             //Draw icon knight
             imageX = x + 5;
             imageY = lineY + (cellHeight - rectWidth) / 2;
@@ -631,8 +631,8 @@ public class NiveauGraphique extends JComponent implements Observateur {
             g.setFont(font_2);
             g.drawString(Integer.toString(score), textX, textY);
         }
-        if (i == 3) {
-            //Draw icon undead
+        if (i == 5) {
+            // Draw icon undead
             imageX = x + 5;
             imageY = lineY + (cellHeight - rectWidth) / 2;
             g.drawImage(icon_undead, imageX, imageY, rectWidth * 5 / 8, rectWidth, this);
@@ -646,8 +646,8 @@ public class NiveauGraphique extends JComponent implements Observateur {
             g.setFont(font_2);
             g.drawString(Integer.toString(score), textX, textY);
         }
-        if (i == 4) {
-            //Draw icon dwarve
+        if (i == 2) {
+            // Draw icon dwarve
             imageX = x + 5;
             imageY = lineY + (cellHeight - rectWidth) / 2;
             g.drawImage(icon_dwarve, imageX, imageY, rectWidth * 5 / 8, rectWidth, this);
@@ -661,8 +661,8 @@ public class NiveauGraphique extends JComponent implements Observateur {
             g.setFont(font_2);
             g.drawString(Integer.toString(score), textX, textY);
         }
-        if (i == 5) {
-            //Draw icon dopplegagner
+        if (i == 4) {
+            // Draw icon dopplegagner
             imageX = x + 5;
             imageY = lineY + (cellHeight - rectWidth) / 2;
             g.drawImage(icon_doppleganger, imageX, imageY, rectWidth * 5 / 8, rectWidth, this);
