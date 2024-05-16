@@ -5,12 +5,13 @@ import org.example.Vue.CollecteurEvenements;
 import org.example.Modele.Jeu;
 import org.example.Patternes.Observable;
 
+import java.util.List;
+
 public class ControleurMediateur implements CollecteurEvenements {
 
     Jeu jeu;
 
     Card carteLeader;
-    int IndiceCarteLeader;
 
     boolean jouable = true;
 
@@ -72,11 +73,12 @@ public class ControleurMediateur implements CollecteurEvenements {
             if (jeu.estFinPartie()) {
                 // Calcul des scores
             }
-
+            System.out.println("indice : " + index);
             if(getPhase()) {
+
                 // Application des règles de jeu pour la selection de carte
                 if(carteLeader != null) {
-                   jouable = jeu.estCarteJouable(IndiceCarteLeader, index);
+                    jouable = jeu.estCarteJouable(carteLeader, index);
                 }
 
                 if(jouable) {
@@ -85,9 +87,9 @@ public class ControleurMediateur implements CollecteurEvenements {
                         jeu.playTrick();
                         jeu.setCarteJouer();
                         carteLeader = null;
-                    } else {
+                    } else if ((jeu.estCarteJoueJ1() && !jeu.estCarteJoueJ2()) ||
+                            (!jeu.estCarteJoueJ1() && jeu.estCarteJoueJ2())) {
                         carteLeader = carteJoue;
-                        IndiceCarteLeader = index;
                         jeu.switchJoueur();
                     }
                 }
@@ -108,7 +110,7 @@ public class ControleurMediateur implements CollecteurEvenements {
             else {
                 // Application des règles de jeu pour la selection de carte
                 if(carteLeader != null) {
-                    jouable = jeu.estCarteJouable(IndiceCarteLeader, index);
+                    jouable = jeu.estCarteJouable(carteLeader, index);
                 }
 
                 if(jouable) {
@@ -119,7 +121,6 @@ public class ControleurMediateur implements CollecteurEvenements {
                         carteLeader = null;
                     } else {
                         carteLeader = carteJoue;
-                        IndiceCarteLeader = index;
                         jeu.switchJoueur();
                     }
                 }
@@ -134,10 +135,10 @@ public class ControleurMediateur implements CollecteurEvenements {
             ;
         } else {
             if (getPhase()) {
-
+                System.out.println("indice : " + index);
                 // Application des règles de jeu pour la selection de carte
                 if(carteLeader != null) {
-                    jouable = jeu.estCarteJouable(IndiceCarteLeader, index);
+                    jouable = jeu.estCarteJouable(carteLeader, index);
                 }
 
                 if(jouable) {
@@ -148,7 +149,6 @@ public class ControleurMediateur implements CollecteurEvenements {
                         carteLeader = null;
                     } else {
                         carteLeader = carteJoue;
-                        IndiceCarteLeader = index;
                         jeu.switchJoueur();
                     }
                 }
@@ -168,7 +168,7 @@ public class ControleurMediateur implements CollecteurEvenements {
             } else {
                 // Application des règles de jeu pour la selection de carte
                 if(carteLeader != null) {
-                    jouable = jeu.estCarteJouable(IndiceCarteLeader, index);
+                    jouable = jeu.estCarteJouable(carteLeader, index);
                 }
 
                 if(jouable) {
@@ -179,7 +179,6 @@ public class ControleurMediateur implements CollecteurEvenements {
                         carteLeader = null;
                     } else {
                         carteLeader = carteJoue;
-                        IndiceCarteLeader = index;
                         jeu.switchJoueur();
                     }
                 }

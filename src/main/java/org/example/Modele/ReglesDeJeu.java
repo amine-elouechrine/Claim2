@@ -85,7 +85,7 @@ public class ReglesDeJeu {
      * @param mainJoueur La main du joueur.
      * @return La liste des cartes jouables par le joueur.
      */
-    public static List<Card> cartesJouables(Card carteAdversaire, Hand mainJoueur) {
+    public  List<Card> cartesJouables(Card carteAdversaire, Hand mainJoueur) {
         List<Card> cartesJouables = new ArrayList<>();
 
         // Vérifier si le joueur possède une carte de la même faction que celle jouée par l'adversaire

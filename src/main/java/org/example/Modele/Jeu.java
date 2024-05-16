@@ -11,7 +11,7 @@ public class Jeu extends Observable {
     Player joueur2;
     Cards cards;
 
-    ReglesDeJeu r;
+    public ReglesDeJeu r;
 
 
     public Jeu() {
@@ -89,7 +89,7 @@ public class Jeu extends Observable {
         return tableauCartes;
     }
 
-    public int[][] getHand(Hand main){
+    public int[][] getHand(Hand main) {
         List<Card> cartes = main.getAllCards();
         return getListeCarte(cartes);
     }
@@ -130,8 +130,8 @@ public class Jeu extends Observable {
         return getListeCarte(r.cartesJouables(carteJoue, main));
     }
 
-    public boolean estCarteJouable(int indiceCarteAdverse, int indiceCarteJoue) {
-        List<Card> preselected = (r.cartesJouables(plateau.getJoueurCourant().getHand().getCard(indiceCarteAdverse), plateau.getJoueurCourant().getHand()));
+    public boolean estCarteJouable(Card CarteAdverse, int indiceCarteJoue) {
+        List<Card> preselected = preselected(CarteAdverse, getPlateau().getJoueurCourant().getHand());
         return plateau.coupJouable(preselected, indiceCarteJoue, plateau.getJoueurCourant().getHand());
     }
 
@@ -144,26 +144,32 @@ public class Jeu extends Observable {
     }
 
     public int getCarteJoueur1F() {
-        if(plateau.getCarteJoueur1() != null)
+        if (plateau.getCarteJoueur1() != null)
             return plateau.getCarteJoueur1().getFactionScore();
         else
             return -1;
     }
 
+    public List<Card> preselected(Card carte, Hand hand) {
+        return r.cartesJouables(carte, hand);
+    }
+
     public int getCarteJoueur1V() {
-        if(plateau.getCarteJoueur1() != null)
+        if (plateau.getCarteJoueur1() != null)
             return plateau.getCarteJoueur1().getValeur();
         else
             return -1;
     }
+
     public int getCarteJoueur2F() {
-        if(plateau.getCarteJoueur2() != null)
+        if (plateau.getCarteJoueur2() != null)
             return plateau.getCarteJoueur2().getFactionScore();
         else
             return -1;
     }
+
     public int getCarteJoueur2V() {
-        if(plateau.getCarteJoueur2() != null)
+        if (plateau.getCarteJoueur2() != null)
             return plateau.getCarteJoueur2().getValeur();
         else
             return -1;
@@ -178,21 +184,20 @@ public class Jeu extends Observable {
     }
 
     public void playTrick() {
-        if(getPhase()) {
+        if (getPhase()) {
             Card carteGagnante = r.carteGagnante(plateau.getCarteJoueur1(), plateau.getCarteJoueur2());
             plateau.attribuerCarteFirstPhase(carteGagnante);
             System.out.println("Nombre carte dans la main " + plateau.getJoueurCourant().getHand().size());
 
-            if(estFinPhase1()) {
+            if (estFinPhase1()) {
                 switchPhase();
             }
 
             System.out.println("Nombre carte pioche : " + plateau.getPioche().getCards().size());
-            if(getPhase()) {
+            if (getPhase()) {
                 plateau.carteAffichee = plateau.pioche.getCard();
             }
-        }
-        else {
+        } else {
             Card carteGagnante = r.carteGagnante(plateau.getCarteJoueur1(), plateau.getCarteJoueur2());
             plateau.attribuerCarteSecondPhase(carteGagnante, r);
 
