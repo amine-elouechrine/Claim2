@@ -9,20 +9,11 @@ import org.example.Modele.*;
 
 import static org.example.Modele.ReglesDeJeu.carteGagnante;
 
-public abstract class IA {
-    String Name ;
-    Hand hand;
-    Hand handScndPhase;
-    PileDeScore pileDeScore;
-    Hand pileFollower;
+public abstract class IA extends GeneralPlayer{
+
     boolean amoi=false;
     public IA(String Name) {
-        this.Name = Name; // initialiser le nom du joueur
-        this.hand = new Hand(); // initialiser de hand vide
-        this.pileDeScore = new PileDeScore(); // initialiser la pile de score vide
-        this.handScndPhase = new Hand(); // initialiser la main de la seconde phase vide
-        this.pileFollower = new Hand();
-        
+        super(Name);
     }
     //public abstract Card jouer_coup_phase1(Hand mainIA, boolean suivre_faction, Card carte_adversaire);
     public abstract Card jouerCoupPhase1(Hand mainIA, boolean suivre_faction, Card carte_adversaire);
