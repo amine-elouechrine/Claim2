@@ -257,10 +257,22 @@ public class Plateau {
             joueur1.getHandScndPhase().addCard(carteAffichee);
             joueur2.getHandScndPhase().addCard(pioche.getCard());
             joueurCourant = joueur1;
-        } else {
+        } else if(winningCard == carteJoueur2) {
             joueur2.getHandScndPhase().addCard(carteAffichee);
             joueur1.getHandScndPhase().addCard(pioche.getCard());
             joueurCourant = joueur2;
+        }
+        else{
+            if(joueurCourant==joueur1){
+                joueur1.getHandScndPhase().addCard(carteAffichee);
+                joueur2.getHandScndPhase().addCard(pioche.getCard());
+                joueurCourant=joueur1;
+            }
+            else{
+                joueur2.getHandScndPhase().addCard(carteAffichee);
+                joueur1.getHandScndPhase().addCard(pioche.getCard());
+                joueurCourant=joueur2;
+            }
         }
     }
 
