@@ -26,6 +26,7 @@ public class Jeu extends Observable {
 
     public void switchPhase() {
         plateau.switchPhase();
+        switchHand();
     }
 
     public void switchJoueur() {
@@ -48,6 +49,7 @@ public class Jeu extends Observable {
         main = plateau.getJoueur2().getHandScndPhase();
         plateau.joueur2.hand = main;
     }
+
     public Hand getHandJ1P1() {
         return plateau.getJoueur1().getHand();
     }
@@ -122,6 +124,15 @@ public class Jeu extends Observable {
         int valeur = carte.getValeur();
         String faction = carte.getFaction();
         return "\nCarte jouée : " + faction + " " + valeur;
+    }
+
+    public int[][] getCarteJouable(Card carteJoue, Hand main) {
+        return getListeCarte(r.cartesJouables(carteJoue, main));
+    }
+
+    public boolean estCarteJouable(int indiceCarteAdverse, int indiceCarteJoue) {
+        List<Card> preselected = (r.cartesJouables(plateau.getJoueurCourant().getHand().getCard(indiceCarteAdverse), plateau.getJoueurCourant().getHand()));
+        return plateau.coupJouable(preselected, indiceCarteJoue, plateau.getJoueurCourant().getHand());
     }
 
     public int getCarteFaction(int index) {

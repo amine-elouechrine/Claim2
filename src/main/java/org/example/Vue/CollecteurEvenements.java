@@ -23,6 +23,7 @@ public interface CollecteurEvenements {
 
     String getNomJoueurCourant();
 
+    int[][] getCarteJouable();
 
     void clicSouris(int index);
     void clicSourisJ2(int index);

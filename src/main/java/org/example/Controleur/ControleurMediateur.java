@@ -9,6 +9,11 @@ public class ControleurMediateur implements CollecteurEvenements {
 
     Jeu jeu;
 
+    Card carteLeader;
+    int IndiceCarteLeader;
+
+    boolean jouable = true;
+
     public ControleurMediateur(Jeu j) {
         jeu = j;
     }
@@ -49,6 +54,13 @@ public class ControleurMediateur implements CollecteurEvenements {
         return jeu.getMainJoueur2Phase2();
     }
 
+    public int[][] getMainJoueurCourant() {
+        return jeu.getHand(jeu.getPlateau().getJoueurCourant().getHand());
+    }
+
+    public int[][] getCarteJouable() {
+        return jeu.getCarteJouable(carteLeader, jeu.getPlateau().getJoueurCourant().getHand());
+    }
     public String getNomJoueurCourant() {
         return jeu.getNomJoueur(jeu.getPlateau().getJoueurCourant());
     }
@@ -62,17 +74,23 @@ public class ControleurMediateur implements CollecteurEvenements {
             }
 
             if(getPhase()) {
-
                 // Application des règles de jeu pour la selection de carte
-
-                Card carteJoue = jeu.getPlateau().jouerCarte(index);
-                if (jeu.estCarteJoueJ1() && jeu.estCarteJoueJ2()) {
-                    jeu.playTrick();
-                    jeu.setCarteJouer();
-                } else {
-                    jeu.switchJoueur();
+                if(carteLeader != null) {
+                   jouable = jeu.estCarteJouable(IndiceCarteLeader, index);
                 }
 
+                if(jouable) {
+                    Card carteJoue = jeu.getPlateau().jouerCarte(index);
+                    if (jeu.estCarteJoueJ1() && jeu.estCarteJoueJ2()) {
+                        jeu.playTrick();
+                        jeu.setCarteJouer();
+                        carteLeader = null;
+                    } else {
+                        carteLeader = carteJoue;
+                        IndiceCarteLeader = index;
+                        jeu.switchJoueur();
+                    }
+                }
                 // Ajouter temporisation / animation
 
                 // L'IA joue une carte
@@ -88,13 +106,23 @@ public class ControleurMediateur implements CollecteurEvenements {
                 // jeu.setCarteJouer();
             }
             else {
-                Card carteJoue = jeu.getPlateau().jouerCarte(index);
-                if (jeu.estCarteJoueJ1() && jeu.estCarteJoueJ2()) {
-                    jeu.playTrick();
-                    jeu.setCarteJouer();
+                // Application des règles de jeu pour la selection de carte
+                if(carteLeader != null) {
+                    jouable = jeu.estCarteJouable(IndiceCarteLeader, index);
                 }
-                else
-                    jeu.switchJoueur();
+
+                if(jouable) {
+                    Card carteJoue = jeu.getPlateau().jouerCarte(index);
+                    if (jeu.estCarteJoueJ1() && jeu.estCarteJoueJ2()) {
+                        jeu.playTrick();
+                        jeu.setCarteJouer();
+                        carteLeader = null;
+                    } else {
+                        carteLeader = carteJoue;
+                        IndiceCarteLeader = index;
+                        jeu.switchJoueur();
+                    }
+                }
             }
         }
         jeu.metAJour();
@@ -108,14 +136,22 @@ public class ControleurMediateur implements CollecteurEvenements {
             if (getPhase()) {
 
                 // Application des règles de jeu pour la selection de carte
-                Card carteJoue = jeu.getPlateau().jouerCarte(index);
-                if (jeu.estCarteJoueJ1() && jeu.estCarteJoueJ2()) {
-                    jeu.playTrick();
-                    jeu.setCarteJouer();
-                } else {
-                    jeu.switchJoueur();
+                if(carteLeader != null) {
+                    jouable = jeu.estCarteJouable(IndiceCarteLeader, index);
                 }
 
+                if(jouable) {
+                    Card carteJoue = jeu.getPlateau().jouerCarte(index);
+                    if (jeu.estCarteJoueJ1() && jeu.estCarteJoueJ2()) {
+                        jeu.playTrick();
+                        jeu.setCarteJouer();
+                        carteLeader = null;
+                    } else {
+                        carteLeader = carteJoue;
+                        IndiceCarteLeader = index;
+                        jeu.switchJoueur();
+                    }
+                }
                 // Ajouter temporisation / animation
 
                 // L'IA joue une carte
@@ -130,12 +166,23 @@ public class ControleurMediateur implements CollecteurEvenements {
 
                 // jeu.setCarteJouer();
             } else {
-                Card carteJoue = jeu.getPlateau().jouerCarte(index);
-                if (jeu.estCarteJoueJ1() && jeu.estCarteJoueJ2()) {
-                    jeu.playTrick();
-                    jeu.setCarteJouer();
-                } else
-                    jeu.switchJoueur();
+                // Application des règles de jeu pour la selection de carte
+                if(carteLeader != null) {
+                    jouable = jeu.estCarteJouable(IndiceCarteLeader, index);
+                }
+
+                if(jouable) {
+                    Card carteJoue = jeu.getPlateau().jouerCarte(index);
+                    if (jeu.estCarteJoueJ1() && jeu.estCarteJoueJ2()) {
+                        jeu.playTrick();
+                        jeu.setCarteJouer();
+                        carteLeader = null;
+                    } else {
+                        carteLeader = carteJoue;
+                        IndiceCarteLeader = index;
+                        jeu.switchJoueur();
+                    }
+                }
             }
         }
         jeu.metAJour();
