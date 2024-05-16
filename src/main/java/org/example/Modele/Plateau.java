@@ -194,6 +194,8 @@ public class Plateau {
         //creation des cartes de jeu et shuffle (pioche)
         pioche = new Cards();
         pioche.addAllCards();
+        System.out.println("Nombre carte dans la pioche : " + pioche.getCards().size());
+
         pioche.shuffle();
         //creation & initialiser les mains 
         Hand mainJoueur1 = pioche.getHandOf13Cards();
@@ -205,10 +207,14 @@ public class Plateau {
         joueur1.setHand(mainJoueur1);
         joueur2.setHand(mainJoueur2);
 
+        System.out.println("Nombre carte dans la pioche : " + pioche.getCards().size());
+
         // Init joueur courant
         joueurCourant = joueur1;
         //initialiser la carte affichee
         carteAffichee = pioche.getCard();
+
+        System.out.println("Nombre carte dans la pioche : " + pioche.getCards().size());
     }
 
     /**
@@ -220,7 +226,10 @@ public class Plateau {
     public Card jouerCarte(int indexCard) {
         // jouer une carte quelconque de sa main
         Card carteJoue;
-        carteJoue = joueurCourant.jouerCarte(indexCard);
+        if(getPhase())
+            carteJoue = joueurCourant.jouerCarte(indexCard);
+        else
+            carteJoue = joueurCourant.jouerCarte2(indexCard);
         if(joueurCourant == joueur1) {
             setCarteJoueur1(carteJoue);
         }

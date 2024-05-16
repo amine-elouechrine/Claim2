@@ -3,8 +3,8 @@ package org.example.Modele;
 import java.util.List;
 
 public class Player {
-    String Name ;
-    int score ;
+    String Name;
+    int score;
     Hand hand;
     Hand handScndPhase;
     PileDeScore pileDeScore;
@@ -23,30 +23,35 @@ public class Player {
 
     /**
      * Ajoute une carte à la pile de score du joueur.
+     *
      * @param carte
      */
-    public void addPileDeScore(Card carte){
+    public void addPileDeScore(Card carte) {
         pileDeScore.addCard(carte);
     }
 
     /**
      * Renvoie le nom du joueur.
+     *
      * @return Le nom du joueur.
      */
-    String getName(){
+    String getName() {
         return Name;
     }
-    public void setName(String name){
+
+    public void setName(String name) {
         Name = name;
     }
 
     /**
      * Renvoie la pile de score du joueur.
+     *
      * @return La pile de score du joueur.
      */
     public PileDeScore getPileDeScore() {
         return pileDeScore;
     }
+
     public void setPileDeScore(PileDeScore pileDeScore) {
         this.pileDeScore = pileDeScore;
     }
@@ -58,18 +63,19 @@ public class Player {
     /**
      * verifie si la main du joueur est vide selon la phase
      * si on est dans la 1er phase est verifie hand sinon handScndPhase
+     *
      * @param /Phase
      * @return true si la main est vide, false sinon
      */
-    public boolean isHandEmpty(boolean phase){
-        if(phase == true ){
+    public boolean isHandEmpty(boolean phase) {
+        if (phase == true) {
             return hand.isEmpty();
-        }else{
+        } else {
             return handScndPhase.isEmpty();
         }
     }
 
-    int  getScore(){
+    int getScore() {
         return score;
     }
 
@@ -80,6 +86,7 @@ public class Player {
     Hand getHandScndPhase() {
         return handScndPhase;
     }
+
     /*Card getCardFromHand(){
         return hand.get(hand.size()-1);
     }*/
@@ -90,6 +97,7 @@ public class Player {
 
     /**
      * incremente le score du joueur
+     *
      * @param points
      */
     public void updateScore(int points) {
@@ -98,6 +106,7 @@ public class Player {
 
     /**
      * Joue une carte de la main du joueur et la retire de sa main.
+     *
      * @param /carte carte à jouer.
      * @return La carte jouée, ou null si la carte n'est pas dans la main du joueur.
      */
@@ -107,6 +116,19 @@ public class Player {
         if (hand.contains(carte)) {
             // Retire la carte de la main du joueur
             hand.removeCard(carte);
+            return carte;
+        } else {
+            System.out.println("La carte n'est pas dans la main du joueur.");
+            // Si la carte n'est pas dans la main du joueur, retourne null
+            return null;
+        }
+    }
+
+    public Card jouerCarte2(int indexCard) {
+        Card carte = handScndPhase.getCard(indexCard);
+        if (handScndPhase.contains(carte)) {
+            // Retire la carte de la main du joueur
+            handScndPhase.removeCard(carte);
             return carte;
         } else {
             System.out.println("La carte n'est pas dans la main du joueur.");

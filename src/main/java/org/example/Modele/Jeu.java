@@ -38,6 +38,16 @@ public class Jeu extends Observable {
 
     }
 
+    public void switchHand() {
+        // Changer main joueur 1
+        Hand main;
+        main = plateau.getJoueur1().getHandScndPhase();
+        plateau.joueur1.hand = main;
+
+        // Changer main joueur 2
+        main = plateau.getJoueur2().getHandScndPhase();
+        plateau.joueur2.hand = main;
+    }
     public Hand getHandJ1P1() {
         return plateau.getJoueur1().getHand();
     }
@@ -59,15 +69,14 @@ public class Jeu extends Observable {
     }
 
     public boolean estFinPhase1() {
-        return plateau.estFinPhase(plateau.phase);
+        return plateau.estFinPhase(plateau.getPhase());
     }
 
     public boolean estFinPartie() {
         return plateau.isEndOfGame();
     }
 
-    public int[][] getListCardJouable(Card carteAdversaire, Hand mainJoueur) {
-        List<Card> listeCarte = r.cartesJouables(carteAdversaire, mainJoueur);
+    private int[][] getListeCarte(List<Card> listeCarte) {
         int[][] tableauCartes = new int[listeCarte.size()][2];
         int i = 0;
         for (Card carte : listeCarte) {
@@ -78,58 +87,34 @@ public class Jeu extends Observable {
         return tableauCartes;
     }
 
-    public int[][] getMainJoueur1Phase1() {
-
-        int i = 0;
-        Hand main = getHandJ1P1();
+    public int[][] getHand(Hand main){
         List<Card> cartes = main.getAllCards();
-        int[][] tableauCartes = new int[cartes.size()][2];
-        for (Card carte : cartes) {
-            tableauCartes[i][0] = carte.getValeur();
-            tableauCartes[i][1] = carte.getFactionScore();
-            i++;
-        }
-        return tableauCartes;
+        return getListeCarte(cartes);
+    }
+
+    public int[][] getListCardJouable(Card carteAdversaire, Hand mainJoueur) {
+        List<Card> listeCarte = r.cartesJouables(carteAdversaire, mainJoueur);
+        return getListeCarte(listeCarte);
+    }
+
+    public int[][] getMainJoueur1Phase1() {
+        Hand main = getHandJ1P1();
+        return getHand(main);
     }
 
     public int[][] getMainJoueur2Phase1() {
-
-        int i = 0;
         Hand main = getHandJ2P1();
-        List<Card> cartes = main.getAllCards();
-        int[][] tableauCartes = new int[cartes.size()][2];
-        for (Card carte : cartes) {
-            tableauCartes[i][0] = carte.getValeur();
-            tableauCartes[i][1] = carte.getFactionScore();
-            i++;
-        }
-        return tableauCartes;
+        return getHand(main);
     }
 
     public int[][] getMainJoueur1Phase2() {
-        int i = 0;
         Hand main = getHandJ1P2();
-        List<Card> cartes = main.getAllCards();
-        int[][] tableauCartes = new int[cartes.size()][2];
-        for (Card carte : cartes) {
-            tableauCartes[i][0] = carte.getValeur();
-            tableauCartes[i][1] = carte.getFactionScore();
-            i++;
-        }
-        return tableauCartes;
+        return getHand(main);
     }
 
     public int[][] getMainJoueur2Phase2() {
-        int i = 0;
         Hand main = getHandJ2P2();
-        List<Card> cartes = main.getAllCards();
-        int[][] tableauCartes = new int[cartes.size()][2];
-        for (Card carte : cartes) {
-            tableauCartes[i][0] = carte.getValeur();
-            tableauCartes[i][1] = carte.getFactionScore();
-            i++;
-        }
-        return tableauCartes;
+        return getHand(main);
     }
 
     public String getCardtoString(int index) {
@@ -182,9 +167,26 @@ public class Jeu extends Observable {
     }
 
     public void playTrick() {
-        Card carteGagnante = r.carteGagnante(plateau.getCarteJoueur1(), plateau.getCarteJoueur2());
-        plateau.attribuerCarteFirstPhase(carteGagnante);
-        plateau.carteAffichee = plateau.pioche.getCard();
+        if(getPhase()) {
+            Card carteGagnante = r.carteGagnante(plateau.getCarteJoueur1(), plateau.getCarteJoueur2());
+            plateau.attribuerCarteFirstPhase(carteGagnante);
+            System.out.println("Nombre carte dans la main " + plateau.getJoueurCourant().getHand().size());
+
+            if(estFinPhase1()) {
+                switchPhase();
+            }
+
+            System.out.println("Nombre carte pioche : " + plateau.getPioche().getCards().size());
+            if(getPhase()) {
+                plateau.carteAffichee = plateau.pioche.getCard();
+            }
+        }
+        else {
+            Card carteGagnante = r.carteGagnante(plateau.getCarteJoueur1(), plateau.getCarteJoueur2());
+            plateau.attribuerCarteSecondPhase(carteGagnante, r);
+
+        }
+        System.out.println("Nombre carte pioche : " + plateau.getPioche().getCards().size());
     }
 
     public void setCarteJouer() {
@@ -195,5 +197,9 @@ public class Jeu extends Observable {
 
     public void getHandtoString() {
         plateau.joueurCourant.hand.printHand();
+    }
+
+    public String getNomJoueur(Player joueur) {
+        return joueur.getName();
     }
 }

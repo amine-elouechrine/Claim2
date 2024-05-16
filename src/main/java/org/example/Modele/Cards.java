@@ -10,6 +10,7 @@ public class Cards {
     // Constructeur
     public Cards() {
         pile = new Stack<>();
+        // addAllCards();
     }
 
     // Méthode pour créer les cartes Gobelin

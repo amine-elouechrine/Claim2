@@ -40,6 +40,19 @@ public class AdaptateurSouris extends MouseAdapter implements MouseListener {
             control.clicSourisJ2(carte);
         }
 
+        if (i > niv.posXMain() && i < (niv.getLargeurMainJ1P2() + niv.posXMain()) && j > niv.posYMainJ1() && j < (niv.posYMainJ1() + niv.getHauteurMain())) {
+            valeur_carte = (double) (i - niv.posXMain()) / largeurR; // Il faut diviser par la taille des cartes
+            carte = (int) Math.floor(valeur_carte);
+            control.clicSouris(carte);
+        }
+
+        if (i > niv.posXMain() && i < (niv.getLargeurMainJ2P2() + niv.posXMain()) && j > niv.posYMainJ2() && j < (niv.posYMainJ2() + niv.getHauteurMain())) {
+            valeur_carte = (double) (i - niv.posXMain()) / largeurR; // Il faut diviser par la taille des cartes
+            carte = (int) Math.floor(valeur_carte);
+            control.clicSourisJ2(carte);
+        }
+
+
         /*
         System.out.println("double : " + valeur_carte);
         System.out.println("carte : " + carte);
