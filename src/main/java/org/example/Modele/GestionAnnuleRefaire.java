@@ -99,7 +99,7 @@ public class GestionAnnuleRefaire {
         for(Map.Entry<String ,List<Card>> entry :pile.getPileDeScore().entrySet()){
             String key = entry.getKey();
             List<Card> cards = entry.getValue();
-            p.println(key+":"+cards.size());
+            p.println(key+"::"+cards.size());
             for(Card card : cards){
                 p.println(card.getFaction()+":"+card.getValeur());
             }
@@ -142,7 +142,7 @@ public class GestionAnnuleRefaire {
         PileDeScore pileDeScore = new PileDeScore();
         String  l = r.readLine();
         while (!(l.isEmpty())) {
-            String [] line = l.split(":");
+            String [] line = l.split("::");
             int taille = Integer.parseInt(line[1]);
             for (int i = 0; i < taille; i++) {
                 String [] carte = r.readLine().split(":");
@@ -169,20 +169,15 @@ public class GestionAnnuleRefaire {
         return defausse;
     }
     public Cards restaureCards (BufferedReader r) throws IOException {
-        ArrayList<Card> list = new ArrayList<>();
+        Cards cards = new Cards();
         String l = r.readLine();
         while (!(l.isEmpty())) {
             String [] line = l.split(":");
             String faction =line[0];
             int valeur = Integer.parseInt(line[1]);
             Card card = new Card(valeur,faction);
-            list.add(card);
+            cards.setCard(card);
             l = r.readLine();
-        }
-        Cards cards = new Cards();
-        while(!(list.isEmpty())){
-            Card c =list.remove(list.size()-1);
-            cards.setCard(c);
         }
         return cards;
     }

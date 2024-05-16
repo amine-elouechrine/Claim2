@@ -34,6 +34,13 @@ public class Defausse {
         return cartes;
     }
 
+    public Card getCarte(int index) {
+        return cartes.get(index);
+    }
+
+    public int size(){
+        return cartes.size();
+    }
     /**
      * Vérifie si la défausse est vide.
      * @return true si la défausse est vide, false sinon.

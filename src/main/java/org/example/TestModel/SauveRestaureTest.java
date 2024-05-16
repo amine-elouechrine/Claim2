@@ -4,10 +4,13 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.Scanner;
 
 import org.example.Modele.Cards;
+import org.example.Modele.Card;
 import org.example.Modele.Defausse;
 import org.example.Modele.GestionAnnuleRefaire;
 import org.example.Modele.Hand;
@@ -73,13 +76,19 @@ public class SauveRestaureTest {
 
         // Créer et initialiser le hand
         Hand main = pioche.getHandOf13Cards();
+        for(Card card: main.getAllCards()){
+            System.out.println(card);
+        }
 
         // sauvgarder le hand
         g.saveHand(main , p);
-
+        p.println();
+        System.out.println();
         // reccuperer le hand
         Hand main2 = g.restaureHand(r);
-
+        for(Card card: main2.getAllCards()){
+            System.out.println(card);
+        }
         // compare les deux hand
         verifieData(main, main2);
     }
@@ -96,14 +105,28 @@ public class SauveRestaureTest {
         Cards pioche = new Cards();
         pioche.addAllCards();
 
+
         // sauvgarder la pioche
         g.saveCards(pioche , p);
-
+        p.println();
+        System.out.println();
         // reccuperer la pioche
         Cards pioche2 = g.restaureCards(r);
+        for(int i=0;i<52;i++){
+            Card card1 = pioche.getCard();
+            Card card2 = pioche2.getCard();
+            System.out.println(card1.getFaction()+":"+card2.getFaction());
+            System.out.println(card1.getValeur()+";"+card2.getValeur());
+            if ((card1.getFaction().equals(card2.getFaction()))&& (card1.getValeur()==card2.getValeur())){
+                System.out.println("true");
+            }
+            else{
+                System.out.println("false");
+            }
+        }
 
         // creer un nombre aleatoire entre 0 et 52
-        int nombre = (int)(Math.random() * 52);
+        /*int nombre = (int)(Math.random() * 52);
 
         // Retirer un nombre aléatoire de cartes de la pioche
         for (int i = 0; i < nombre; i++) {
@@ -111,7 +134,7 @@ public class SauveRestaureTest {
         }
 
         //save la pioche
-        pioche2 = g.restaureCards(r);
+        pioche2 = g.restaureCards(r);*/
 
         // compare les deux pioches
         verifieData(pioche, pioche2);
@@ -134,15 +157,24 @@ public class SauveRestaureTest {
 
         // Ajouter un nombre aléatoire de cartes à la pile de score
         int nombre = (int)(Math.random() * 15);
-        for (int i = 0; i < nombre; i++) {
+        for (int i = 0; i < 10; i++) {
             pileDeScore.addCard(pioche.getCard());
         }
 
         // sauvgarder la pile de score
         g.savePileDeScore(pileDeScore , p);
+        p.println();
 
         // reccuperer la pile de score
         PileDeScore pileDeScore2 = g.restaurePileDeScore(r);
+        for(Map.Entry<String , List<Card>> entry :pileDeScore.getPileDeScore().entrySet()){
+            String key = entry.getKey();
+            List<Card> cards = entry.getValue();
+            for(Card card : cards){
+                System.out.println(card.getFaction()+":"+card.getValeur());
+            }
+
+        }
         
         // Comparer les deux piles de score
         verifieData(pileDeScore, pileDeScore2);
@@ -215,10 +247,20 @@ public class SauveRestaureTest {
 
         // sauvgarder la defausse
         g.saveDefausse(defausse , p);
+        p.println();
 
         // reccuperer la defausse
         Defausse defausse2 = g.restaureDefausse(r);
-
+        for(int i =0; i<defausse.size();i++){
+            Card card1 = defausse.getCarte(i);
+            Card card2 = defausse2.getCarte(i);
+            if (card1.getFaction().equals(card2.getFaction())){
+                System.out.println("true");
+            }
+            else {
+                System.out.println("false");
+            }
+        }
         // Comparer les deux défausses
         verifieData(defausse, defausse2);
     }
