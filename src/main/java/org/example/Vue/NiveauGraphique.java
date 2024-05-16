@@ -201,8 +201,19 @@ public class NiveauGraphique extends JComponent implements Observateur {
                 strImage += "_" + main[i][0];
                 image = imageMap.get(strImage);
                 grayImage = toGrayScale(image);
-                g.drawImage(image, x, y, rectWidth, rectHeight, this);
-                // g.fillRect(x, y, rectWidth, rectHeight);
+                boolean isPlayable = false;
+                for (int[] carteJouable : control.getCarteJouable()) {
+                    if (main[i][0] == carteJouable[0] && main[i][1] == carteJouable[1]) {
+                        isPlayable = true;
+                        break;
+                    }
+                }
+
+                if (isPlayable) {
+                    g.drawImage(image, x, y, rectWidth, rectHeight, this);
+                } else {
+                    g.drawImage(grayImage, x, y, rectWidth, rectHeight, this);
+                }
             }
 
             // Dessin de la main du joueur 2
@@ -231,8 +242,18 @@ public class NiveauGraphique extends JComponent implements Observateur {
                 strImage += "_" + mainJ2[i][0];
                 image = imageMap.get(strImage);
                 grayImage = toGrayScale(image);
-                g.drawImage(grayImage, x, y, rectWidth, rectHeight, this);
-                // g.fillRect(x, y, rectWidth, rectHeight);
+                boolean isPlayable = false;
+                for (int[] carteJouable : control.getCarteJouable()) {
+                    if (mainJ2[i][0] == carteJouable[0] && mainJ2[i][1] == carteJouable[1]) {
+                        isPlayable = true;
+                        break;
+                    }
+                }
+                if (isPlayable) {
+                    g.drawImage(image, x, y, rectWidth, rectHeight, this);
+                } else {
+                    g.drawImage(grayImage, x, y, rectWidth, rectHeight, this);
+                }
             }
 
             posX = startXJ1P1;
@@ -567,7 +588,17 @@ public class NiveauGraphique extends JComponent implements Observateur {
         int imageX;
         int imageY;
         int textX;
+        String img;
         int score = jeu.getPlateau().getJoueur1().getPileDeScore().getCardFaction(faction).size() - jeu.getPlateau().getJoueur2().getPileDeScore().getCardFaction(faction).size();
+        int val = Math.max(jeu.getPlateau().getJoueur1().getPileDeScore().maxValueOfFaction(faction), jeu.getPlateau().getJoueur2().getPileDeScore().maxValueOfFaction(faction));
+        if (val >= 0) {
+            img = "carte_" + val;
+        } else {
+            img = "carte_blanc";
+        }
+
+        image = imageMap.get(img);
+
         if (i > 0) {
             if (score > 0) {
                 bgColor = Color.GREEN;
@@ -611,10 +642,14 @@ public class NiveauGraphique extends JComponent implements Observateur {
             int textWidth = fm.stringWidth(Integer.toString(score));
             int textHeight = fm.getHeight();
 
-            textX = x + (rectWidth * 2 - textWidth) * 2 / 3;
+            textX = x + (rectWidth * 2 - textWidth) / 2;
             textY = lineY + (cellHeight + textHeight * 2 / 3) / 2;
             g.setFont(font_2);
             g.drawString(Integer.toString(score), textX, textY);
+            imageX = x + rectWidth * 3 / 2;
+            imageY = lineY + (cellHeight - rectHeight / 4) / 2;
+            // Draw la carte gagnee avec la plus grand valeur
+            g.drawImage(image, imageX, imageY, rectWidth / 4, rectHeight / 4, this);
         }
         if (i == 3) {
             //Draw icon knight
@@ -626,10 +661,13 @@ public class NiveauGraphique extends JComponent implements Observateur {
             int textWidth = fm.stringWidth(Integer.toString(score));
             int textHeight = fm.getHeight();
 
-            textX = x + (rectWidth * 2 - textWidth) * 2 / 3;
+            textX = x + (rectWidth * 2 - textWidth) / 2;
             textY = lineY + (cellHeight + textHeight * 2 / 3) / 2;
             g.setFont(font_2);
             g.drawString(Integer.toString(score), textX, textY);
+            imageX = x + rectWidth * 3 / 2;
+            imageY = lineY + (cellHeight - rectHeight / 4) / 2;
+            g.drawImage(image, imageX, imageY, rectWidth / 4, rectHeight / 4, this);
         }
         if (i == 5) {
             // Draw icon undead
@@ -641,10 +679,13 @@ public class NiveauGraphique extends JComponent implements Observateur {
             int textWidth = fm.stringWidth(Integer.toString(score));
             int textHeight = fm.getHeight();
 
-            textX = x + (rectWidth * 2 - textWidth) * 2 / 3;
+            textX = x + (rectWidth * 2 - textWidth) / 2;
             textY = lineY + (cellHeight + textHeight * 2 / 3) / 2;
             g.setFont(font_2);
             g.drawString(Integer.toString(score), textX, textY);
+            imageX = x + rectWidth * 3 / 2;
+            imageY = lineY + (cellHeight - rectHeight / 4) / 2;
+            g.drawImage(image, imageX, imageY, rectWidth / 4, rectHeight / 4, this);
         }
         if (i == 2) {
             // Draw icon dwarve
@@ -656,10 +697,13 @@ public class NiveauGraphique extends JComponent implements Observateur {
             int textWidth = fm.stringWidth(Integer.toString(score));
             int textHeight = fm.getHeight();
 
-            textX = x + (rectWidth * 2 - textWidth) * 2 / 3;
+            textX = x + (rectWidth * 2 - textWidth) / 2;
             textY = lineY + (cellHeight + textHeight * 2 / 3) / 2;
             g.setFont(font_2);
             g.drawString(Integer.toString(score), textX, textY);
+            imageX = x + rectWidth * 3 / 2;
+            imageY = lineY + (cellHeight - rectHeight / 4) / 2;
+            g.drawImage(image, imageX, imageY, rectWidth / 4, rectHeight / 4, this);
         }
         if (i == 4) {
             // Draw icon dopplegagner
@@ -671,10 +715,13 @@ public class NiveauGraphique extends JComponent implements Observateur {
             int textWidth = fm.stringWidth(Integer.toString(score));
             int textHeight = fm.getHeight();
 
-            textX = x + (rectWidth * 2 - textWidth) * 2 / 3;
+            textX = x + (rectWidth * 2 - textWidth) / 2;
             textY = lineY + (cellHeight + textHeight * 2 / 3) / 2;
             g.setFont(font_2);
             g.drawString(Integer.toString(score), textX, textY);
+            imageX = x + rectWidth * 3 / 2;
+            imageY = lineY + (cellHeight - rectHeight / 4) / 2;
+            g.drawImage(image, imageX, imageY, rectWidth / 4, rectHeight / 4, this);
         }
     }
 

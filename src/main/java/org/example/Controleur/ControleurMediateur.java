@@ -61,7 +61,11 @@ public class ControleurMediateur implements CollecteurEvenements {
     }
 
     public int[][] getCarteJouable() {
-        return jeu.getCarteJouable(carteLeader, jeu.getPlateau().getJoueurCourant().getHand());
+        if(carteLeader != null) {
+            return jeu.getCarteJouable(carteLeader, jeu.getPlateau().getJoueurCourant().getHand());
+        }else{
+            return getMainJoueurCourant();
+        }
     }
     public String getNomJoueurCourant() {
         return jeu.getNomJoueur(jeu.getPlateau().getJoueurCourant());
