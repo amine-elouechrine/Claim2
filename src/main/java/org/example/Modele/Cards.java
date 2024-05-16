@@ -11,13 +11,14 @@ public class Cards {
         pile = new Stack<>();
     }
 
-    // Méthode pour créer les cartes Gobelin
+    // Méthode pour créer tous les cartes mellangees
     public void addAllCards(){
         createGobelinCards();
         createKnightCards();
         createUndeadCards();
         createDwarveCards();
         createDoppelgangerCards();
+        shuffle();
     }
 
     private void createGobelinCards() {
@@ -161,5 +162,9 @@ public class Cards {
             hand.addCard(getCard());
         }
         return hand;
+    }
+
+    public void removeCard() {
+        pile.pop();
     }
 }
