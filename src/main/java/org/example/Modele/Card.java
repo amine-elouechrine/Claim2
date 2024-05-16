@@ -19,6 +19,8 @@ public class Card {
         this.faction = faction;
     }
 
+
+
     public Card() {
         // Constructeur vide pour les tests
     }

@@ -14,14 +14,14 @@ public abstract class IA {
     Hand hand;
     Hand handScndPhase;
     PileDeScore pileDeScore;
-    Hand pileFollower;
+    //Hand pileFollower;
     boolean amoi=false;
     public IA(String Name) {
         this.Name = Name; // initialiser le nom du joueur
         this.hand = new Hand(); // initialiser de hand vide
         this.pileDeScore = new PileDeScore(); // initialiser la pile de score vide
         this.handScndPhase = new Hand(); // initialiser la main de la seconde phase vide
-        this.pileFollower = new Hand();
+        //this.pileFollower = new Hand();
         
     }
     //public abstract Card jouer_coup_phase1(Hand mainIA, boolean suivre_faction, Card carte_adversaire);
