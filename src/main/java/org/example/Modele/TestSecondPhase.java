@@ -48,16 +48,16 @@ public class TestSecondPhase {
 
         }
     }
-    /*
+
     public static void main(String[] args){
         Cards cards = new Cards();
         cards.addAllCards();
         cards.shuffle();
         Hand firstHand =cards.getHandOf13Cards();
         Hand secondHand =cards.getHandOf13Cards();
-        Player joueur1 = new Player("joueur1", firstHand);
-        Player joueur2 = new Player("joueur2", secondHand);
-        Plateau plateau = new Plateau(joueur1,joueur2,cards);
+        Player joueur1 = new Player("joueur1");
+        Player joueur2 = new Player("joueur2");
+        Plateau plateau = new Plateau();
         ReglesDeJeu r = new ReglesDeJeu();
         TestFirstPhase TestFirstPhase = new TestFirstPhase(plateau ,r,cards);
         TestSecondPhase testSecondPhase = new TestSecondPhase(plateau,r);
@@ -65,7 +65,7 @@ public class TestSecondPhase {
         System.out.println(Gagnant);
     }
 
-     */
+
 
 }
 
