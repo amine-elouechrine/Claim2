@@ -1,7 +1,5 @@
 package org.example.Modele;
 
-import java.util.List;
-
 public class Player {
     String Name ;
     int score ;
@@ -33,7 +31,7 @@ public class Player {
      * Renvoie le nom du joueur.
      * @return Le nom du joueur.
      */
-    String getName(){
+    public String getName(){
         return Name;
     }
     public void setName(String name){
@@ -58,7 +56,7 @@ public class Player {
     /**
      * verifie si la main du joueur est vide selon la phase
      * si on est dans la 1er phase est verifie hand sinon handScndPhase
-     * @param /Phase
+     * @param phase
      * @return true si la main est vide, false sinon
      */
     public boolean isHandEmpty(boolean phase){
@@ -69,7 +67,7 @@ public class Player {
         }
     }
 
-    int  getScore(){
+    public int  getScore(){
         return score;
     }
 
@@ -98,7 +96,7 @@ public class Player {
 
     /**
      * Joue une carte de la main du joueur et la retire de sa main.
-     * @param /carte carte à jouer.
+     * @param indexCard carte à jouer.
      * @return La carte jouée, ou null si la carte n'est pas dans la main du joueur.
      */
     public Card jouerCarte(int indexCard) {

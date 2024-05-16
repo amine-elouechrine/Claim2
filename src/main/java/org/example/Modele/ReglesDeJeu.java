@@ -15,8 +15,8 @@ public class ReglesDeJeu {
     // Méthode pour déterminer quelle carte l'emporte entre deux cartes selon les règles du jeu
     /**
      * Méthode pour déterminer quelle carte l'emporte entre deux cartes selon les règles du jeu.
-     * @param carte1 La première carte.
-     * @param carte2 La deuxième carte.
+     * @param carte1 La première carte jouer .
+     * @param carte2 La deuxième carte jouer .
      * @return La carte gagnante ou null en cas d'égalité.
      */
     public static Card carteGagnante(Card carte1, Card carte2) {
@@ -24,30 +24,96 @@ public class ReglesDeJeu {
         String faction2 = carte2.getFaction();
 
         // Règle spéciale pour les Gobelins et les Chevaliers
-        if (faction1.equals("Goblins") && faction2.equals("Knights")) {
-            return carte2; // Le Chevalier bat toujours le Gobelin
-        } else if (faction1.equals("Knights") && faction2.equals("Goblins")) {
-            return carte1; // Le Chevalier bat toujours le Gobelin
+        if(faction1.equals("Goblins") && faction2.equals("Knights") || faction1.equals("Knights") && faction2.equals("Goblins")){
+            return GobelinVsKnight(carte1, carte2);
         }
 
-        // Comparaison basée sur les valeurs des cartes si les factions ne sont pas Goblins ou Knights
-        return determinerCarteGagnante(carte1, carte2);
+        // Règle spéciale pour les Doppelgangers
+        else if(faction1.equals("Doppelganger") || faction2.equals("Doppelganger")){
+            return DoppelgangerVsCard(carte1, carte2);
+        }
+
+        // si carte1 vs carte2 il n'y a pas de regles speciaux a appliquer
+        else{
+            return cardVScard(carte1, carte2);
+        }
+    }
+
+    /**
+     * Méthode pour déterminer quelle carte l'emporte entre un Doppelganger et une autre carte.
+     * si carte1 est doppeleganger et carte2 est doppelganger alors on compare les valeurs des cartes
+     * si carte1 est doppelganger et carte2 est une autre carte alors la carte gagnante est la carte1
+     * @param carte1
+     * @param carte2
+     * @return La carte gagnante
+     */
+    public static Card DoppelgangerVsCard(Card carte1, Card carte2){
+        if (carte1.getFaction().equals("Doppelganger")) {
+            if(carte2.getFaction().equals("Doppelganger")){
+                return determinerCarteGagnante(carte1, carte2);
+            }else{
+                return carte1;
+            }
+        }else {
+            if(carte2.getFaction().equals("Doppelganger")){
+                return determinerCarteGagnante(carte1, carte2);
+            }else{
+                return cardVScard(carte1, carte2);
+            }
+        }
+    }
+
+    /**
+     * Méthode pour déterminer quelle carte l'emporte entre deux cartes sans s'occuper des regles speciaux.
+     * @param carte1
+     * @param carte2
+     * @return carte1 si faction de carte2 est differente sinon elle retourne la carte gagnante
+     */
+    public static Card cardVScard(Card carte1 , Card carte2){
+        if(!(carte2.getFaction().equals(carte1.getFaction()))){
+            return carte1;
+        }else{
+            return determinerCarteGagnante(carte1, carte2);
+        }
+    }
+
+    /**
+     * Méthode pour déterminer quelle carte l'emporte entre un Gobelin et un Chevalier.
+     * @return La carte gagnante.
+     */
+    public static Card GobelinVsKnight(Card carte1, Card carte2){
+
+        if (carte1.getFaction().equals("Goblins") && carte2.getFaction().equals("Knights")) {
+            return carte2; // Le Chevalier bat toujours le Gobelin
+        }else {
+            return carte1; // Le Chevalier bat toujours le Gobelin
+        }
     }
 
 
+    /**
+     * Méthode pour déterminer quelle carte l'emporte entre deux cartes de meme faction selon la valeur des cartes.
+     * @param carte1
+     * @param carte2
+     * @return La carte gagnante 
+     */
     public static Card determinerCarteGagnante(Card carte1, Card carte2) {
-        if (carte1.getValeur() > carte2.getValeur()) {
-            return carte1;
-        } else if (carte1.getValeur() < carte2.getValeur()) {
-            return carte2;
-        } else {
-            // En cas d'égalité, c'est le leader qui gagne le trick (carte affichée)
-            Plateau plateau = new Plateau();
-            if(plateau.estLeader()){
-                return plateau.getCarteJoueur1();
-            }else{
-                return plateau.getCarteJoueur2();
+        if(carte1.getFaction().equals(carte2.getFaction())) {
+            if (carte1.getValeur() > carte2.getValeur()) {
+                return carte1;
+            } else if (carte1.getValeur() < carte2.getValeur()) {
+                return carte2;
+            } else {
+                // En cas d'égalité, c'est le leader qui gagne le trick (carte affichée)
+                Plateau plateau = new Plateau();
+                if (plateau.estLeader()) {
+                    return plateau.getCarteJoueur1();
+                } else {
+                    return plateau.getCarteJoueur2();
+                }
             }
+        }else{
+            return carte1;
         }
     }
 
@@ -70,6 +136,8 @@ public class ReglesDeJeu {
             return null; // En cas d'égalité
         }
     }
+
+
     public static Player determinerPerdantManche(Player joueur1, Player joueur2,Player gagnant) {
         if (gagnant == joueur1){
             return joueur2;
@@ -153,7 +221,7 @@ public class ReglesDeJeu {
      * @param cartes La liste de cartes.
      * @return La valeur maximale.
      */
-    static int getMaxCardValue(List<Card> cartes) {
+    public static int getMaxCardValue(List<Card> cartes) {
         int max = Integer.MIN_VALUE;
         for (Card carte : cartes) {
             if (carte.getValeur() > max) {
@@ -217,16 +285,6 @@ public class ReglesDeJeu {
             ApplyStandardRule(trickWinner, plateau);
         }
     }
-
-    /**
-     * Méthode pour appliquer les règles spéciales des factions à une manche dans la 2eme phase.
-     * @param trickWinner Le joueur remportant le tour.
-     * @param plateau Le plateau de jeu.
-     */
-    /*public void applySecondPhaseRules(Player trickWinner, Player trickLoser, Plateau plateau){
-        ApplyDwarvesRules(trickWinner, trickLoser , plateau);
-    }*/
-
 
     /**
      * Méthode pour appliquer les règles spéciales des factions (2ème phase uniquement).
