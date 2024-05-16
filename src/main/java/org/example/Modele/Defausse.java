@@ -1,5 +1,4 @@
 package org.example.Modele;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -7,15 +6,14 @@ import java.util.List;
  * Elle permet d'ajouter des cartes à la défausse, de récupérer la liste des cartes dans la défausse,
  * de vérifier si la défausse est vide et de le vider.
  */
-public class Defausse {
-    private List<Card> cartes;
+public class Defausse extends CardCollection {
 
     /**
      * Constructeur de la classe Defausse.
      * Initialise la liste des cartes dans la défausse.
      */
     public Defausse() {
-        this.cartes = new ArrayList<>();
+        super();
     }
 
     /**
@@ -23,7 +21,7 @@ public class Defausse {
      * @param carte La carte à ajouter à la défausse.
      */
     public void ajouterCarte(Card carte) {
-        cartes.add(carte);
+        addCard(carte);
     }
 
     /**
@@ -31,7 +29,7 @@ public class Defausse {
      * @return La liste des cartes dans la défausse.
      */
     public List<Card> getCartes() {
-        return cartes;
+        return cards;
     }
 
     /**
@@ -39,13 +37,13 @@ public class Defausse {
      * @return true si la défausse est vide, false sinon.
      */
     public boolean estVide() {
-        return cartes.isEmpty();
+        return cards.isEmpty();
     }
 
     /**
      * Vide la défausse en supprimant toutes les cartes.
      */
     public void vider() {
-        cartes.clear();
+        cards.clear();
     }
 }
