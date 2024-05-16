@@ -267,8 +267,10 @@ public class Plateau {
     public void attribuerCarteSecondPhase(Card winningCard, ReglesDeJeu r) {// on doit changer la fonction ApplyDwarveRule:c'est fait
         if (winningCard == carteJoueur1) {
             r.ApplyDwarvesRules(joueur1, joueur2, carteJoueur1, carteJoueur2);
+            joueurCourant = joueur1;
         } else {
             r.ApplyDwarvesRules(joueur2, joueur1, carteJoueur2, carteJoueur1);
+            joueurCourant = joueur2;
         }
     }
 
