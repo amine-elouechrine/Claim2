@@ -42,14 +42,10 @@ public class ReglesDeJeu {
             return carte2;
         } else {
             // En cas d'égalité, c'est le leader qui gagne le trick (carte affichée)
-            Plateau plateau = new Plateau();
-            if(plateau.estLeader()){
-                return plateau.getCarteJoueur1();
-            }else{
-                return plateau.getCarteJoueur2();
-            }
+            return null;
         }
     }
+
 
     /**
      * Méthode pour déterminer le gagnant d'une manche.

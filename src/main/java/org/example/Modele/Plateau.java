@@ -264,16 +264,16 @@ public class Plateau {
             r.applyUndeadRule(joueur2,carteJoueur2,carteJoueur1,defausse);
             joueurCourant = joueur2;
         }
-        else{
+        else if (winningCard==null){
             if(joueurCourant==joueur1){
-                joueur1.getHandScndPhase().addCard(carteAffichee);
-                joueur2.getHandScndPhase().addCard(pioche.getCard());
-                joueurCourant=joueur1;
-            }
-            else{
                 joueur2.getHandScndPhase().addCard(carteAffichee);
                 joueur1.getHandScndPhase().addCard(pioche.getCard());
                 joueurCourant=joueur2;
+            }
+            else{
+                joueur1.getHandScndPhase().addCard(carteAffichee);
+                joueur2.getHandScndPhase().addCard(pioche.getCard());
+                joueurCourant=joueur1;
             }
         }
     }
@@ -282,9 +282,19 @@ public class Plateau {
         if (winningCard == carteJoueur1) {
             r.ApplyDwarvesRules(joueur1, joueur2, carteJoueur1, carteJoueur2);
             joueurCourant = joueur1;
-        } else {
+        } else if(winningCard == carteJoueur2)  {
             r.ApplyDwarvesRules(joueur2, joueur1, carteJoueur2, carteJoueur1);
             joueurCourant = joueur2;
+        }
+        else if (winningCard==null){
+            if (joueurCourant==joueur1) {
+                r.ApplyDwarvesRules(joueur1,joueur2,carteJoueur1,carteJoueur2);
+                joueurCourant=joueur2;
+            }
+            else{
+                r.ApplyDwarvesRules(joueur2,joueur1,carteJoueur2,carteJoueur1);
+                joueurCourant=joueur1;
+            }
         }
     }
 
