@@ -4,9 +4,6 @@ package org.example.Modele;
 
 import java.util.List;
 
-import org.example.Modele.Cards;
-import org.example.Modele.Defausse;
-
 /**
  * Cette classe représente le plateau de jeu dans lequel les cartes sont placées pendant la partie.
  * Elle contient la carte affichée, les cartes des joueurs, la pioche, la défausse et les joueurs.

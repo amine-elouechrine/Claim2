@@ -165,6 +165,6 @@ public class Cards extends CardCollection{
     }
 
     public void removeCard() {
-        pile.pop();
+        cards.remove(0);
     }
 }

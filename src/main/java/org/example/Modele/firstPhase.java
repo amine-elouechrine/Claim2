@@ -1,6 +1,4 @@
-import org.example.Modele.Card;
-import org.example.Modele.Plateau;
-import org.example.Modele.ReglesDeJeu;
+package org.example.Modele;
 
 import java.util.Scanner;
 import java.util.List;

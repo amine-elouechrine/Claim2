@@ -84,5 +84,16 @@ public abstract class GeneralPlayer {
      */
     abstract public Card jouerCarte(int indexCard);
 
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    public void setHandScndPhase(Hand handScndPhase) {
+        this.handScndPhase = handScndPhase;
+    }
+
+    public void setPileDeScore(PileDeScore pileDeScore) {
+        this.pileDeScore = pileDeScore;
+    }
 
 }
