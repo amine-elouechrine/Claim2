@@ -204,19 +204,18 @@ public class IA_intermediareVSIA_Facile {
 
     public static void main(String[] args) {
         int i=0;
-
+        while(i<1000){
             Facile= new Facile();//new IA("Facile");
             Intermediare=new Intermediare();// IA("Intermediare");
-
             pioche = new Cards();
+            pioche.addAllCards();
             pioche.shuffle();
             Facile.hand=pioche.getHandOf13Cards();
             Intermediare.hand=pioche.getHandOf13Cards();
             plateau = new Plateau();
             Test_IA_F_VS_I();
-
-
             i++;
+        }
 
         System.out.println("Le nombre de matchs gagnés par Facile est : "+nb_match_gagne_facile);
         System.out.println("Le nombre de matchs gagnés par Intermediare est : "+nb_match_gagne_intermediare);
