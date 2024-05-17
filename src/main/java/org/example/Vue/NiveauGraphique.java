@@ -212,9 +212,12 @@ public class NiveauGraphique extends JComponent implements Observateur {
                         break;
                     }
                 }
-
                 if (isPlayable) {
-                    g.drawImage(image, x, y, rectWidth, rectHeight, this);
+                    if(strImage.equals("goblin_0") && control.getNomJoueurCourant().equals("Joueur 2")){
+                        g.drawImage(grayImage, x, y, rectWidth, rectHeight, this);
+                    }else {
+                        g.drawImage(image, x, y, rectWidth, rectHeight, this);
+                    }
                 } else {
                     g.drawImage(grayImage, x, y, rectWidth, rectHeight, this);
                 }
@@ -254,7 +257,11 @@ public class NiveauGraphique extends JComponent implements Observateur {
                     }
                 }
                 if (isPlayable) {
-                    g.drawImage(image, x, y, rectWidth, rectHeight, this);
+                    if(strImage.equals("goblin_0") && control.getNomJoueurCourant().equals("Joueur 1")){
+                        g.drawImage(grayImage, x, y, rectWidth, rectHeight, this);
+                    }else {
+                        g.drawImage(image, x, y, rectWidth, rectHeight, this);
+                    }
                 } else {
                     g.drawImage(grayImage, x, y, rectWidth, rectHeight, this);
                 }
@@ -392,7 +399,11 @@ public class NiveauGraphique extends JComponent implements Observateur {
                 }
 
                 if (isPlayable) {
-                    g.drawImage(image, x, y, rectWidth, rectHeight, this);
+                    if(strImage.equals("goblin_0") && control.getNomJoueurCourant().equals("Joueur 2")){
+                        g.drawImage(grayImage, x, y, rectWidth, rectHeight, this);
+                    }else {
+                        g.drawImage(image, x, y, rectWidth, rectHeight, this);
+                    }
                 } else {
                     g.drawImage(grayImage, x, y, rectWidth, rectHeight, this);
                 }
@@ -434,7 +445,11 @@ public class NiveauGraphique extends JComponent implements Observateur {
                 }
 
                 if (isPlayable) {
-                    g.drawImage(image, x, y, rectWidth, rectHeight, this);
+                    if(strImage.equals("goblin_0") && control.getNomJoueurCourant().equals("Joueur 1")){
+                        g.drawImage(grayImage, x, y, rectWidth, rectHeight, this);
+                    }else {
+                        g.drawImage(image, x, y, rectWidth, rectHeight, this);
+                    }
                 } else {
                     g.drawImage(grayImage, x, y, rectWidth, rectHeight, this);
                 }
