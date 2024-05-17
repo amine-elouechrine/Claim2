@@ -19,6 +19,11 @@ public class GestionAnnuleRefaire {
         refaire = new Stack<>();
     }
 
+    public GestionAnnuleRefaire() {
+        annule = new Stack<>();
+        refaire = new Stack<>();
+    }
+
     /**
      * Constructeur de la classe GestionAnnuleRefaire 
      * @param fichier le fichier qui contient un jeu en cours sauvegardé

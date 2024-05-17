@@ -18,6 +18,7 @@ public class Cards extends CardCollection{
         createUndeadCards();
         createDwarveCards();
         createDoppelgangerCards();
+        shuffle();
     }
 
     private void createGobelinCards() {
@@ -161,5 +162,9 @@ public class Cards extends CardCollection{
             hand.addCard(getCard());
         }
         return hand;
+    }
+
+    public void removeCard() {
+        pile.pop();
     }
 }
