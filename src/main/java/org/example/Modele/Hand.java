@@ -1,19 +1,16 @@
 package org.example.Modele;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class Hand {
-    private List<Card> cards;
-
+public class Hand extends CardCollection{
 
     /**
      * Constructeur de la classe Hand.
      * Initialise une liste vide pour stocker les cartes.
      */
     public Hand() {
-        cards = new ArrayList<>();
+        super();
     }
 
     public Card getSmallestHigherCard(Card card) {
