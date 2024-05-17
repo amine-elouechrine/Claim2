@@ -1,6 +1,7 @@
 package org.example.Modele;
 
 import org.example.Vue.NiveauGraphique;
+import org.example.Modele.Cards;
 import org.example.Patternes.Observable;
 
 import java.util.List;

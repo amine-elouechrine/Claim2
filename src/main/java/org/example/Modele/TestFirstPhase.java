@@ -2,6 +2,8 @@ package org.example.Modele;
 import java.util.List;
 import java.util.Scanner;
 
+import org.example.Modele.Cards;
+
 public class TestFirstPhase {
 
     TestFirstPhase(Plateau plateau, ReglesDeJeu r,Cards cards){
