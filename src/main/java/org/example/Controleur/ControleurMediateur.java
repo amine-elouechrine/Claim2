@@ -71,133 +71,67 @@ public class ControleurMediateur implements CollecteurEvenements {
         return jeu.getNomJoueur(jeu.getPlateau().getJoueurCourant());
     }
 
+    public int getMaxValeurFactionJ(int joueur, String faction) {
+        if(joueur == 1)
+            return jeu.getMaxValeurFactionJ1(faction);
+        else
+            return jeu.getMaxValeurFactionJ2(faction);
+    }
+
     public void clicSouris(int index) {
         if (index == -1) {
-            ;
+            System.out.println("Clic ailleurs que sur une carte\n");
         } else {
-            if (jeu.estFinPartie()) {
-                // Calcul des scores
-            }
-            System.out.println("indice : " + index);
-            if(getPhase()) {
-
-                // Application des règles de jeu pour la selection de carte
-                if(carteLeader != null) {
-                    jouable = jeu.estCarteJouable(carteLeader, index);
-                }
-
-                if(jouable) {
-                    Card carteJoue = jeu.getPlateau().jouerCarte(index);
-                    if (jeu.estCarteJoueJ1() && jeu.estCarteJoueJ2()) {
-                        jeu.playTrick();
-                        jeu.setCarteJouer();
-                        carteLeader = null;
-                    } else if ((jeu.estCarteJoueJ1() && !jeu.estCarteJoueJ2()) ||
-                            (!jeu.estCarteJoueJ1() && jeu.estCarteJoueJ2())) {
-                        carteLeader = carteJoue;
-                        jeu.switchJoueur();
-                    }
-                }
-                // Ajouter temporisation / animation
-
-                // L'IA joue une carte
-                // IA.joue() ?
-
-                // Ajouter temporisation / animation pour la carte jouer par l'IA
-
-                // On joue le plie
-                // jeu.playTrick();
-
-                // Ajouter temporisation / Animation pour la bataille et l'attribution des cartes après le plie
-
-                // jeu.setCarteJouer();
-            }
-            else {
-                // Application des règles de jeu pour la selection de carte
-                if(carteLeader != null) {
-                    jouable = jeu.estCarteJouable(carteLeader, index);
-                    for(Map.Entry<String ,List<Card>> entry :jeu.getPlateau().getJoueurCourant().getPileDeScore().getPileDeScore().entrySet()){
-                        String key = entry.getKey();
-                        List<Card> cards = entry.getValue();
-                        System.out.println(key+":"+cards.size());
-                        for(Card card : cards){
-                            System.out.println(card.getFaction()+":"+card.getValeur());
-                        }
-
-                    }
-                }
-
-                if(jouable) {
-                    Card carteJoue = jeu.getPlateau().jouerCarte(index);
-                    if (jeu.estCarteJoueJ1() && jeu.estCarteJoueJ2()) {
-                        jeu.playTrick();
-                        jeu.setCarteJouer();
-                        carteLeader = null;
-                    } else {
-                        carteLeader = carteJoue;
-                        jeu.switchJoueur();
-                    }
-                }
-            }
+            joueTour(index);
         }
         jeu.metAJour();
     }
 
     public void clicSourisJ2(int index) {
-
         if (index == -1) {
-            ;
+            System.out.println("Clic ailleurs que sur une carte\n");
         } else {
-            if (getPhase()) {
-                System.out.println("indice : " + index);
-                // Application des règles de jeu pour la selection de carte
-                if(carteLeader != null) {
-                    jouable = jeu.estCarteJouable(carteLeader, index);
-                }
-
-                if(jouable) {
-                    Card carteJoue = jeu.getPlateau().jouerCarte(index);
-                    if (jeu.estCarteJoueJ1() && jeu.estCarteJoueJ2()) {
-                        jeu.playTrick();
-                        jeu.setCarteJouer();
-                        carteLeader = null;
-                    } else {
-                        carteLeader = carteJoue;
-                        jeu.switchJoueur();
-                    }
-                }
-                // Ajouter temporisation / animation
-
-                // L'IA joue une carte
-                // IA.joue() ?
-
-                // Ajouter temporisation / animation pour la carte jouer par l'IA
-
-                // On joue le plie
-                // jeu.playTrick();
-
-                // Ajouter temporisation / Animation pour la bataille et l'attribution des cartes après le plie
-
-                // jeu.setCarteJouer();
-            } else {
-                // Application des règles de jeu pour la selection de carte
-                if(carteLeader != null) {
-                    jouable = jeu.estCarteJouable(carteLeader, index);
-                }
-
-                if(jouable) {
-                    Card carteJoue = jeu.getPlateau().jouerCarte(index);
-                    if (jeu.estCarteJoueJ1() && jeu.estCarteJoueJ2()) {
-                        jeu.playTrick();
-                        jeu.setCarteJouer();
-                        carteLeader = null;
-                    } else {
-                        carteLeader = carteJoue;
-                        jeu.switchJoueur();
-                    }
-                }
-            }
+            joueTour(index);
         }
         jeu.metAJour();
     }
+
+    public void joueTour(int index) {
+        if (jeu.estFinPartie()) {
+            // Calcul des scores
+            System.out.println("La partie est terminée\n");
+        }
+
+        // Application des règles de jeu pour la selection de carte
+        if(carteLeader != null) {
+            jouable = jeu.estCarteJouable(carteLeader, index);
+        }
+
+        if(jouable) {
+            Card carteJoue = jeu.getPlateau().jouerCarte(index);
+            if (jeu.estCarteJoueJ1() && jeu.estCarteJoueJ2()) {
+                jeu.playTrick();
+                jeu.setCarteJouer();
+                carteLeader = null;
+            } else {
+                carteLeader = carteJoue;
+                jeu.switchJoueur();
+            }
+        }
+        // Ajouter temporisation / animation
+
+        // L'IA joue une carte
+        // IA.joue() ?
+
+        // Ajouter temporisation / animation pour la carte jouer par l'IA
+
+        // On joue le plie
+        // jeu.playTrick();
+
+        // Ajouter temporisation / Animation pour la bataille et l'attribution des cartes après le plie
+
+        // jeu.setCarteJouer();
+    }
 }
+
+

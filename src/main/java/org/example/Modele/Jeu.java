@@ -70,6 +70,10 @@ public class Jeu extends Observable {
         return plateau;
     }
 
+    public ReglesDeJeu getRegles() {
+        return r;
+    }
+
     public boolean estFinPhase1() {
         return plateau.estFinPhase(plateau.getPhase());
     }
@@ -143,6 +147,22 @@ public class Jeu extends Observable {
         return plateau.joueurCourant.hand.getCard(index).getValeur();
     }
 
+    public int getFactionScoreCarteAffiche() {
+        return plateau.getCarteAffichee().getFactionScore();
+    }
+
+    public int getValeurCarteAffiche() {
+        return plateau.getCarteAffichee().getValeur();
+    }
+
+    public int getMaxValeurFactionJ1(String faction) {
+        return getPlateau().getJoueur1().getPileDeScore().maxValueOfFaction(faction);
+    }
+
+    public int getMaxValeurFactionJ2(String faction) {
+        return getPlateau().getJoueur2().getPileDeScore().maxValueOfFaction(faction);
+    }
+
     public int getCarteJoueur1F() {
         if (plateau.getCarteJoueur1() != null)
             return plateau.getCarteJoueur1().getFactionScore();
@@ -187,13 +207,11 @@ public class Jeu extends Observable {
         if (getPhase()) {
             Card carteGagnante = r.carteGagnante(plateau.getCarteJoueur1(), plateau.getCarteJoueur2());
             plateau.attribuerCarteFirstPhase(carteGagnante,r);
-            System.out.println("Nombre carte dans la main " + plateau.getJoueurCourant().getHand().size());
 
             if (estFinPhase1()) {
                 switchPhase();
             }
 
-            System.out.println("Nombre carte pioche : " + plateau.getPioche().getCards().size());
             if (getPhase()) {
                 plateau.carteAffichee = plateau.pioche.getCard();
             }
@@ -202,7 +220,6 @@ public class Jeu extends Observable {
             plateau.attribuerCarteSecondPhase(carteGagnante, r);
 
         }
-        System.out.println("Nombre carte pioche : " + plateau.getPioche().getCards().size());
     }
 
     public void setCarteJouer() {

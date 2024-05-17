@@ -25,6 +25,8 @@ public interface CollecteurEvenements {
 
     int[][] getCarteJouable();
 
+    int getMaxValeurFactionJ(int j, String faction);
+
     void clicSouris(int index);
     void clicSourisJ2(int index);
 }
