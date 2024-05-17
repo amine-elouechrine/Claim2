@@ -26,23 +26,23 @@ public abstract class IA extends GeneralPlayer{
      * @param opponentCard
      * @return la liste de cartes de la meme faction que la carte passée en paramètre (opponentCard)
      */
-    public List<Card> getCardsOfSameFactionAs(Card opponentCard) {
-        if (hand.isEmpty()) {
-            throw new IllegalStateException("La main est vide.");
+    public Hand getCardsOfSameFaction(String faction) {
+        if (hand == null || hand.isEmpty()) {
+            return null;
         }
 
-        List<Card> cardsOfSameFaction = new ArrayList<>();
-        String opponentCardFaction = opponentCard.getFaction();
+        Hand cardsOfSameFaction = new Hand();
 
-        // pour chaque carte dans la main
-        for (Card card : hand.getAllCards()) {
-            if (card.getFaction().equals(opponentCardFaction)) {
-                cardsOfSameFaction.add(card);
+        for (Card handCard : hand.getAllCards()) {
+            if (handCard.getFaction().equals(faction)) {
+                cardsOfSameFaction.addCard(handCard);
             }
         }
 
         return cardsOfSameFaction;
     }
+
+    
     public void addHandScndPhase(Card card) {
         handScndPhase.addCard(card);
     }

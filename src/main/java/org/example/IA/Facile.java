@@ -28,7 +28,7 @@ public class Facile extends IA {
     }
 
     private Card jouerAvecSuiviFaction(Card carte_adversaire , Hand main) {
-        Hand carteJouable = main.getCardsOfSameFaction(carte_adversaire.getFaction());
+        Hand carteJouable = getCardsOfSameFaction(carte_adversaire.getFaction());
 
         if (carteJouable.isEmpty()) {
             return jouerCarteAleatoire(main);
@@ -57,7 +57,7 @@ public class Facile extends IA {
         System.out.println(";;;''''''"+hand.size());
         if(suivre_faction){
             Hand carteJouable;
-            carteJouable = hand.getCardsOfSameFaction(carte_adversaire.getFaction());
+            carteJouable = getCardsOfSameFaction(carte_adversaire.getFaction());
             if(carteJouable.isEmpty()){
                 //je peux pas suivre la faction de l'adversaire
                 int index = rand.nextInt(hand.getAllCards().size());
@@ -93,7 +93,7 @@ public class Facile extends IA {
         System.out.println(";;;''''''"+handScndPhase.size());
         if(suivre_faction){
             Hand carteJouable;
-            carteJouable = handScndPhase.getCardsOfSameFaction(carte_adversaire.getFaction());
+            carteJouable = getCardsOfSameFaction(carte_adversaire.getFaction());
             if(carteJouable.isEmpty()){
                 //je peux pas suivre la faction de l'adversaire
                 int index = rand.nextInt(handScndPhase.getAllCards().size());
@@ -114,23 +114,20 @@ public class Facile extends IA {
         }
     }
 
-    
-    /*public Card jouer_coup_phase1(Hand mainIA, boolean suivre_faction, Card carte_adversaire) {
-        return jouer_coup_phase1_F(mainIA, suivre_faction, carte_adversaire);
-    }*/
-
     @Override
     public Card jouerCoupPhase1(Hand mainIA, boolean suivre_faction, Card carte_adversaire) {
         return jouer_coup_phase1_F(mainIA, suivre_faction, carte_adversaire);
     }
 
-    /*@Override
-    public Card jouer_coup_phase2(Hand mainIA, boolean suivre_faction, Card carte_adversaire) {
-        return jouer_coup_phase2_F(mainIA, suivre_faction, carte_adversaire);
-    }*/
-
     @Override
     public Card jouerCoupPhase2(Hand mainIA, boolean suivre_faction, Card carte_adversaire) {
         return jouer_coup_phase2_F(mainIA, suivre_faction, carte_adversaire);
+    }
+
+
+    @Override
+    public Card jouerCarte(int indexCard) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'jouerCarte'");
     }
 }

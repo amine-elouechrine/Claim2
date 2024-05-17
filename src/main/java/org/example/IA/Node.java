@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Node {
+    // remplace tous ces attribut par plateau il englobe tout
     Hand Ia;
     Hand adversaire;
     Card carteIA;

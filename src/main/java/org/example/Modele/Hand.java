@@ -59,25 +59,7 @@ public class Hand extends CardCollection{
     public void removeCard(Card card) {
         cards.remove(card);
     }
-    public Card getCard(int i) {return cards.get(i);}
-
-    // Obtenir les cartes de la même faction qu'une carte donnée
-    public Hand getCardsOfSameFaction(String faction) {
-        if (cards == null || cards.isEmpty()) {
-            return null;
-        }
-
-        Hand cardsOfSameFaction = new Hand();
-
-        for (Card handCard : cards) {
-            if (handCard.getFaction().equals(faction)) {
-                cardsOfSameFaction.addCard(handCard);
-            }
-        }
-
-        return cardsOfSameFaction;
-    }
-
+    public Card getCard(int i) {return cards.get(i);} 
 
     public boolean isEmpty() {
         return cards.isEmpty();
@@ -88,6 +70,8 @@ public class Hand extends CardCollection{
         return cards.contains(card);
     }
 
+
+    // si le hand du joueur contient une carte de la meme faction que la carte passée en paramètre
     public boolean containsCardOFaction(Card carte) {
         for (Card card : cards) {
             if (card.getFaction().equals(carte.getFaction())) {
@@ -140,31 +124,8 @@ public class Hand extends CardCollection{
         return cards;
     }
 
-    public Card getLargestSmallerCard(Card card) {
-        if (cards == null || cards.isEmpty()) {
-            throw new IllegalStateException("La main est vide ou nulle.");
-        }
-
-        Card largestSmallerCard = null;
-
-        for (Card handCard : cards) {
-            // Vérifier si la carte est plus grande que celle passée en paramètre
-            if (handCard.getValeur() > card.getValeur()) {
-                // Vérifier si la carte trouvée est plus petite que la carte actuellement retenue
-                if (largestSmallerCard == null || handCard.getValeur() < largestSmallerCard.getValeur()) {
-                    largestSmallerCard = handCard;
-                }
-            }
-        }
-
-        if (largestSmallerCard == null) {
-            throw new IllegalStateException("Aucune carte plus grande mais plus petite trouvée.");
-        }
-
-        return largestSmallerCard;
-    }
-
-
+    //public Card getLargestSmallerCard(Card card) 
+    //public Card getLowestCardWithFactionScore() {
 
     /**
      * Vide la main en supprimant toutes les cartes.
@@ -174,69 +135,6 @@ public class Hand extends CardCollection{
         cards.clear();
     }
 
-    
-    public Card getLowestCardWithFactionScore() {
-        if (cards.isEmpty()) {
-            throw new IllegalStateException("La pile de cartes est vide.");
-        }
-
-        Card lowestCard = null;
-        int lowestValue = Integer.MAX_VALUE;
-        int lowestFactionScore = Integer.MAX_VALUE;
-
-        for (Card card : cards) {
-            int cardValue = card.getValeur();
-            int cardFactionScore = card.getFactionScore();
-
-            if (cardValue < lowestValue) {
-                lowestCard = card;
-                lowestValue = cardValue;
-                lowestFactionScore = cardFactionScore;
-            } else if (cardValue == lowestValue && cardFactionScore < lowestFactionScore) {
-                lowestCard = card;
-                lowestFactionScore = cardFactionScore;
-            }
-        }
-
-        return lowestCard;
-    }
-
-    // Méthode pour obtenir la carte la plus grande qui est plus petite que la carte jouée par l'adversaire
-    public Card getHighestCardSmallerThan(Card opponentCard) {
-        if (cards.isEmpty()) {
-            throw new IllegalStateException("La pile de cartes est vide.");
-        }
-
-        Card highestSmallerCard = null;
-        int opponentValue = opponentCard.getValeur();
-
-        for (Card card : cards) {
-            int cardValue = card.getValeur();
-            if (cardValue < opponentValue && (highestSmallerCard == null || cardValue > highestSmallerCard.getValeur())) {
-                highestSmallerCard = card;
-            }
-        }
-
-        return highestSmallerCard;
-    }
-
-    public Card min_valeur() {
-        if (cards.isEmpty()) {
-            throw new IllegalStateException("La pile de cartes est vide.");
-        }
-
-        Card minCard = cards.get(0);
-        for (Card card : cards) {
-            // Si la valeur de la carte actuelle est inférieure à la valeur de la carte minimale
-            // ou si la valeur est égale mais la faction a un score plus bas, mettre à jour la carte minimale
-            if (card.getValeur() < minCard.getValeur() ||
-                    (card.getValeur() == minCard.getValeur() && card.getFactionScore() < minCard.getFactionScore())) {
-                minCard = card;
-            }
-        }
-
-        return minCard;
-    }
 
     /**
      * Renvoie le nombre de cartes dans la main.
@@ -248,24 +146,6 @@ public class Hand extends CardCollection{
         return cards.size();
     }
 
-    public Card getLowestValueCard() {
-        if (cards == null || cards.isEmpty()) {
-            throw new IllegalStateException("La liste de cartes est vide ou nulle.");
-        }
-
-        Card lowestCard = cards.get(0);
-        int lowestValue = lowestCard.getValeur();
-
-        for (Card card : cards) {
-            int cardValue = card.getValeur();
-            if (cardValue < lowestValue) {
-                lowestCard = card;
-                lowestValue = cardValue;
-            }
-        }
-
-        return lowestCard;
-    }
 
     public Card get(int i) {
         if (i < 0 || i >= cards.size()) {

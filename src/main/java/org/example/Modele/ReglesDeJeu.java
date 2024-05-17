@@ -178,7 +178,7 @@ public class ReglesDeJeu {
      * @param joueur2 Le deuxième joueur.
      * @return Le nom du joueur gagnant.
      */
-    public static String determinerGagnantPartie(Player joueur1, Player joueur2) {
+    public static String determinerGagnantPartie(GeneralPlayer joueur1, GeneralPlayer joueur2) {
         PileDeScore pileDeScoreJoueur1 = joueur1.getPileDeScore();
         PileDeScore pileDeScoreJoueur2 = joueur2.getPileDeScore();
         
@@ -237,7 +237,7 @@ public class ReglesDeJeu {
      * @param trickWinner Le joueur remportant le tour.
      * @param /plateau Le plateau de jeu.
      */
-    public void ApplyStandardRule(Player trickWinner,Card carteAffiche,Defausse defausse,Card cardPlayer1,Card cardPlayer2 ){
+    public void ApplyStandardRule(GeneralPlayer trickWinner,Card carteAffiche,Defausse defausse,Card cardPlayer1,Card cardPlayer2 ){
         // Ajouter la carte afficher de la pioche à la pile de score du joueur qui a remporté le tour
         trickWinner.getPileDeScore().addCard(carteAffiche);
 
@@ -253,7 +253,7 @@ public class ReglesDeJeu {
      */
     // Méthode pour appliquer les règles spéciales des factions (1er phase uniquement)
     // 1er phase si une carte de type undead etait jouer par l'un des joueur celui qui gagne le tour gagne les cartes undead (de lui meme et la carte de l'adversaire si elle est undead)
-    public void applyUndeadRule(Player trickWinner,Card cardPlayer1 , Card cardPlayer2,Defausse defausse) {
+    public void applyUndeadRule(GeneralPlayer trickWinner,Card cardPlayer1 , Card cardPlayer2,Defausse defausse) {
 
     // Vérifier si la carte jouée par l'un des joueur est de la faction Undead
         if (cardPlayer1.getFaction().equals("Undead")) {
@@ -277,7 +277,7 @@ public class ReglesDeJeu {
      * @param trickWinner Le joueur remportant le tour.
      * @param / Le plateau de jeu.
      */
-    public void applyFirstPhaseRules(Player trickWinner, Card cardPlayer1 , Card cardPlayer2,Defausse defausse,Card carteAffiche){
+    public void applyFirstPhaseRules(GeneralPlayer trickWinner, Card cardPlayer1 , Card cardPlayer2,Defausse defausse,Card carteAffiche){
         if(cardPlayer1.getFaction().equals("Undead") || cardPlayer2.getFaction().equals("Undead")){
             applyUndeadRule(trickWinner, cardPlayer1,cardPlayer2,defausse);
         }else{
@@ -293,7 +293,7 @@ public class ReglesDeJeu {
      */
     // Méthode pour appliquer les règles spéciales des factions (2eme phase uniquement)
     // 2eme phase si une carte de type Dwarves etait jouer par l'un des joueur celui qui perd le tour gagne les cartes dwarves (de lui meme et la carte de l'adversaire si elle est dwarves)
-    public void ApplyDwarvesRules(Player trickwinner , Player trickLoser , Card trickWinnerCard,Card trickLoserCard){
+    public void ApplyDwarvesRules(GeneralPlayer trickwinner , GeneralPlayer trickLoser , Card trickWinnerCard,Card trickLoserCard){
         // Vérifier si la carte jouée par le joueur perdant est de la faction Dwarves
         if (trickWinnerCard.getFaction().equals("Dwarves")) {
             // Ajouter la carte jouée par le joueur perdant à sa pile de score

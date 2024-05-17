@@ -294,6 +294,8 @@ public class Plateau {
                 r.ApplyDwarvesRules(joueur2,joueur1,carteJoueur2,carteJoueur1);
                 joueurCourant=joueur1;
             }
+        }else{
+            throw new IllegalArgumentException("La carte gagnante n'est pas dans la main du joueur.");
         }
     }
 
