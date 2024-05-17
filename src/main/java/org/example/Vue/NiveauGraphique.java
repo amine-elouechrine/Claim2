@@ -383,7 +383,19 @@ public class NiveauGraphique extends JComponent implements Observateur {
                 strImage += "_" + main[i][0];
                 image = imageMap.get(strImage);
                 grayImage = toGrayScale(image);
-                g.drawImage(image, x, y, rectWidth, rectHeight, this);
+                boolean isPlayable = false;
+                for (int[] carteJouable : control.getCarteJouable()) {
+                    if (main[i][0] == carteJouable[0] && main[i][1] == carteJouable[1]) {
+                        isPlayable = true;
+                        break;
+                    }
+                }
+
+                if (isPlayable) {
+                    g.drawImage(image, x, y, rectWidth, rectHeight, this);
+                } else {
+                    g.drawImage(grayImage, x, y, rectWidth, rectHeight, this);
+                }
                 // g.fillRect(x, y, rectWidth, rectHeight);
             }
 
@@ -413,10 +425,19 @@ public class NiveauGraphique extends JComponent implements Observateur {
                 strImage += "_" + mainJ2[i][0];
                 image = imageMap.get(strImage);
                 grayImage = toGrayScale(image);
-                //si une carte est jouable, draw image, sinon draw grayImage
-                g.drawImage(grayImage, x, y, rectWidth, rectHeight, this);
-                //g.drawImage(image, x, y, rectWidth, rectHeight, this);
-                // g.fillRect(x, y, rectWidth, rectHeight);
+                boolean isPlayable = false;
+                for (int[] carteJouable : control.getCarteJouable()) {
+                    if (mainJ2[i][0] == carteJouable[0] && mainJ2[i][1] == carteJouable[1]) {
+                        isPlayable = true;
+                        break;
+                    }
+                }
+
+                if (isPlayable) {
+                    g.drawImage(image, x, y, rectWidth, rectHeight, this);
+                } else {
+                    g.drawImage(grayImage, x, y, rectWidth, rectHeight, this);
+                }
             }
 
             x = startXJ1P2 - 20 - rectWidth;
