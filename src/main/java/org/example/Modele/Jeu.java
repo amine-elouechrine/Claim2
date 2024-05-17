@@ -1,6 +1,4 @@
 package org.example.Modele;
-
-import org.example.Vue.NiveauGraphique;
 import org.example.Patternes.Observable;
 
 import java.util.List;

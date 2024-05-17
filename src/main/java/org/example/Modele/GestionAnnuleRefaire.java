@@ -19,6 +19,11 @@ public class GestionAnnuleRefaire {
         refaire = new Stack<>();
     }
 
+    public GestionAnnuleRefaire() {
+        annule = new Stack<>();
+        refaire = new Stack<>();
+    }
+
     /**
      * Constructeur de la classe GestionAnnuleRefaire 
      * @param fichier le fichier qui contient un jeu en cours sauvegardé
@@ -187,24 +192,8 @@ public class GestionAnnuleRefaire {
         else
             p.println("SecondPhase");
         //on va ecrire tous les infos du joueur 1
-        /*p.println(plateau.getJoueur1().getName());
-        saveHand(plateau.getJoueur1().getHand(),p);//l'ecriture de la main du joueur 1
-        p.println();
-        saveHand(plateau.getJoueur1().getHandScndPhase(),p);
-        p.println();
-        savePileDeScore(plateau.getJoueur1().getPileDeScore(),p);
-        p.println();
-        p.println(plateau.getJoueur1().getScore());*/
         saveInfoPlayer(plateau.getJoueur1(),p,plateau.phase);
         //on va ecrire tous les infos du joueur 2
-        /*p.println(plateau.getJoueur2().getName());
-        saveHand(plateau.getJoueur2().getHand(),p);//l'ecriture de la main du joueur 1
-        p.println();
-        saveHand(plateau.getJoueur2().getHandScndPhase(),p);
-        p.println();
-        savePileDeScore(plateau.getJoueur2().getPileDeScore(),p);
-        p.println();
-        p.println(plateau.getJoueur2().getScore());*/
         saveInfoPlayer(plateau.getJoueur2(),p,plateau.phase);
         //on va ecrire les infos du plateau
         p.println(plateau.getJoueurCourant().getName());

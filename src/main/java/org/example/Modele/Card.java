@@ -1,9 +1,8 @@
-
+package org.example.Modele;
 /**
  * Cette classe représente une carte dans le jeu. Chaque carte a une valeur numérique et une faction associée.
  */
 
-package org.example.Modele;
 
 public class Card {
     private int value;// La valeur de la carte
@@ -17,6 +16,12 @@ public class Card {
     public Card(int value, String faction) {
         this.value = value;
         this.faction = faction;
+    }
+
+
+
+    public Card() {
+        // Constructeur vide pour les tests
     }
 
     /**
@@ -33,6 +38,14 @@ public class Card {
      */
     public void setValue(int value) {
         this.value = value;
+    }
+
+    /**
+     * Setter pour la faction de la carte.
+     * @param faction
+     */
+    public void setFaction(String faction) {
+        this.faction = faction;
     }
 
     /**
