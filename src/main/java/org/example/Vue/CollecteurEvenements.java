@@ -13,6 +13,18 @@ public interface CollecteurEvenements {
 
     int getNbCardsJ2P2();
 
+    int[][] getHandJ1P1();
+
+    int[][] getHandJ2P1();
+
+    int[][] getHandJ1P2();
+
+    int[][] getHandJ2P2();
+
+    String getNomJoueurCourant();
+
+    int[][] getCarteJouable();
+
     void clicSouris(int index);
     void clicSourisJ2(int index);
 }

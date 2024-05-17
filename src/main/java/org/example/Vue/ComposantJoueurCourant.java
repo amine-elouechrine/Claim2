@@ -1,5 +1,6 @@
 package org.example.Vue;
 
+import org.example.Controleur.ControleurMediateur;
 import org.example.Modele.Jeu;
 import org.example.Patternes.Observateur;
 
@@ -12,11 +13,14 @@ public class ComposantJoueurCourant extends Box implements Observateur {
     Jeu jeu;
     String nomJoueurCourant;
 
-    public ComposantJoueurCourant(int axis, Jeu jeu) {
+    CollecteurEvenements control;
+
+    public ComposantJoueurCourant(int axis, Jeu jeu, CollecteurEvenements control) {
         super(axis);
         this.jeu = jeu;
+        this.control = control;
         this.jeu.ajouteObservateur(this);
-        nomJoueurCourant = "test";
+        nomJoueurCourant = control.getNomJoueurCourant();
         // nomJoueurCourant = jeu.getJoueurCourant().getName();
 
         // Affichage du joueur courant
@@ -27,6 +31,7 @@ public class ComposantJoueurCourant extends Box implements Observateur {
 
     @Override
     public void miseAJour() {
+        nomJoueurCourant = control.getNomJoueurCourant();
         // nomJoueurCourant = jeu.getJoueurCourant().getName();
         jc.setText("Au tour du joueur : " + nomJoueurCourant);
     }
