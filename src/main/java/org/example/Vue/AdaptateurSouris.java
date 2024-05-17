@@ -28,14 +28,14 @@ public class AdaptateurSouris extends MouseAdapter implements MouseListener {
         double valeur_carte = 0f;
         int carte = -1;
 
-        if (i > niv.posXMain() && i < (niv.getLargeurMainJ1() + niv.posXMain()) && j > niv.posYMainJ1() && j < (niv.posYMainJ1() + niv.getHauteurMain())) {
-            valeur_carte = (double) (i - niv.posXMain()) / largeurR; // Il faut diviser par la taille des cartes
+        if (i > niv.posXMainJ1() && i < (niv.getLargeurMainJ1() + niv.posXMainJ1()) && j > niv.posYMainJ1() && j < (niv.posYMainJ1() + niv.getHauteurMain())) {
+            valeur_carte = (double) (i - niv.posXMainJ1()) / largeurR; // Il faut diviser par la taille des cartes
             carte = (int) Math.floor(valeur_carte);
             control.clicSouris(carte);
         }
 
-        if (i > niv.posXMain() && i < (niv.getLargeurMainJ2() + niv.posXMain()) && j > niv.posYMainJ2() && j < (niv.posYMainJ2() + niv.getHauteurMain())) {
-            valeur_carte = (double) (i - niv.posXMain()) / largeurR; // Il faut diviser par la taille des cartes
+        if (i > niv.posXMainJ2() && i < (niv.getLargeurMainJ2() + niv.posXMainJ2()) && j > niv.posYMainJ2() && j < (niv.posYMainJ2() + niv.getHauteurMain())) {
+            valeur_carte = (double) (i - niv.posXMainJ2()) / largeurR; // Il faut diviser par la taille des cartes
             carte = (int) Math.floor(valeur_carte);
             control.clicSourisJ2(carte);
         }

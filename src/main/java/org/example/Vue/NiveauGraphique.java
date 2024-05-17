@@ -20,7 +20,10 @@ public class NiveauGraphique extends JComponent implements Observateur {
     int hauteurCase;
     int rectHeight;
     int rectWidth;
-    int posX;
+    int startXJ1P1;
+    int startXJ2P1;
+    int startXJ1P2;
+    int startXJ2P2;
     int posYJ1;
     int posYJ2;
     int totalWidthJ1P1;
@@ -148,10 +151,11 @@ public class NiveauGraphique extends JComponent implements Observateur {
         totalWidthJ2P2 = HandJ2P2 * rectWidth;
 
         // Calculate starting x position to center the rectangles
-        int startXJ1P1 = (panelWidth - totalWidthJ1P1) / 2;
-        int startXJ2P1 = (panelWidth - totalWidthJ2P1) / 2;
-        int startXJ1P2 = (panelWidth - totalWidthJ1P2) / 2;
-        int startXJ2P2 = (panelWidth - totalWidthJ2P2) / 2;
+        startXJ1P1 = (panelWidth - totalWidthJ1P1) / 2;
+        startXJ2P1 = (panelWidth - totalWidthJ2P1) / 2;
+        startXJ1P2 = (panelWidth - totalWidthJ1P2) / 2;
+        startXJ2P2 = (panelWidth - totalWidthJ2P2) / 2;
+
         posYJ1 = hauteur() - rectHeight - 10;
         posYJ2 = 10;
         totalHeight = rectHeight;
@@ -255,8 +259,6 @@ public class NiveauGraphique extends JComponent implements Observateur {
                     g.drawImage(grayImage, x, y, rectWidth, rectHeight, this);
                 }
             }
-
-            posX = startXJ1P1;
 
             // Draw follower deck Joueur 2
             // x = startXJ2 - 20 - rectWidth;
@@ -417,8 +419,6 @@ public class NiveauGraphique extends JComponent implements Observateur {
                 // g.fillRect(x, y, rectWidth, rectHeight);
             }
 
-            posX = startXJ1P2;
-
             x = startXJ1P2 - 20 - rectWidth;
             y = 20;
 
@@ -551,8 +551,12 @@ public class NiveauGraphique extends JComponent implements Observateur {
         return posYJ2;
     }
 
-    public int posXMain() {
-        return posX;
+    public int posXMainJ1() {
+        return startXJ1P1;
+    }
+
+    public int posXMainJ2() {
+        return startXJ2P1;
     }
 
     public int getLargeurMainJ1() {
