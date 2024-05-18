@@ -201,13 +201,14 @@ public class NiveauGraphique extends JComponent implements Observateur {
         posYJ2 = 10;
         totalHeight = rectHeight;
 
+        positionCarteJoueJ1X = totalWidthJ1P1 / 2 + startXJ1P1;
+        positionCarteJoueJ1Y = panelHeight - totalHeight * 5 / 2 - 10;
+        positionCarteJoueJ2X = totalWidthJ2P1 / 2 + startXJ2P1;
+        positionCarteJoueJ2Y = totalHeight * 3 / 2 + 10;
+
+
         /* Phase 1 */
         if (control.getPhase()) {
-
-            positionCarteJoueJ1X = totalWidthJ1P1 / 2 + startXJ1P1;
-            positionCarteJoueJ1Y = panelHeight - totalHeight * 5 / 2 - 10;
-            positionCarteJoueJ2X = totalWidthJ2P1 / 2 + startXJ2P1;
-            positionCarteJoueJ2Y = totalHeight * 3 / 2 + 10;
 
             /*
             // Dessin de la main face caché du joueur 2 si il est une IA
@@ -240,29 +241,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
             drawFollowerDeck(g);
 
             // Draw carte a gagne
-            x = rectWidth * 5 / 2 + largeur() / 2;
-            y = hauteur() / 2 - rectHeight / 2;
-            switch (jeu.getPlateau().getCarteAffichee().getFaction()) {
-                case "Goblins":
-                    strImage = "goblin";
-                    break;
-                case "Dwarves":
-                    strImage = "dwarve";
-                    break;
-                case "Knight":
-                    strImage = "knight";
-                    break;
-                case "Doppelganger":
-                    strImage = "doppelganger";
-                    break;
-                case "Undead":
-                    strImage = "undead";
-                    break;
-            }
-
-            strImage += "_" + jeu.getPlateau().getCarteAffichee().getValeur();
-            image = imageMap.get(strImage);
-            g.drawImage(image, x, y, rectWidth, rectHeight, this);
+            drawCardToWin(g);
 
             // Draw deck
             drawDeck(g);
@@ -276,26 +255,19 @@ public class NiveauGraphique extends JComponent implements Observateur {
             /* Phase 2 */
         } else if (!control.getPhase()) {
 
-            positionCarteJoueJ1X = totalWidthJ1P2 / 2 + startXJ1P2;
-            positionCarteJoueJ1Y = panelHeight - totalHeight * 5 / 2 - 10;
-            positionCarteJoueJ2X = totalWidthJ2P2 / 2 + startXJ2P2;
-            positionCarteJoueJ2Y = totalHeight * 3 / 2 + 10;
-
+            y = hauteur() - rectHeight - 10;
+            main = jeu.getMainJoueur1Phase2();
             // Dessin des cartes de la main du joueur 1
             for (int i = 0; i < HandJ1P2; i++) {
                 x = startXJ1P2 + i * (rectWidth + spacing);
-                y = hauteur() - rectHeight - 10;
-                g.setColor(Color.CYAN);
-                main = jeu.getMainJoueur1Phase2();
                 drawHand(g, i, main, "Joueur 2");
             }
 
+            y = 10;
+            mainJ2 = jeu.getMainJoueur2Phase2();
             // Dessin de la main du joueur 2
             for (int i = 0; i < HandJ2P2; i++) {
                 x = startXJ2P2 + i * (rectWidth + spacing);
-                y = 10;
-                g.setColor(Color.BLUE);
-                mainJ2 = jeu.getMainJoueur2Phase2();
                 drawHand(g, i, mainJ2, "Joueur 1");
             }
 
@@ -303,8 +275,19 @@ public class NiveauGraphique extends JComponent implements Observateur {
             drawScorePile(g);
         }
 
+        // Dessins des cartes jouées par chaque joueur
         drawCarteJoue(g, carteJ1F, carteJ1V, positionCarteJoueJ1X, positionCarteJoueJ1Y);
         drawCarteJoue(g, carteJ2F, carteJ2V, positionCarteJoueJ2X, positionCarteJoueJ2Y);
+    }
+
+    /* Dessine la carte à gagner dans la phase 1 */
+    private void drawCardToWin(Graphics g) {
+        x = rectWidth * 5 / 2 + largeur() / 2;
+        y = hauteur() / 2 - rectHeight / 2;
+        getStrImage(jeu.getPlateau().getCarteAffichee().getFactionScore());
+        strImage += "_" + jeu.getPlateau().getCarteAffichee().getValeur();
+        image = imageMap.get(strImage);
+        g.drawImage(image, x, y, rectWidth, rectHeight, this);
     }
 
     /* Dessine la pile de score */
