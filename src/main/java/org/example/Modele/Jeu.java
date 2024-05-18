@@ -141,6 +141,30 @@ public class Jeu extends Observable {
         return plateau.joueurCourant.hand.getCard(index).getValeur();
     }
 
+    public int getCarteAfficheeFactionScore() {
+        return getPlateau().getCarteAffichee().getFactionScore();
+    }
+
+    public int getCarteAfficheeValeur() {
+        return getPlateau().getCarteAffichee().getValeur();
+    }
+
+    public int getNbCardFactionFromPileScoreJ1(String faction) {
+        return getPlateau().getJoueur1().getPileDeScore().getCardFaction(faction).size();
+    }
+
+    public int getNbCardFactionFromPileScoreJ2(String faction) {
+        return getPlateau().getJoueur2().getPileDeScore().getCardFaction(faction).size();
+    }
+
+    public int getMaxValueoOfFactionFromPileScoreJ1(String faction) {
+        return getPlateau().getJoueur1().getPileDeScore().maxValueOfFaction(faction);
+    }
+
+    public int getMaxValueoOfFactionFromPileScoreJ2(String faction) {
+        return getPlateau().getJoueur2().getPileDeScore().maxValueOfFaction(faction);
+    }
+
     public int getCarteJoueur1F() {
         if (plateau.getCarteJoueur1() != null)
             return plateau.getCarteJoueur1().getFactionScore();

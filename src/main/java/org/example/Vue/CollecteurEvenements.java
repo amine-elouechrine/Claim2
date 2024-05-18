@@ -1,7 +1,5 @@
 package org.example.Vue;
 
-import org.example.Patternes.Observateur;
-
 public interface CollecteurEvenements {
     boolean getPhase();
 
@@ -25,6 +23,33 @@ public interface CollecteurEvenements {
 
     int[][] getCarteJouable();
 
+    int getCarteJoueur1V();
+
+    int getCarteJoueur1F();
+
+    int getCarteJoueur2V();
+
+    int getCarteJoueur2F();
+
+    int getCarteAfficheeFactionScore();
+
+    int getCarteAfficheeValeur();
+
+    int getNbCardFactionFromPileScoreJ1(String factionName);
+
+    int getNbCardFactionFromPileScoreJ2(String factionName);
+
+    int getMaxValueoOfFactionFromPileScoreJ1(String factionName);
+
+    int getMaxValueoOfFactionFromPileScoreJ2(String factionName);
+
+    int getMaxValueFromPileScore(String factionName);
+
+    boolean isJoueur1WinningFactionOnEquality(String factionName);
+
+    boolean isJoueur2WinningFactionOnEquality(String factionName);
+
     void clicSouris(int index);
+
     void clicSourisJ2(int index);
 }

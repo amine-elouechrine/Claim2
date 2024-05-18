@@ -97,9 +97,9 @@ public class NiveauGraphique extends JComponent implements Observateur {
     /* Load assets */
     Map<String, BufferedImage> imageMap = new HashMap<>();
 
-    public NiveauGraphique(Jeu j, CollecteurEvenements cont) {
+    public NiveauGraphique(Jeu j, CollecteurEvenements c) {
 
-        control = cont;
+        control = c;
         jeu = j;
         jeu.ajouteObservateur(this);
 
@@ -155,10 +155,10 @@ public class NiveauGraphique extends JComponent implements Observateur {
         HandJ2P2 = control.getNbCardsJ2P2(); // Nombre de carte dans la main du joueur 2 à la phase 2
 
         // Si une carte est jouée :
-        carteJ1V = jeu.getCarteJoueur1V();
-        carteJ1F = jeu.getCarteJoueur1F();
-        carteJ2V = jeu.getCarteJoueur2V();
-        carteJ2F = jeu.getCarteJoueur2F();
+        carteJ1V = control.getCarteJoueur1V();
+        carteJ1F = control.getCarteJoueur1F();
+        carteJ2V = control.getCarteJoueur2V();
+        carteJ2F = control.getCarteJoueur2F();
 
         // System.out.println("Valeur carte J1 : " + carteJ1V);
         // System.out.println(carteJ1F);
@@ -222,7 +222,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
             */
 
             y = hauteur() - rectHeight - 10;
-            main = jeu.getMainJoueur1Phase1();
+            main = control.getHandJ1P1();
             // Dessin des cartes de la main du joueur 1
             for (int i = 0; i < HandJ1P1; i++) {
                 x = startXJ1P1 + i * (rectWidth + spacing);
@@ -230,7 +230,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
             }
 
             y = 10;
-            mainJ2 = jeu.getMainJoueur2Phase1();
+            mainJ2 = control.getHandJ2P1();
             // Dessin de la main du joueur 2
             for (int i = 0; i < HandJ2P1; i++) {
                 x = startXJ2P1 + i * (rectWidth + spacing);
@@ -256,7 +256,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
         } else if (!control.getPhase()) {
 
             y = hauteur() - rectHeight - 10;
-            main = jeu.getMainJoueur1Phase2();
+            main = control.getHandJ1P2();
             // Dessin des cartes de la main du joueur 1
             for (int i = 0; i < HandJ1P2; i++) {
                 x = startXJ1P2 + i * (rectWidth + spacing);
@@ -264,7 +264,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
             }
 
             y = 10;
-            mainJ2 = jeu.getMainJoueur2Phase2();
+            mainJ2 = control.getHandJ2P2();
             // Dessin de la main du joueur 2
             for (int i = 0; i < HandJ2P2; i++) {
                 x = startXJ2P2 + i * (rectWidth + spacing);
@@ -284,8 +284,8 @@ public class NiveauGraphique extends JComponent implements Observateur {
     private void drawCardToWin(Graphics g) {
         x = rectWidth * 5 / 2 + largeur() / 2;
         y = hauteur() / 2 - rectHeight / 2;
-        getStrImage(jeu.getPlateau().getCarteAffichee().getFactionScore());
-        strImage += "_" + jeu.getPlateau().getCarteAffichee().getValeur();
+        getStrImage(control.getCarteAfficheeFactionScore());
+        strImage += "_" + control.getCarteAfficheeValeur();
         image = imageMap.get(strImage);
         g.drawImage(image, x, y, rectWidth, rectHeight, this);
     }
@@ -422,8 +422,8 @@ public class NiveauGraphique extends JComponent implements Observateur {
 
     private void calculScore(Graphics g, int i) {
 
-        score = jeu.getPlateau().getJoueur1().getPileDeScore().getCardFaction(faction).size() - jeu.getPlateau().getJoueur2().getPileDeScore().getCardFaction(faction).size();
-        val = Math.max(jeu.getPlateau().getJoueur1().getPileDeScore().maxValueOfFaction(faction), jeu.getPlateau().getJoueur2().getPileDeScore().maxValueOfFaction(faction));
+        score = control.getNbCardFactionFromPileScoreJ1(faction) - control.getNbCardFactionFromPileScoreJ2(faction);
+        val = control.getMaxValueFromPileScore(faction);
         if (val >= 0) {
             strImage = "carte_" + val;
         } else {
@@ -436,9 +436,9 @@ public class NiveauGraphique extends JComponent implements Observateur {
             if (score > 0) {
                 bgColor = Color.GREEN;
             } else if (score == 0) {
-                if (jeu.getPlateau().getJoueur1().getPileDeScore().maxValueOfFaction(faction) > jeu.getPlateau().getJoueur2().getPileDeScore().maxValueOfFaction(faction)) {
+                if ((control.isJoueur1WinningFactionOnEquality(faction))) {
                     bgColor = Color.GREEN;
-                } else if (jeu.getPlateau().getJoueur1().getPileDeScore().maxValueOfFaction(faction) < jeu.getPlateau().getJoueur2().getPileDeScore().maxValueOfFaction(faction)) {
+                } else if (control.isJoueur2WinningFactionOnEquality(faction)) {
                     bgColor = Color.RED;
                 } else {
                     bgColor = Color.GRAY;
