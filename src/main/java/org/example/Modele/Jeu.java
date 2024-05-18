@@ -185,13 +185,9 @@ public class Jeu extends Observable {
         if (getPhase()) {
             Card carteGagnante = r.carteGagnante(plateau.getCarteJoueur1(), plateau.getCarteJoueur2());
             plateau.attribuerCarteFirstPhase(carteGagnante,r);
-            System.out.println("Nombre carte dans la main " + plateau.getJoueurCourant().getHand().size());
-
             if (estFinPhase1()) {
                 switchPhase();
             }
-
-            System.out.println("Nombre carte pioche : " + plateau.getPioche().getCards().size());
             if (getPhase()) {
                 plateau.carteAffichee = plateau.pioche.getCard();
             }
@@ -200,7 +196,6 @@ public class Jeu extends Observable {
             plateau.attribuerCarteSecondPhase(carteGagnante, r);
 
         }
-        System.out.println("Nombre carte pioche : " + plateau.getPioche().getCards().size());
     }
 
     public void setCarteJouer() {

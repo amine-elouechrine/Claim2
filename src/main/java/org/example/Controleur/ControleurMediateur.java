@@ -20,6 +20,7 @@ public class ControleurMediateur implements CollecteurEvenements {
         jeu = j;
     }
 
+    /* Getteurs pour la communication entre interface et moteur */
     public boolean getPhase() {
         return jeu.getPhase();
     }
@@ -71,6 +72,8 @@ public class ControleurMediateur implements CollecteurEvenements {
         return jeu.getNomJoueur(jeu.getPlateau().getJoueurCourant());
     }
 
+
+    /* Clic Souris pour le niveau graphique */
     public void clicSouris(int index) {
         if (index == -1) {
             ;
@@ -78,9 +81,7 @@ public class ControleurMediateur implements CollecteurEvenements {
             if (jeu.estFinPartie()) {
                 // Calcul des scores
             }
-            System.out.println("indice : " + index);
             if(getPhase()) {
-
                 // Application des règles de jeu pour la selection de carte
                 if(carteLeader != null) {
                     jouable = jeu.estCarteJouable(carteLeader, index);
@@ -116,15 +117,6 @@ public class ControleurMediateur implements CollecteurEvenements {
                 // Application des règles de jeu pour la selection de carte
                 if(carteLeader != null) {
                     jouable = jeu.estCarteJouable(carteLeader, index);
-                    for(Map.Entry<String ,List<Card>> entry :jeu.getPlateau().getJoueurCourant().getPileDeScore().getPileDeScore().entrySet()){
-                        String key = entry.getKey();
-                        List<Card> cards = entry.getValue();
-                        System.out.println(key+":"+cards.size());
-                        for(Card card : cards){
-                            System.out.println(card.getFaction()+":"+card.getValeur());
-                        }
-
-                    }
                 }
 
                 if(jouable) {
@@ -149,7 +141,6 @@ public class ControleurMediateur implements CollecteurEvenements {
             ;
         } else {
             if (getPhase()) {
-                System.out.println("indice : " + index);
                 // Application des règles de jeu pour la selection de carte
                 if(carteLeader != null) {
                     jouable = jeu.estCarteJouable(carteLeader, index);
