@@ -74,20 +74,28 @@ public class ArbreJeu{
         }
         List<Node> tempEnfants = new ArrayList<>();
 
+        // 1er joueur joue n'importe qu'elle carte 
+            // 2eme joueur a une liste de carte jouable (boucle de snd player doit etre sur les cartes jouables)
+
         //cas recursif
         for(int i=0;i<racine.plateau.getJoueurCourant().getHandScndPhase().size();i++){
             Plateau copie = new Plateau(racine.plateau);
             Card cardi=racine.plateau.getJoueurCourant().getHandScndPhase().get(i);
-            copie.jouerCarte(cardi);
+            copie.jouerCarte(cardi);;
             copie.switchJoueur();
             for(int j=0;j<racine.plateau.getJoueurCourant().getHandScndPhase().size();j++){
 
                 Card cardj=racine.plateau.getJoueurCourant().getHandScndPhase().get(j);
-                copie.jouerCarte(cardj);
+                copie.jouerCarte(cardj);;
 
-                Card gagnant=carteGagnante(cardi,cardj);
+                Card gagnant=carteGagnante(copie);
 
-                System.out.println(copie.getCarteJoueur1()+"-"+gagnant+"-"+copie.getCarteJoueur2());
+                System.out.println(copie.getJoueur1());
+                System.err.println(copie.getCarteJoueur1());
+                System.out.println(copie.getJoueur2());
+                System.err.println(copie.getCarteJoueur2());
+                System.err.println("****** " + gagnant + " ******");
+                System.err.println("-----------------------------------------------------");
 
                 System.out.println(j+"-"+i);
                 copie.attribuerCarteSecondPhase(gagnant,new ReglesDeJeu());
@@ -100,6 +108,7 @@ public class ArbreJeu{
             }
 
         }
+        System.err.println(tempEnfants.size());
 
         racine.setEnfants(tempEnfants);
 
@@ -124,10 +133,98 @@ public class ArbreJeu{
         plateau1.getJoueur1().setHandScndPhase(pioche.getHandOf13Cards());//ia
         plateau1.getJoueur2().setHandScndPhase(pioche.getHandOf13Cards());//adversaire
         ArbreJeu arbreJeu = new ArbreJeu(new Node(plateau1));
-        Node racine = arbreJeu.construireArbreJeu(plateau1, 1);
-
-
-
+        Node racine = arbreJeu.construireArbreJeu(plateau1, 2);
 
     }
 }
+
+
+
+/*class MinimaxAI {
+    private static final int MAX_DEPTH = 3;
+
+    public static Card getBestMove(Game game) {
+        Player currentPlayer = game.getCurrentPlayer();
+        List<Card> possibleMoves = currentPlayer.getHand();
+        Card bestMove = null;
+        int bestValue = Integer.MIN_VALUE;
+
+        for (Card move : possibleMoves) {
+            Game simulatedGame = simulateGameAfterMove(game, move);
+            int moveValue = minimax(simulatedGame, MAX_DEPTH, Integer.MIN_VALUE, Integer.MAX_VALUE, false);
+            if (moveValue > bestValue) {
+                bestValue = moveValue;
+                bestMove = move;
+            }
+        }
+
+        return bestMove;
+    }
+
+    private static Game simulateGameAfterMove(Game game, Card move) {
+        Game simulatedGame = new Game(game.getCurrentPlayer(), game.getOpponentPlayer(), new ArrayList<>(game.getDeck()));
+        simulatedGame.playCard(game.getCurrentPlayer(), move);
+        return simulatedGame;
+    }
+
+    private static int minimax(Game game, int depth, int alpha, int beta, boolean isMaximizingPlayer) {
+        if (depth == 0 || game.isGameOver()) {
+            return evaluateGame(game);
+        }
+
+        if (isMaximizingPlayer) {
+            int maxEval = Integer.MIN_VALUE;
+            for (Card move : game.getCurrentPlayer().getHand()) {
+                Game simulatedGame = simulateGameAfterMove(game, move);
+                int eval = minimax(simulatedGame, depth - 1, alpha, beta, false);
+                maxEval = Math.max(maxEval, eval);
+                alpha = Math.max(alpha, eval);
+                if (beta <= alpha) {
+                    break;
+                }
+            }
+            return maxEval;
+        } else {
+            int minEval = Integer.MAX_VALUE;
+            for (Card move : game.getOpponentPlayer().getHand()) {
+                Game simulatedGame = simulateGameAfterMove(game, move);
+                int eval = minimax(simulatedGame, depth - 1, alpha, beta, true);
+                minEval = Math.min(minEval, eval);
+                beta = Math.min(beta, eval);
+                if (beta <= alpha) {
+                    break;
+                }
+            }
+            return minEval;
+        }
+    }
+
+    private static int evaluateGame(Game game) {
+        // Implement a heuristic evaluation function
+        // For simplicity, count the number of cards in the score pile
+        Player currentPlayer = game.getCurrentPlayer();
+        return currentPlayer.getScorePile().size();
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Player player1 = new Player("Player 1");
+        Player player2 = new Player("Player 2");
+
+        List<Card> deck = new ArrayList<>();
+        // Initialize the deck with cards (values and factions)
+
+        Game game = new Game(player1, player2, deck);
+
+        while (!game.isGameOver()) {
+            Player currentPlayer = game.getCurrentPlayer();
+            Card bestMove = MinimaxAI.getBestMove(game);
+            game.playCard(currentPlayer, bestMove);
+            game.resolveTrick();
+        }
+
+        // Determine the winner based on the score piles
+    }
+}*/
+

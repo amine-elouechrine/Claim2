@@ -1,4 +1,4 @@
-package org.example.IA;
+/*package org.example.IA;
 
 import org.example.Modele.*;
 
@@ -102,8 +102,8 @@ public class IA_intermediareVSIA_Facile {
             }
 
         }
-        /*System.out.println("---f"+Facile.hand.size());
-        System.out.println("---i"+Intermediare.hand.size());*/
+        //System.out.println("---f"+Facile.hand.size());
+        System.out.println("---i"+Intermediare.hand.size());
         System.out.println("Phase 1 terminée");
         //System.out.println("Phase 2"+Facile.handScndPhase.size())+" - "+Intermediare.handScndPhase.size());
         //phase 2
@@ -222,3 +222,4 @@ public class IA_intermediareVSIA_Facile {
     }
 
 }
+*/

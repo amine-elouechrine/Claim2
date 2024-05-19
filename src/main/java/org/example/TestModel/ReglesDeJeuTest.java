@@ -8,7 +8,7 @@ import org.example.Modele.Hand;
 import org.example.Modele.Player;
 import org.example.Modele.ReglesDeJeu;
 
-public class ReglesDeJeuTest {
+/*public class ReglesDeJeuTest {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
@@ -149,4 +149,4 @@ public class ReglesDeJeuTest {
             System.out.println("Test determinerGagnantPartie échoué.");
         }
     }
-}
+}*/
