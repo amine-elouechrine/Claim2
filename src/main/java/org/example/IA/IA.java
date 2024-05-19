@@ -44,8 +44,8 @@ public abstract class IA extends GeneralPlayer{
         handScndPhase.addCard(card);
     }
 
-    public static IA determinerGagnantMancheIA(IA joueur1, IA joueur2, Card carteJoueur1, Card carteJoueur2) {
-        Card carteGagnante = carteGagnante(carteJoueur1, carteJoueur2);
+    public static IA determinerGagnantMancheIA(IA joueur1, IA joueur2, Card carteJoueur1, Card carteJoueur2 , Plateau plateau) {
+        Card carteGagnante = carteGagnante(carteJoueur1, carteJoueur2 , plateau);
 
         if (carteGagnante == carteJoueur1) {
             return joueur1;

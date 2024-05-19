@@ -75,7 +75,7 @@ public class ArbreJeu{
 
                 Card cardj=racine.plateau.getJoueurNonCourant().getHandScndPhase().get(j);
                 copie.jouerCarte(cardj);
-                Card gagnant=carteGagnante(cardi,cardj); // determinerCarteGagnante on doit passer Plateau comme parametre pour puisse deteminer la carte gagnante a partir du 1er joueur
+                Card gagnant=carteGagnante(cardi,cardj , copie); // determinerCarteGagnante on doit passer Plateau comme parametre pour puisse deteminer la carte gagnante a partir du 1er joueur
 
                 System.out.println(copie.getJoueur1());
                 System.err.println(copie.getCarteJoueur1());

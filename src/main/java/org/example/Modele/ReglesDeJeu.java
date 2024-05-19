@@ -19,7 +19,7 @@ public class ReglesDeJeu {
      * @param carte2 La deuxième carte jouer .
      * @return La carte gagnante ou null en cas d'égalité.
      */
-    public static Card carteGagnante(Card carte1, Card carte2) {
+    public static Card carteGagnante(Card carte1, Card carte2 , Plateau plateau) {
         String faction1 = carte1.getFaction();
         String faction2 = carte2.getFaction();
 
@@ -30,12 +30,12 @@ public class ReglesDeJeu {
 
         // Règle spéciale pour les Doppelgangers
         else if(faction1.equals("Doppelganger") || faction2.equals("Doppelganger")){
-            return DoppelgangerVsCard(carte1, carte2);
+            return DoppelgangerVsCard(carte1, carte2 , plateau);
         }
 
         // si carte1 vs carte2 il n'y a pas de regles speciaux a appliquer
         else{
-            return cardVScard(carte1, carte2);
+            return cardVScard(carte1, carte2 , plateau);
         }
     }
 
@@ -47,18 +47,18 @@ public class ReglesDeJeu {
      * @param carte2
      * @return La carte gagnante
      */
-    public static Card DoppelgangerVsCard(Card carte1, Card carte2){
+    public static Card DoppelgangerVsCard(Card carte1, Card carte2 , Plateau plateau){
         if (carte1.getFaction().equals("Doppelganger")) {
             if(carte2.getFaction().equals("Doppelganger")){
-                return determinerCarteGagnante(carte1, carte2);
+                return determinerCarteGagnante(carte1, carte2 , plateau);
             }else{
                 return carte1;
             }
         }else {
             if(carte2.getFaction().equals("Doppelganger")){
-                return determinerCarteGagnante(carte1, carte2);
+                return determinerCarteGagnante(carte1, carte2 , plateau);
             }else{
-                return cardVScard(carte1, carte2);
+                return cardVScard(carte1, carte2, plateau );
             }
         }
     }
@@ -69,11 +69,11 @@ public class ReglesDeJeu {
      * @param carte2
      * @return carte1 si faction de carte2 est differente sinon elle retourne la carte gagnante
      */
-    public static Card cardVScard(Card carte1 , Card carte2){
+    public static Card cardVScard(Card carte1 , Card carte2 , Plateau plateau){
         if(!(carte2.getFaction().equals(carte1.getFaction()))){
             return carte1;
         }else{
-            return determinerCarteGagnante(carte1, carte2);
+            return determinerCarteGagnante(carte1, carte2, plateau);
         }
     }
 
@@ -97,7 +97,7 @@ public class ReglesDeJeu {
      * @param carte2
      * @return La carte gagnante 
      */
-    public static Card determinerCarteGagnante(Card carte1, Card carte2) {
+    public static Card determinerCarteGagnante(Card carte1, Card carte2 , Plateau plateau) {
         if(carte1.getFaction().equals(carte2.getFaction())) {
             if (carte1.getValeur() > carte2.getValeur()) {
                 return carte1;
@@ -105,7 +105,6 @@ public class ReglesDeJeu {
                 return carte2;
             } else {
                 // En cas d'égalité, c'est le leader qui gagne le trick (carte affichée)
-                Plateau plateau = new Plateau();
                 if (plateau.estLeader()) {
                     return plateau.getCarteJoueur1();
                 } else {
@@ -126,8 +125,8 @@ public class ReglesDeJeu {
      * @param carteJoueur2 La carte jouée par le deuxième joueur.
      * @return Le joueur gagnant ou null en cas d'égalité.
      */
-    public static Player determinerGagnantManche(Player joueur1, Player joueur2, Card carteJoueur1, Card carteJoueur2) {
-        Card carteGagnante = carteGagnante(carteJoueur1, carteJoueur2);
+    public static Player determinerGagnantManche(Player joueur1, Player joueur2, Card carteJoueur1, Card carteJoueur2 , Plateau Plateau) {
+        Card carteGagnante = carteGagnante(carteJoueur1, carteJoueur2 , Plateau);
         
         if (carteGagnante == carteJoueur1) {
             return joueur1;

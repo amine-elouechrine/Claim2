@@ -183,7 +183,7 @@ public class Jeu extends Observable {
 
     public void playTrick() {
         if (getPhase()) {
-            Card carteGagnante = ReglesDeJeu.carteGagnante(plateau.getCarteJoueur1(), plateau.getCarteJoueur2());
+            Card carteGagnante = ReglesDeJeu.carteGagnante(plateau.getCarteJoueur1(), plateau.getCarteJoueur2() , plateau);
             plateau.attribuerCarteFirstPhase(carteGagnante,r);
             System.out.println("Nombre carte dans la main " + plateau.getJoueurCourant().getHand().size());
 
@@ -196,7 +196,7 @@ public class Jeu extends Observable {
                 plateau.carteAffichee = plateau.pioche.getCard();
             }
         } else {
-            Card carteGagnante = ReglesDeJeu.carteGagnante(plateau.getCarteJoueur1(), plateau.getCarteJoueur2());
+            Card carteGagnante = ReglesDeJeu.carteGagnante(plateau.getCarteJoueur1(), plateau.getCarteJoueur2() , plateau);
             plateau.attribuerCarteSecondPhase(carteGagnante, r);
 
         }
