@@ -10,6 +10,16 @@ public class PileDeScore {
     public PileDeScore() {
         cartesGagnees = new HashMap<>();
     }
+    public PileDeScore(PileDeScore pileDeScore) {
+        cartesGagnees = new HashMap<>();
+        for (Map.Entry<String, List<Card>> entry : pileDeScore.cartesGagnees.entrySet()) {
+            List<Card> cards = new ArrayList<>();
+            for (Card card : entry.getValue()) {
+                cards.add(new Card(card.getValeur(), card.getFaction()));
+            }
+            cartesGagnees.put(entry.getKey(), cards);
+        }
+    }
 
     public Map<String, List<Card>> getCartesGagnees() {
         return cartesGagnees;
@@ -36,6 +46,15 @@ public class PileDeScore {
             }
         }
         return maxValue;
+    }
+
+    // Récupère toutes les cartes de toutes les factions
+    public List<Card> getAllCards() {
+        List<Card> allCards = new ArrayList<>();
+        for (List<Card> cards : cartesGagnees.values()) {
+            allCards.addAll(cards);
+        }
+        return allCards;
     }
     // addCard(Card carte) : void ajouter une carte dans cartes gagnées dans la faction corrspondante 
     // Ajoute une carte à la faction correspondante

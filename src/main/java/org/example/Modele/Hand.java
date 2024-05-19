@@ -16,6 +16,16 @@ public class Hand {
         cards = new ArrayList<>();
     }
 
+
+    public Hand(Hand other) {
+        this.cards = new ArrayList<>(other.cards.size());
+        for (Card card : other.cards) {
+            this.cards.add(new Card(card.getValeur(),card.getFaction())); // Ensure Card has a copy constructor
+        }
+    }
+
+
+
     public Card getSmallestHigherCard(Card card) {
         if (cards == null || cards.isEmpty()) {
             throw new IllegalStateException("La main est vide ou nulle.");
