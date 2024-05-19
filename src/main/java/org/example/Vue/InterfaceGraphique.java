@@ -14,11 +14,12 @@ public class InterfaceGraphique implements Runnable {
     Jeu j;
     JFrame fenetre;
     CollecteurEvenements control;
-
+    AdaptateurClavier adaptateurClavier;
 
     InterfaceGraphique(Jeu jeu, CollecteurEvenements c) {
         j = jeu;
         control = c;
+        adaptateurClavier = new AdaptateurClavier(control);
     }
 
     public static void demarrer(Jeu jeu, CollecteurEvenements control) {
@@ -45,6 +46,7 @@ public class InterfaceGraphique implements Runnable {
         niv.setFocusable(true);
         niv.requestFocusInWindow();
         niv.addMouseListener(new AdaptateurSouris(niv, control));
+        niv.addKeyListener(adaptateurClavier);
 
         // Fenetre InterfaceGraphique
         fenetre.add(niv);
