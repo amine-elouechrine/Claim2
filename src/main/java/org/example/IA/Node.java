@@ -3,6 +3,7 @@ package org.example.IA;
 import org.example.Modele.Card;
 import org.example.Modele.Hand;
 import org.example.Modele.PileDeScore;
+import org.example.Modele.Plateau;
 
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ public class Node {
     PileDeScore pileDeScoreIa;
     PileDeScore pileDeScoreAdversaire;
     public Card CarteGagnante;
+    public Plateau plateau;
 
 
     public Node(Hand handIa, Hand handAdversaire,boolean isIaTurn,Card IACard,Card Cardadversaire,PileDeScore pileDeScoreIa,PileDeScore pileDeScoreAdversaire,int score) {
@@ -35,6 +37,10 @@ public class Node {
         this.pileDeScoreIa=pileDeScoreIa;
         this.pileDeScoreAdversaire=pileDeScoreAdversaire;
         this.score=score;
+    }
+
+    public Node (Plateau plateau){
+        this.plateau=plateau;
     }
 
     public void setEnfants(List<Node> enfants) {

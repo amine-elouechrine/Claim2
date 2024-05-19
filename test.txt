@@ -1,0 +1,15 @@
+Goblins::3
+Goblins:5
+Goblins:0
+Goblins:0
+Doppelganger::3
+Doppelganger:2
+Doppelganger:4
+Doppelganger:8
+Dwarves::3
+Dwarves:7
+Dwarves:9
+Dwarves:5
+Undead::1
+Undead:9
+

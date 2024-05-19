@@ -29,6 +29,17 @@ public class Plateau {
         this.defausse = new Defausse();
         this.phase = true; // commancer a la phase 1
     }
+    public Plateau(Plateau plateau){
+        this.carteAffichee=plateau.getCarteAffichee();
+        this.carteJoueur1=plateau.getCarteJoueur1();
+        this.carteJoueur2=plateau.getCarteJoueur2();
+        this.pioche=plateau.getPioche();
+        this.defausse=plateau.getDefausse();
+        this.joueur1=plateau.getJoueur1();
+        this.joueur2=plateau.getJoueur2();
+        this.joueurCourant=plateau.getJoueurCourant();
+        this.phase=plateau.getPhase();
+    }
     public void setPhase (boolean val){
         phase=val;
     }
@@ -119,6 +130,14 @@ public class Plateau {
      */
     public Player getJoueurCourant() {
         return joueurCourant;
+    }
+    public Player getJoueurCourant2() {
+        if(joueurCourant==joueur1){
+            return joueur2;
+        }
+        else{
+            return joueur1;
+        }
     }
 
     public void setJoueurCourant(Player joueurCourant) {
@@ -238,6 +257,14 @@ public class Plateau {
         return carteJoue;
     }
 
+    public void jouerCarte(Card card){
+        if(joueurCourant == joueur1) {
+            setCarteJoueur1(card);
+        } else if (joueurCourant == joueur2) {
+            setCarteJoueur2(card);
+        }
+    }
+
     /**
      * verifierle joueur courant est le leader
      *
@@ -248,6 +275,15 @@ public class Plateau {
             return true;
         } else {
             return false;
+        }
+    }
+
+    public void switchJoueur(){
+        if(joueurCourant==joueur1){
+            joueurCourant=joueur2;
+        }
+        else{
+            joueurCourant=joueur1;
         }
     }
 
@@ -304,6 +340,7 @@ public class Plateau {
     }
 
     public Boolean estPhase1() {
+
         return !(joueur1.getHand().isEmpty() && joueur2.getHand().isEmpty());
     }
 

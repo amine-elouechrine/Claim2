@@ -21,6 +21,10 @@ public class Cards extends CardCollection{
         shuffle();
     }
 
+    public void setHandSecond(List<Card> cards) {
+        this.cards = cards;
+    }
+
     private void createGobelinCards() {
         for (int i = 0; i < 5; i++) {
             addCard(new Card(0, "Goblins"));

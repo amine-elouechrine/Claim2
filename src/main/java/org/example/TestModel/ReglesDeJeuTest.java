@@ -143,9 +143,9 @@ public class ReglesDeJeuTest {
             winner = joueur2.getName();
         }
 
-        if (gagnant.equals(winner)) {
+        if (gagnant.equals(winner)){
             System.out.println("Test determinerGagnantPartie réussi.");
-        } else {
+        }else{
             System.out.println("Test determinerGagnantPartie échoué.");
         }
     }
