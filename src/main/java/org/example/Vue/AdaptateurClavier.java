@@ -17,20 +17,21 @@ public class AdaptateurClavier extends KeyAdapter implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
+
         if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_A) {
-            // control.annuler();
+            control.annuler();
             System.out.println("Clique sur le bouton annuler");
         } else if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_R) {
-            // control.refaire();
+            control.refaire();
             System.out.println("Clique sur le bouton refaire");
         } else if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_S) {
             //touche pour sauvegarder/charger
-            // control.sauvegarder();
-            // control.charger();
+            //control.sauvegarder();
+            //control.charger();
             System.out.println("Clique sur le bouton sauvegarder/charger");
         }else if(e.isControlDown() && e.getKeyCode() == KeyEvent.VK_N) {
             //touche pour nouvelle partie
-            // control.sauvegarder();
+            //control.nouvelle();
             System.out.println("Clique sur le bouton nouvelle partie");
         }else{
             //pas d'action pour les autres clés

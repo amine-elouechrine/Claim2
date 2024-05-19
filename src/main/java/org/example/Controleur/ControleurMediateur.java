@@ -1,10 +1,12 @@
 package org.example.Controleur;
 
 import org.example.Modele.Card;
+import org.example.Modele.GestionAnnuleRefaire;
 import org.example.Vue.CollecteurEvenements;
 import org.example.Modele.Jeu;
 import org.example.Patternes.Observable;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -14,10 +16,13 @@ public class ControleurMediateur implements CollecteurEvenements {
 
     Card carteLeader;
 
+    GestionAnnuleRefaire g;
+
     boolean jouable = true;
 
     public ControleurMediateur(Jeu j) {
         jeu = j;
+        g = new GestionAnnuleRefaire(jeu.getPlateau());
     }
 
     public boolean getPhase() {
@@ -70,6 +75,27 @@ public class ControleurMediateur implements CollecteurEvenements {
     public String getNomJoueurCourant() {
         return jeu.getNomJoueur(jeu.getPlateau().getJoueurCourant());
     }
+    @Override
+    public void refaire(){
+        g.refaire();
+        jeu.metAJour();
+    }
+    @Override
+    public void annuler(){
+        g.annuler();;
+        jeu.metAJour();
+    }
+    @Override
+    public void sauvegarder(String filename ){
+        g.sauve(filename);
+        jeu.metAJour();
+    }
+    @Override
+    public void restaure(String filename ) throws IOException  {
+        g.restaure(filename);
+        jeu.metAJour();
+    }
+
 
     public void clicSouris(int index) {
         if (index == -1) {

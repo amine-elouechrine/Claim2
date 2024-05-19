@@ -2,6 +2,8 @@ package org.example.Vue;
 
 import org.example.Patternes.Observateur;
 
+import java.io.IOException;
+
 public interface CollecteurEvenements {
     boolean getPhase();
 
@@ -24,6 +26,11 @@ public interface CollecteurEvenements {
     String getNomJoueurCourant();
 
     int[][] getCarteJouable();
+
+    void refaire();
+    void annuler();
+    void sauvegarder(String filename );
+    void restaure(String filename ) throws IOException;
 
     void clicSouris(int index);
     void clicSourisJ2(int index);
