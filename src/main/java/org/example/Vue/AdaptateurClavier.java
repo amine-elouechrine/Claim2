@@ -9,7 +9,6 @@ import java.awt.event.KeyListener;
 public class AdaptateurClavier extends KeyAdapter implements KeyListener {
 
     CollecteurEvenements control;
-    ControleurMediateur controleurMediateur;
 
     AdaptateurClavier(CollecteurEvenements control) {
         this.control = control;
@@ -25,14 +24,11 @@ public class AdaptateurClavier extends KeyAdapter implements KeyListener {
             control.refaire();
             System.out.println("Clique sur le bouton refaire");
         } else if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_S) {
-            //touche pour sauvegarder/charger
-            //control.sauvegarder();
-            //control.charger();
-            System.out.println("Clique sur le bouton sauvegarder/charger");
+            //control.sauvegarder(fichier);
+        }else if(e.isControlDown() && e.getKeyCode() == KeyEvent.VK_C) {
+            //control.restaure(fichier);
         }else if(e.isControlDown() && e.getKeyCode() == KeyEvent.VK_N) {
-            //touche pour nouvelle partie
-            //control.nouvelle();
-            System.out.println("Clique sur le bouton nouvelle partie");
+            control.nouvellePartie();
         }else{
             //pas d'action pour les autres clés
         }

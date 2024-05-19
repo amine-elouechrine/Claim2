@@ -16,13 +16,11 @@ public class ControleurMediateur implements CollecteurEvenements {
 
     Card carteLeader;
 
-    GestionAnnuleRefaire g;
 
     boolean jouable = true;
 
     public ControleurMediateur(Jeu j) {
         jeu = j;
-        g = new GestionAnnuleRefaire(jeu.getPlateau());
     }
 
     public boolean getPhase() {
@@ -76,25 +74,32 @@ public class ControleurMediateur implements CollecteurEvenements {
         return jeu.getNomJoueur(jeu.getPlateau().getJoueurCourant());
     }
     @Override
-    public void refaire(){
-        g.refaire();
-        jeu.metAJour();
-    }
-    @Override
     public void annuler(){
-        g.annuler();;
+        jeu.annuler();
         jeu.metAJour();
     }
     @Override
-    public void sauvegarder(String filename ){
-        g.sauve(filename);
+    public void refaire(){
+        jeu.refaire();
+        jeu.metAJour();
+    }
+    @Override
+    public void sauve(String filename ){
+        jeu.sauve(filename);
         jeu.metAJour();
     }
     @Override
     public void restaure(String filename ) throws IOException  {
-        g.restaure(filename);
+        jeu.restaure(filename);
         jeu.metAJour();
     }
+
+    @Override
+    public void nouvellePartie() {
+        jeu.getPlateau().initialiserJeu();
+        jeu.metAJour();
+    }
+
 
 
     public void clicSouris(int index) {

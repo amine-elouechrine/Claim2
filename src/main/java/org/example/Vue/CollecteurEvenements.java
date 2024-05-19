@@ -29,9 +29,12 @@ public interface CollecteurEvenements {
 
     void refaire();
     void annuler();
-    void sauvegarder(String filename );
+    void sauve(String filename);
     void restaure(String filename ) throws IOException;
+    void nouvellePartie();
 
     void clicSouris(int index);
     void clicSourisJ2(int index);
+
+
 }
