@@ -93,7 +93,7 @@ public class Jeu extends Observable {
     }
 
     public int[][] getListCardJouable(Card carteAdversaire, Hand mainJoueur) {
-        List<Card> listeCarte = r.cartesJouables(carteAdversaire, mainJoueur);
+        List<Card> listeCarte = ReglesDeJeu.cartesJouables(carteAdversaire, mainJoueur);
         return getListeCarte(listeCarte);
     }
 
@@ -125,7 +125,7 @@ public class Jeu extends Observable {
     }
 
     public int[][] getCarteJouable(Card carteJoue, Hand main) {
-        return getListeCarte(r.cartesJouables(carteJoue, main));
+        return getListeCarte(ReglesDeJeu.cartesJouables(carteJoue, main));
     }
 
     public boolean estCarteJouable(Card CarteAdverse, int indiceCarteJoue) {
@@ -149,7 +149,7 @@ public class Jeu extends Observable {
     }
 
     public List<Card> preselected(Card carte, Hand hand) {
-        return r.cartesJouables(carte, hand);
+        return ReglesDeJeu.cartesJouables(carte, hand);
     }
 
     public int getCarteJoueur1V() {
@@ -183,7 +183,7 @@ public class Jeu extends Observable {
 
     public void playTrick() {
         if (getPhase()) {
-            Card carteGagnante = r.carteGagnante(plateau.getCarteJoueur1(), plateau.getCarteJoueur2());
+            Card carteGagnante = ReglesDeJeu.carteGagnante(plateau.getCarteJoueur1(), plateau.getCarteJoueur2());
             plateau.attribuerCarteFirstPhase(carteGagnante,r);
             System.out.println("Nombre carte dans la main " + plateau.getJoueurCourant().getHand().size());
 
@@ -196,7 +196,7 @@ public class Jeu extends Observable {
                 plateau.carteAffichee = plateau.pioche.getCard();
             }
         } else {
-            Card carteGagnante = r.carteGagnante(plateau.getCarteJoueur1(), plateau.getCarteJoueur2());
+            Card carteGagnante = ReglesDeJeu.carteGagnante(plateau.getCarteJoueur1(), plateau.getCarteJoueur2());
             plateau.attribuerCarteSecondPhase(carteGagnante, r);
 
         }
