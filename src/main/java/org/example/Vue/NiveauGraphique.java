@@ -10,6 +10,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -107,22 +108,9 @@ public class NiveauGraphique extends JComponent implements Observateur {
         File directory = new File(directoryPath);
         File[] files = directory.listFiles();
 
-        //Chargez l'image et le nom correspondant dans un hashmap
+        // Charge l'image et le nom correspondant dans un hashmap
         if (files != null) {
-            for (File file : files) {
-                if (file.isFile()) {
-                    String fileName = file.getName();
-                    if (fileName.endsWith(".png")) {
-                        String imageName = fileName.substring(0, fileName.lastIndexOf("."));
-                        try {
-                            BufferedImage image = ImageIO.read(file);
-                            imageMap.put(imageName, image);
-                        } catch (IOException e) {
-                            System.out.println("Error loading image: " + e.getMessage());
-                        }
-                    }
-                }
-            }
+            Arrays.stream(files).filter(File::isFile).forEach(this::acceptFile);
         } else {
             System.out.println("No files found in the directory.");
         }
@@ -160,9 +148,6 @@ public class NiveauGraphique extends JComponent implements Observateur {
         carteJ2V = control.getCarteJoueur2V();
         carteJ2F = control.getCarteJoueur2F();
 
-        // System.out.println("Valeur carte J1 : " + carteJ1V);
-        // System.out.println(carteJ1F);
-
         // Definition of font
         fontSize_1 = Math.min((int) (panelWidth * 0.02), (int) (panelHeight * 0.035));
         font_1 = new Font("Arial", Font.PLAIN, fontSize_1);
@@ -177,10 +162,9 @@ public class NiveauGraphique extends JComponent implements Observateur {
         icon_dwarve = imageMap.get("icon_dwarve");
         icon_doppleganger = imageMap.get("icon_doppleganger");
 
-        // Dessin des cartes de l'adversaire (IA)
         // Calculate rectangle dimensions based on panel size
         rectWidth = (int) (panelWidth * 0.05);
-        rectHeight = Math.max(rectWidth, (int) (panelHeight * 4 / 30)); // Ensure height is always greater than width
+        rectHeight = Math.max(rectWidth, (panelHeight * 4) / 30); // Ensure height is always greater than width
 
         // Calculate spacing between rectangles
         spacing = 0;
@@ -301,27 +285,30 @@ public class NiveauGraphique extends JComponent implements Observateur {
 
         for (int i = 0; i < numRows; i++) {
             lineY = y + i * cellHeight;
-            faction = "";
-            switch (i) {
-                case 1:
-                    faction = "Goblins";
-                    break;
-                case 2:
-                    faction = "Dwarves";
-                    break;
-                case 3:
-                    faction = "Knight";
-                    break;
-                case 4:
-                    faction = "Doppelganger";
-                    break;
-                case 5:
-                    faction = "Undead";
-                    break;
-            }
-            getStrImage(i);
+            assignFactionToNumber(i);
             // Calcul de score
             calculScore(g, i);
+        }
+    }
+
+    private void assignFactionToNumber(int indice) {
+        faction = "";
+        switch (indice) {
+            case 1:
+                faction = "Goblins";
+                break;
+            case 2:
+                faction = "Dwarves";
+                break;
+            case 3:
+                faction = "Knight";
+                break;
+            case 4:
+                faction = "Doppelganger";
+                break;
+            case 5:
+                faction = "Undead";
+                break;
         }
     }
 
@@ -424,11 +411,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
 
         score = control.getNbCardFactionFromPileScoreJ1(faction) - control.getNbCardFactionFromPileScoreJ2(faction);
         val = control.getMaxValueFromPileScore(faction);
-        if (val >= 0) {
-            strImage = "carte_" + val;
-        } else {
-            strImage = "carte_blanc";
-        }
+        strImage = val >= 0 ? "carte_" + val : "carte_blanc";
 
         image = imageMap.get(strImage);
 
@@ -456,6 +439,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
         g.drawLine(x, lineY, x + rectWidth * 2, lineY);
 
         if (i == 0) {
+            // Ecris score dans la première ligne
             fm = g.getFontMetrics(font_1);
             textWidth = fm.stringWidth("SCORE");
             textHeight = fm.getHeight();
@@ -465,26 +449,16 @@ public class NiveauGraphique extends JComponent implements Observateur {
             g.setFont(font_1);
             g.drawString("SCORE", textX, textY);
         }
-        if (i == 1) {
-            // Draw icon goblin
-            drawIcon(g, icon_goblin);
-        }
-        if (i == 3) {
-            //Draw icon knight
-            drawIcon(g, icon_knight);
-        }
-        if (i == 5) {
-            // Draw icon undead
-            drawIcon(g, icon_undead);
-        }
-        if (i == 2) {
-            // Draw icon dwarve
-            drawIcon(g, icon_dwarve);
-        }
-        if (i == 4) {
-            // Draw icon dopplegagner
-            drawIcon(g, icon_doppleganger);
-        }
+        // Draw icon goblin
+        if (i == 1) drawIcon(g, icon_goblin);
+        // Draw icon dwarve
+        if (i == 2) drawIcon(g, icon_dwarve);
+        //Draw icon knight
+        if (i == 3) drawIcon(g, icon_knight);
+        // Draw icon dopplegagner
+        if (i == 4) drawIcon(g, icon_doppleganger);
+        // Draw icon undead
+        if (i == 5) drawIcon(g, icon_undead);
     }
 
     private BufferedImage toGrayScale(BufferedImage originalImage) {
@@ -591,6 +565,18 @@ public class NiveauGraphique extends JComponent implements Observateur {
         repaint();
     }
 
-
+    // Pour charger les images dans le hashMap
+    private void acceptFile(File file) {
+        String fileName = file.getName();
+        if (fileName.endsWith(".png")) {
+            String imageName = fileName.substring(0, fileName.lastIndexOf("."));
+            try {
+                BufferedImage image = ImageIO.read(file);
+                imageMap.put(imageName, image);
+            } catch (IOException e) {
+                System.out.println("Error loading image: " + e.getMessage());
+            }
+        }
+    }
 }
 
