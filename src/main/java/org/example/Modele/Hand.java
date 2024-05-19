@@ -15,6 +15,8 @@ public class Hand extends CardCollection{
     }
 
 
+
+
     public Hand(Hand other) {
         this.cards = new ArrayList<>(other.cards.size());
         for (Card card : other.cards) {
