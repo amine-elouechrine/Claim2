@@ -1,6 +1,7 @@
 package org.example.Modele;
 import org.example.Patternes.Observable;
 
+import java.io.IOException;
 import java.util.List;
 
 public class Jeu extends Observable {
@@ -230,9 +231,9 @@ public class Jeu extends Observable {
     }
 
     public void sauve(String filename) {
-
+        g.sauve(filename);
     }
-    public void restaure(String filename) {
-
+    public void restaure(String filename) throws IOException {
+        g.restaure(filename);
     }
 }

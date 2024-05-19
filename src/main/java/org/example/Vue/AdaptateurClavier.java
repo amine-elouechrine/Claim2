@@ -9,9 +9,11 @@ import java.awt.event.KeyListener;
 public class AdaptateurClavier extends KeyAdapter implements KeyListener {
 
     CollecteurEvenements control;
+    ComposantSauvegarde sc;
 
-    AdaptateurClavier(CollecteurEvenements control) {
+    AdaptateurClavier(CollecteurEvenements control, ComposantSauvegarde sauvegarde) {
         this.control = control;
+        sc = sauvegarde;
     }
 
     @Override
@@ -25,8 +27,7 @@ public class AdaptateurClavier extends KeyAdapter implements KeyListener {
             System.out.println("Clique sur le bouton refaire");
         } else if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_S) {
             //control.sauvegarder(fichier);
-        }else if(e.isControlDown() && e.getKeyCode() == KeyEvent.VK_C) {
-            //control.restaure(fichier);
+            sc.setVisible(true);
         }else if(e.isControlDown() && e.getKeyCode() == KeyEvent.VK_N) {
             control.nouvellePartie();
         }else{

@@ -19,7 +19,7 @@ public class InterfaceGraphique implements Runnable {
     InterfaceGraphique(Jeu jeu, CollecteurEvenements c) {
         j = jeu;
         control = c;
-        adaptateurClavier = new AdaptateurClavier(control);
+        adaptateurClavier = new AdaptateurClavier(control, new ComposantSauvegarde(control));
     }
 
     public static void demarrer(Jeu jeu, CollecteurEvenements control) {
