@@ -23,5 +23,11 @@ public class Difficile extends IA {
 
     }
 
+    @Override
+    public Card jouerCarte(int indexCard) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'jouerCarte'");
+    }
+
 }
 

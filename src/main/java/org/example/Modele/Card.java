@@ -1,9 +1,8 @@
-
+package org.example.Modele;
 /**
  * Cette classe représente une carte dans le jeu. Chaque carte a une valeur numérique et une faction associée.
  */
 
-package org.example.Modele;
 
 public class Card {
     private int value;// La valeur de la carte

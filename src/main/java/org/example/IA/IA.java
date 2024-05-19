@@ -9,20 +9,11 @@ import org.example.Modele.*;
 
 import static org.example.Modele.ReglesDeJeu.carteGagnante;
 
-public abstract class IA {
-    String Name ;
-    Hand hand;
-    Hand handScndPhase;
-    PileDeScore pileDeScore;
-    //Hand pileFollower;
+public abstract class IA extends GeneralPlayer{
+
     boolean amoi=false;
     public IA(String Name) {
-        this.Name = Name; // initialiser le nom du joueur
-        this.hand = new Hand(); // initialiser de hand vide
-        this.pileDeScore = new PileDeScore(); // initialiser la pile de score vide
-        this.handScndPhase = new Hand(); // initialiser la main de la seconde phase vide
-        //this.pileFollower = new Hand();
-        
+        super(Name);
     }
     //public abstract Card jouer_coup_phase1(Hand mainIA, boolean suivre_faction, Card carte_adversaire);
     public abstract Card jouerCoupPhase1(Hand mainIA, boolean suivre_faction, Card carte_adversaire);
@@ -35,23 +26,23 @@ public abstract class IA {
      * @param opponentCard
      * @return la liste de cartes de la meme faction que la carte passée en paramètre (opponentCard)
      */
-    public List<Card> getCardsOfSameFactionAs(Card opponentCard) {
-        if (hand.isEmpty()) {
-            throw new IllegalStateException("La main est vide.");
+    public Hand getCardsOfSameFaction(String faction) {
+        if (hand == null || hand.isEmpty()) {
+            return null;
         }
 
-        List<Card> cardsOfSameFaction = new ArrayList<>();
-        String opponentCardFaction = opponentCard.getFaction();
+        Hand cardsOfSameFaction = new Hand();
 
-        // pour chaque carte dans la main
-        for (Card card : hand.getAllCards()) {
-            if (card.getFaction().equals(opponentCardFaction)) {
-                cardsOfSameFaction.add(card);
+        for (Card handCard : hand.getAllCards()) {
+            if (handCard.getFaction().equals(faction)) {
+                cardsOfSameFaction.addCard(handCard);
             }
         }
 
         return cardsOfSameFaction;
     }
+
+    
     public void addHandScndPhase(Card card) {
         handScndPhase.addCard(card);
     }

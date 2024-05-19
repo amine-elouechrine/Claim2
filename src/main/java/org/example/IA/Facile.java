@@ -17,28 +17,29 @@ public class Facile extends IA {
     }
 
 
+    // mainIA : doit etre hand 
     public Card joueCoupPhase1F(Hand mainIA, boolean suivre_faction, Card carte_adversaire) {
-        //System.out.println(";;;''''''" + hand.size());
+        System.out.println(";;;''''''" + mainIA.size());
         if (suivre_faction) {
-            return jouerAvecSuiviFaction(carte_adversaire);
+            return jouerAvecSuiviFaction(carte_adversaire, mainIA);
         } else {
-            return jouerCarteAleatoire();
+            return jouerCarteAleatoire(mainIA);
         }
     }
 
-    private Card jouerAvecSuiviFaction(Card carte_adversaire) {
-        Hand carteJouable = hand.getCardsOfSameFaction(carte_adversaire.getFaction());
+    private Card jouerAvecSuiviFaction(Card carte_adversaire , Hand main) {
+        Hand carteJouable = getCardsOfSameFaction(carte_adversaire.getFaction());
 
         if (carteJouable.isEmpty()) {
-            return jouerCarteAleatoire();
+            return jouerCarteAleatoire(main);
         } else {
             return choisirCarteAleatoire(carteJouable);
         }
     }
 
-    private Card jouerCarteAleatoire() {
-        int index = rand.nextInt(hand.getAllCards().size());
-        Card carte = hand.getAllCards().get(index);
+    private Card jouerCarteAleatoire(Hand main) {
+        int index = rand.nextInt(main.getAllCards().size());
+        Card carte = main.getAllCards().get(index);
         System.out.println("jouer carte : " + carte.getFaction() + " " + carte.getValeur());
         return carte;
     }
@@ -56,7 +57,7 @@ public class Facile extends IA {
         System.out.println(";;;''''''"+hand.size());
         if(suivre_faction){
             Hand carteJouable;
-            carteJouable = hand.getCardsOfSameFaction(carte_adversaire.getFaction());
+            carteJouable = getCardsOfSameFaction(carte_adversaire.getFaction());
             if(carteJouable.isEmpty()){
                 //je peux pas suivre la faction de l'adversaire
                 int index = rand.nextInt(hand.getAllCards().size());
@@ -76,11 +77,23 @@ public class Facile extends IA {
             return carte;
         }
     }
+
+    // mainIA : doit etre handScndPhase
+    public Card jouerCoupPhase2F(Hand mainIA, boolean suivre_faction, Card carte_adversaire) {
+        System.out.println(";;;''''''" + handScndPhase.size());
+        if (suivre_faction) {
+            return jouerAvecSuiviFaction(carte_adversaire , mainIA); 
+        } else {
+            return jouerCarteAleatoire(handScndPhase);
+        }
+    }
+
+
     public Card jouer_coup_phase2_F(Hand mainIA, boolean suivre_faction, Card carte_adversaire) {
         System.out.println(";;;''''''"+handScndPhase.size());
         if(suivre_faction){
             Hand carteJouable;
-            carteJouable = handScndPhase.getCardsOfSameFaction(carte_adversaire.getFaction());
+            carteJouable = getCardsOfSameFaction(carte_adversaire.getFaction());
             if(carteJouable.isEmpty()){
                 //je peux pas suivre la faction de l'adversaire
                 int index = rand.nextInt(handScndPhase.getAllCards().size());
@@ -101,23 +114,20 @@ public class Facile extends IA {
         }
     }
 
-    
-    /*public Card jouer_coup_phase1(Hand mainIA, boolean suivre_faction, Card carte_adversaire) {
-        return jouer_coup_phase1_F(mainIA, suivre_faction, carte_adversaire);
-    }*/
-
     @Override
     public Card jouerCoupPhase1(Hand mainIA, boolean suivre_faction, Card carte_adversaire) {
         return jouer_coup_phase1_F(mainIA, suivre_faction, carte_adversaire);
     }
 
-    /*@Override
-    public Card jouer_coup_phase2(Hand mainIA, boolean suivre_faction, Card carte_adversaire) {
-        return jouer_coup_phase2_F(mainIA, suivre_faction, carte_adversaire);
-    }*/
-
     @Override
     public Card jouerCoupPhase2(Hand mainIA, boolean suivre_faction, Card carte_adversaire) {
         return jouer_coup_phase2_F(mainIA, suivre_faction, carte_adversaire);
+    }
+
+
+    @Override
+    public Card jouerCarte(int indexCard) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'jouerCarte'");
     }
 }

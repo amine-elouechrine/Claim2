@@ -14,13 +14,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class NiveauGraphique extends JComponent implements Observateur {
-    private static final double RECTANGLE_SCALE_FACTOR = 0.05; // Adjust this value for scaling
+    //private static final double RECTANGLE_SCALE_FACTOR = 0.05; // Adjust this value for scaling
     CollecteurEvenements control;
     int largeurCase;
     int hauteurCase;
     int rectHeight;
     int rectWidth;
-    int posX;
+    int startXJ1P1;
+    int startXJ2P1;
+    int startXJ1P2;
+    int startXJ2P2;
     int posYJ1;
     int posYJ2;
     int totalWidthJ1P1;
@@ -41,6 +44,8 @@ public class NiveauGraphique extends JComponent implements Observateur {
     int[][] main;
     int[][] mainJ2;
     BufferedImage image;
+    BufferedImage grayImage;
+
     String strImage = "";
 
     int carteJ1V = -1, carteJ1F = -1;
@@ -99,19 +104,6 @@ public class NiveauGraphique extends JComponent implements Observateur {
         Font font = g.getFont().deriveFont(Font.BOLD, largeur() / 25f); // Adjust font size based on panel width
         g.setFont(font);
 
-        /*
-        Draw "Menu" text centered within the oval
-        String text = "Menu";
-        FontMetrics fontMetrics = g.getFontMetrics();
-        int textWidth = fontMetrics.stringWidth(text);
-        int textHeight = fontMetrics.getHeight();
-        int textX = ovalX + (ovalWidth - textWidth) / 2;
-        int textY = ovalY + (ovalHeight - textHeight) / 2 + fontMetrics.getAscent();
-        g.setColor(Color.BLACK);
-        g.drawString(text, textX, textY);
-        */
-
-
         int panelWidth = getWidth();
         int panelHeight = getHeight();
 
@@ -127,16 +119,14 @@ public class NiveauGraphique extends JComponent implements Observateur {
         carteJ2V = jeu.getCarteJoueur2V();
         carteJ2F = jeu.getCarteJoueur2F();
 
-        System.out.println("Valeur carte J1 : " + carteJ1V);
-        System.out.println(carteJ1F);
-
-
+        // System.out.println("Valeur carte J1 : " + carteJ1V);
+        // System.out.println(carteJ1F);
 
         // Definition of font
-        int fontSize_1 = (int) (panelWidth * 0.02);
+        int fontSize_1 = Math.min((int) (panelWidth * 0.02), (int) (panelHeight * 0.035));
         Font font_1 = new Font("Arial", Font.PLAIN, fontSize_1);
 
-        int fontSize_2 = (int) (panelWidth * 0.015);
+        int fontSize_2 = fontSize_1 * 3 / 4;
         Font font_2 = new Font("Arial", Font.PLAIN, fontSize_2);
 
         // Chargement icons
@@ -149,34 +139,37 @@ public class NiveauGraphique extends JComponent implements Observateur {
         // Dessin des cartes de l'adversaire (IA)
         // Calculate rectangle dimensions based on panel size
         rectWidth = (int) (panelWidth * 0.05);
-        rectHeight = Math.max(2 * rectWidth, (int) (panelHeight * RECTANGLE_SCALE_FACTOR)); // Ensure height is always greater than width
+        rectHeight = Math.max(rectWidth, (int) (panelHeight * 4 / 30)); // Ensure height is always greater than width
 
         // Calculate spacing between rectangles
         int spacing = 0;
 
         // Calculate total width of all rectangles and spacing
         totalWidthJ1P1 = HandJ1P1 * rectWidth + (HandJ1P1 - 1) * spacing;
-        totalWidthJ2P1 = HandJ2P1 * rectWidth + (HandJ1P2 - 1) * spacing;
+        totalWidthJ2P1 = HandJ2P1 * rectWidth + (HandJ2P1 - 1) * spacing;
+        totalWidthJ1P2 = HandJ1P2 * rectWidth;
+        totalWidthJ2P2 = HandJ2P2 * rectWidth;
+
         // Calculate starting x position to center the rectangles
-        int startXJ1 = (panelWidth - totalWidthJ1P1) / 2;
-        int startXJ2 = (panelWidth - totalWidthJ2P1) / 2;
+        startXJ1P1 = (panelWidth - totalWidthJ1P1) / 2;
+        startXJ2P1 = (panelWidth - totalWidthJ2P1) / 2;
+        startXJ1P2 = (panelWidth - totalWidthJ1P2) / 2;
+        startXJ2P2 = (panelWidth - totalWidthJ2P2) / 2;
+
         posYJ1 = hauteur() - rectHeight - 10;
         posYJ2 = 10;
         totalHeight = rectHeight;
 
-        // Phase 1
+        /* Phase 1 */
         if (control.getPhase()) {
 
-
-            positionCarteJoueJ1X = totalWidthJ1P1 / 2 + startXJ1;
-            positionCarteJoueJ1Y = totalHeight * 5;
-            positionCarteJoueJ2X = totalWidthJ2P1 / 2 + startXJ2;
-            positionCarteJoueJ2Y = totalHeight + 70;
-
-
+            positionCarteJoueJ1X = totalWidthJ1P1 / 2 + startXJ1P1;
+            positionCarteJoueJ1Y = panelHeight - totalHeight * 5 / 2 - 10;
+            positionCarteJoueJ2X = totalWidthJ2P1 / 2 + startXJ2P1;
+            positionCarteJoueJ2Y = totalHeight * 3 / 2 + 10;
 
             /*
-            // Dessin de la main du joueur 2 si il est une IA
+            // Dessin de la main face caché du joueur 2 si il est une IA
             for (int i = 0; i < HandJ2P1; i++) {
                 int x = startXJ2 + i * (rectWidth + spacing);
                 int y = 10;
@@ -186,38 +179,9 @@ public class NiveauGraphique extends JComponent implements Observateur {
             }
             */
 
-            // Dessin de la main du joueur 2
-            for (int i = 0; i < HandJ2P1; i++) {
-                int x = startXJ2 + i * (rectWidth + spacing);
-                int y = 10;
-                g.setColor(Color.BLUE);
-                mainJ2 = jeu.getMainJoueur2Phase1();
-                switch (mainJ2[i][1]) {
-                    case 1:
-                        strImage = "goblin";
-                        break;
-                    case 2:
-                        strImage = "dwarve";
-                        break;
-                    case 3:
-                        strImage = "knight";
-                        break;
-                    case 4:
-                        strImage = "doppelganger";
-                        break;
-                    case 5:
-                        strImage = "undead";
-                        break;
-                }
-                strImage += "_" + mainJ2[i][0];
-                image = imageMap.get(strImage);
-                g.drawImage(image, x, y, rectWidth, rectHeight, this);
-                // g.fillRect(x, y, rectWidth, rectHeight);
-            }
-
             // Dessin des cartes de la main du joueur 1
             for (int i = 0; i < HandJ1P1; i++) {
-                int x = startXJ1 + i * (rectWidth + spacing);
+                int x = startXJ1P1 + i * (rectWidth + spacing);
                 int y = hauteur() - rectHeight - 10;
                 g.setColor(Color.BLUE);
                 main = jeu.getMainJoueur1Phase1();
@@ -240,19 +204,77 @@ public class NiveauGraphique extends JComponent implements Observateur {
                 }
                 strImage += "_" + main[i][0];
                 image = imageMap.get(strImage);
-                g.drawImage(image, x, y, rectWidth, rectHeight, this);
-                // g.fillRect(x, y, rectWidth, rectHeight);
+                grayImage = toGrayScale(image);
+                boolean isPlayable = false;
+                for (int[] carteJouable : control.getCarteJouable()) {
+                    if (main[i][0] == carteJouable[0] && main[i][1] == carteJouable[1]) {
+                        isPlayable = true;
+                        break;
+                    }
+                }
+                if (isPlayable) {
+                    if(strImage.equals("goblin_0") && control.getNomJoueurCourant().equals("Joueur 2")){
+                        g.drawImage(grayImage, x, y, rectWidth, rectHeight, this);
+                    }else {
+                        g.drawImage(image, x, y, rectWidth, rectHeight, this);
+                    }
+                } else {
+                    g.drawImage(grayImage, x, y, rectWidth, rectHeight, this);
+                }
             }
-            posX = startXJ1;
+
+            // Dessin de la main du joueur 2
+            for (int i = 0; i < HandJ2P1; i++) {
+                int x = startXJ2P1 + i * (rectWidth + spacing);
+                int y = 10;
+                g.setColor(Color.BLUE);
+                mainJ2 = jeu.getMainJoueur2Phase1();
+                switch (mainJ2[i][1]) {
+                    case 1:
+                        strImage = "goblin";
+                        break;
+                    case 2:
+                        strImage = "dwarve";
+                        break;
+                    case 3:
+                        strImage = "knight";
+                        break;
+                    case 4:
+                        strImage = "doppelganger";
+                        break;
+                    case 5:
+                        strImage = "undead";
+                        break;
+                }
+                strImage += "_" + mainJ2[i][0];
+                image = imageMap.get(strImage);
+                grayImage = toGrayScale(image);
+                boolean isPlayable = false;
+                for (int[] carteJouable : control.getCarteJouable()) {
+                    if (mainJ2[i][0] == carteJouable[0] && mainJ2[i][1] == carteJouable[1]) {
+                        isPlayable = true;
+                        break;
+                    }
+                }
+                if (isPlayable) {
+                    if(strImage.equals("goblin_0") && control.getNomJoueurCourant().equals("Joueur 1")){
+                        g.drawImage(grayImage, x, y, rectWidth, rectHeight, this);
+                    }else {
+                        g.drawImage(image, x, y, rectWidth, rectHeight, this);
+                    }
+                } else {
+                    g.drawImage(grayImage, x, y, rectWidth, rectHeight, this);
+                }
+            }
 
             // Draw follower deck Joueur 2
-            //x = startXJ2 - 20 - rectWidth;
+            // x = startXJ2 - 20 - rectWidth;
             x = panelWidth / 9;
             y = 20;
             g.fillRect(x, y, rectWidth, rectHeight);
 
             // Draw follower deck Joueur 1
-            //x = startXJ1 - 20 - rectWidth;
+            // x = startXJ1 - 20 - rectWidth;
             y = hauteur() - rectHeight - 20;
             g.fillRect(x, y, rectWidth, rectHeight);
 
@@ -276,9 +298,11 @@ public class NiveauGraphique extends JComponent implements Observateur {
                     strImage = "undead";
                     break;
             }
+
             strImage += "_" + jeu.getPlateau().getCarteAffichee().getValeur();
             image = imageMap.get(strImage);
             g.drawImage(image, x, y, rectWidth, rectHeight, this);
+
             // Draw deck
             g.setColor(Color.ORANGE);
             x = largeur() - largeur() / 8;
@@ -327,141 +351,25 @@ public class NiveauGraphique extends JComponent implements Observateur {
                         faction = "Undead";
                         break;
                 }
+
                 // Calcul de score
-                int score = jeu.getPlateau().getJoueur1().getPileDeScore().getCardFaction(faction).size() - jeu.getPlateau().getJoueur2().getPileDeScore().getCardFaction(faction).size();
-                if (i > 0) {
-                    if (score > 0) {
-                        bgColor = Color.GREEN;
-                    } else if (score == 0) {
-                        if (jeu.getPlateau().getJoueur1().getPileDeScore().maxValueOfFaction(faction) > jeu.getPlateau().getJoueur2().getPileDeScore().maxValueOfFaction(faction)) {
-                            bgColor = Color.GREEN;
-                        } else if (jeu.getPlateau().getJoueur1().getPileDeScore().maxValueOfFaction(faction) < jeu.getPlateau().getJoueur2().getPileDeScore().maxValueOfFaction(faction)) {
-                            bgColor = Color.RED;
-                        } else {
-                            bgColor = Color.GRAY;
-                        }
-                    } else {
-                        bgColor = Color.RED;
-                    }
-                } else {
-                    bgColor = Color.WHITE;
-                }
-
-                g.setColor(bgColor);
-                g.fillRect(x, lineY, rectWidth * 2, cellHeight);
-                g.setColor(Color.BLACK);
-                g.drawLine(x, lineY, x + rectWidth * 2, lineY);
-
-                if (i == 0) {
-                    FontMetrics fm = g.getFontMetrics(font_1);
-                    int textWidth = fm.stringWidth("SCORE");
-                    int textHeight = fm.getHeight();
-
-                    textX = x + (rectWidth * 2 - textWidth) / 2;
-                    textY = lineY + (cellHeight + textHeight) / 2;
-                    g.setFont(font_1);
-                    g.drawString("SCORE", textX, textY);
-                }
-                if (i == 1) {
-                    //Draw icon goblin
-                    imageX = x + 5;
-                    imageY = lineY + (cellHeight - rectWidth) / 2;
-                    g.drawImage(icon_goblin, imageX, imageY, rectWidth * 5 / 8, rectWidth, this);
-
-                    FontMetrics fm = g.getFontMetrics(font_2);
-                    int textWidth = fm.stringWidth(Integer.toString(score));
-                    int textHeight = fm.getHeight();
-
-                    textX = x + rectWidth * 2 - textWidth * 4;
-                    textY = lineY + (cellHeight + textHeight * 2 / 3) / 2;
-                    g.setFont(font_2);
-                    g.drawString(Integer.toString(score), textX, textY);
-                }
-                if (i == 2) {
-                    //Draw icon knight
-                    imageX = x + 5;
-                    imageY = lineY + (cellHeight - rectWidth) / 2;
-                    g.drawImage(icon_knight, imageX, imageY, rectWidth * 5 / 8, rectWidth, this);
-
-                    FontMetrics fm = g.getFontMetrics(font_2);
-                    int textWidth = fm.stringWidth(Integer.toString(score));
-                    int textHeight = fm.getHeight();
-
-                    textX = x + rectWidth * 2 - textWidth * 4;
-                    textY = lineY + (cellHeight + textHeight * 2 / 3) / 2;
-                    g.setFont(font_2);
-                    g.drawString(Integer.toString(score), textX, textY);
-                }
-                if (i == 3) {
-                    //Draw icon undead
-                    imageX = x + 5;
-                    imageY = lineY + (cellHeight - rectWidth) / 2;
-                    g.drawImage(icon_undead, imageX, imageY, rectWidth * 5 / 8, rectWidth, this);
-
-                    FontMetrics fm = g.getFontMetrics(font_2);
-                    int textWidth = fm.stringWidth(Integer.toString(score));
-                    int textHeight = fm.getHeight();
-
-                    textX = x + rectWidth * 2 - textWidth * 4;
-                    textY = lineY + (cellHeight + textHeight * 2 / 3) / 2;
-                    g.setFont(font_2);
-                    g.drawString(Integer.toString(score), textX, textY);
-                }
-                if (i == 4) {
-                    //Draw icon dwarve
-                    imageX = x + 5;
-                    imageY = lineY + (cellHeight - rectWidth) / 2;
-                    g.drawImage(icon_dwarve, imageX, imageY, rectWidth * 5 / 8, rectWidth, this);
-
-                    FontMetrics fm = g.getFontMetrics(font_2);
-                    int textWidth = fm.stringWidth(Integer.toString(score));
-                    int textHeight = fm.getHeight();
-
-                    textX = x + rectWidth * 2 - textWidth * 4;
-                    textY = lineY + (cellHeight + textHeight * 2 / 3) / 2;
-                    g.setFont(font_2);
-                    g.drawString(Integer.toString(score), textX, textY);
-                }
-                if (i == 5) {
-                    //Draw icon dopplegagner
-                    imageX = x + 5;
-                    imageY = lineY + (cellHeight - rectWidth) / 2;
-                    g.drawImage(icon_doppleganger, imageX, imageY, rectWidth * 5 / 8, rectWidth, this);
-
-                    FontMetrics fm = g.getFontMetrics(font_2);
-                    int textWidth = fm.stringWidth(Integer.toString(score));
-                    int textHeight = fm.getHeight();
-
-                    textX = x + rectWidth * 2 - textWidth * 4;
-                    textY = lineY + (cellHeight + textHeight * 2 / 3) / 2;
-                    g.setFont(font_2);
-                    g.drawString(Integer.toString(score), textX, textY);
-                }
-
-
+                drawScore(g, faction, i, lineY, cellHeight, font_1, icon_goblin, font_2, icon_knight, icon_undead, icon_dwarve, icon_doppleganger);
             }
-            // Phase 2
+
+            /* Phase 2 */
         } else if (!control.getPhase()) {
 
-            positionCarteJoueJ1X = totalWidthJ1P2 / 2 + startXJ1;
-            positionCarteJoueJ1Y = totalHeight + 70;
-            positionCarteJoueJ2X = totalWidthJ2P2 / 2 + startXJ2;
-            positionCarteJoueJ2Y = totalHeight + 70;
-            // Draw rectangles
-            for (int i = 0; i < HandJ1P2; i++) {
-                int x = startXJ1 + i * (rectWidth + spacing);
-                int y = 10;
-                g.setColor(Color.GRAY);
-                g.fillRect(x, y, rectWidth, rectHeight);
-            }
+            positionCarteJoueJ1X = totalWidthJ1P2 / 2 + startXJ1P2;
+            positionCarteJoueJ1Y = panelHeight - totalHeight * 5 / 2 - 10;
+            positionCarteJoueJ2X = totalWidthJ2P2 / 2 + startXJ2P2;
+            positionCarteJoueJ2Y = totalHeight * 3 / 2 + 10;
 
-            // Dessin des cartes de la main du joueur
+            // Dessin des cartes de la main du joueur 1
             for (int i = 0; i < HandJ1P2; i++) {
-                int x = startXJ1 + i * (rectWidth + spacing);
+                int x = startXJ1P2 + i * (rectWidth + spacing);
                 int y = hauteur() - rectHeight - 10;
-                g.setColor(Color.BLUE);
-                main = jeu.getMainJoueur1Phase1();
-                String strImage = "";
+                g.setColor(Color.CYAN);
+                main = jeu.getMainJoueur1Phase2();
                 switch (main[i][1]) {
                     case 1:
                         strImage = "goblin";
@@ -481,14 +389,74 @@ public class NiveauGraphique extends JComponent implements Observateur {
                 }
                 strImage += "_" + main[i][0];
                 image = imageMap.get(strImage);
-                g.drawImage(image, x, y, rectWidth, rectHeight, this);
+                grayImage = toGrayScale(image);
+                boolean isPlayable = false;
+                for (int[] carteJouable : control.getCarteJouable()) {
+                    if (main[i][0] == carteJouable[0] && main[i][1] == carteJouable[1]) {
+                        isPlayable = true;
+                        break;
+                    }
+                }
+
+                if (isPlayable) {
+                    if(strImage.equals("goblin_0") && control.getNomJoueurCourant().equals("Joueur 2")){
+                        g.drawImage(grayImage, x, y, rectWidth, rectHeight, this);
+                    }else {
+                        g.drawImage(image, x, y, rectWidth, rectHeight, this);
+                    }
+                } else {
+                    g.drawImage(grayImage, x, y, rectWidth, rectHeight, this);
+                }
                 // g.fillRect(x, y, rectWidth, rectHeight);
             }
-            posX = startXJ1;
 
+            // Dessin de la main du joueur 2
+            for (int i = 0; i < HandJ2P2; i++) {
+                int x = startXJ2P2 + i * (rectWidth + spacing);
+                int y = 10;
+                g.setColor(Color.BLUE);
+                mainJ2 = jeu.getMainJoueur2Phase2();
+                switch (mainJ2[i][1]) {
+                    case 1:
+                        strImage = "goblin";
+                        break;
+                    case 2:
+                        strImage = "dwarve";
+                        break;
+                    case 3:
+                        strImage = "knight";
+                        break;
+                    case 4:
+                        strImage = "doppelganger";
+                        break;
+                    case 5:
+                        strImage = "undead";
+                        break;
+                }
+                strImage += "_" + mainJ2[i][0];
+                image = imageMap.get(strImage);
+                grayImage = toGrayScale(image);
+                boolean isPlayable = false;
+                for (int[] carteJouable : control.getCarteJouable()) {
+                    if (mainJ2[i][0] == carteJouable[0] && mainJ2[i][1] == carteJouable[1]) {
+                        isPlayable = true;
+                        break;
+                    }
+                }
 
-            int x = startXJ1 - 20 - rectWidth;
-            int y = 20;
+                if (isPlayable) {
+                    if(strImage.equals("goblin_0") && control.getNomJoueurCourant().equals("Joueur 1")){
+                        g.drawImage(grayImage, x, y, rectWidth, rectHeight, this);
+                    }else {
+                        g.drawImage(image, x, y, rectWidth, rectHeight, this);
+                    }
+                } else {
+                    g.drawImage(grayImage, x, y, rectWidth, rectHeight, this);
+                }
+            }
+
+            x = startXJ1P2 - 20 - rectWidth;
+            y = 20;
 
             // Draw Feedfoward Carte joué
             g.setColor(Color.DARK_GRAY);
@@ -527,119 +495,13 @@ public class NiveauGraphique extends JComponent implements Observateur {
                         faction = "Undead";
                         break;
                 }
+
                 // Calcul de score
                 // Modifier en ajoutant des getteurs dans controleurMediateur pour modifier l'appel pour score
-                int score = jeu.getPlateau().getJoueur1().getPileDeScore().getCardFaction(faction).size() - jeu.getPlateau().getJoueur2().getPileDeScore().getCardFaction(faction).size();
-                if (i > 0) {
-                    if (score > 0) {
-                        bgColor = Color.GREEN;
-                    } else if (score == 0) {
-                        if (jeu.getPlateau().getJoueur1().getPileDeScore().maxValueOfFaction(faction) > jeu.getPlateau().getJoueur2().getPileDeScore().maxValueOfFaction(faction)) {
-                            bgColor = Color.GREEN;
-                        } else if (jeu.getPlateau().getJoueur1().getPileDeScore().maxValueOfFaction(faction) < jeu.getPlateau().getJoueur2().getPileDeScore().maxValueOfFaction(faction)) {
-                            bgColor = Color.RED;
-                        } else {
-                            bgColor = Color.GRAY;
-                        }
-                    } else {
-                        bgColor = Color.RED;
-                    }
-                } else {
-                    bgColor = Color.WHITE;
-                }
-
-                g.setColor(bgColor);
-                g.fillRect(x, lineY, rectWidth * 2, cellHeight);
-                g.setColor(Color.BLACK);
-                g.drawLine(x, lineY, x + rectWidth * 2, lineY);
-
-                if (i == 0) {
-                    FontMetrics fm = g.getFontMetrics(font_1);
-                    int textWidth = fm.stringWidth("SCORE");
-                    int textHeight = fm.getHeight();
-
-                    textX = x + (rectWidth * 2 - textWidth) / 2;
-                    textY = lineY + (cellHeight + textHeight) / 2;
-                    g.setFont(font_1);
-                    g.drawString("SCORE", textX, textY);
-                }
-                if (i == 1) {
-                    //Draw icon goblin
-                    imageX = x + 5;
-                    imageY = lineY + (cellHeight - rectWidth) / 2;
-                    g.drawImage(icon_goblin, imageX, imageY, rectWidth * 5 / 8, rectWidth, this);
-
-                    FontMetrics fm = g.getFontMetrics(font_2);
-                    int textWidth = fm.stringWidth(Integer.toString(score));
-                    int textHeight = fm.getHeight();
-
-                    textX = x + rectWidth * 2 - textWidth * 4;
-                    textY = lineY + (cellHeight + textHeight * 2 / 3) / 2;
-                    g.setFont(font_2);
-                    g.drawString(Integer.toString(score), textX, textY);
-                }
-                if (i == 2) {
-                    //Draw icon knight
-                    imageX = x + 5;
-                    imageY = lineY + (cellHeight - rectWidth) / 2;
-                    g.drawImage(icon_knight, imageX, imageY, rectWidth * 5 / 8, rectWidth, this);
-
-                    FontMetrics fm = g.getFontMetrics(font_2);
-                    int textWidth = fm.stringWidth(Integer.toString(score));
-                    int textHeight = fm.getHeight();
-
-                    textX = x + rectWidth * 2 - textWidth * 4;
-                    textY = lineY + (cellHeight + textHeight * 2 / 3) / 2;
-                    g.setFont(font_2);
-                    g.drawString(Integer.toString(score), textX, textY);
-                }
-                if (i == 3) {
-                    //Draw icon undead
-                    imageX = x + 5;
-                    imageY = lineY + (cellHeight - rectWidth) / 2;
-                    g.drawImage(icon_undead, imageX, imageY, rectWidth * 5 / 8, rectWidth, this);
-
-                    FontMetrics fm = g.getFontMetrics(font_2);
-                    int textWidth = fm.stringWidth(Integer.toString(score));
-                    int textHeight = fm.getHeight();
-
-                    textX = x + rectWidth * 2 - textWidth * 4;
-                    textY = lineY + (cellHeight + textHeight * 2 / 3) / 2;
-                    g.setFont(font_2);
-                    g.drawString(Integer.toString(score), textX, textY);
-                }
-                if (i == 4) {
-                    //Draw icon dwarve
-                    imageX = x + 5;
-                    imageY = lineY + (cellHeight - rectWidth) / 2;
-                    g.drawImage(icon_dwarve, imageX, imageY, rectWidth * 5 / 8, rectWidth, this);
-
-                    FontMetrics fm = g.getFontMetrics(font_2);
-                    int textWidth = fm.stringWidth(Integer.toString(score));
-                    int textHeight = fm.getHeight();
-
-                    textX = x + rectWidth * 2 - textWidth * 4;
-                    textY = lineY + (cellHeight + textHeight * 2 / 3) / 2;
-                    g.setFont(font_2);
-                    g.drawString(Integer.toString(score), textX, textY);
-                }
-                if (i == 5) {
-                    //Draw icon dopplegagner
-                    imageX = x + 5;
-                    imageY = lineY + (cellHeight - rectWidth) / 2;
-                    g.drawImage(icon_doppleganger, imageX, imageY, rectWidth * 5 / 8, rectWidth, this);
-
-                    FontMetrics fm = g.getFontMetrics(font_2);
-                    int textWidth = fm.stringWidth(Integer.toString(score));
-                    int textHeight = fm.getHeight();
-
-                    textX = x + rectWidth * 2 - textWidth * 4;
-                    textY = lineY + (cellHeight + textHeight * 2 / 3) / 2;
-                    g.setFont(font_2);
-                    g.drawString(Integer.toString(score), textX, textY);
-                }
+                drawScore(g, faction, i, lineY, cellHeight, font_1, icon_goblin, font_2, icon_knight, icon_undead, icon_dwarve, icon_doppleganger);
             }
         }
+
         g.setColor(Color.RED);
         if (carteJ1F != -1 && carteJ1V != -1) {
             // dessin de la carte jouée
@@ -666,7 +528,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
         }
         g.drawRect(positionCarteJoueJ1X, positionCarteJoueJ1Y, rectWidth, rectHeight);
 
-        System.out.println("Faction et valeur de carte : " + carteJ2F + " " + carteJ2V);
+        // System.out.println("Faction et valeur de carte : " + carteJ2F + " " + carteJ2V);
         if (carteJ2F != -1 && carteJ2V != -1) {
             // dessin de la carte jouée par l'IA
             switch (carteJ2F) {
@@ -692,7 +554,6 @@ public class NiveauGraphique extends JComponent implements Observateur {
         }
         g.drawRect(positionCarteJoueJ2X, positionCarteJoueJ2Y, rectWidth, rectHeight);
     }
-
 
     int largeur() {
         return getWidth();
@@ -725,8 +586,13 @@ public class NiveauGraphique extends JComponent implements Observateur {
     public int posYMainJ2() {
         return posYJ2;
     }
-    public int posXMain() {
-        return posX;
+
+    public int posXMainJ1() {
+        return startXJ1P1;
+    }
+
+    public int posXMainJ2() {
+        return startXJ2P1;
     }
 
     public int getLargeurMainJ1() {
@@ -735,6 +601,14 @@ public class NiveauGraphique extends JComponent implements Observateur {
 
     public int getLargeurMainJ2() {
         return totalWidthJ2P1;
+    }
+
+    public int getLargeurMainJ1P2() {
+        return totalWidthJ1P2;
+    }
+
+    public int getLargeurMainJ2P2() {
+        return totalWidthJ2P2;
     }
 
     public int getHandJ1P1() {
@@ -749,9 +623,167 @@ public class NiveauGraphique extends JComponent implements Observateur {
         return totalHeight;
     }
 
+    private void drawScore(Graphics g, String faction, int i, int lineY, int cellHeight, Font font_1, BufferedImage icon_goblin, Font font_2, BufferedImage icon_knight, BufferedImage icon_undead, BufferedImage icon_dwarve, BufferedImage icon_doppleganger) {
+        int textY;
+        int imageX;
+        int imageY;
+        int textX;
+        String img;
+        int score = jeu.getPlateau().getJoueur1().getPileDeScore().getCardFaction(faction).size() - jeu.getPlateau().getJoueur2().getPileDeScore().getCardFaction(faction).size();
+        int val = Math.max(jeu.getPlateau().getJoueur1().getPileDeScore().maxValueOfFaction(faction), jeu.getPlateau().getJoueur2().getPileDeScore().maxValueOfFaction(faction));
+        if (val >= 0) {
+            img = "carte_" + val;
+        } else {
+            img = "carte_blanc";
+        }
+
+        image = imageMap.get(img);
+
+        if (i > 0) {
+            if (score > 0) {
+                bgColor = Color.GREEN;
+            } else if (score == 0) {
+                if (jeu.getPlateau().getJoueur1().getPileDeScore().maxValueOfFaction(faction) > jeu.getPlateau().getJoueur2().getPileDeScore().maxValueOfFaction(faction)) {
+                    bgColor = Color.GREEN;
+                } else if (jeu.getPlateau().getJoueur1().getPileDeScore().maxValueOfFaction(faction) < jeu.getPlateau().getJoueur2().getPileDeScore().maxValueOfFaction(faction)) {
+                    bgColor = Color.RED;
+                } else {
+                    bgColor = Color.GRAY;
+                }
+            } else {
+                bgColor = Color.RED;
+            }
+        } else {
+            bgColor = Color.WHITE;
+        }
+
+        g.setColor(bgColor);
+        g.fillRect(x, lineY, rectWidth * 2, cellHeight);
+        g.setColor(Color.BLACK);
+        g.drawLine(x, lineY, x + rectWidth * 2, lineY);
+
+        if (i == 0) {
+            FontMetrics fm = g.getFontMetrics(font_1);
+            int textWidth = fm.stringWidth("SCORE");
+            int textHeight = fm.getHeight();
+
+            textX = x + (rectWidth * 2 - textWidth) / 2;
+            textY = lineY + (cellHeight + textHeight) / 2;
+            g.setFont(font_1);
+            g.drawString("SCORE", textX, textY);
+        }
+        if (i == 1) {
+            //Draw icon goblin
+            imageX = x + 5;
+            imageY = lineY + (cellHeight - rectWidth) / 2;
+            g.drawImage(icon_goblin, imageX, imageY, rectWidth * 5 / 8, rectWidth, this);
+
+            FontMetrics fm = g.getFontMetrics(font_2);
+            int textWidth = fm.stringWidth(Integer.toString(score));
+            int textHeight = fm.getHeight();
+
+            textX = x + (rectWidth * 2 - textWidth) / 2;
+            textY = lineY + (cellHeight + textHeight * 2 / 3) / 2;
+            g.setFont(font_2);
+            g.drawString(Integer.toString(score), textX, textY);
+            imageX = x + rectWidth * 3 / 2;
+            imageY = lineY + (cellHeight - rectHeight / 4) / 2;
+            // Draw la carte gagnee avec la plus grand valeur
+            g.drawImage(image, imageX, imageY, rectWidth / 4, rectHeight / 4, this);
+        }
+        if (i == 3) {
+            //Draw icon knight
+            imageX = x + 5;
+            imageY = lineY + (cellHeight - rectWidth) / 2;
+            g.drawImage(icon_knight, imageX, imageY, rectWidth * 5 / 8, rectWidth, this);
+
+            FontMetrics fm = g.getFontMetrics(font_2);
+            int textWidth = fm.stringWidth(Integer.toString(score));
+            int textHeight = fm.getHeight();
+
+            textX = x + (rectWidth * 2 - textWidth) / 2;
+            textY = lineY + (cellHeight + textHeight * 2 / 3) / 2;
+            g.setFont(font_2);
+            g.drawString(Integer.toString(score), textX, textY);
+            imageX = x + rectWidth * 3 / 2;
+            imageY = lineY + (cellHeight - rectHeight / 4) / 2;
+            g.drawImage(image, imageX, imageY, rectWidth / 4, rectHeight / 4, this);
+        }
+        if (i == 5) {
+            // Draw icon undead
+            imageX = x + 5;
+            imageY = lineY + (cellHeight - rectWidth) / 2;
+            g.drawImage(icon_undead, imageX, imageY, rectWidth * 5 / 8, rectWidth, this);
+
+            FontMetrics fm = g.getFontMetrics(font_2);
+            int textWidth = fm.stringWidth(Integer.toString(score));
+            int textHeight = fm.getHeight();
+
+            textX = x + (rectWidth * 2 - textWidth) / 2;
+            textY = lineY + (cellHeight + textHeight * 2 / 3) / 2;
+            g.setFont(font_2);
+            g.drawString(Integer.toString(score), textX, textY);
+            imageX = x + rectWidth * 3 / 2;
+            imageY = lineY + (cellHeight - rectHeight / 4) / 2;
+            g.drawImage(image, imageX, imageY, rectWidth / 4, rectHeight / 4, this);
+        }
+        if (i == 2) {
+            // Draw icon dwarve
+            imageX = x + 5;
+            imageY = lineY + (cellHeight - rectWidth) / 2;
+            g.drawImage(icon_dwarve, imageX, imageY, rectWidth * 5 / 8, rectWidth, this);
+
+            FontMetrics fm = g.getFontMetrics(font_2);
+            int textWidth = fm.stringWidth(Integer.toString(score));
+            int textHeight = fm.getHeight();
+
+            textX = x + (rectWidth * 2 - textWidth) / 2;
+            textY = lineY + (cellHeight + textHeight * 2 / 3) / 2;
+            g.setFont(font_2);
+            g.drawString(Integer.toString(score), textX, textY);
+            imageX = x + rectWidth * 3 / 2;
+            imageY = lineY + (cellHeight - rectHeight / 4) / 2;
+            g.drawImage(image, imageX, imageY, rectWidth / 4, rectHeight / 4, this);
+        }
+        if (i == 4) {
+            // Draw icon dopplegagner
+            imageX = x + 5;
+            imageY = lineY + (cellHeight - rectWidth) / 2;
+            g.drawImage(icon_doppleganger, imageX, imageY, rectWidth * 5 / 8, rectWidth, this);
+
+            FontMetrics fm = g.getFontMetrics(font_2);
+            int textWidth = fm.stringWidth(Integer.toString(score));
+            int textHeight = fm.getHeight();
+
+            textX = x + (rectWidth * 2 - textWidth) / 2;
+            textY = lineY + (cellHeight + textHeight * 2 / 3) / 2;
+            g.setFont(font_2);
+            g.drawString(Integer.toString(score), textX, textY);
+            imageX = x + rectWidth * 3 / 2;
+            imageY = lineY + (cellHeight - rectHeight / 4) / 2;
+            g.drawImage(image, imageX, imageY, rectWidth / 4, rectHeight / 4, this);
+        }
+    }
+
+    private BufferedImage toGrayScale(BufferedImage originalImage) {
+        // Crée une nouvelle image en niveaux de gris de la même taille que l'image originale
+        int width = originalImage.getWidth();
+        int height = originalImage.getHeight();
+
+        BufferedImage grayImage = new BufferedImage(width, height, BufferedImage.TYPE_BYTE_GRAY);
+
+        Graphics g = grayImage.getGraphics();
+        g.drawImage(originalImage, 0, 0, null);
+        g.dispose();
+
+        return grayImage;
+    }
+
     @Override
     public void miseAJour() {
         repaint();
     }
+
+
 }
 

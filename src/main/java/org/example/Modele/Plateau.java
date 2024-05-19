@@ -193,6 +193,8 @@ public class Plateau {
         //creation des cartes de jeu et shuffle (pioche)
         pioche = new Cards();
         pioche.addAllCards();
+        System.out.println("Nombre carte dans la pioche : " + pioche.getCards().size());
+
         pioche.shuffle();
         //creation & initialiser les mains 
         Hand mainJoueur1 = pioche.getHandOf13Cards();
@@ -204,10 +206,14 @@ public class Plateau {
         joueur1.setHand(mainJoueur1);
         joueur2.setHand(mainJoueur2);
 
+        System.out.println("Nombre carte dans la pioche : " + pioche.getCards().size());
+
         // Init joueur courant
         joueurCourant = joueur1;
         //initialiser la carte affichee
         carteAffichee = pioche.getCard();
+
+        System.out.println("Nombre carte dans la pioche : " + pioche.getCards().size());
     }
 
     /**
@@ -219,7 +225,10 @@ public class Plateau {
     public Card jouerCarte(int indexCard) {
         // jouer une carte quelconque de sa main
         Card carteJoue;
-        carteJoue = joueurCourant.jouerCarte(indexCard);
+        if(getPhase())
+            carteJoue = joueurCourant.jouerCarte(indexCard);
+        else
+            carteJoue = joueurCourant.jouerCarte2(indexCard);
         if(joueurCourant == joueur1) {
             setCarteJoueur1(carteJoue);
         }
@@ -242,23 +251,51 @@ public class Plateau {
         }
     }
 
-    public void attribuerCarteFirstPhase(Card winningCard) {
+    public void attribuerCarteFirstPhase(Card winningCard, ReglesDeJeu r) {
         if (winningCard == carteJoueur1) {
             joueur1.getHandScndPhase().addCard(carteAffichee);
             joueur2.getHandScndPhase().addCard(pioche.getCard());
+            r.applyUndeadRule(joueur1,carteJoueur1,carteJoueur2,defausse);
             joueurCourant = joueur1;
-        } else {
+        } else if(winningCard == carteJoueur2) {
             joueur2.getHandScndPhase().addCard(carteAffichee);
             joueur1.getHandScndPhase().addCard(pioche.getCard());
+            r.applyUndeadRule(joueur2,carteJoueur2,carteJoueur1,defausse);
             joueurCourant = joueur2;
+        }
+        else if (winningCard==null){
+            if(joueurCourant==joueur1){
+                joueur2.getHandScndPhase().addCard(carteAffichee);
+                joueur1.getHandScndPhase().addCard(pioche.getCard());
+                joueurCourant=joueur2;
+            }
+            else{
+                joueur1.getHandScndPhase().addCard(carteAffichee);
+                joueur2.getHandScndPhase().addCard(pioche.getCard());
+                joueurCourant=joueur1;
+            }
         }
     }
 
     public void attribuerCarteSecondPhase(Card winningCard, ReglesDeJeu r) {// on doit changer la fonction ApplyDwarveRule:c'est fait
         if (winningCard == carteJoueur1) {
             r.ApplyDwarvesRules(joueur1, joueur2, carteJoueur1, carteJoueur2);
-        } else {
+            joueurCourant = joueur1;
+        } else if(winningCard == carteJoueur2)  {
             r.ApplyDwarvesRules(joueur2, joueur1, carteJoueur2, carteJoueur1);
+            joueurCourant = joueur2;
+        }
+        else if (winningCard==null){
+            if (joueurCourant==joueur1) {
+                r.ApplyDwarvesRules(joueur1,joueur2,carteJoueur1,carteJoueur2);
+                joueurCourant=joueur2;
+            }
+            else{
+                r.ApplyDwarvesRules(joueur2,joueur1,carteJoueur2,carteJoueur1);
+                joueurCourant=joueur1;
+            }
+        }else{
+            throw new IllegalArgumentException("La carte gagnante n'est pas dans la main du joueur.");
         }
     }
 
