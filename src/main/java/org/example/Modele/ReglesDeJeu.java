@@ -48,6 +48,11 @@ public class ReglesDeJeu {
      * @return La carte gagnante
      */
     public static Card DoppelgangerVsCard(Card carte1, Card carte2 , Plateau plateau){
+        // si le leader a jouer doppelganger et l'autre joueur a jouer une autre carte alors le leader gagne le trick
+        // si le leader a jouer doppelganger et l'autre joueur a jouer doppelganger alors on compare les valeurs des cartes
+        // si le leader a jouer une autre carte et l'autre joueur a jouer doppelganger alors on compare les valeurs des cartes
+
+        // si les deux cartes sont des doppelgangers alors on compare les valeurs des cartes
         if (carte1.getFaction().equals("Doppelganger")) {
             if(carte2.getFaction().equals("Doppelganger")){
                 return determinerCarteGagnante(carte1, carte2 , plateau);

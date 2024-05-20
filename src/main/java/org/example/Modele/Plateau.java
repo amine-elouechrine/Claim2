@@ -311,18 +311,20 @@ public class Plateau {
                 joueur1.getHandScndPhase().addCard(pioche.getCard());
                 joueurCourant = joueur2;
             }
+        }else{
+            if (winningCard == carteJoueur1) {
+                joueur1.getHandScndPhase().addCard(carteAffichee);
+                joueur2.getHandScndPhase().addCard(pioche.getCard());
+                r.applyFirstPhaseRules(joueur1,carteJoueur1,carteJoueur2,defausse);
+                joueurCourant = joueur1;
+            } else if(winningCard == carteJoueur2) {
+                joueur2.getHandScndPhase().addCard(carteAffichee);
+                joueur1.getHandScndPhase().addCard(pioche.getCard());
+                r.applyFirstPhaseRules(joueur2,carteJoueur2,carteJoueur1,defausse);
+                joueurCourant = joueur2;
+            }
         }
-        if (winningCard == carteJoueur1) {
-            joueur1.getHandScndPhase().addCard(carteAffichee);
-            joueur2.getHandScndPhase().addCard(pioche.getCard());
-            r.applyFirstPhaseRules(joueur1,carteJoueur1,carteJoueur2,defausse);
-            joueurCourant = joueur1;
-        } else if(winningCard == carteJoueur2) {
-            joueur2.getHandScndPhase().addCard(carteAffichee);
-            joueur1.getHandScndPhase().addCard(pioche.getCard());
-            r.applyFirstPhaseRules(joueur2,carteJoueur2,carteJoueur1,defausse);
-            joueurCourant = joueur2;
-        }
+        
     }
 
 
@@ -337,14 +339,16 @@ public class Plateau {
                 r.applySecondPhaseRules(joueur2, joueur1, carteJoueur2, carteJoueur1);
                 joueurCourant = joueur2;
             }
+        }else{
+            if (winningCard == carteJoueur1) {
+                r.applySecondPhaseRules(joueur1, joueur2, carteJoueur1, carteJoueur2);
+                joueurCourant = joueur1;
+            } else { // winningCard == carteJoueur2
+                r.applySecondPhaseRules(joueur2, joueur1, carteJoueur2, carteJoueur1);
+                joueurCourant = joueur2;
+            }
         }
-        if (winningCard == carteJoueur1) {
-            r.applySecondPhaseRules(joueur1, joueur2, carteJoueur1, carteJoueur2);
-            joueurCourant = joueur1;
-        } else { // winningCard == carteJoueur2
-            r.applySecondPhaseRules(joueur2, joueur1, carteJoueur2, carteJoueur1);
-            joueurCourant = joueur2;
-        }
+        
     }
 
     public boolean coupJouable(List<Card> preselected, int indice, Hand hand) {
