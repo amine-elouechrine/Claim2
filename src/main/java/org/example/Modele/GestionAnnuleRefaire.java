@@ -294,12 +294,9 @@ public class GestionAnnuleRefaire {
 
     }
 
-
-
-
-
-
-
+    public Plateau getPlateau() {
+        return plateau;
+    }
 
 
 

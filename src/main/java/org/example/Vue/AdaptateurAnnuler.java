@@ -12,7 +12,7 @@ public class AdaptateurAnnuler implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        // control.annuler();
+        control.annuler();
         System.out.println("Clique sur le bouton annuler");
     }
 }
