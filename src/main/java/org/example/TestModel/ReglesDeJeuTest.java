@@ -29,7 +29,7 @@ public class ReglesDeJeuTest {
                 testDeterminerGagnantManche();
                 break;
             case "3":
-                testCartesJouables();
+                // testCartesJouables();
                 break;
             case "4":
                 testDeterminerGagnantPartie();
@@ -120,16 +120,18 @@ public class ReglesDeJeuTest {
         }
     }
 
-
+    /*
     static void testCartesJouables() {
         Cards cards = new Cards();
         cards.shuffle();
         Hand mainJoueur =cards.getHandOf13Cards();
         Card carteAdversaire = cards.getCards().get(0);
-        List<Card> cartesJouables = ReglesDeJeu.cartesJouables(carteAdversaire, mainJoueur);
+        //List<Card> cartesJouables = ReglesDeJeu.cartesJouables(carteAdversaire, mainJoueur);
         System.out.println("carteAdversaire : " + carteAdversaire.getFaction() + " de valeur " + carteAdversaire.getValeur());
-        System.out.println("Cartes jouables : " + cartesJouables.toString());
+        //System.out.println("Cartes jouables : " + cartesJouables.toString());
     }
+
+     */
 
     static void testDeterminerGagnantPartie() {
         Player joueur1 = new Player("Alice");

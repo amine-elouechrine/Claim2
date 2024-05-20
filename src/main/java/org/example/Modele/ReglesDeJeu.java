@@ -30,6 +30,7 @@ public class ReglesDeJeu {
 
         // Règle spéciale pour les Doppelgangers
         else if(faction1.equals("Doppelganger") || faction2.equals("Doppelganger")){
+
             return DoppelgangerVsCard(carte1, carte2 , plateau);
         }
 
@@ -47,7 +48,15 @@ public class ReglesDeJeu {
      * @param carte2
      * @return La carte gagnante
      */
+    // si le leader a jouer doppelganger et l'autre joueur a jouer une autre carte alors le leader gagne le trick
+    // si le leader a jouer doppelganger et l'autre joueur a jouer doppelganger alors on compare les valeurs des cartes
+    // si le leader a jouer une autre carte et l'autre joueur a jouer doppelganger alors on compare les valeurs des cartes
     public static Card DoppelgangerVsCard(Card carte1, Card carte2 , Plateau plateau){
+        // si le leader a jouer doppelganger et l'autre joueur a jouer une autre carte alors le leader gagne le trick
+        // si le leader a jouer doppelganger et l'autre joueur a jouer doppelganger alors on compare les valeurs des cartes
+        // si le leader a jouer une autre carte et l'autre joueur a jouer doppelganger alors on compare les valeurs des cartes
+
+        // si les deux cartes sont des doppelgangers alors on compare les valeurs des cartes
         if (carte1.getFaction().equals("Doppelganger")) {
             if(carte2.getFaction().equals("Doppelganger")){
                 return determinerCarteGagnante(carte1, carte2 , plateau);
@@ -56,11 +65,18 @@ public class ReglesDeJeu {
             }
         }else {
             if(carte2.getFaction().equals("Doppelganger")){
-                return determinerCarteGagnante(carte1, carte2 , plateau);
+                if (carte1.getValeur()>carte2.getValeur()){
+                    return carte1;
+                }
+                else if (carte1.getValeur()<carte2.getValeur()){
+                    return carte2;
+                }
+
             }else{
                 return cardVScard(carte1, carte2, plateau );
             }
         }
+        return null;
     }
 
     /**
@@ -99,7 +115,7 @@ public class ReglesDeJeu {
      */
     public static Card determinerCarteGagnante(Card carte1, Card carte2 , Plateau plateau) {
         if(carte1.getFaction().equals(carte2.getFaction())) {
-            if (carte1.getValeur() > carte2.getValeur()) {
+            if (carte1.getValeur() > carte2.getValeur()){
                 return carte1;
             } else if (carte1.getValeur() < carte2.getValeur()) {
                 return carte2;
@@ -127,7 +143,7 @@ public class ReglesDeJeu {
      */
     public static Player determinerGagnantManche(Player joueur1, Player joueur2, Card carteJoueur1, Card carteJoueur2 , Plateau Plateau) {
         Card carteGagnante = carteGagnante(carteJoueur1, carteJoueur2 , Plateau);
-        
+    
         if (carteGagnante == carteJoueur1) {
             return joueur1;
         } else if (carteGagnante == carteJoueur2) {
@@ -135,6 +151,8 @@ public class ReglesDeJeu {
         } else {
             return null; // En cas d'égalité
         }
+
+        // ajouter une condition lorsque les deux cartes sont identiques gobelin zero il faut retourner le leader 
     }
 
 
@@ -167,6 +185,9 @@ public class ReglesDeJeu {
         if (cartesJouables.isEmpty()) {
             cartesJouables.addAll(mainJoueur.getAllCards());
         }
+
+        // A AJOUTER !!!!
+        // lorsqu'il y a plus de carte de meme faction mais qu'il reste des doppleganger il faut ajouter tout la main 
 
         return cartesJouables;
     }
@@ -231,28 +252,6 @@ public class ReglesDeJeu {
         return max;
     }
 
-     /**
-     * Méthode pour appliquer les règles standard à une manche.
-     * @param trickWinner Le joueur remportant le tour.
-     * @param /plateau Le plateau de jeu.
-     */
-    public void ApplyStandardRule1(GeneralPlayer trickWinner,Card carteAffiche,Defausse defausse,Card cardPlayer1,Card cardPlayer2 ){
-        // Ajouter la carte afficher de la pioche à la pile de score du joueur qui a remporté le tour
-        trickWinner.getPileDeScore().addCard(carteAffiche);
-
-        // jeter les cartes jouées par les joueurs dans la défausse
-        defausse.ajouterCarte(cardPlayer1);
-        defausse.ajouterCarte( cardPlayer2 );
-    }
-
-    public void ApplyStandardRule2(GeneralPlayer trickWinner,Card carteAffiche,Defausse defausse,Card cardPlayer1,Card cardPlayer2 ){
-        // Ajouter la carte afficher de la pioche à la pile de score du joueur qui a remporté le tour
-        trickWinner.getPileDeScore().addCard(carteAffiche);
-
-        // jeter les cartes jouées par les joueurs dans la défausse
-        trickWinner.getPileDeScore().addCard(cardPlayer1);
-        trickWinner.getPileDeScore().addCard(cardPlayer2);
-    }
 
     /**
      * Méthode pour appliquer les règles spéciales des factions (1ère phase uniquement).
@@ -278,21 +277,32 @@ public class ReglesDeJeu {
             // ajouter la carte à la défausse
             defausse.ajouterCarte(cardPlayer2);
         }
+
+    }    
+
+
+    public boolean carteEgaux(Card carteJoueur1,Card carteJoueur2){
+        if(carteJoueur1.getFaction().equals(carteJoueur2.getFaction()) && carteJoueur1.getValeur() == carteJoueur2.getValeur()){
+            return true;
+        }
+        if((carteJoueur1.getFaction().equals("Doppelganger") || carteJoueur2.getFaction().equals("Doppelganger") ) && carteJoueur1.getValeur() == carteJoueur2.getValeur()){
+            return true;
+        }
+        return false;
     }
-    // ==> il faut ajouter la carte afficher au joueur qui a gagné le tour
-    
 
     /**
      * Méthode pour appliquer les règles spéciales des factions à une manche dans la 1ere phase.
      * @param trickWinner Le joueur remportant le tour.
      * @param / Le plateau de jeu.
      */
-    public void applyFirstPhaseRules(GeneralPlayer trickWinner, Card cardPlayer1 , Card cardPlayer2,Defausse defausse,Card carteAffiche){
-        if(cardPlayer1.getFaction().equals("Undead") || cardPlayer2.getFaction().equals("Undead")){
-            applyUndeadRule(trickWinner, cardPlayer1,cardPlayer2,defausse);
-        }else{
-            ApplyStandardRule1(trickWinner, carteAffiche,defausse,cardPlayer1,cardPlayer2);
-        }
+    public void applyFirstPhaseRules(GeneralPlayer trickWinner, Card cardPlayer1 , Card cardPlayer2,Defausse defausse){
+        applyUndeadRule(trickWinner, cardPlayer1, cardPlayer2, defausse);
+    }
+
+
+    public void applySecondPhaseRules(GeneralPlayer trickwinner , GeneralPlayer trickLoser , Card trickWinnerCard,Card trickLoserCard){ //: le gagnant prends dans sa pile de score les deux cartes jouées dans le tour classique sinon  
+        ApplyDwarvesRules(trickwinner, trickLoser, trickWinnerCard, trickLoserCard);
     }
 
     /**
