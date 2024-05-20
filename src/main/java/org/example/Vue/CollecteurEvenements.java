@@ -1,7 +1,6 @@
 package org.example.Vue;
 
 import org.example.Patternes.Observateur;
-
 import java.io.IOException;
 
 public interface CollecteurEvenements {
@@ -27,13 +26,44 @@ public interface CollecteurEvenements {
 
     int[][] getCarteJouable();
 
+    int getCarteJoueur1V();
+
+    int getCarteJoueur1F();
+
+    int getCarteJoueur2V();
+
+    int getCarteJoueur2F();
+
+    int getCarteAfficheeFactionScore();
+
+    int getCarteAfficheeValeur();
+
+    int getNbCardFactionFromPileScoreJ1(String factionName);
+
+    int getNbCardFactionFromPileScoreJ2(String factionName);
+
+    int getMaxValueoOfFactionFromPileScoreJ1(String factionName);
+
+    int getMaxValueoOfFactionFromPileScoreJ2(String factionName);
+
+    int getMaxValueFromPileScore(String factionName);
+
+    boolean isJoueur1WinningFactionOnEquality(String factionName);
+
+    boolean isJoueur2WinningFactionOnEquality(String factionName);
+  
     void refaire();
+  
     void annuler();
+  
     void sauve(String filename);
+  
     void restaure(String filename ) throws IOException;
+  
     void nouvellePartie();
 
     void clicSouris(int index);
+
     void clicSourisJ2(int index);
 
 

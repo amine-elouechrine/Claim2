@@ -144,6 +144,30 @@ public class Jeu extends Observable {
         return plateau.joueurCourant.hand.getCard(index).getValeur();
     }
 
+    public int getCarteAfficheeFactionScore() {
+        return getPlateau().getCarteAffichee().getFactionScore();
+    }
+
+    public int getCarteAfficheeValeur() {
+        return getPlateau().getCarteAffichee().getValeur();
+    }
+
+    public int getNbCardFactionFromPileScoreJ1(String faction) {
+        return getPlateau().getJoueur1().getPileDeScore().getCardFaction(faction).size();
+    }
+
+    public int getNbCardFactionFromPileScoreJ2(String faction) {
+        return getPlateau().getJoueur2().getPileDeScore().getCardFaction(faction).size();
+    }
+
+    public int getMaxValueoOfFactionFromPileScoreJ1(String faction) {
+        return getPlateau().getJoueur1().getPileDeScore().maxValueOfFaction(faction);
+    }
+
+    public int getMaxValueoOfFactionFromPileScoreJ2(String faction) {
+        return getPlateau().getJoueur2().getPileDeScore().maxValueOfFaction(faction);
+    }
+
     public int getCarteJoueur1F() {
         if (plateau.getCarteJoueur1() != null)
             return plateau.getCarteJoueur1().getFactionScore();
@@ -188,13 +212,9 @@ public class Jeu extends Observable {
         if (getPhase()) {
             Card carteGagnante = r.carteGagnante(plateau.getCarteJoueur1(), plateau.getCarteJoueur2());
             plateau.attribuerCarteFirstPhase(carteGagnante,r);
-            System.out.println("Nombre carte dans la main " + plateau.getJoueurCourant().getHand().size());
-
             if (estFinPhase1()) {
                 switchPhase();
             }
-
-            System.out.println("Nombre carte pioche : " + plateau.getPioche().getCards().size());
             if (getPhase()) {
                 plateau.carteAffichee = plateau.pioche.getCard();
             }
@@ -203,7 +223,6 @@ public class Jeu extends Observable {
             plateau.attribuerCarteSecondPhase(carteGagnante, r);
 
         }
-        System.out.println("Nombre carte pioche : " + plateau.getPioche().getCards().size());
     }
 
     public void setCarteJouer() {
