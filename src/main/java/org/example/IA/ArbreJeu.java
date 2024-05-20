@@ -61,7 +61,7 @@ public class ArbreJeu{
     }
 
 
-    public static void construireArbre(Node racine,int profondeur , boolean maximizingPlayer , int alpha, int beta){
+    /*public static void construireArbre2(Node racine,int profondeur , boolean maximizingPlayer , int alpha, int beta){
 
         //cas de base
         if(profondeur==0 || racine.plateau.isEndOfGame()){
@@ -74,16 +74,14 @@ public class ArbreJeu{
         if(maximizingPlayer){
             int maxScore = Integer.MIN_VALUE;
 
-            for(int i=0;i<racine.plateau.getJoueurCourant().getHandScndPhase().size();i++){
+            for(Card cardi : racine.plateau.getJoueurCourant().getHandScndPhase().getAllCards()){
                 Plateau copie = new Plateau(racine.plateau);
-                Card cardi=racine.plateau.getJoueurCourant().getHandScndPhase().get(i);
                 copie.jouerCarte(cardi);
                 copie.switchJoueur();
     
                 List<Card> carteJouable = cartesJouables2(cardi, racine);
-                for(int j=0;j<carteJouable.size();j++){
+                for(Card cardj : carteJouable){
     
-                    Card cardj=carteJouable.get(j); 
                     copie.jouerCarte(cardj);
                     Card gagnant=carteGagnante(cardi,cardj , copie); 
     
@@ -94,12 +92,11 @@ public class ArbreJeu{
                     System.err.println("****** " + gagnant + " ******");
                     System.err.println("-----------------------------------------------------");
     
-                    System.out.println(j+"-"+i);
                     copie.attribuerCarteSecondPhase(gagnant,new ReglesDeJeu());
     
                     Node enfant = new Node(copie);
                     tempEnfants.add(enfant);
-                    construireArbre(enfant,profondeur-1 , !maximizingPlayer, alpha, beta);
+                    construireArbre2(enfant,profondeur-1 , !maximizingPlayer, alpha, beta);
                     
                     maxScore = Math.max(maxScore, enfant.score);
                     alpha = Math.max(alpha, enfant.score);
@@ -122,16 +119,15 @@ public class ArbreJeu{
 
                 List<Card> carteJouable = cartesJouables2(cardi, racine);
                 for (Card cardj : carteJouable) {
-                    Plateau copieDeux = new Plateau(copie);
-                    copieDeux.jouerCarte(cardj);
-                    Card gagnant = carteGagnante(cardi, cardj, copieDeux);
+                    copie.jouerCarte(cardj);
+                    Card gagnant = carteGagnante(cardi, cardj, copie);
 
-                    copieDeux.attribuerCarteSecondPhase(gagnant, new ReglesDeJeu());
+                    copie.attribuerCarteSecondPhase(gagnant, new ReglesDeJeu());
 
-                    Node enfant = new Node(copieDeux);
+                    Node enfant = new Node(copie);
                     tempEnfants.add(enfant);
 
-                    construireArbre(enfant, profondeur - 1, !maximizingPlayer, alpha, beta);
+                    construireArbre2(enfant, profondeur - 1, !maximizingPlayer, alpha, beta);
 
                     minScore = Math.min(minScore, enfant.score);
                     beta = Math.min(beta, enfant.score);
@@ -147,6 +143,64 @@ public class ArbreJeu{
 
         racine.setEnfants(tempEnfants);
 
+    }*/
+
+    public static void construireArbre2(Node racine, int profondeur, boolean maximizingPlayer, int alpha, int beta) {
+        // Cas de base
+        if (profondeur == 0 || racine.plateau.isEndOfGame()) {
+            racine.setScore(evaluer(racine));
+            return;
+        }
+    
+        List<Node> tempEnfants = new ArrayList<>();
+        int score;
+    
+        if (maximizingPlayer) {
+            score = processNodes(racine, profondeur, alpha, beta, tempEnfants, true);
+            racine.setScore(score);
+        } else {
+            score = processNodes(racine, profondeur, alpha, beta, tempEnfants, false);
+            racine.setScore(score);
+        }
+    
+        racine.setEnfants(tempEnfants);
+    }
+
+    private static int processNodes(Node racine, int profondeur, int alpha, int beta, List<Node> tempEnfants, boolean maximizingPlayer) {
+        int score = maximizingPlayer ? Integer.MIN_VALUE : Integer.MAX_VALUE;
+    
+        for (int i = 0; i < racine.plateau.getJoueurCourant().getHandScndPhase().size(); i++) {
+            Plateau copie = new Plateau(racine.plateau);
+            Card cardi = racine.plateau.getJoueurCourant().getHandScndPhase().get(i);
+            copie.jouerCarte(cardi);
+            copie.switchJoueur();
+    
+            List<Card> carteJouable = cartesJouables2(cardi, racine);
+            for (Card cardj : carteJouable) {
+                copie.jouerCarte(cardj);
+                Card gagnant = carteGagnante(cardi, cardj, copie);
+    
+                copie.attribuerCarteSecondPhase(gagnant, new ReglesDeJeu());
+    
+                Node enfant = new Node(copie);
+                tempEnfants.add(enfant);
+    
+                construireArbre2(enfant, profondeur - 1, !maximizingPlayer, alpha, beta);
+    
+                if (maximizingPlayer) {
+                    score = Math.max(score, enfant.score);
+                    alpha = Math.max(alpha, enfant.score);
+                } else {
+                    score = Math.min(score, enfant.score);
+                    beta = Math.min(beta, enfant.score);
+                }
+    
+                if (beta <= alpha) {
+                    break; // Élagage alpha-beta
+                }
+            }
+        }
+        return score;
     }
 
     public static List<Card> cartesJouables2(Card carteAd , Node racine){
@@ -159,9 +213,9 @@ public class ArbreJeu{
 
 
 
-    public Node construireArbreJeu(Plateau plateau, int profondeur , boolean maximizingPlayer , int alpha, int beta) {
+    public Node construireArbreJeu2(Plateau plateau, int profondeur , boolean maximizingPlayer , int alpha, int beta) {
         Node racine=new Node(plateau);
-        construireArbre(racine,profondeur, maximizingPlayer, alpha, beta);
+        construireArbre2(racine,profondeur, maximizingPlayer, alpha, beta);
         return racine;
     }
 
@@ -178,7 +232,7 @@ public class ArbreJeu{
         plateau1.getJoueur1().setHandScndPhase(pioche.getHandOf13Cards());//ia
         plateau1.getJoueur2().setHandScndPhase(pioche.getHandOf13Cards());//adversaire
         ArbreJeu arbreJeu = new ArbreJeu(new Node(plateau1));
-        Node racine = arbreJeu.construireArbreJeu(plateau1, 2, true, Integer.MIN_VALUE, Integer.MAX_VALUE); // a l'apel initi alpha et beta doivent avoir ces valeurs
+        Node racine = arbreJeu.construireArbreJeu2(plateau1, 2, true, Integer.MIN_VALUE, Integer.MAX_VALUE); // a l'apel initi alpha et beta doivent avoir ces valeurs
     }
 
 

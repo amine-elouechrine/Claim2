@@ -236,13 +236,22 @@ public class ReglesDeJeu {
      * @param trickWinner Le joueur remportant le tour.
      * @param /plateau Le plateau de jeu.
      */
-    public void ApplyStandardRule(GeneralPlayer trickWinner,Card carteAffiche,Defausse defausse,Card cardPlayer1,Card cardPlayer2 ){
+    public void ApplyStandardRule1(GeneralPlayer trickWinner,Card carteAffiche,Defausse defausse,Card cardPlayer1,Card cardPlayer2 ){
         // Ajouter la carte afficher de la pioche à la pile de score du joueur qui a remporté le tour
         trickWinner.getPileDeScore().addCard(carteAffiche);
 
         // jeter les cartes jouées par les joueurs dans la défausse
         defausse.ajouterCarte(cardPlayer1);
         defausse.ajouterCarte( cardPlayer2 );
+    }
+
+    public void ApplyStandardRule2(GeneralPlayer trickWinner,Card carteAffiche,Defausse defausse,Card cardPlayer1,Card cardPlayer2 ){
+        // Ajouter la carte afficher de la pioche à la pile de score du joueur qui a remporté le tour
+        trickWinner.getPileDeScore().addCard(carteAffiche);
+
+        // jeter les cartes jouées par les joueurs dans la défausse
+        trickWinner.getPileDeScore().addCard(cardPlayer1);
+        trickWinner.getPileDeScore().addCard(cardPlayer2);
     }
 
     /**
@@ -270,6 +279,8 @@ public class ReglesDeJeu {
             defausse.ajouterCarte(cardPlayer2);
         }
     }
+    // ==> il faut ajouter la carte afficher au joueur qui a gagné le tour
+    
 
     /**
      * Méthode pour appliquer les règles spéciales des factions à une manche dans la 1ere phase.
@@ -280,7 +291,7 @@ public class ReglesDeJeu {
         if(cardPlayer1.getFaction().equals("Undead") || cardPlayer2.getFaction().equals("Undead")){
             applyUndeadRule(trickWinner, cardPlayer1,cardPlayer2,defausse);
         }else{
-            ApplyStandardRule(trickWinner, carteAffiche,defausse,cardPlayer1,cardPlayer2);
+            ApplyStandardRule1(trickWinner, carteAffiche,defausse,cardPlayer1,cardPlayer2);
         }
     }
 

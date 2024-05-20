@@ -30,6 +30,10 @@ public class Plateau {
         this.phase = true; // commancer a la phase 1
     }
 
+    /**
+     * Constructeur de la classe Plateau pour l'intelligence artificielle pour puisse faire une copie du plateau.
+     * @param plateau
+     */
     public Plateau(Plateau plateau) {
         this.carteAffichee = plateau.getCarteAffichee();
         this.carteJoueur1 = plateau.getCarteJoueur1();
@@ -42,15 +46,22 @@ public class Plateau {
         this.phase = plateau.getPhase();
     }
 
+    /**
+     * constructeur de la classe Plateau pour les jeux de test. 
+     */
     public Plateau(Card carteJoeur1 , Card carteJoueur2){
         this.carteJoueur1 = carteJoeur1;
         this.carteJoueur2 = carteJoueur2;
     }
 
-    
+    /**
+     * Changer la phase du jeu.
+     * @param val
+     */
     public void setPhase (boolean val){
         phase=val;
     }
+
     /**
      * passer a la phase 2.
      */
