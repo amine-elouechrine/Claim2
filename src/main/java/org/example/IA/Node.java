@@ -8,7 +8,7 @@ import java.util.List;
 public class Node {
 
     private List<Node> enfants;
-    private int score;
+    public int score;
     public boolean IsIaTurn;
     public Plateau plateau;
 

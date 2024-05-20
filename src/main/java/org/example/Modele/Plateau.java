@@ -42,6 +42,11 @@ public class Plateau {
         this.phase = plateau.getPhase();
     }
 
+    public Plateau(Card carteJoeur1 , Card carteJoueur2){
+        this.carteJoueur1 = carteJoeur1;
+        this.carteJoueur2 = carteJoueur2;
+    }
+
     
     public void setPhase (boolean val){
         phase=val;
@@ -338,12 +343,5 @@ public class Plateau {
         return !(joueur1.getHand().isEmpty() && joueur2.getHand().isEmpty());
     }
 
-    public Player getJoueurNonCourant() {
-        if (joueurCourant == joueur1) {
-            return joueur2;
-        } else {
-            return joueur1;
-        }
-    }
 
 }
