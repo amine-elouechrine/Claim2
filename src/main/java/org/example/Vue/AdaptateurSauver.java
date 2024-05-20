@@ -18,12 +18,12 @@ public class AdaptateurSauver implements ActionListener {
      */
     @Override
     public void actionPerformed(ActionEvent e) {
-        /*
+
         String filename = fichier.getText();
         if (filename.isEmpty())
             filename = "save";
         control.sauve(filename);
-        */
+
         System.out.println("Clique sur le bouton sauver");
     }
 }

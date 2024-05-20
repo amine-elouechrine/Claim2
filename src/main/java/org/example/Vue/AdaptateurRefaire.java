@@ -12,7 +12,7 @@ public class AdaptateurRefaire implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        // control.refaire();
+        control.refaire();
         System.out.println("Clique sur le bouton refaire");
     }
 }

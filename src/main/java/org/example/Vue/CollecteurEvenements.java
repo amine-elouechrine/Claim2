@@ -1,5 +1,8 @@
 package org.example.Vue;
 
+import org.example.Patternes.Observateur;
+import java.io.IOException;
+
 public interface CollecteurEvenements {
     boolean getPhase();
 
@@ -48,8 +51,20 @@ public interface CollecteurEvenements {
     boolean isJoueur1WinningFactionOnEquality(String factionName);
 
     boolean isJoueur2WinningFactionOnEquality(String factionName);
+  
+    void refaire();
+  
+    void annuler();
+  
+    void sauve(String filename);
+  
+    void restaure(String filename ) throws IOException;
+  
+    void nouvellePartie();
 
     void clicSouris(int index);
 
     void clicSourisJ2(int index);
+
+
 }

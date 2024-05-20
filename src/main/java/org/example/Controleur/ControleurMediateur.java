@@ -5,12 +5,21 @@ import org.example.Modele.Hand;
 import org.example.Modele.Jeu;
 import org.example.Modele.Player;
 import org.example.Vue.CollecteurEvenements;
+import org.example.Modele.GestionAnnuleRefaire;
+import org.example.Vue.CollecteurEvenements;
+import org.example.Modele.Jeu;
+import org.example.Patternes.Observable;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 public class ControleurMediateur implements CollecteurEvenements {
 
     Jeu jeu;
 
     Card carteLeader;
+
 
     boolean jouable = true;
 
@@ -118,6 +127,34 @@ public class ControleurMediateur implements CollecteurEvenements {
     public int getCarteJoueur1V() {
         return jeu.getCarteJoueur1V();
     }
+    @Override
+    public void annuler(){
+        jeu.annuler();
+        jeu.metAJour();
+    }
+    @Override
+    public void refaire(){
+        jeu.refaire();
+        jeu.metAJour();
+    }
+    @Override
+    public void sauve(String filename ){
+        jeu.sauve(filename);
+        jeu.metAJour();
+    }
+    @Override
+    public void restaure(String filename ) throws IOException  {
+        jeu.restaure(filename);
+        jeu.metAJour();
+    }
+
+    @Override
+    public void nouvellePartie() {
+        jeu.getPlateau().initialiserJeu();
+        jeu.metAJour();
+    }
+
+
 
     public int getCarteJoueur1F() {
         return jeu.getCarteJoueur1F();

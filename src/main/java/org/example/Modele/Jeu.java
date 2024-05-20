@@ -1,6 +1,7 @@
 package org.example.Modele;
 import org.example.Patternes.Observable;
 
+import java.io.IOException;
 import java.util.List;
 
 public class Jeu extends Observable {
@@ -8,6 +9,7 @@ public class Jeu extends Observable {
     Player joueur1;
     Player joueur2;
     Cards cards;
+    GestionAnnuleRefaire g;
 
     public ReglesDeJeu r;
 
@@ -16,6 +18,7 @@ public class Jeu extends Observable {
         plateau = new Plateau();
         plateau.initialiserJeu();
         r = new ReglesDeJeu();
+        g = new GestionAnnuleRefaire(plateau);
     }
 
     public boolean getPhase() {
@@ -234,5 +237,22 @@ public class Jeu extends Observable {
 
     public String getNomJoueur(Player joueur) {
         return joueur.getName();
+    }
+
+    public void annuler() {
+        g.annuler();
+        plateau = g.getPlateau();
+    }
+
+    public void refaire() {
+        g.refaire();
+        plateau = g.getPlateau();
+    }
+
+    public void sauve(String filename) {
+        g.sauve(filename);
+    }
+    public void restaure(String filename) throws IOException {
+        g.restaure(filename);
     }
 }
