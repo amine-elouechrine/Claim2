@@ -30,6 +30,7 @@ public class ReglesDeJeu {
 
         // Règle spéciale pour les Doppelgangers
         else if(faction1.equals("Doppelganger") || faction2.equals("Doppelganger")){
+
             return DoppelgangerVsCard(carte1, carte2 , plateau);
         }
 
@@ -47,6 +48,9 @@ public class ReglesDeJeu {
      * @param carte2
      * @return La carte gagnante
      */
+    // si le leader a jouer doppelganger et l'autre joueur a jouer une autre carte alors le leader gagne le trick
+    // si le leader a jouer doppelganger et l'autre joueur a jouer doppelganger alors on compare les valeurs des cartes
+    // si le leader a jouer une autre carte et l'autre joueur a jouer doppelganger alors on compare les valeurs des cartes
     public static Card DoppelgangerVsCard(Card carte1, Card carte2 , Plateau plateau){
         // si le leader a jouer doppelganger et l'autre joueur a jouer une autre carte alors le leader gagne le trick
         // si le leader a jouer doppelganger et l'autre joueur a jouer doppelganger alors on compare les valeurs des cartes
@@ -61,11 +65,18 @@ public class ReglesDeJeu {
             }
         }else {
             if(carte2.getFaction().equals("Doppelganger")){
-                return determinerCarteGagnante(carte1, carte2 , plateau);
+                if (carte1.getValeur()>carte2.getValeur()){
+                    return carte1;
+                }
+                else if (carte1.getValeur()<carte2.getValeur()){
+                    return carte2;
+                }
+
             }else{
                 return cardVScard(carte1, carte2, plateau );
             }
         }
+        return null;
     }
 
     /**
@@ -104,7 +115,7 @@ public class ReglesDeJeu {
      */
     public static Card determinerCarteGagnante(Card carte1, Card carte2 , Plateau plateau) {
         if(carte1.getFaction().equals(carte2.getFaction())) {
-            if (carte1.getValeur() > carte2.getValeur()) {
+            if (carte1.getValeur() > carte2.getValeur()){
                 return carte1;
             } else if (carte1.getValeur() < carte2.getValeur()) {
                 return carte2;
@@ -274,7 +285,7 @@ public class ReglesDeJeu {
         if(carteJoueur1.getFaction().equals(carteJoueur2.getFaction()) && carteJoueur1.getValeur() == carteJoueur2.getValeur()){
             return true;
         }
-        if((carteJoueur1.getFaction().equals("Doppelgangers") || carteJoueur2.getFaction().equals("Doppelgangers") ) && carteJoueur1.getValeur() == carteJoueur2.getValeur()){
+        if((carteJoueur1.getFaction().equals("Doppelganger") || carteJoueur2.getFaction().equals("Doppelganger") ) && carteJoueur1.getValeur() == carteJoueur2.getValeur()){
             return true;
         }
         return false;
