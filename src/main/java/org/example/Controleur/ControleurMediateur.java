@@ -151,6 +151,7 @@ public class ControleurMediateur implements CollecteurEvenements {
     @Override
     public void nouvellePartie() {
         jeu.getPlateau().initialiserJeu();
+        jeu.setCarteJouer();
         jeu.metAJour();
     }
 

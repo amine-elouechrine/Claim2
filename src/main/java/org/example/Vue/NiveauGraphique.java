@@ -317,7 +317,8 @@ public class NiveauGraphique extends JComponent implements Observateur {
         g.setColor(Color.ORANGE);
         x = largeur() - largeur() / 8;
         y = hauteur() / 2 + rectHeight / 4;
-        g.fillRect(x, y, rectHeight, rectWidth); // Rectangle latéral
+        // g.fillRect(x, y, rectHeight, rectWidth); // Rectangle latéral
+        g.drawImage(imageMap.get("tombstone"), x, y, rectWidth, rectHeight, this);
     }
 
     /* Dessine la pioche pour la phase 1 */
@@ -325,7 +326,8 @@ public class NiveauGraphique extends JComponent implements Observateur {
         g.setColor(Color.ORANGE);
         x = largeur() - largeur() / 8;
         y = hauteur() / 2 - rectHeight * 3 / 4;
-        g.fillRect(x, y, rectHeight, rectWidth); // Rectangle latéral
+        // g.fillRect(x, y, rectHeight, rectWidth); // Rectangle latéral
+        g.drawImage(imageMap.get("backside"), x, y, rectWidth, rectHeight, this);
     }
 
     /* Dessine la main selon un couple d'entier */
@@ -483,12 +485,14 @@ public class NiveauGraphique extends JComponent implements Observateur {
         // x = startXJ2 - 20 - rectWidth;
         x = panelWidth / 9;
         y = 20;
-        g.fillRect(x, y, rectWidth, rectHeight);
+        // g.fillRect(x, y, rectWidth, rectHeight);
+        g.drawImage(imageMap.get("yellow_square"), x, y, rectWidth, rectHeight, this);
 
         // Draw follower deck Joueur 1
         // x = startXJ1 - 20 - rectWidth;
         y = hauteur() - rectHeight - 20;
-        g.fillRect(x, y, rectWidth, rectHeight);
+        // g.fillRect(x, y, rectWidth, rectHeight);
+        g.drawImage(imageMap.get("yellow_square"), x, y, rectWidth, rectHeight, this);
     }
 
     private int largeur() {

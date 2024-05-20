@@ -80,3 +80,5 @@ build/
 /src/main/java/org/example/Modele/.idea/
 /src/main/java/org/example/Modele/out/production/Modele/
 /.idea/
+/src/main/resources/resources.zip
+/src/main/resources/cartes_ressources.zip
