@@ -151,6 +151,14 @@ public class Plateau {
         return joueurCourant;
     }
 
+    public Player getJoueurNonCourant() {
+        if(joueurCourant == joueur1) {
+            return joueur2;
+        } else {
+            return joueur1;
+        }
+    }
+
     public void setJoueurCourant(Player joueurCourant) {
         this.joueurCourant = joueurCourant;
     }
@@ -269,9 +277,9 @@ public class Plateau {
     }
 
     public void jouerCarte(Card card){
-        if(joueurCourant == joueur1) {
+        if(joueurCourant.equals(joueur1)) {
             setCarteJoueur1(card);
-        } else if (joueurCourant == joueur2) {
+        } else if (joueurCourant.equals(joueur2)){
             setCarteJoueur2(card);
         }
     }
