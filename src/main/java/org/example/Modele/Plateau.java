@@ -34,16 +34,21 @@ public class Plateau {
      * Constructeur de la classe Plateau pour l'intelligence artificielle pour puisse faire une copie du plateau.
      * @param plateau
      */
-    public Plateau(Plateau plateau) {
-        this.carteAffichee = plateau.getCarteAffichee();
-        this.carteJoueur1 = plateau.getCarteJoueur1();
-        this.carteJoueur2 = plateau.getCarteJoueur2();
-        this.pioche = plateau.getPioche();
-        this.defausse = plateau.getDefausse();
-        this.joueur1 = plateau.getJoueur1();
-        this.joueur2 = plateau.getJoueur2();
-        this.joueurCourant = plateau.getJoueurCourant();
-        this.phase = plateau.getPhase();
+    // Constructeur de copie
+    public Plateau(Plateau other) {
+        this.carteAffichee = other.carteAffichee != null ? new Card(other.carteAffichee) : null;
+        this.carteJoueur1 = other.carteJoueur1 != null ? new Card(other.carteJoueur1) : null;
+        this.carteJoueur2 = other.carteJoueur2 != null ? new Card(other.carteJoueur2) : null;
+        this.pioche = other.pioche != null ? new Cards(other.pioche) : null;
+        this.defausse = other.defausse != null ? new Defausse(other.defausse) : null;
+        this.joueur1 = other.joueur1 != null ? new Player(other.joueur1) : null;
+        this.joueur2 = other.joueur2 != null ? new Player(other.joueur2) : null;
+        this.joueurCourant = other.joueurCourant != null ? new Player(other.joueurCourant) : null;
+        this.phase = other.phase;
+    }
+
+    public Plateau clone() {
+        return new Plateau(this);
     }
 
     /**
@@ -328,6 +333,21 @@ public class Plateau {
     }
 
 
+    public void jouerCarte2(Card card) {
+        // jouer une carte quelconque de sa main
+    
+        if(getJoueurCourant().getHandScndPhase().contains(card)){
+            getJoueurCourant().getHandScndPhase().removeCard(card);
+        }
+        if(joueurCourant == joueur1) {
+            setCarteJoueur1(card);
+        }
+        else if (joueurCourant == joueur2) {
+            setCarteJoueur2(card);
+        }
+    }
+
+    
     // use applay sndphaserule function 
     public void attribuerCarteSecondPhase(Card winningCard, ReglesDeJeu r) {// on doit changer la fonction ApplyDwarveRule:c'est fait
         if(r.carteEgaux(carteJoueur1 , carteJoueur2)){

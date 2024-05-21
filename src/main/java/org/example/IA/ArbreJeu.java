@@ -1,7 +1,8 @@
 package org.example.IA;
-
 import org.example.Modele.*;
 
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -145,67 +146,50 @@ public class ArbreJeu{
 
     }*/
 
-    public static void construireArbre2(Node racine, int profondeur, boolean maximizingPlayer, int alpha, int beta) {
-        // Cas de base
-        if (profondeur == 0 || racine.plateau.isEndOfGame()) {
-            racine.setScore(evaluer(racine));
+    public static void construireArbre2(Node racine,int profondeur ){
+
+        //cas de base
+        if(profondeur==0 || racine.plateau.isEndOfGame()){
+            //racine.setScore(evaluer(racine));
             return;
         }
-    
-        List<Node> tempEnfants = new ArrayList<>();
-        int score;
-    
-        if (maximizingPlayer) {
-            score = processNodes(racine, profondeur, alpha, beta, tempEnfants, true);
-            racine.setScore(score);
-        } else {
-            score = processNodes(racine, profondeur, alpha, beta, tempEnfants, false);
-            racine.setScore(score);
-        }
-    
-        racine.setEnfants(tempEnfants);
-    }
 
-    private static int processNodes(Node racine, int profondeur, int alpha, int beta, List<Node> tempEnfants, boolean maximizingPlayer) {
-        int score = maximizingPlayer ? Integer.MIN_VALUE : Integer.MAX_VALUE;
-    
-        for (int i = 0; i < racine.plateau.getJoueurCourant().getHandScndPhase().size(); i++) {
-            Plateau copie = new Plateau(racine.plateau);
-            Card cardi = racine.plateau.getJoueurCourant().getHandScndPhase().get(i);
-            copie.jouerCarte(cardi);
+        //List<Node> tempEnfants = new ArrayList<>();
+
+        
+
+        for(Card cardi : racine.plateau.getJoueurCourant().getHandScndPhase().getAllCards()){
+            Plateau copie = racine.plateau.clone();
             copie.switchJoueur();
-    
-            List<Card> carteJouable = cartesJouables2(cardi, racine);
-            for (Card cardj : carteJouable) {
-                copie.jouerCarte(cardj);
-                Card gagnant = carteGagnante(cardi, cardj, copie);
-    
-                copie.attribuerCarteSecondPhase(gagnant, new ReglesDeJeu());
-    
-                Node enfant = new Node(copie);
-                tempEnfants.add(enfant);
-    
-                construireArbre2(enfant, profondeur - 1, !maximizingPlayer, alpha, beta);
-    
-                if (maximizingPlayer) {
-                    score = Math.max(score, enfant.score);
-                    alpha = Math.max(alpha, enfant.score);
-                } else {
-                    score = Math.min(score, enfant.score);
-                    beta = Math.min(beta, enfant.score);
-                }
-    
-                if (beta <= alpha) {
-                    break; // Élagage alpha-beta
-                }
+            List<Card> carteJouable = ReglesDeJeu.cartesJouables(cardi, copie.getJoueurCourant().getHandScndPhase());
+            for(Card cardj : carteJouable){
+                Plateau copie2 = new Plateau(copie);
+                copie2.switchJoueur();
+                copie2.jouerCarte2(cardi);
+                copie2.switchJoueur();
+                copie2.jouerCarte2(cardj);
+                Card carteGagnant=carteGagnante(cardi,cardj , copie2);
+
+                System.out.println(copie2.getJoueur1().getName());
+                System.err.println(copie2.getCarteJoueur1()+"");
+                System.out.println(copie2.getJoueur2().getName());
+                System.err.println(copie2.getCarteJoueur2());
+                System.err.println("****** Carte Gagnante  " + carteGagnant + " ******");
+                System.err.println("-----------------------------------------------------");
+                //Player x=copie2.getJoueurCourant();
+                copie2.attribuerCarteSecondPhase(carteGagnant,new ReglesDeJeu());
+
+                Node enfant = new Node(copie2);
+
+
+                construireArbre2(enfant,profondeur-1 );
+                racine.addEnfant(enfant);
+
             }
+
         }
-        return score;
     }
 
-    public static List<Card> cartesJouables2(Card carteAd , Node racine){
-        return ReglesDeJeu.cartesJouables(carteAd, racine.plateau.getJoueurCourant().getHandScndPhase());
-    }
 
     public static List<Card> cartesJouables1(Card carteAd , Node racine){
         return ReglesDeJeu.cartesJouables(carteAd, racine.plateau.getJoueurCourant().getHand());
@@ -213,9 +197,9 @@ public class ArbreJeu{
 
 
 
-    public Node construireArbreJeu2(Plateau plateau, int profondeur , boolean maximizingPlayer , int alpha, int beta) {
+    public Node construireArbreJeu2(Plateau plateau, int profondeur ) {
         Node racine=new Node(plateau);
-        construireArbre2(racine,profondeur, maximizingPlayer, alpha, beta);
+        construireArbre2(racine,profondeur);
         return racine;
     }
 
@@ -231,8 +215,20 @@ public class ArbreJeu{
         pioche.addAllCards();
         plateau1.getJoueur1().setHandScndPhase(pioche.getHandOf13Cards());//ia
         plateau1.getJoueur2().setHandScndPhase(pioche.getHandOf13Cards());//adversaire
+        System.out.println("Main de l'IA");
+        plateau1.getJoueur1().getHandScndPhase().printHand();
+        System.out.println("Main de l'adversaire");
+        plateau1.getJoueur2().getHandScndPhase().printHand();
         ArbreJeu arbreJeu = new ArbreJeu(new Node(plateau1));
-        Node racine = arbreJeu.construireArbreJeu2(plateau1, 2, true, Integer.MIN_VALUE, Integer.MAX_VALUE); // a l'apel initi alpha et beta doivent avoir ces valeurs
+        Node racine = arbreJeu.construireArbreJeu2(plateau1, 3); // a l'apel initi alpha et beta doivent avoir ces valeurs
+        //afficher arbre
+        System.out.println(racine.getEnfants().size());
+        try (PrintWriter writer = new PrintWriter("arbre.txt")) {
+            racine.afficherArbreProfondeur(writer,"",3);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
 
