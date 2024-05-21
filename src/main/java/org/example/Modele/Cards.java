@@ -1,5 +1,6 @@
 package org.example.Modele;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class Cards extends CardCollection{
@@ -161,7 +162,28 @@ public class Cards extends CardCollection{
         for (int i = 0; i < 13; i++) {
             hand.addCard(getCard());
         }
+        hand = ranger(hand);
         return hand;
+    }
+    // Méthode pour ranger la main par ordre de faction puis valeurs
+    public static Hand ranger(Hand hand) {
+        List<Card> cards = hand.getAllCards();
+
+        Collections.sort(cards, new Comparator<Card>() {
+            @Override
+            public int compare(Card c1, Card c2) {
+                int factionComparison = c1.getFaction().compareTo(c2.getFaction());
+                if (factionComparison != 0) {
+                    return factionComparison;
+                } else {
+                    return Integer.compare(c1.getValeur(), c2.getValeur());
+                }
+            }
+        });
+
+        Hand sortedHand = new Hand();
+        sortedHand.setHand(cards);
+        return sortedHand;
     }
 
     public void removeCard() {
