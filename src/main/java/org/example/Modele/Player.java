@@ -1,9 +1,13 @@
 package org.example.Modele;
 
-public class Player extends GeneralPlayer {
+import java.util.ArrayList;
+import java.util.List;
 
+public class Player extends GeneralPlayer {
+    public List<Card> carteDejaJouee;
     public Player(String Name) {
         super(Name);
+        carteDejaJouee=new ArrayList<>();
     }
 
     /**
@@ -31,6 +35,23 @@ public class Player extends GeneralPlayer {
         if (handScndPhase.contains(carte)) {
             // Retire la carte de la main du joueur
             handScndPhase.removeCard(carte);
+            return carte;
+        } else {
+            System.out.println("La carte n'est pas dans la main du joueur.");
+            // Si la carte n'est pas dans la main du joueur, retourne null
+            return null;
+        }
+    }
+
+
+
+
+
+    public Card jouerCarte2(Card carte) {
+        if (handScndPhase.contains(carte)) {
+            carteDejaJouee.add(carte);
+            // Retire la carte de la main du joueur
+            //handScndPhase.removeCard(carte);
             return carte;
         } else {
             System.out.println("La carte n'est pas dans la main du joueur.");

@@ -76,7 +76,7 @@ public class ReglesDeJeu {
                 return cardVScard(carte1, carte2, plateau );
             }
         }
-        return null;
+        return carte1;
     }
 
     /**

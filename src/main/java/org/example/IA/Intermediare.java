@@ -1,4 +1,4 @@
-package org.example.IA;
+/*package org.example.IA;
 
 import org.example.Modele.*;
 
@@ -10,11 +10,11 @@ public class Intermediare extends IA {
           super("Intermediare");
      }
 
-     public Card jouerCoupPhase1(Hand mainIA, boolean suivre_faction, Card carte_adversaire) {
+     public Card jouerCoupPhase1(Hand mainIA, boolean suivre_faction, Card carte_adversaire,Plateau plateau) {
           if (suivre_faction) {
-               return jouerAvecSuiviFaction(hand, carte_adversaire);
+               return jouerAvecSuiviFaction(hand, carte_adversaire,plateau);
           } else {
-               return getHighestValueCard(hand.getAllCards());
+               return getHighestValueCard(plateau);
           }
      }
 
@@ -28,7 +28,7 @@ public class Intermediare extends IA {
           return highestCard;
       }
 
-     public Card jouerAvecSuiviFaction(Hand mainIA, Card carte_adversaire) {
+     public Card jouerAvecSuiviFaction(Hand mainIA, Card carte_adversaire,Plateau plateau) {
         List<Card> cartesJouables = (List<Card>)getCardsOfSameFaction(carte_adversaire.getFaction());
       
           if (cartesJouables.isEmpty()) {
@@ -128,6 +128,6 @@ public class Intermediare extends IA {
           //Card card=i.jouer_coup_phase1(handIA, true, cartejouer);
           Card card=i.jouerCoupPhase1(handIA, true, cartejouer);
           System.out.println("La carte jouer par l'IA est : "+card.getFaction()+" "+card.getValeur());
-     }*/
+     }
 
-}
+}*/

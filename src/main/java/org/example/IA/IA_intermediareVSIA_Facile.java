@@ -221,4 +221,5 @@ public class IA_intermediareVSIA_Facile {
         System.out.println("Le nombre de matchs gagnés par Intermediare est : "+nb_match_gagne_intermediare);
     }
 
-}*/
+}
+*/
