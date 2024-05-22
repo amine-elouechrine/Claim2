@@ -129,12 +129,12 @@ public class ControleurMediateur implements CollecteurEvenements {
     }
     @Override
     public void annuler(){
-        jeu.annuler();
+        jeu.annulerCoup();
         jeu.metAJour();
     }
     @Override
     public void refaire(){
-        jeu.refaire();
+        jeu.refaireCoup();
         jeu.metAJour();
     }
     @Override
