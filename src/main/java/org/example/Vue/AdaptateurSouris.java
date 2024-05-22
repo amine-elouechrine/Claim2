@@ -19,7 +19,6 @@ public class AdaptateurSouris extends MouseAdapter implements MouseListener {
 
     }
 
-
     @Override
     public void mousePressed(MouseEvent e) {
 
@@ -32,7 +31,7 @@ public class AdaptateurSouris extends MouseAdapter implements MouseListener {
         largeurR = niv.largeurCarte();
 
         // Si le joueurCourant est le joueur 1
-        if(control.isJoueurCourantJoueur1()) {
+        if (control.isJoueurCourantJoueur1()) {
             if (i > niv.posXMainJ1() && i < (niv.getLargeurMainJ1() + niv.posXMainJ1()) && j > niv.posYMainJ1() && j < (niv.posYMainJ1() + niv.getHauteurMain())) {
                 valeur_carte = (double) (i - niv.posXMainJ1()) / largeurR; // Il faut diviser par la taille des cartes
                 carte = (int) Math.floor(valeur_carte);
@@ -48,16 +47,6 @@ public class AdaptateurSouris extends MouseAdapter implements MouseListener {
                 control.clicSourisJ2(carte);
             }
         }
-        /*
-        System.out.println("double : " + valeur_carte);
-        System.out.println("carte : " + carte);
-        System.out.println("posX : " + i + " posY : " + j + "\n posXMain : " + niv.posXMain() + " posYMain : " + niv.posYMain());
-        System.out.println("Largeur Main : " + niv.getLargeurMainJ1() + " Hauteur Main : " + (niv.posYMain() + niv.getHauteurMain()));
-        System.out.println("largeur carte : " + largeurR);
-         */
-
-
-
     }
 
     @Override
