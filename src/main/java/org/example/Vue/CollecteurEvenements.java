@@ -66,5 +66,6 @@ public interface CollecteurEvenements {
 
     void clicSourisJ2(int index);
 
+    void tictac();
 
 }

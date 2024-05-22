@@ -4,6 +4,8 @@ import org.example.Modele.Card;
 import org.example.Modele.Hand;
 import org.example.Modele.Jeu;
 import org.example.Modele.Player;
+import org.example.Structures.Iterateur;
+import org.example.Structures.Sequence;
 import org.example.Vue.CollecteurEvenements;
 import org.example.Modele.GestionAnnuleRefaire;
 import org.example.Vue.CollecteurEvenements;
@@ -19,6 +21,12 @@ public class ControleurMediateur implements CollecteurEvenements {
     Jeu jeu;
 
     Card carteLeader;
+
+    Sequence<Animation> animations;
+    double vitesseAnimations;
+    Animation mouvement;
+    boolean animationsSupportees, animationsActives;
+
 
 
     boolean jouable = true;
@@ -224,4 +232,10 @@ public class ControleurMediateur implements CollecteurEvenements {
             jeu.switchJoueur();
         }
     }
+
+
+    @Override
+    public void tictac() {
+    }
+
 }
