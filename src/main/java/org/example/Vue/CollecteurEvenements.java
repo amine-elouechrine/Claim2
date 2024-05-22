@@ -54,7 +54,7 @@ public interface CollecteurEvenements {
   
     void refaire();
   
-    void annuler();
+    void annuler() throws IOException;
   
     void sauve(String filename);
   
