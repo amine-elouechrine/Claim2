@@ -3,6 +3,7 @@ package org.example.Modele;
 //import javax.smartcardio.Card;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Cette classe représente le plateau de jeu dans lequel les cartes sont placées pendant la partie.
@@ -43,7 +44,13 @@ public class Plateau {
         this.defausse = other.defausse != null ? new Defausse(other.defausse) : null;
         this.joueur1 = other.joueur1 != null ? new Player(other.joueur1) : null;
         this.joueur2 = other.joueur2 != null ? new Player(other.joueur2) : null;
-        this.joueurCourant = other.joueurCourant != null ? new Player(other.joueurCourant) : null;
+        if (other.joueurCourant == other.joueur1) {
+            this.joueurCourant = this.joueur1;
+        } else if (other.joueurCourant == other.joueur2) {
+            this.joueurCourant = this.joueur2;
+        } else {
+            this.joueurCourant = null; // Ou autre gestion d'erreur si nécessaire
+        }
         this.phase = other.phase;
     }
 
@@ -269,14 +276,6 @@ public class Plateau {
         return carteJoue;
     }
 
-    public void jouerCarte(Card card){
-        if(joueurCourant == joueur1) {
-            setCarteJoueur1(card);
-        } else if (joueurCourant == joueur2) {
-            setCarteJoueur2(card);
-        }
-    }
-
     /**
      * verifierle joueur courant est le leader
      *
@@ -379,5 +378,27 @@ public class Plateau {
         return !(joueur1.getHand().isEmpty() && joueur2.getHand().isEmpty());
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Plateau plateau = (Plateau) o;
+
+        // sa suffit pas de comparer la carte joueur1 et carte joueur2 seulement parce qu'il y a plusieurs gobelins
+        // Compare relevant fields to determine equality
+        return  Objects.equals(carteJoueur1, plateau.carteJoueur1) &&
+                Objects.equals(carteJoueur2, plateau.carteJoueur2) &&
+                Objects.equals(joueur1.pileDeScore, plateau.joueur1.pileDeScore) &&
+                Objects.equals(joueur2.pileDeScore, plateau.joueur2.pileDeScore) &&
+                Objects.equals(joueurCourant.getName(), plateau.joueurCourant.getName()) &&
+                Objects.equals(phase, plateau.phase);
+    }
+
+    @Override
+    public int hashCode() {
+        // Generate hash code based on relevant fields
+        return Objects.hash(carteJoueur1, carteJoueur2, joueur1.pileDeScore, joueur2.pileDeScore, joueurCourant.getName(), phase);
+    }
 
 }

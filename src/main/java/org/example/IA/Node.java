@@ -1,5 +1,6 @@
 package org.example.IA;
 
+import org.example.Modele.Card;
 import org.example.Modele.Plateau;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,12 +16,51 @@ public class Node {
 
     public Node() {
         enfants=new ArrayList<>();
-
     }
 
     public Node (Plateau plateau){
         this.plateau=plateau;
         enfants=new ArrayList<>();
+    }
+
+    // Constructeur de copie
+    public Node(Node other) {
+        this.score = other.score;
+        this.IsIaTurn = other.IsIaTurn;
+        this.plateau = other.plateau != null ? new Plateau(other.plateau) : null;
+        this.enfants = new ArrayList<>();
+        for (Node enfant : other.enfants) {
+            this.enfants.add(new Node(enfant));
+        }
+    }
+
+    public Node clone() {
+        return new Node(this);
+    }
+
+    // l'ia doit etre toujours le joueur1 et l'adversaire le joueur2
+    public Card getCarteAI() {
+        return plateau.getCarteJoueur1();
+    }
+
+
+
+    public boolean getIsIaTurn() {
+        return IsIaTurn;
+    }
+
+    public void setIsIaTurn() {
+        this.IsIaTurn = plateau.getJoueurCourant().getName() == "IA";
+    }
+
+    // Méthode pour rechercher l'enfant avec une certaine évaluation
+    public Node getEnfantAvecEvaluation(int eval) {
+        for (Node enfant : enfants) {
+            if (enfant.getScore() == eval) {
+                return enfant;
+            }
+        }
+        return null; // Retourne null si aucun enfant avec cette évaluation n'est trouvé
     }
 
     public void setEnfants(List<Node> enfants) {
@@ -34,6 +74,10 @@ public class Node {
 
     public List<Node> getEnfants(){
         return enfants;
+    }
+
+    public Plateau getPlateau(){
+        return this.plateau ;
     }
 
 
