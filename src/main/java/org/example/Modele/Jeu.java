@@ -1,4 +1,5 @@
 package org.example.Modele;
+
 import org.example.Patternes.Observable;
 
 import java.io.IOException;
@@ -193,6 +194,10 @@ public class Jeu extends Observable {
             return -1;
     }
 
+    public Player getJoueur2() {
+        return getPlateau().getJoueur2();
+    }
+
     public int getCarteJoueur2V() {
         if (plateau.getCarteJoueur2() != null)
             return plateau.getCarteJoueur2().getValeur();
@@ -210,8 +215,8 @@ public class Jeu extends Observable {
 
     public void playTrick() {
         if (getPhase()) {
-            Card carteGagnante = ReglesDeJeu.carteGagnante(plateau.getCarteJoueur1(), plateau.getCarteJoueur2() , plateau);
-            plateau.attribuerCarteFirstPhase(carteGagnante,r);
+            Card carteGagnante = ReglesDeJeu.carteGagnante(plateau.getCarteJoueur1(), plateau.getCarteJoueur2(), plateau);
+            plateau.attribuerCarteFirstPhase(carteGagnante, r);
             if (estFinPhase1()) {
                 switchPhase();
             }
@@ -219,7 +224,7 @@ public class Jeu extends Observable {
                 plateau.carteAffichee = plateau.pioche.getCard();
             }
         } else {
-            Card carteGagnante = ReglesDeJeu.carteGagnante(plateau.getCarteJoueur1(), plateau.getCarteJoueur2() , plateau);
+            Card carteGagnante = ReglesDeJeu.carteGagnante(plateau.getCarteJoueur1(), plateau.getCarteJoueur2(), plateau);
             plateau.attribuerCarteSecondPhase(carteGagnante, r);
 
         }
@@ -239,6 +244,10 @@ public class Jeu extends Observable {
         return joueur.getName();
     }
 
+    public Player getJoueurCourant() {
+        return getPlateau().getJoueurCourant();
+    }
+
     public void annuler() {
         g.annuler();
         plateau = g.getPlateau();
@@ -252,6 +261,7 @@ public class Jeu extends Observable {
     public void sauve(String filename) {
         g.sauve(filename);
     }
+
     public void restaure(String filename) throws IOException {
         g.restaure(filename);
     }

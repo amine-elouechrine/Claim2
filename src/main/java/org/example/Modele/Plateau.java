@@ -32,6 +32,7 @@ public class Plateau {
 
     /**
      * Constructeur de la classe Plateau pour l'intelligence artificielle pour puisse faire une copie du plateau.
+     *
      * @param plateau
      */
     // Constructeur de copie
@@ -58,36 +59,37 @@ public class Plateau {
 
     }
 
-    public Card getCardAdversaire(){
-        if(joueurCourant == joueur1){
+    public Card getCardAdversaire() {
+        if (joueurCourant == joueur1) {
             return carteJoueur2;
-        }else{
+        } else {
             return carteJoueur1;
         }
     }
 
-    public Hand getHandAdversaire(){
-        if(joueurCourant == joueur1){
+    public Hand getHandAdversaire() {
+        if (joueurCourant == joueur1) {
             return joueur2.getHand();
-        }else{
+        } else {
             return joueur1.getHand();
         }
     }
 
     /**
-     * constructeur de la classe Plateau pour les jeux de test. 
+     * constructeur de la classe Plateau pour les jeux de test.
      */
-    public Plateau(Card carteJoeur1 , Card carteJoueur2){
+    public Plateau(Card carteJoeur1, Card carteJoueur2) {
         this.carteJoueur1 = carteJoeur1;
         this.carteJoueur2 = carteJoueur2;
     }
 
     /**
      * Changer la phase du jeu.
+     *
      * @param val
      */
-    public void setPhase (boolean val){
-        phase=val;
+    public void setPhase(boolean val) {
+        phase = val;
     }
 
     /**
@@ -166,12 +168,11 @@ public class Plateau {
         return carteJoueur2;
     }
 
-    public void setCarteJoeurCouant(Card card){
-        if(joueurCourant.equals(joueur1)){
-             carteJoueur1=card;
-        }
-        else
-             carteJoueur2=card;
+    public void setCarteJoeurCouant(Card card) {
+        if (joueurCourant.equals(joueur1)) {
+            carteJoueur1 = card;
+        } else
+            carteJoueur2 = card;
     }
 
     public void setCarteJoueur2(Card carteJoueur2) {
@@ -235,6 +236,7 @@ public class Plateau {
     public Defausse getDefausse() {
         return defausse;
     }
+
     public void setDefausse(Defausse defausse) {
         this.defausse = defausse;
     }
@@ -287,21 +289,20 @@ public class Plateau {
     public Card jouerCarte(int indexCard) {
         // jouer une carte quelconque de sa main
         Card carteJoue;
-        if(getPhase())
+        if (getPhase())
             carteJoue = joueurCourant.jouerCarte(indexCard);
         else
             carteJoue = joueurCourant.jouerCarte2(indexCard);
-        if(joueurCourant == joueur1) {
+        if (joueurCourant == joueur1) {
             setCarteJoueur1(carteJoue);
-        }
-        else if (joueurCourant == joueur2) {
+        } else if (joueurCourant == joueur2) {
             setCarteJoueur2(carteJoue);
         }
         return carteJoue;
     }
 
-    public void jouerCarte(Card card){
-        if(joueurCourant == joueur1) {
+    public void jouerCarte(Card card) {
+        if (joueurCourant == joueur1) {
             setCarteJoueur1(card);
         } else if (joueurCourant == joueur2) {
             setCarteJoueur2(card);
@@ -321,84 +322,82 @@ public class Plateau {
         }
     }
 
-    public void setCardAffiche(Card card){
-        carteAffichee=card;
+    public void setCardAffiche(Card card) {
+        carteAffichee = card;
     }
 
-    public boolean estLeader2(){
+    public boolean estLeader2() {
         return getCardAdversaire() == null;
     }
 
 
-    public void switchJoueur(){
-        if(joueurCourant==joueur1){
-            joueurCourant=joueur2;
-        }
-        else{
-            joueurCourant=joueur1;
+    public void switchJoueur() {
+        if (joueurCourant == joueur1) {
+            joueurCourant = joueur2;
+        } else {
+            joueurCourant = joueur1;
         }
     }
 
     // use apply phirst phase rule function
     public void attribuerCarteFirstPhase(Card winningCard, ReglesDeJeu r) {
 
-        if(r.carteEgaux(carteJoueur1 , carteJoueur2)){
+        if (r.carteEgaux(carteJoueur1, carteJoueur2)) {
             // determiner le leader 
-            if(joueurCourant.getName() .equals( joueur2.getName())){ // si le joueur 1 est le leader
-                r.applyUndeadRule(joueur1,carteJoueur1,carteJoueur2,defausse);
+            if (joueurCourant.getName().equals(joueur2.getName())) { // si le joueur 1 est le leader
+                r.applyUndeadRule(joueur1, carteJoueur1, carteJoueur2, defausse);
                 joueur1.getHandScndPhase().addCard(carteAffichee);
                 joueur2.getHandScndPhase().addCard(pioche.getCard());
                 joueurCourant = joueur1;
-            }else{
-                r.applyUndeadRule(joueur2,carteJoueur2,carteJoueur1,defausse);
+            } else {
+                r.applyUndeadRule(joueur2, carteJoueur2, carteJoueur1, defausse);
                 joueur2.getHandScndPhase().addCard(carteAffichee);
                 joueur1.getHandScndPhase().addCard(pioche.getCard());
                 joueurCourant = joueur2;
             }
-        }else{
+        } else {
             if (winningCard == carteJoueur1) {
                 joueur1.getHandScndPhase().addCard(carteAffichee);
                 joueur2.getHandScndPhase().addCard(pioche.getCard());
-                r.applyFirstPhaseRules(joueur1,carteJoueur1,carteJoueur2,defausse);
+                r.applyFirstPhaseRules(joueur1, carteJoueur1, carteJoueur2, defausse);
                 joueurCourant = joueur1;
-            } else if(winningCard == carteJoueur2) {
+            } else if (winningCard == carteJoueur2) {
                 joueur2.getHandScndPhase().addCard(carteAffichee);
                 joueur1.getHandScndPhase().addCard(pioche.getCard());
-                r.applyFirstPhaseRules(joueur2,carteJoueur2,carteJoueur1,defausse);
+                r.applyFirstPhaseRules(joueur2, carteJoueur2, carteJoueur1, defausse);
                 joueurCourant = joueur2;
             }
         }
-        
+
     }
 
 
     public void jouerCarte2(Card card) {
         // jouer une carte quelconque de sa main
-    
-        if(getJoueurCourant().getHandScndPhase().contains(card)){
+
+        if (getJoueurCourant().getHandScndPhase().contains(card)) {
             getJoueurCourant().getHandScndPhase().removeCard(card);
         }
-        if(joueurCourant == joueur1) {
+        if (joueurCourant == joueur1) {
             setCarteJoueur1(card);
-        }
-        else if (joueurCourant == joueur2) {
+        } else if (joueurCourant == joueur2) {
             setCarteJoueur2(card);
         }
     }
 
-    
+
     // use applay sndphaserule function 
     public void attribuerCarteSecondPhase(Card winningCard, ReglesDeJeu r) {// on doit changer la fonction ApplyDwarveRule:c'est fait
-        if(r.carteEgaux(carteJoueur1 , carteJoueur2)){
+        if (r.carteEgaux(carteJoueur1, carteJoueur2)) {
             // determiner le leader 
-            if(joueurCourant.getName() == joueur2.getName()){ // si le joueur 1 est le leader  
+            if (joueurCourant.getName() == joueur2.getName()) { // si le joueur 1 est le leader
                 r.applySecondPhaseRules(joueur1, joueur2, carteJoueur1, carteJoueur2);
                 joueurCourant = joueur1;
-            }else{
+            } else {
                 r.applySecondPhaseRules(joueur2, joueur1, carteJoueur2, carteJoueur1);
                 joueurCourant = joueur2;
             }
-        }else{
+        } else {
             if (winningCard == carteJoueur1) {
                 r.applySecondPhaseRules(joueur1, joueur2, carteJoueur1, carteJoueur2);
                 joueurCourant = joueur1;
@@ -407,7 +406,7 @@ public class Plateau {
                 joueurCourant = joueur2;
             }
         }
-        
+
     }
 
     public boolean coupJouable(List<Card> preselected, int indice, Hand hand) {
