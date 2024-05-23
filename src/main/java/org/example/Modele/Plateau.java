@@ -43,12 +43,35 @@ public class Plateau {
         this.defausse = other.defausse != null ? new Defausse(other.defausse) : null;
         this.joueur1 = other.joueur1 != null ? new Player(other.joueur1) : null;
         this.joueur2 = other.joueur2 != null ? new Player(other.joueur2) : null;
-        this.joueurCourant = other.joueurCourant != null ? new Player(other.joueurCourant) : null;
+        if (other.joueurCourant == other.joueur1) {
+            this.joueurCourant = this.joueur1;
+        } else if (other.joueurCourant == other.joueur2) {
+            this.joueurCourant = this.joueur2;
+        } else {
+            this.joueurCourant = null; // Ou autre gestion d'erreur si nécessaire
+        }
         this.phase = other.phase;
     }
 
     public Plateau clone() {
         return new Plateau(this);
+
+    }
+
+    public Card getCardAdversaire(){
+        if(joueurCourant == joueur1){
+            return carteJoueur2;
+        }else{
+            return carteJoueur1;
+        }
+    }
+
+    public Hand getHandAdversaire(){
+        if(joueurCourant == joueur1){
+            return joueur2.getHand();
+        }else{
+            return joueur1.getHand();
+        }
     }
 
     /**
@@ -141,6 +164,14 @@ public class Plateau {
      */
     public Card getCarteJoueur2() {
         return carteJoueur2;
+    }
+
+    public void setCarteJoeurCouant(Card card){
+        if(joueurCourant.equals(joueur1)){
+             carteJoueur1=card;
+        }
+        else
+             carteJoueur2=card;
     }
 
     public void setCarteJoueur2(Card carteJoueur2) {
@@ -290,6 +321,14 @@ public class Plateau {
         }
     }
 
+    public void setCardAffiche(Card card){
+        carteAffichee=card;
+    }
+
+    public boolean estLeader2(){
+        return getCardAdversaire() == null;
+    }
+
 
     public void switchJoueur(){
         if(joueurCourant==joueur1){
@@ -305,7 +344,7 @@ public class Plateau {
 
         if(r.carteEgaux(carteJoueur1 , carteJoueur2)){
             // determiner le leader 
-            if(joueurCourant.getName() == joueur2.getName()){ // si le joueur 1 est le leader  
+            if(joueurCourant.getName() .equals( joueur2.getName())){ // si le joueur 1 est le leader
                 r.applyUndeadRule(joueur1,carteJoueur1,carteJoueur2,defausse);
                 joueur1.getHandScndPhase().addCard(carteAffichee);
                 joueur2.getHandScndPhase().addCard(pioche.getCard());

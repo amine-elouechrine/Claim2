@@ -220,11 +220,11 @@ public class ArbreJeu{
         System.out.println("Main de l'adversaire");
         plateau1.getJoueur2().getHandScndPhase().printHand();
         ArbreJeu arbreJeu = new ArbreJeu(new Node(plateau1));
-        Node racine = arbreJeu.construireArbreJeu2(plateau1, 3); // a l'apel initi alpha et beta doivent avoir ces valeurs
+        Node racine = arbreJeu.construireArbreJeu2(plateau1, 2); // a l'apel initi alpha et beta doivent avoir ces valeurs
         //afficher arbre
         System.out.println(racine.getEnfants().size());
         try (PrintWriter writer = new PrintWriter("arbre.txt")) {
-            racine.afficherArbreProfondeur(writer,"",3);
+            racine.afficherArbreProfondeur(writer,"",2);
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
