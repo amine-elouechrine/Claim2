@@ -235,6 +235,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 
 	private void jouerCarteIA(Card carte) {
 		jeu.getPlateau().jouerCarte(carte);
+		jeu.getJoueur2().getHand().removeCard(carte);
 		if (jeu.estCarteJoueJ1() && jeu.estCarteJoueJ2()) {
 			jeu.playTrick();
 			// On joue le plie
@@ -245,7 +246,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 			carteLeader = carte;
 			jeu.switchJoueur();
 		}
-		jeu.getJoueur2().getHand().removeCard(carte);
+
 		System.out.println(carte);
 	}
 

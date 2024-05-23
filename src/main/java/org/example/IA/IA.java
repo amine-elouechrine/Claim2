@@ -81,14 +81,14 @@ public abstract class IA extends GeneralPlayer{
             throw new IllegalArgumentException("La liste de cartes de même faction est vide ou nulle.");
         }
 
-        Card smallestHigherCard = null;
+        Card smallestHigherCard =CarteSameFaction.get(0);
         int smallestHigherValue = Integer.MAX_VALUE;
 
-        for (Card handCard : CarteSameFaction) {
+        for (int i=1;i<CarteSameFaction.size();i++) {
             // Vérifier si la carte est plus grande que celle passée en paramètre
-            if (handCard.getValeur() > card.getValeur() && handCard.getValeur() < smallestHigherValue) {
-                smallestHigherCard = handCard;
-                smallestHigherValue = handCard.getValeur();
+            if (CarteSameFaction.get(i).getValeur() > card.getValeur() && CarteSameFaction.get(i).getValeur() < smallestHigherValue) {
+                smallestHigherCard = CarteSameFaction.get(i);
+                smallestHigherValue = CarteSameFaction.get(i).getValeur();
             }
         }
 

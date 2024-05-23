@@ -29,7 +29,7 @@ public class Facile extends IA {
     }
 
     private Card jouerAvecSuiviFaction(Plateau plateau) {
-        Hand carteJouable = getCardsOfSameFaction(plateau.getCarteAffichee().getFaction());
+        Hand carteJouable = getCardsOfSameFaction2(plateau.getJoueurCourant().getHand(),plateau.getCarteAffichee().getFaction());
 
         if (carteJouable.isEmpty()) {
             if(plateau.estPhase1()){

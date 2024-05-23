@@ -267,8 +267,8 @@ public class Plateau {
 		Hand mainJoueur1 = pioche.getHandOf13Cards();
 		Hand mainJoueur2 = pioche.getHandOf13Cards();
 		//creation des joueurs
-		joueur1 = new Player("Joueur 1");
-		joueur2 = new Player("Joueur 2");
+		joueur1 = new Player("Facile");
+		joueur2 = new Player("Intermediare");
 		//initialiser les mains des joueurs
 		joueur1.setHand(mainJoueur1);
 		joueur2.setHand(mainJoueur2);
@@ -418,4 +418,7 @@ public class Plateau {
 	}
 
 
+	public GeneralPlayer joueurCourant() {
+		return null;
+	}
 }

@@ -174,7 +174,7 @@ public class ReglesDeJeu {
         if (cartesJouables.isEmpty()) {
             cartesJouables.addAll(mainJoueur.getAllCards());
         }
-
+        //TODO
         // A AJOUTER !!!!
         // lorsqu'il y a plus de carte de meme faction mais qu'il reste des doppleganger il faut ajouter tout la main 
 
