@@ -20,7 +20,6 @@ public class Plateau {
     Player joueur2;
     Player joueurCourant;
     Boolean phase; // true si on est dans la phase 1, false sinon
-    int numberCardPlayed;
 
     /**
      * Constructeur de la classe Plateau.
@@ -58,6 +57,22 @@ public class Plateau {
         return new Plateau(this);
     }
 
+    // Sauvegarde l'état actuel du plateau
+    public PlateauState saveState() {
+        return new PlateauState(carteJoueur1, carteJoueur2, joueur1.clone(), joueur2.clone(), joueurCourant.clone());
+    }
+
+    // Restaure un état précédemment sauvegardé
+    public void restoreState(PlateauState state) {
+        this.carteJoueur1 = state.getCarteJoueur1();
+        this.carteJoueur2 = state.getCarteJoueur2();
+        this.joueur1 = state.getJoueur1().clone();
+        this.joueur2 = state.getJoueur2().clone();
+        this.joueurCourant = state.getJoueurCourant().clone();
+        this.phase = false;
+    }
+
+
     /**
      * constructeur de la classe Plateau pour les jeux de test. 
      */
@@ -84,6 +99,16 @@ public class Plateau {
             System.out.println("Vous etes deja dans la phase 2");
         }
     }
+
+    public GeneralPlayer getAdversaire(){
+        if(joueurCourant == joueur1){
+            return joueur2;
+        }else{
+            return joueur1;
+        }
+    }
+
+
 
     public boolean getPhase() {
         return phase;

@@ -10,7 +10,7 @@ public class Node {
 
     private List<Node> enfants;
     public int score;
-    public boolean IsIaTurn;
+    //public boolean IsIaTurn;
     public Plateau plateau;
 
 
@@ -26,7 +26,6 @@ public class Node {
     // Constructeur de copie
     public Node(Node other) {
         this.score = other.score;
-        this.IsIaTurn = other.IsIaTurn;
         this.plateau = other.plateau != null ? new Plateau(other.plateau) : null;
         this.enfants = new ArrayList<>();
         for (Node enfant : other.enfants) {
@@ -44,14 +43,6 @@ public class Node {
     }
 
 
-
-    public boolean getIsIaTurn() {
-        return IsIaTurn;
-    }
-
-    public void setIsIaTurn() {
-        this.IsIaTurn = plateau.getJoueurCourant().getName() == "IA";
-    }
 
     // Méthode pour rechercher l'enfant avec une certaine évaluation
     public Node getEnfantAvecEvaluation(int eval) {
@@ -81,12 +72,12 @@ public class Node {
     }
 
 
-    public void afficherArbre(String prefix) {
+    /*public void afficherArbre(String prefix) {
         System.out.println(prefix + (IsIaTurn ? "IA" : "Adversaire") + " - Score: " + score );
         for (Node enfant : enfants) {
             enfant.afficherArbre(prefix + "  ");
         }
-    }
+    }*/
 
     public int getScore() {
         return score;

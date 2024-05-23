@@ -1,9 +1,6 @@
 package org.example.IA;
 
-import org.example.Modele.Card;
-import org.example.Modele.Plateau;
-import org.example.Modele.Player;
-import org.example.Modele.ReglesDeJeu;
+import org.example.Modele.*;
 
 
 import java.util.*;
@@ -46,6 +43,7 @@ public class IAMinMax {
         } else {   // si c'est le tour de l'adversaire (isIaTurn doit etre false)
             int minEval = Integer.MAX_VALUE;
             for (Node child : generateChildren(node)) {
+
                 int eval = minimax(child, depth - 1, true, alpha, beta);
                 minEval = Math.min(minEval, eval);
                 beta = Math.min(beta, eval);
@@ -61,13 +59,16 @@ public class IAMinMax {
 
     private List<Node> generateChildren(Node node) {
         List<Node> children = new ArrayList<>();
+        GeneralPlayer currentPlayer = node.plateau.getJoueurCourant();
+        GeneralPlayer opponentPlayer = node.plateau.getAdversaire();
+        List<Card> currentPlayerHand = currentPlayer.getHandScndPhase().getAllCards();
+        Hand opponentHand = opponentPlayer.getHandScndPhase();
+
         // Générer les états enfants en fonction des mouvements possibles
-        for (Card cardi : node.plateau.getJoueurCourant().getHandScndPhase().getAllCards()) {
-            Plateau copie = node.plateau.clone();
-            copie.switchJoueur();
-            List<Card> carteJouable = ReglesDeJeu.cartesJouables(cardi, copie.getJoueurCourant().getHandScndPhase());
+        for (Card cardi : currentPlayerHand) {
+            List<Card> carteJouable = ReglesDeJeu.cartesJouables(cardi, opponentHand);
             for (Card cardj : carteJouable) {
-                copie.switchJoueur();
+                Plateau copie = node.plateau.clone();
                 copie.jouerCarte2(cardi);
                 copie.switchJoueur();
                 copie.jouerCarte2(cardj);

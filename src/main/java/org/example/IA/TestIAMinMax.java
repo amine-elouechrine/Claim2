@@ -59,7 +59,7 @@ public class TestIAMinMax {
         // Appel de l'algorithme Minimax pour évaluer le meilleur coup
         Node racine = new Node(plateauInitial);
 
-        int meilleurCoup = iaMinMax.minimax(racine, 9, true, Integer.MIN_VALUE , Integer.MAX_VALUE); // Profondeur de recherche = 3
+        int meilleurCoup = iaMinMax.minimax(racine, 5, true, Integer.MIN_VALUE , Integer.MAX_VALUE); // Profondeur de recherche = 3
 
         // Affichage du meilleur coup calculé
         System.out.println("Meilleur coup calculé par l'algorithme Minimax : " + meilleurCoup);
