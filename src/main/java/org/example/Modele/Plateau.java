@@ -1,6 +1,6 @@
 package org.example.Modele;
 
-//import javax.smartcardio.Card;
+// import javax.smartcardio.Card;
 
 import java.util.List;
 
@@ -32,6 +32,7 @@ public class Plateau {
 
     /**
      * Constructeur de la classe Plateau pour l'intelligence artificielle pour puisse faire une copie du plateau.
+     *
      * @param plateau
      */
     public Plateau(Plateau plateau) {
@@ -47,19 +48,20 @@ public class Plateau {
     }
 
     /**
-     * constructeur de la classe Plateau pour les jeux de test. 
+     * constructeur de la classe Plateau pour les jeux de test.
      */
-    public Plateau(Card carteJoeur1 , Card carteJoueur2){
+    public Plateau(Card carteJoeur1, Card carteJoueur2) {
         this.carteJoueur1 = carteJoeur1;
         this.carteJoueur2 = carteJoueur2;
     }
 
     /**
      * Changer la phase du jeu.
+     *
      * @param val
      */
-    public void setPhase (boolean val){
-        phase=val;
+    public void setPhase(boolean val) {
+        phase = val;
     }
 
     /**
@@ -152,7 +154,7 @@ public class Plateau {
     }
 
     public Player getJoueurNonCourant() {
-        if(joueurCourant == joueur1) {
+        if (joueurCourant == joueur1) {
             return joueur2;
         } else {
             return joueur1;
@@ -207,6 +209,7 @@ public class Plateau {
     public Defausse getDefausse() {
         return defausse;
     }
+
     public void setDefausse(Defausse defausse) {
         this.defausse = defausse;
     }
@@ -236,7 +239,7 @@ public class Plateau {
         pioche.addAllCards();
 
         pioche.shuffle();
-        //creation & initialiser les mains 
+        //creation & initialiser les mains
         Hand mainJoueur1 = pioche.getHandOf13Cards();
         Hand mainJoueur2 = pioche.getHandOf13Cards();
         //creation des joueurs
@@ -262,23 +265,22 @@ public class Plateau {
     public Card jouerCarte(int indexCard) {
         // jouer une carte quelconque de sa main
         Card carteJoue;
-        if(getPhase())
+        if (getPhase())
             carteJoue = getJoueurCourant().jouerCarte(indexCard);
         else
             carteJoue = getJoueurCourant().jouerCarte2(indexCard);
-        if(joueurCourant == joueur1) {
+        if (joueurCourant == joueur1) {
             setCarteJoueur1(carteJoue);
-        }
-        else if (joueurCourant == joueur2) {
+        } else if (joueurCourant == joueur2) {
             setCarteJoueur2(carteJoue);
         }
         return carteJoue;
     }
 
-    public void jouerCarte(Card card){
-        if(joueurCourant.equals(joueur1)) {
+    public void jouerCarte(Card card) {
+        if (joueurCourant.equals(joueur1)) {
             setCarteJoueur1(card);
-        } else if (joueurCourant.equals(joueur2)){
+        } else if (joueurCourant.equals(joueur2)) {
             setCarteJoueur2(card);
         }
     }
@@ -297,12 +299,11 @@ public class Plateau {
     }
 
 
-    public void switchJoueur(){
-        if(joueurCourant==joueur1){
-            joueurCourant=joueur2;
-        }
-        else{
-            joueurCourant=joueur1;
+    public void switchJoueur() {
+        if (joueurCourant == joueur1) {
+            joueurCourant = joueur2;
+        } else {
+            joueurCourant = joueur1;
         }
     }
 
@@ -310,7 +311,7 @@ public class Plateau {
     public void attribuerCarteFirstPhase(Card winningCard, ReglesDeJeu r) {
 
         if (r.carteEgaux(carteJoueur1, carteJoueur2)) {
-            // determiner le leader 
+            // determiner le leader
             if (joueurCourant.getName() == joueur2.getName()) { // si le joueur 1 est le leader
                 r.applyUndeadRule(joueur1, carteJoueur1, carteJoueur2, defausse);
                 joueur1.getHandScndPhase().addCard(carteAffichee);
@@ -337,10 +338,10 @@ public class Plateau {
         }
     }
 
-    // use applay sndphaserule function 
+    // use applay sndphaserule function
     public void attribuerCarteSecondPhase(Card winningCard, ReglesDeJeu r) {// on doit changer la fonction ApplyDwarveRule:c'est fait
         if (r.carteEgaux(carteJoueur1, carteJoueur2)) {
-            // determiner le leader 
+            // determiner le leader
             if (joueurCourant.getName() == joueur2.getName()) { // si le joueur 1 est le leader
                 r.applySecondPhaseRules(joueur1, joueur2, carteJoueur1, carteJoueur2);
                 joueurCourant = joueur1;
@@ -358,6 +359,7 @@ public class Plateau {
             }
         }
     }
+
     public boolean coupJouable(List<Card> preselected, int indice, Hand hand) {
         return preselected.contains(hand.getCard(indice));
     }

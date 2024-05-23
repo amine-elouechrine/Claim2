@@ -61,8 +61,8 @@ public class GestionAnnuleRefaire {
 
     public void annuler(Plateau p) throws IOException {
         if (peutAnnuler()) {
-
             Plateau np = annule.pop();
+            refaire.push(np);
 
             p.setPhase(np.getPhase());
             p.setPioche(np.getPioche());
@@ -73,19 +73,24 @@ public class GestionAnnuleRefaire {
             p.setCarteJoueur1(np.getCarteJoueur1());
             p.setCarteJoueur2(np.getCarteJoueur2());
             p.setJoueurCourant(np.getJoueurCourant());
-
-            refaire.push(p);
         }
     }
 
-
-    // il faut enlever la carte afficher de la pioche
-    // enlever la carte jouer de la main de chaque joueur 
-    public Plateau refaire() {
+    public void refaire(Plateau p) {
         if (peutRefaire()) {
-            annule.push(getPlateau());
-            return refaire.pop();
-        } else return getPlateau();
+            Plateau np = refaire.pop();
+            annule.push(np);
+
+            p.setPhase(np.getPhase());
+            p.setPioche(np.getPioche());
+            p.setDefausse(np.getDefausse());
+            p.setJoueur1(np.getJoueur1());
+            p.setJoueur2(np.getJoueur2());
+            p.setCarteAffichee(np.getCarteAffichee());
+            p.setCarteJoueur1(np.getCarteJoueur1());
+            p.setCarteJoueur2(np.getCarteJoueur2());
+            p.setJoueurCourant(np.getJoueurCourant());
+        }
     }
 
 

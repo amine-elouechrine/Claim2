@@ -11,10 +11,7 @@ import java.io.IOException;
 public class ControleurMediateur implements CollecteurEvenements {
 
     Jeu jeu;
-
     Card carteLeader;
-
-
     boolean jouable = true;
 
     public ControleurMediateur(Jeu j) {

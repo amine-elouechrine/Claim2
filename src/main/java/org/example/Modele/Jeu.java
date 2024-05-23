@@ -240,13 +240,11 @@ public class Jeu extends Observable {
     }
 
     public void annulerCoup() throws IOException {
-        System.out.println(getPlateau().getCarteJoueur1());
-        g.annuler(plateau);
-        System.out.println(getPlateau().getCarteJoueur1());
+        g.annuler(getPlateau());
     }
 
     public void refaireCoup() {
-        this.plateau = g.refaire();
+        g.refaire(getPlateau());
     }
 
     public void addAction() {
