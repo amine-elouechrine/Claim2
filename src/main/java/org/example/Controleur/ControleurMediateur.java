@@ -125,6 +125,13 @@ public class ControleurMediateur implements CollecteurEvenements {
     @Override
     public void annuler() throws IOException {
         jeu.annulerCoup();
+        if (jeu.getPlateau().getCarteJoueur1() == null && jeu.getPlateau().getCarteJoueur2() != null) {
+            carteLeader = jeu.getPlateau().getCarteJoueur2();
+        } else if (jeu.getPlateau().getCarteJoueur1() != null && jeu.getPlateau().getCarteJoueur2() == null) {
+            carteLeader = jeu.getPlateau().getCarteJoueur1();
+        } else {
+            carteLeader = null;
+        }
         jeu.metAJour();
     }
 
@@ -185,7 +192,7 @@ public class ControleurMediateur implements CollecteurEvenements {
     }
 
     public void joueTour(int index) {
-        jeu.addAction();
+
         if (jeu.estFinPartie()) {
             // Calcul des scores
             System.out.println("La partie est terminée\n");
@@ -197,6 +204,7 @@ public class ControleurMediateur implements CollecteurEvenements {
         }
 
         if (jouable) {
+            jeu.addAction();
             jouerCarte(index);
         }
         // Ajouter temporisation / animation

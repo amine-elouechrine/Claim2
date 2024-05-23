@@ -2,7 +2,6 @@ package org.example.Modele;
 
 //import javax.smartcardio.Card;
 
-import java.io.IOException;
 import java.util.List;
 
 /**
@@ -221,7 +220,7 @@ public class Plateau {
         return pioche;
     }
 
-    public void setPioche(Cards pioche) {
+    public void setPioche() {
         Cards pile = new Cards();
         pile = new Cards();
         this.pioche = pile;
@@ -375,7 +374,7 @@ public class Plateau {
         setDefausse(defausse);
         setJoueur1(joueur1);
         setJoueur2(joueur2);
-        setPioche(pioche);
+        setPioche();
         getJoueur1().setHand(mainJ1);
         getJoueur2().setHand(mainJ2);
         if (nameCurrentPlayer.equals(getJoueur1().getName())) {
@@ -383,5 +382,9 @@ public class Plateau {
         } else {
             joueurCourant = getJoueur2();
         }
+    }
+
+    public void setPioche(Cards pioche) {
+        this.pioche = pioche;
     }
 }

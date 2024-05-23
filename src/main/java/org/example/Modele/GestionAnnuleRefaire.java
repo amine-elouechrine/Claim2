@@ -59,54 +59,21 @@ public class GestionAnnuleRefaire {
         }
     }
 
-    // il faut remetre la carte de chaque joueur dans son main
-    // remettre la carte afficher dans la pioche 
     public void annuler(Plateau p) throws IOException {
-        System.out.println(annule);
         if (peutAnnuler()) {
-            /*
-            Hand main = new Hand();
-            main.addCard(p.getCarteAffichee());
-            p.getJoueur1().setHand(main);
-             */
-            /*System.out.println("peut annuler == true");
-            Plateau np = new Plateau();
-            np = annule.pop();
-            // p.joueurCourant.getHand().printHand();
-            for(Card carte : p.getPioche().getCards()) {
-                System.out.println("pioche carte : " + carte);
-            }
-            System.out.println("taille : " + p.getPioche().getCards().size());
-            System.out.println("nouvelle main : ");
+
+            Plateau np = annule.pop();
 
             p.setPhase(np.getPhase());
             p.setPioche(np.getPioche());
             p.setDefausse(np.getDefausse());
-            p.getJoueur1().setScore(np.getJoueur1().getScore());
-            p.getJoueur2().setScore(np.getJoueur2().getScore());
             p.setJoueur1(np.getJoueur1());
             p.setJoueur2(np.getJoueur2());
             p.setCarteAffichee(np.getCarteAffichee());
             p.setCarteJoueur1(np.getCarteJoueur1());
             p.setCarteJoueur2(np.getCarteJoueur2());
             p.setJoueurCourant(np.getJoueurCourant());
-            p.getJoueurCourant().setHand(np.getJoueurCourant().getHand());
-            // p.joueurCourant.getHand().printHand();
-            for(Card carte : p.getPioche().getCards()) {
-                System.out.println("pioche carte : " + carte);
-            }
-            System.out.println("taille : " + p.getPioche().getCards().size());
-            // p.getJoueur1().setHand(np.getJoueur1().getHand());
-            // p.getJoueur2().setHand(np.getJoueur2().getHand());
-            /*
-            if (np.getJoueurCourant().getName().equals(p.getJoueur1().getName())) {
-                p.setJoueurCourant(p.getJoueur1());
-            } else {
-                p.setJoueurCourant(p.getJoueur2());
-            }
-            */
 
-            // p.setPlateau(np.getPhase(), np.getCarteAffichee(), np.getCarteJoueur1(), np.getCarteJoueur2(), np.getDefausse(), np.getJoueur1(), np.getJoueur2(), np.getPioche(), np.getJoueurCourant().getName(), np.getJoueur1().getHand(), np.getJoueur2().getHand());
             refaire.push(p);
         }
     }
@@ -121,22 +88,109 @@ public class GestionAnnuleRefaire {
         } else return getPlateau();
     }
 
+
     // Ajoute un plateau à la pile annule
     public void addToHistory(Plateau plateau) {
         Plateau p = new Plateau();
+
         p.setPhase(plateau.getPhase());
-        p.setPioche(plateau.getPioche());
-        p.setDefausse(plateau.getDefausse());
-        p.setJoueur1(plateau.getJoueur1());
-        p.setJoueur2(plateau.getJoueur2());
-        p.getJoueur1().setScore(plateau.getJoueur1().getScore());
-        p.getJoueur2().setScore(plateau.getJoueur2().getScore());
-        p.setCarteAffichee(plateau.getCarteAffichee());
-        p.setCarteJoueur1(plateau.getCarteJoueur1());
-        p.setCarteJoueur2(plateau.getCarteJoueur2());
-        p.setJoueurCourant(plateau.getJoueurCourant());
-        p.getJoueurCourant().setHand(plateau.getJoueurCourant().getHand());
-        annule.push(plateau);
+
+        // creation de la nouvelle pioche
+        Cards ncards = new Cards();
+        for (Card carte : plateau.getPioche().getCards()) {
+            ncards.addCard(carte);
+        }
+        p.setPioche(ncards);
+
+        //creation de la defausse
+        Defausse ndefausse = new Defausse();
+        for (int i = 0; i < plateau.getDefausse().getSize(); i++) {
+            ndefausse.addCard(plateau.getDefausse().getCard(i));
+        }
+        p.setDefausse(ndefausse);
+
+        //creation des donneers de joueur 1
+        //creation de sa main phase1
+        Player nPlayer1 = new Player(plateau.getJoueur1().getName());
+        Hand nHand = new Hand();
+        for (Card carte : plateau.getJoueur1().getHand().getCards()) {
+            nHand.addCard(carte);
+        }
+        // Creation de la main phase 2
+        Hand nHand2 = new Hand();
+        for (Card carte : plateau.getJoueur1().getHandScndPhase().getCards()) {
+            nHand2.addCard(carte);
+        }
+
+        // creation de la pile de score
+        PileDeScore nPileDeScore = new PileDeScore();
+        for (Map.Entry<String, List<Card>> entry : nPileDeScore.getPileDeScore().entrySet()) {
+            List<Card> cards = entry.getValue();
+            for (Card card : cards) {
+                nPileDeScore.addCard(card);
+            }
+        }
+        nPlayer1.setHand(nHand);
+        nPlayer1.setHandScndPhase(nHand2);
+        nPlayer1.setPileDeScore(nPileDeScore);
+        p.setJoueur1(nPlayer1);
+
+        // Creation des donnes du deuxieme joueur
+        Player nPlayer2 = new Player(plateau.getJoueur2().getName());
+        Hand Hand = new Hand();
+        for (Card carte : plateau.getJoueur2().getHand().getCards()) {
+            Hand.addCard(carte);
+        }
+
+        // Creation de la main phase 2
+        Hand Hand2 = new Hand();
+        for (Card carte : plateau.getJoueur2().getHandScndPhase().getCards()) {
+            Hand2.addCard(carte);
+        }
+
+        // Creation de la pile de score
+        PileDeScore PileDeScore = new PileDeScore();
+        for (Map.Entry<String, List<Card>> entry : plateau.getJoueur2().getPileDeScore().getPileDeScore().entrySet()) {
+            List<Card> cards = entry.getValue();
+            for (Card card : cards) {
+                PileDeScore.addCard(card);
+            }
+        }
+        nPlayer2.setHand(Hand);
+        nPlayer2.setHandScndPhase(Hand2);
+        nPlayer2.setPileDeScore(PileDeScore);
+        p.setJoueur2(nPlayer2);
+
+        // Creation de la carte affichee
+        Card carteaffichee = new Card(plateau.getCarteAffichee().getValeur(), plateau.getCarteAffichee().getFaction());
+        p.setCarteAffichee(carteaffichee);
+
+        // Creation de la carte du joueeur 1
+        Card cardJ1 = null;
+        if (plateau.getCarteJoueur1() != null) {
+            cardJ1 = new Card(plateau.getCarteJoueur1().getValeur(), plateau.getCarteJoueur1().getFaction());
+
+        }
+        p.setCarteJoueur1(cardJ1);
+
+        // Creation de la carte du joueur 2
+        Card cardJ2 = null;
+        if (plateau.getCarteJoueur2() != null) {
+            cardJ2 = new Card(plateau.getCarteJoueur2().getValeur(), plateau.getCarteJoueur2().getFaction());
+
+        }
+        p.setCarteJoueur2(cardJ2);
+
+        // Creation du joueur courant
+        Player joueurCour;
+        if (plateau.getJoueurCourant() == plateau.getJoueur1()) {
+            joueurCour = nPlayer1;
+        } else {
+            joueurCour = nPlayer2;
+        }
+        p.setJoueurCourant(joueurCour);
+
+        annule.push(p);
         clearStack();
     }
 
@@ -249,10 +303,8 @@ public class GestionAnnuleRefaire {
         PrintStream p = new PrintStream(new File(filename));
         //si on est dans la premiere on va ecrire toute les infos
         //on ecrit la phase ou on est
-        if (plateau.phase)
-            p.println("FirstPhase");
-        else
-            p.println("SecondPhase");
+        if (plateau.phase) p.println("FirstPhase");
+        else p.println("SecondPhase");
         //on va ecrire tous les infos du joueur 1
         saveInfoPlayer(plateau.getJoueur1(), p, plateau.phase);
         //on va ecrire tous les infos du joueur 2
@@ -306,8 +358,7 @@ public class GestionAnnuleRefaire {
         PileDeScore pileJ1 = restaurePileDeScore(r);
         int scoreJ1 = Integer.parseInt(r.readLine());
         Player joueur1 = new Player(namePlayer1);
-        if (phase)
-            joueur1.setHand(handP1J1);
+        if (phase) joueur1.setHand(handP1J1);
         joueur1.setScore(scoreJ1);
         joueur1.setHandScndPhase(handP2J1);
         joueur1.setPileDeScore(pileJ1);
@@ -323,7 +374,7 @@ public class GestionAnnuleRefaire {
         plateau.setDefausse(defausse);
         plateau.setJoueur1(joueur1);
         plateau.setJoueur2(joueur2);
-        plateau.setPioche(pioche);
+        plateau.setPioche();
         plateau.getJoueur1().setHand(mainJ1);
         plateau.getJoueur2().setHand(mainJ2);
         if (nameCurrentPlayer.equals(plateau.getJoueur1().getName())) {
@@ -374,14 +425,4 @@ public class GestionAnnuleRefaire {
             System.out.println("Erreur lors de la sauvegarde");
         }
     }
-
-    // reccupere le plateau actuel les piles de refaire & annule mais il faut aussi reccupere la main de chaque joueur
-    /*public void restaure(String fileName){
-        try {
-            System.out.println("le restauration du fichier " + fileName + " est en cours");
-        } catch (Exception e) {
-            System.out.println("Erreur lors de la restauration");
-        }
-    }*/
-
 }
