@@ -220,8 +220,11 @@ public class Plateau {
         return pioche;
     }
 
-    public void setPioche(Cards pioche) {
-        this.pioche = pioche;
+    public void setPioche() {
+        Cards pile = new Cards();
+        pile = new Cards();
+        this.pioche = pile;
+
     }
 
     /**
@@ -260,9 +263,9 @@ public class Plateau {
         // jouer une carte quelconque de sa main
         Card carteJoue;
         if(getPhase())
-            carteJoue = joueurCourant.jouerCarte(indexCard);
+            carteJoue = getJoueurCourant().jouerCarte(indexCard);
         else
-            carteJoue = joueurCourant.jouerCarte2(indexCard);
+            carteJoue = getJoueurCourant().jouerCarte2(indexCard);
         if(joueurCourant == joueur1) {
             setCarteJoueur1(carteJoue);
         }
@@ -363,5 +366,25 @@ public class Plateau {
         return !(joueur1.getHand().isEmpty() && joueur2.getHand().isEmpty());
     }
 
+    public void setPlateau(boolean phase, Card carteAffichee, Card carteJoueur1, Card carteJoueur2, Defausse defausse, Player joueur1, Player joueur2, Cards pioche, String nameCurrentPlayer, Hand mainJ1, Hand mainJ2) {
+        setPhase(phase);
+        setCarteAffichee(carteAffichee);
+        setCarteJoueur1(carteJoueur1);
+        setCarteJoueur2(carteJoueur2);
+        setDefausse(defausse);
+        setJoueur1(joueur1);
+        setJoueur2(joueur2);
+        setPioche();
+        getJoueur1().setHand(mainJ1);
+        getJoueur2().setHand(mainJ2);
+        if (nameCurrentPlayer.equals(getJoueur1().getName())) {
+            joueurCourant = getJoueur1();
+        } else {
+            joueurCourant = getJoueur2();
+        }
+    }
 
+    public void setPioche(Cards pioche) {
+        this.pioche = pioche;
+    }
 }
