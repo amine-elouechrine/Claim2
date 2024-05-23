@@ -5,6 +5,7 @@ import java.util.Scanner;
 import org.example.Modele.Card;
 import org.example.Modele.Cards;
 import org.example.Modele.Hand;
+import org.example.Modele.Plateau;
 import org.example.Modele.Player;
 import org.example.Modele.ReglesDeJeu;
 
@@ -80,7 +81,7 @@ public class ReglesDeJeuTest {
         }
 
         // Vérifier quelle carte gagne selon les règles spécifiées
-        Card carteGagnante = ReglesDeJeu.carteGagnante(carte1, carte2);
+        Card carteGagnante = ReglesDeJeu.carteGagnante(carte1, carte2, new Plateau(carte1 , carte2)); // dans le plateau il cartejoueur1 et cartejoueur2
     
         System.out.println("La carte gagnante est : " + carteGagnante.getFaction() + " de valeur " + carteGagnante.getValeur());
     }
@@ -99,9 +100,9 @@ public class ReglesDeJeuTest {
 
         System.out.println("joueur1 : " + joueur1.getName() + " carte : " + carteJoueur1.getFaction() + " de valeur " + carteJoueur1.getValeur());
         System.out.println("joueur2 : " + joueur2.getName() + " carte : " + carteJoueur2.getFaction() + " de valeur " + carteJoueur2.getValeur());
-        Card carteGagnante = ReglesDeJeu.carteGagnante(carteJoueur1, carteJoueur2);
+        Card carteGagnante = ReglesDeJeu.carteGagnante(carteJoueur1, carteJoueur2 , new Plateau(carteJoueur1 , carteJoueur2));
         System.out.println("La carte gagnante est : " + carteGagnante.getFaction() + " de valeur " + carteGagnante.getValeur());
-        Player gagnant = ReglesDeJeu.determinerGagnantManche(joueur1, joueur2, carteJoueur1, carteJoueur2);
+        Player gagnant = ReglesDeJeu.determinerGagnantManche(joueur1, joueur2, carteJoueur1, carteJoueur2 , new Plateau(carteJoueur1 , carteJoueur2));
         System.out.println("Le gagnant de la manche est : " + gagnant.getName());
         
         String winner ;

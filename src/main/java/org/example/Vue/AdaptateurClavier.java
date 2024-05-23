@@ -5,6 +5,7 @@ import org.example.Controleur.ControleurMediateur;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.IOException;
 
 public class AdaptateurClavier extends KeyAdapter implements KeyListener {
 
@@ -20,7 +21,11 @@ public class AdaptateurClavier extends KeyAdapter implements KeyListener {
     public void keyPressed(KeyEvent e) {
 
         if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_A) {
-            control.annuler();
+            try {
+                control.annuler();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
             System.out.println("Clique sur le bouton annuler");
         } else if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_R) {
             control.refaire();

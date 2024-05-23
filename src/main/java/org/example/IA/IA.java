@@ -2,9 +2,6 @@ package org.example.IA;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
-import java.util.ArrayList;
-
 import org.example.Modele.*;
 
 import static org.example.Modele.ReglesDeJeu.carteGagnante;
@@ -47,8 +44,8 @@ public abstract class IA extends GeneralPlayer{
         handScndPhase.addCard(card);
     }
 
-    public static IA determinerGagnantMancheIA(IA joueur1, IA joueur2, Card carteJoueur1, Card carteJoueur2) {
-        Card carteGagnante = carteGagnante(carteJoueur1, carteJoueur2);
+    public static IA determinerGagnantMancheIA(IA joueur1, IA joueur2, Card carteJoueur1, Card carteJoueur2 , Plateau plateau) {
+        Card carteGagnante = carteGagnante(carteJoueur1, carteJoueur2 , plateau);
 
         if (carteGagnante == carteJoueur1) {
             return joueur1;
@@ -82,7 +79,6 @@ public abstract class IA extends GeneralPlayer{
         return smallestHigherCard;
     }
     public static IA determinerGagnantPartieIA(IA joueur1, IA joueur2) {
-        ReglesDeJeu r = new ReglesDeJeu();
         PileDeScore pileDeScoreJoueur1 = joueur1.pileDeScore;
         PileDeScore pileDeScoreJoueur2 = joueur2.pileDeScore;
 
@@ -102,8 +98,8 @@ public abstract class IA extends GeneralPlayer{
                 factionsGagneesJoueur2++;
             } else {
                 // Si les deux joueurs ont le même nombre de cartes, comparez les valeurs des cartes
-                int valeurMaxJoueur1 = r.getMaxCardValue(cartesJoueur1);
-                int valeurMaxJoueur2 = r.getMaxCardValue(cartesJoueur2);
+                int valeurMaxJoueur1 = ReglesDeJeu.getMaxCardValue(cartesJoueur1);
+                int valeurMaxJoueur2 = ReglesDeJeu.getMaxCardValue(cartesJoueur2);
 
                 if (valeurMaxJoueur1 > valeurMaxJoueur2) {
                     factionsGagneesJoueur1++;

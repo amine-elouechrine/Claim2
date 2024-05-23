@@ -11,6 +11,14 @@ public class PileDeScore {
         cartesGagnees = new HashMap<>();
     }
 
+    public List<Card> getAllCards() {
+        List<Card> allCards = new ArrayList<>();
+        for (List<Card> cards : cartesGagnees.values()) {
+            allCards.addAll(cards);
+        }
+        return allCards;
+    }
+
     public Map<String, List<Card>> getCartesGagnees() {
         return cartesGagnees;
     }

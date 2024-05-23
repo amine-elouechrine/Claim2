@@ -5,14 +5,8 @@ import org.example.Modele.Hand;
 import org.example.Modele.Jeu;
 import org.example.Modele.Player;
 import org.example.Vue.CollecteurEvenements;
-import org.example.Modele.GestionAnnuleRefaire;
-import org.example.Vue.CollecteurEvenements;
-import org.example.Modele.Jeu;
-import org.example.Patternes.Observable;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.Map;
 
 public class ControleurMediateur implements CollecteurEvenements {
 
@@ -127,23 +121,34 @@ public class ControleurMediateur implements CollecteurEvenements {
     public int getCarteJoueur1V() {
         return jeu.getCarteJoueur1V();
     }
+
     @Override
-    public void annuler(){
-        jeu.annuler();
+    public void annuler() throws IOException {
+        jeu.annulerCoup();
+        if (jeu.getPlateau().getCarteJoueur1() == null && jeu.getPlateau().getCarteJoueur2() != null) {
+            carteLeader = jeu.getPlateau().getCarteJoueur2();
+        } else if (jeu.getPlateau().getCarteJoueur1() != null && jeu.getPlateau().getCarteJoueur2() == null) {
+            carteLeader = jeu.getPlateau().getCarteJoueur1();
+        } else {
+            carteLeader = null;
+        }
         jeu.metAJour();
     }
+
     @Override
-    public void refaire(){
-        jeu.refaire();
+    public void refaire() {
+        jeu.refaireCoup();
         jeu.metAJour();
     }
+
     @Override
-    public void sauve(String filename ){
+    public void sauve(String filename) {
         jeu.sauve(filename);
         jeu.metAJour();
     }
+
     @Override
-    public void restaure(String filename ) throws IOException  {
+    public void restaure(String filename) throws IOException {
         jeu.restaure(filename);
         jeu.metAJour();
     }
@@ -151,10 +156,9 @@ public class ControleurMediateur implements CollecteurEvenements {
     @Override
     public void nouvellePartie() {
         jeu.getPlateau().initialiserJeu();
+        jeu.setCarteJouer();
         jeu.metAJour();
     }
-
-
 
     public int getCarteJoueur1F() {
         return jeu.getCarteJoueur1F();
@@ -188,6 +192,7 @@ public class ControleurMediateur implements CollecteurEvenements {
     }
 
     public void joueTour(int index) {
+
         if (jeu.estFinPartie()) {
             // Calcul des scores
             System.out.println("La partie est terminée\n");
@@ -199,6 +204,7 @@ public class ControleurMediateur implements CollecteurEvenements {
         }
 
         if (jouable) {
+            jeu.addAction();
             jouerCarte(index);
         }
         // Ajouter temporisation / animation
