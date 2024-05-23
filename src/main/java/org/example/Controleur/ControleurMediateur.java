@@ -70,6 +70,10 @@ public class ControleurMediateur implements CollecteurEvenements {
         return jeu.getCarteAfficheeValeur();
     }
 
+    public boolean isJoueurCourantJoueur1() {
+        return (getPlayerCourant().Name.equals("Joueur 1"));
+    }
+
     public int getNbCardFactionFromPileScoreJ1(String factionName) {
         return jeu.getNbCardFactionFromPileScoreJ1(factionName);
     }
