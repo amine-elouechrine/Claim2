@@ -556,6 +556,12 @@ public class NiveauGraphique extends JComponent implements Observateur {
         repaint();
     }
 
+    public void pause(){
+        // Garder les deux cartes jouees
+        System.out.println("STOP");
+
+        //miseAJour();
+    }
     // Pour charger les images dans le hashMap
     private void acceptFile(File file) {
         String fileName = file.getName();

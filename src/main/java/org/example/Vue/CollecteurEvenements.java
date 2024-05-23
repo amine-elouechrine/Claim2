@@ -68,4 +68,5 @@ public interface CollecteurEvenements {
 
     void tictac();
 
+    void ajouteInterfaceUtilisateur(InterfaceUtilisateur vue);
 }

@@ -9,9 +9,10 @@ import java.awt.event.MouseAdapter;
 import java.io.File;
 import java.io.IOException;
 
-public class InterfaceGraphique implements Runnable {
+public class InterfaceGraphique implements Runnable, InterfaceUtilisateur {
 
     Jeu j;
+    NiveauGraphique niv;
     JFrame fenetre;
     CollecteurEvenements control;
     AdaptateurClavier adaptateurClavier;
@@ -22,8 +23,10 @@ public class InterfaceGraphique implements Runnable {
         adaptateurClavier = new AdaptateurClavier(control, new ComposantSauvegarde(control));
     }
 
-    public static void demarrer(Jeu jeu, CollecteurEvenements control) {
-        SwingUtilities.invokeLater(new InterfaceGraphique(jeu, control));
+    public static void demarrer(Jeu j, CollecteurEvenements c) {
+        InterfaceGraphique vue = new InterfaceGraphique(j, c);
+        c.ajouteInterfaceUtilisateur(vue);
+        SwingUtilities.invokeLater(vue);
     }
 
     @Override
@@ -42,7 +45,7 @@ public class InterfaceGraphique implements Runnable {
         ComposantBarreHaute bh = new ComposantBarreHaute(BoxLayout.X_AXIS, control, j);
 
         // Dessin du NiveauGraphique
-        NiveauGraphique niv = new NiveauGraphique(j, control);
+        niv = new NiveauGraphique(j, control);
         niv.setFocusable(true);
         niv.requestFocusInWindow();
         niv.addMouseListener(new AdaptateurSouris(niv, control));
@@ -58,6 +61,9 @@ public class InterfaceGraphique implements Runnable {
         menu.addActionListener(new AdaptateurOuvreMenu(menu, menuPartie));
         fenetre.add(menuPanel, BorderLayout.EAST);
         fenetre.add(bh, BorderLayout.NORTH);
+
+        Timer chrono = new Timer(16, new AdaptateurTemps(control));
+        chrono.start();
 
         fenetre.pack();
         fenetre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -75,5 +81,9 @@ public class InterfaceGraphique implements Runnable {
         wrapperPanel.add(verticalPanel);
         fenetre.add(wrapperPanel, BorderLayout.CENTER);
         */
+    }
+
+    public void pause() {
+        niv.pause();
     }
 }

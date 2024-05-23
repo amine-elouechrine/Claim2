@@ -6,12 +6,18 @@ import org.example.Modele.Jeu;
 import org.example.Modele.Player;
 import org.example.Structures.Iterateur;
 import org.example.Structures.Sequence;
+import org.example.Structures.SequenceListe;
 import org.example.Vue.CollecteurEvenements;
 import org.example.Modele.GestionAnnuleRefaire;
 import org.example.Vue.CollecteurEvenements;
 import org.example.Modele.Jeu;
 import org.example.Patternes.Observable;
+import org.example.Vue.InterfaceGraphique;
+import org.example.Vue.InterfaceUtilisateur;
 
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -19,11 +25,11 @@ import java.util.Map;
 public class ControleurMediateur implements CollecteurEvenements {
 
     Jeu jeu;
-
+    InterfaceUtilisateur vue;
     Card carteLeader;
 
     Sequence<Animation> animations;
-    double vitesseAnimations;
+    int dureePause;
     Animation mouvement;
     boolean animationsSupportees, animationsActives;
 
@@ -33,6 +39,11 @@ public class ControleurMediateur implements CollecteurEvenements {
 
     public ControleurMediateur(Jeu j) {
         jeu = j;
+        animations = new SequenceListe<>();
+        dureePause = 2000;
+        animationsSupportees = false;
+        animationsActives = false;
+
     }
 
     /* Getteurs pour la communication entre interface et moteur */
@@ -211,7 +222,6 @@ public class ControleurMediateur implements CollecteurEvenements {
             jouerCarte(index);
         }
         // Ajouter temporisation / animation
-
         // L'IA joue une carte
         // IA.joue() ?
 
@@ -219,13 +229,25 @@ public class ControleurMediateur implements CollecteurEvenements {
 
     }
 
+
     private void jouerCarte(int index) {
         Card carteJoue = jeu.getPlateau().jouerCarte(index);
         if (jeu.estCarteJoueJ1() && jeu.estCarteJoueJ2()) {
-            jeu.playTrick();
+
             // On joue le plie
             // Ajouter temporisation / Animation pour la bataille et l'attribution des cartes après le plie
-            jeu.setCarteJouer();
+            // mouvement = new AnimationPause(dureePause, this);
+            // animations.insereQueue(mouvement);
+            Timer timer = new Timer(dureePause, new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    jeu.playTrick();
+                    jeu.setCarteJouer();
+                    jeu.metAJour();
+                }
+            });
+            timer.setRepeats(false);
+            timer.start();
             carteLeader = null;
         } else {
             carteLeader = carteJoue;
@@ -234,8 +256,45 @@ public class ControleurMediateur implements CollecteurEvenements {
     }
 
 
+
     @Override
     public void tictac() {
+        // On sait qu'on supporte les animations si on reçoit des évènements temporels
+        if (!animationsSupportees) {
+            animationsSupportees = true;
+            animationsActives = true;
+        }
+        if (animationsActives) {
+            Iterateur<Animation> it = animations.iterateur();
+            while (it.aProchain()) {
+                Animation a = it.prochain();
+                a.tictac();
+                if (a.estTerminee()) {
+                    if (a == mouvement) {
+                        testFin();
+                        mouvement = null;
+                    }
+                    it.supprime();
+                }
+            }
+        }
+    }
+
+    private void testFin() {
+        if (jeu.estFinPhase1()) {
+            jeu.switchPhase();
+            if (jeu.estFinPartie())
+                System.exit(0);
+        }
+    }
+
+
+    public void ajouteInterfaceUtilisateur(InterfaceUtilisateur v) {
+        vue = v;
+    }
+
+    public void pause(){
+        vue.pause();
     }
 
 }

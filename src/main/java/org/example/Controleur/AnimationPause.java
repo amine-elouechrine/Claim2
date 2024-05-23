@@ -2,16 +2,18 @@ package org.example.Controleur;
 
 
 public class AnimationPause extends Animation {
-    private int duration;
-
-    public AnimationPause(int duration, ControleurMediateur control) {
+    int duration;
+    public AnimationPause(int d, ControleurMediateur control) {
         super(1, control);
-        this.duration = duration;
+        duration = d;
+        //System.out.println("AnimationPause initialized with duration: " + duration);
     }
 
     @Override
     public void miseAJour() {
         duration--;
+        control.pause();
+        //System.out.println("AnimationPause miseAJour called, remaining duration: " + duration);
     }
 
     @Override
