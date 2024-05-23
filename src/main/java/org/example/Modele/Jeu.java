@@ -241,7 +241,7 @@ public class Jeu extends Observable {
 
     public void annulerCoup() throws IOException {
         System.out.println(getPlateau().getCarteJoueur1());
-        g.annuler(plateau);
+        g.annuler(getPlateau());
         System.out.println(getPlateau().getCarteJoueur1());
     }
 
@@ -250,8 +250,7 @@ public class Jeu extends Observable {
     }
 
     public void addAction() {
-        Plateau p_copie = getPlateau();
-        g.addToHistory(p_copie);
+        g.addToHistory(getPlateau());
     }
 
     public void sauve(String filename) {

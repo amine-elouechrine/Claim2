@@ -3,7 +3,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class Cards extends CardCollection{
+public class Cards extends CardCollection {
 
     // Constructeur
     public Cards() {

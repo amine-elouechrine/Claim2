@@ -222,7 +222,10 @@ public class Plateau {
     }
 
     public void setPioche(Cards pioche) {
-        this.pioche = pioche;
+        Cards pile = new Cards();
+        pile = new Cards();
+        this.pioche = pile;
+
     }
 
     /**

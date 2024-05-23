@@ -64,28 +64,48 @@ public class GestionAnnuleRefaire {
     public void annuler(Plateau p) throws IOException {
         System.out.println(annule);
         if (peutAnnuler()) {
+            /*
             Hand main = new Hand();
             main.addCard(p.getCarteAffichee());
-            // p.getJoueur1().setHand(main);
-            System.out.println("peut annuler == true");
-            Plateau np;
+            p.getJoueur1().setHand(main);
+             */
+            /*System.out.println("peut annuler == true");
+            Plateau np = new Plateau();
             np = annule.pop();
-            np.getJoueur1().getHand().printHand();
+            // p.joueurCourant.getHand().printHand();
+            for(Card carte : p.getPioche().getCards()) {
+                System.out.println("pioche carte : " + carte);
+            }
+            System.out.println("taille : " + p.getPioche().getCards().size());
+            System.out.println("nouvelle main : ");
+
             p.setPhase(np.getPhase());
+            p.setPioche(np.getPioche());
+            p.setDefausse(np.getDefausse());
+            p.getJoueur1().setScore(np.getJoueur1().getScore());
+            p.getJoueur2().setScore(np.getJoueur2().getScore());
+            p.setJoueur1(np.getJoueur1());
+            p.setJoueur2(np.getJoueur2());
             p.setCarteAffichee(np.getCarteAffichee());
             p.setCarteJoueur1(np.getCarteJoueur1());
             p.setCarteJoueur2(np.getCarteJoueur2());
-            p.setDefausse(np.getDefausse());
-            p.setJoueur1(np.getJoueur1());
-            p.setJoueur2(np.getJoueur2());
-            p.setPioche(np.getPioche());
-            p.getJoueur1().setHand(np.getJoueur1().hand);
-            p.getJoueur2().setHand(np.getJoueur2().hand);
+            p.setJoueurCourant(np.getJoueurCourant());
+            p.getJoueurCourant().setHand(np.getJoueurCourant().getHand());
+            // p.joueurCourant.getHand().printHand();
+            for(Card carte : p.getPioche().getCards()) {
+                System.out.println("pioche carte : " + carte);
+            }
+            System.out.println("taille : " + p.getPioche().getCards().size());
+            // p.getJoueur1().setHand(np.getJoueur1().getHand());
+            // p.getJoueur2().setHand(np.getJoueur2().getHand());
+            /*
             if (np.getJoueurCourant().getName().equals(p.getJoueur1().getName())) {
                 p.setJoueurCourant(p.getJoueur1());
             } else {
                 p.setJoueurCourant(p.getJoueur2());
             }
+            */
+
             // p.setPlateau(np.getPhase(), np.getCarteAffichee(), np.getCarteJoueur1(), np.getCarteJoueur2(), np.getDefausse(), np.getJoueur1(), np.getJoueur2(), np.getPioche(), np.getJoueurCourant().getName(), np.getJoueur1().getHand(), np.getJoueur2().getHand());
             refaire.push(p);
         }
@@ -103,6 +123,19 @@ public class GestionAnnuleRefaire {
 
     // Ajoute un plateau à la pile annule
     public void addToHistory(Plateau plateau) {
+        Plateau p = new Plateau();
+        p.setPhase(plateau.getPhase());
+        p.setPioche(plateau.getPioche());
+        p.setDefausse(plateau.getDefausse());
+        p.setJoueur1(plateau.getJoueur1());
+        p.setJoueur2(plateau.getJoueur2());
+        p.getJoueur1().setScore(plateau.getJoueur1().getScore());
+        p.getJoueur2().setScore(plateau.getJoueur2().getScore());
+        p.setCarteAffichee(plateau.getCarteAffichee());
+        p.setCarteJoueur1(plateau.getCarteJoueur1());
+        p.setCarteJoueur2(plateau.getCarteJoueur2());
+        p.setJoueurCourant(plateau.getJoueurCourant());
+        p.getJoueurCourant().setHand(plateau.getJoueurCourant().getHand());
         annule.push(plateau);
         clearStack();
     }
