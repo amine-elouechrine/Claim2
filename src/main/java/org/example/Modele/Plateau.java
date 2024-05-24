@@ -34,21 +34,16 @@ public class Plateau {
      * Constructeur de la classe Plateau pour l'intelligence artificielle pour puisse faire une copie du plateau.
      * @param plateau
      */
-    // Constructeur de copie
+    // Constructeur de copie phase 2
     public Plateau(Plateau other) {
-        this.carteAffichee = other.carteAffichee != null ? new Card(other.carteAffichee) : null;
         this.carteJoueur1 = other.carteJoueur1 != null ? new Card(other.carteJoueur1) : null;
         this.carteJoueur2 = other.carteJoueur2 != null ? new Card(other.carteJoueur2) : null;
-        this.pioche = other.pioche != null ? new Cards(other.pioche) : null;
-        this.defausse = other.defausse != null ? new Defausse(other.defausse) : null;
         this.joueur1 = other.joueur1 != null ? new Player(other.joueur1) : null;
         this.joueur2 = other.joueur2 != null ? new Player(other.joueur2) : null;
         if (other.joueurCourant == other.joueur1) {
             this.joueurCourant = this.joueur1;
-        } else if (other.joueurCourant == other.joueur2) {
-            this.joueurCourant = this.joueur2;
         } else {
-            this.joueurCourant = null; // Ou autre gestion d'erreur si nécessaire
+            this.joueurCourant = this.joueur2;
         }
         this.phase = other.phase;
     }
@@ -59,7 +54,13 @@ public class Plateau {
 
     // Sauvegarde l'état actuel du plateau
     public PlateauState saveState() {
-        return new PlateauState(carteJoueur1, carteJoueur2, joueur1.clone(), joueur2.clone(), joueurCourant.clone());
+        Player CurrentPlayer ;
+        if(joueur1 == joueurCourant){
+            CurrentPlayer = joueur1 ;
+        }else{
+            CurrentPlayer = joueur2 ;
+        }
+        return new PlateauState(carteJoueur1.clone(), carteJoueur2.clone(), joueur1.clone(), joueur2.clone() , CurrentPlayer);
     }
 
     // Restaure un état précédemment sauvegardé
@@ -68,7 +69,10 @@ public class Plateau {
         this.carteJoueur2 = state.getCarteJoueur2();
         this.joueur1 = state.getJoueur1().clone();
         this.joueur2 = state.getJoueur2().clone();
-        this.joueurCourant = state.getJoueurCourant().clone();
+        if (state.getJoueurCourant() == state.getJoueur1())
+            this.joueurCourant = this.joueur1 ;
+        else
+            this.joueurCourant = this.joueur2;
         this.phase = false;
     }
 
@@ -301,6 +305,22 @@ public class Plateau {
         return carteJoue;
     }
 
+    public Card jouerCarte2(Card card) {
+        Card carteJoue;
+        if(getPhase())
+            carteJoue = joueurCourant.jouerCarte(card);
+        else
+            carteJoue = joueurCourant.jouerCarte2(card);
+
+        if(joueurCourant == joueur1) {
+            setCarteJoueur1(carteJoue);
+        }
+        else if (joueurCourant == joueur2) {
+            setCarteJoueur2(carteJoue);
+        }
+        return carteJoue;
+    }
+
     /**
      * verifierle joueur courant est le leader
      *
@@ -357,19 +377,7 @@ public class Plateau {
     }
 
 
-    public void jouerCarte2(Card card) {
-        // jouer une carte quelconque de sa main
-    
-        if(getJoueurCourant().getHandScndPhase().contains(card)){
-            getJoueurCourant().getHandScndPhase().removeCard(card);
-        }
-        if(joueurCourant == joueur1) {
-            setCarteJoueur1(card);
-        }
-        else if (joueurCourant == joueur2) {
-            setCarteJoueur2(card);
-        }
-    }
+
 
     
     // use applay sndphaserule function 

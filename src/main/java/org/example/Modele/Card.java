@@ -44,6 +44,17 @@ public class Card {
     }
 
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Card card = (Card) o;
+
+        if (value != card.value) return false;
+        return faction.equals(card.faction);
+    }
+
     /**
      * Setter pour la valeur de la carte.
      * @param value La nouvelle valeur numérique de la carte.

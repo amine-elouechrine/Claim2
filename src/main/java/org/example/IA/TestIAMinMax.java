@@ -56,10 +56,14 @@ public class TestIAMinMax {
 
         }*/
 
+        Card c1 = new Card(9 , "Goblin");
+        Card c2 = new Card(3 , "Doppelganger");
+        plateauInitial.setCarteJoueur1(c1);
+        plateauInitial.setCarteJoueur2(c2);
         // Appel de l'algorithme Minimax pour évaluer le meilleur coup
         Node racine = new Node(plateauInitial);
-
-        int meilleurCoup = iaMinMax.minimax(racine, 5, true, Integer.MIN_VALUE , Integer.MAX_VALUE); // Profondeur de recherche = 3
+        // au depart il faut pas commancer avec Carte J1 = une valeur et Carte J2 = une valeur quelconque
+        int meilleurCoup = iaMinMax.minimax(racine, 13, true, Integer.MIN_VALUE , Integer.MAX_VALUE); // Profondeur de recherche = 3
 
         // Affichage du meilleur coup calculé
         System.out.println("Meilleur coup calculé par l'algorithme Minimax : " + meilleurCoup);

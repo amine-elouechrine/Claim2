@@ -64,11 +64,14 @@ public class IAMinMax {
         List<Card> currentPlayerHand = currentPlayer.getHandScndPhase().getAllCards();
         Hand opponentHand = opponentPlayer.getHandScndPhase();
 
+        Plateau copie = node.plateau.clone();
+        // Sauvegarder l'état actuel
+        PlateauState savedState = copie.saveState();
         // Générer les états enfants en fonction des mouvements possibles
         for (Card cardi : currentPlayerHand) {
             List<Card> carteJouable = ReglesDeJeu.cartesJouables(cardi, opponentHand);
             for (Card cardj : carteJouable) {
-                Plateau copie = node.plateau.clone();
+
                 copie.jouerCarte2(cardi);
                 copie.switchJoueur();
                 copie.jouerCarte2(cardj);
@@ -76,14 +79,19 @@ public class IAMinMax {
                 copie.attribuerCarteSecondPhase(carteGagnante, new ReglesDeJeu());
                 Node enfant = new Node(copie);
                 children.add(enfant);
+
+                // Restaurer l'état
+                copie.restoreState(savedState);
             }
         }
         return children;
     }
 
-    public void jouerCarteIa(){
+    public void jouerCarteIa(Node node){
         Card bestCard = null;
         int bestScore = Integer.MIN_VALUE;
+        List<Node> configs = generateChildren(node);
+        
         // pour chaque coup (c : coups possibles)
         //jeu = jeu.clone();
         //score = minimax(c ...)
