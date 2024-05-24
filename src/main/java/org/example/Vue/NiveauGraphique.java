@@ -347,7 +347,10 @@ public class NiveauGraphique extends JComponent implements Observateur {
             if (strImage.equals("goblin_0") && control.getNomJoueurCourant().equals(Joueur)) {
                 g.drawImage(grayImage, x, y, rectWidth, rectHeight, this);
             } else {
-                g.drawImage(image, x, y, rectWidth, rectHeight, this);
+                if (control.isJoueurCourantJoueur1())
+                    g.drawImage(image, x, y - 20, rectWidth, rectHeight, this);
+                else
+                    g.drawImage(image, x, y + 20, rectWidth, rectHeight, this);
             }
         } else {
             g.drawImage(grayImage, x, y, rectWidth, rectHeight, this);

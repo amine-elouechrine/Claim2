@@ -11,10 +11,7 @@ import java.io.IOException;
 public class ControleurMediateur implements CollecteurEvenements {
 
     Jeu jeu;
-
     Card carteLeader;
-
-
     boolean jouable = true;
 
     public ControleurMediateur(Jeu j) {
@@ -68,6 +65,10 @@ public class ControleurMediateur implements CollecteurEvenements {
 
     public int getCarteAfficheeValeur() {
         return jeu.getCarteAfficheeValeur();
+    }
+
+    public boolean isJoueurCourantJoueur1() {
+        return (getPlayerCourant().Name.equals("Joueur 1"));
     }
 
     public int getNbCardFactionFromPileScoreJ1(String factionName) {
