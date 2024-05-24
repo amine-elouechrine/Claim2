@@ -82,20 +82,8 @@ public abstract class GeneralPlayer {
      * @param indexCard carte à jouer.
      * @return La carte jouée, ou null si la carte n'est pas dans la main du joueur.
      */
-    public Card jouerCarte(int indexCard) {
-        Card carte = hand.getCard(indexCard);
-        // Vérifie si la carte est présente dans la main du joueur
-        if (hand.contains(carte)) {
-            // Retire la carte de la main du joueur
-            hand.removeCard(carte);
-            return carte;
-        } else {
-            System.out.println("La carte n'est pas dans la main du joueur.");
-            // Si la carte n'est pas dans la main du joueur, retourne null
-            return null;
-        }
-    }
-    
+    abstract public Card jouerCarte(int indexCard);
+
     public void setScore(int score) {
         this.score = score;
     }
