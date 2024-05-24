@@ -1,6 +1,6 @@
 package org.example.Modele;
 
-//import javax.smartcardio.Card;
+// import javax.smartcardio.Card;
 
 import java.util.List;
 
@@ -81,6 +81,14 @@ public class Plateau {
         } else {
             return joueur1.getHand();
         }
+      
+    /**
+     * Changer la phase du jeu.
+     *
+     * @param val
+     */
+    public void setPhase(boolean val) {
+        phase = val;
     }
 
     /**
@@ -188,6 +196,14 @@ public class Plateau {
         return joueurCourant;
     }
 
+    public Player getJoueurNonCourant() {
+        if (joueurCourant == joueur1) {
+            return joueur2;
+        } else {
+            return joueur1;
+        }
+    }
+
     public void setJoueurCourant(Player joueurCourant) {
         this.joueurCourant = joueurCourant;
     }
@@ -250,8 +266,11 @@ public class Plateau {
         return pioche;
     }
 
-    public void setPioche(Cards pioche) {
-        this.pioche = pioche;
+    public void setPioche() {
+        Cards pile = new Cards();
+        pile = new Cards();
+        this.pioche = pile;
+
     }
 
     /**
@@ -290,9 +309,9 @@ public class Plateau {
         // jouer une carte quelconque de sa main
         Card carteJoue;
         if (getPhase())
-            carteJoue = joueurCourant.jouerCarte(indexCard);
+            carteJoue = getJoueurCourant().jouerCarte(indexCard);
         else
-            carteJoue = joueurCourant.jouerCarte2(indexCard);
+            carteJoue = getJoueurCourant().jouerCarte2(indexCard);
         if (joueurCourant == joueur1) {
             setCarteJoueur1(carteJoue);
         } else if (joueurCourant == joueur2) {
@@ -302,9 +321,9 @@ public class Plateau {
     }
 
     public void jouerCarte(Card card) {
-        if (joueurCourant == joueur1) {
+        if (joueurCourant.equals(joueur1)) {
             setCarteJoueur1(card);
-        } else if (joueurCourant == joueur2) {
+        } else if (joueurCourant.equals(joueur2)) {
             setCarteJoueur2(card);
         }
     }
@@ -325,12 +344,11 @@ public class Plateau {
     public void setCardAffiche(Card card) {
         carteAffichee = card;
     }
-
+      
     public boolean estLeader2() {
         return getCardAdversaire() == null;
     }
-
-
+      
     public void switchJoueur() {
         if (joueurCourant == joueur1) {
             joueurCourant = joueur2;
@@ -368,9 +386,7 @@ public class Plateau {
                 joueurCourant = joueur2;
             }
         }
-
     }
-
 
     public void jouerCarte2(Card card) {
         // jouer une carte quelconque de sa main
@@ -384,7 +400,6 @@ public class Plateau {
             setCarteJoueur2(card);
         }
     }
-
 
     // use applay sndphaserule function
     public void attribuerCarteSecondPhase(Card winningCard, ReglesDeJeu r) {// on doit changer la fonction ApplyDwarveRule:c'est fait
@@ -406,7 +421,6 @@ public class Plateau {
                 joueurCourant = joueur2;
             }
         }
-
     }
 
     public boolean coupJouable(List<Card> preselected, int indice, Hand hand) {
@@ -417,8 +431,29 @@ public class Plateau {
         return !(joueur1.getHand().isEmpty() && joueur2.getHand().isEmpty());
     }
 
+    public void setPlateau(boolean phase, Card carteAffichee, Card carteJoueur1, Card carteJoueur2, Defausse defausse, Player joueur1, Player joueur2, Cards pioche, String nameCurrentPlayer, Hand mainJ1, Hand mainJ2) {
+        setPhase(phase);
+        setCarteAffichee(carteAffichee);
+        setCarteJoueur1(carteJoueur1);
+        setCarteJoueur2(carteJoueur2);
+        setDefausse(defausse);
+        setJoueur1(joueur1);
+        setJoueur2(joueur2);
+        setPioche();
+        getJoueur1().setHand(mainJ1);
+        getJoueur2().setHand(mainJ2);
+        if (nameCurrentPlayer.equals(getJoueur1().getName())) {
+            joueurCourant = getJoueur1();
+        } else {
+            joueurCourant = getJoueur2();
+        }
+    }
 
     public GeneralPlayer joueurCourant() {
         return null;
+    }
+
+    public void setPioche(Cards pioche) {
+        this.pioche = pioche;
     }
 }

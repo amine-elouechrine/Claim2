@@ -19,7 +19,7 @@ public abstract class GeneralPlayer {
         return hand;
     }
 
-    public void setHand(Hand main){
+    public void setHand(Hand main) {
         this.hand = main ;
     }
 
