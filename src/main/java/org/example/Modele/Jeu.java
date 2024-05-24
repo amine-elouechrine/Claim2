@@ -6,11 +6,10 @@ import java.io.IOException;
 import java.util.List;
 
 public class Jeu extends Observable {
-
+  
+    public ReglesDeJeu r;
     Plateau plateau;
-
     GestionAnnuleRefaire g;
-
     ReglesDeJeu r;
 
     public Jeu() {
@@ -193,6 +192,10 @@ public class Jeu extends Observable {
             return -1;
     }
 
+    public Player getJoueur2() {
+        return getPlateau().getJoueur2();
+    }
+
     public int getCarteJoueur2V() {
         if (getPlateau().getCarteJoueur2() != null)
             return getPlateau().getCarteJoueur2().getValeur();
@@ -214,6 +217,7 @@ public class Jeu extends Observable {
             getPlateau().attribuerCarteFirstPhase(carteGagnante, r);
             if (estFinPhase1()) {
                 switchPhase();
+                System.out.println("Carte pioche " + plateau.getPioche().getCards().size());
             }
             if (getPhase()) {
                 getPlateau().carteAffichee = getPlateau().getPioche().getCard();
@@ -221,7 +225,6 @@ public class Jeu extends Observable {
         } else {
             Card carteGagnante = ReglesDeJeu.carteGagnante(getPlateau().getCarteJoueur1(), getPlateau().getCarteJoueur2(), getPlateau());
             getPlateau().attribuerCarteSecondPhase(carteGagnante, r);
-
         }
     }
 
@@ -238,7 +241,14 @@ public class Jeu extends Observable {
     public String getNomJoueur(Player joueur) {
         return joueur.getName();
     }
+  
+    public Player getJoueurCourant() {
+        return getPlateau().getJoueurCourant();
+    }
 
+    public void annuler() {
+        g.annuler();
+        plateau = g.getPlateau();
     public void annulerCoup() {
         g.annuler(getPlateau());
     }

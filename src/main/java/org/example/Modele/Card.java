@@ -24,6 +24,17 @@ public class Card {
         // Constructeur vide pour les tests
     }
 
+    public Card(Card card) {
+        this.value = card.value;
+        this.faction = card.faction;
+    }
+
+
+    public Card clone() {
+        // Assuming Card has a copy constructor
+        return new Card(this);
+    }
+
     /**
      * Getter pour la valeur de la carte.
      * @return La valeur numérique de la carte.
@@ -31,6 +42,7 @@ public class Card {
     public int getValeur() {
         return value;
     }
+
 
     /**
      * Setter pour la valeur de la carte.

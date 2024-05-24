@@ -2,6 +2,7 @@ package org.example.IA;
 
 import org.example.Modele.Card;
 import org.example.Modele.Hand;
+import org.example.Modele.Plateau;
 
 public class Difficile extends IA {
     public Difficile(String Name) {
@@ -9,12 +10,12 @@ public class Difficile extends IA {
     }
 
     @Override
-    public Card jouerCoupPhase1(Hand mainIA, boolean suivre_faction, Card carte_adversaire) {
+    public Card jouerCoupPhase1(Plateau plateau) {
         return null;
     }
 
     @Override
-    public Card jouerCoupPhase2(Hand mainIA, boolean suivre_faction, Card carte_adversaire) {
+    public Card jouerCoupPhase2(Plateau plateau) {
         return null;
     }
 

@@ -33,18 +33,25 @@ public class Plateau {
     /**
      * Constructeur de la classe Plateau pour l'intelligence artificielle pour puisse faire une copie du plateau.
      *
-     * @param plateau
+     * @param other
      */
-    public Plateau(Plateau plateau) {
-        this.carteAffichee = plateau.getCarteAffichee();
-        this.carteJoueur1 = plateau.getCarteJoueur1();
-        this.carteJoueur2 = plateau.getCarteJoueur2();
-        this.pioche = plateau.getPioche();
-        this.defausse = plateau.getDefausse();
-        this.joueur1 = plateau.getJoueur1();
-        this.joueur2 = plateau.getJoueur2();
-        this.joueurCourant = plateau.getJoueurCourant();
-        this.phase = plateau.getPhase();
+    // Constructeur de copie
+    public Plateau(Plateau other) {
+        this.carteAffichee = other.carteAffichee != null ? new Card(other.carteAffichee) : null;
+        this.carteJoueur1 = other.carteJoueur1 != null ? new Card(other.carteJoueur1) : null;
+        this.carteJoueur2 = other.carteJoueur2 != null ? new Card(other.carteJoueur2) : null;
+        this.pioche = other.pioche != null ? new Cards(other.pioche) : null;
+        this.defausse = other.defausse != null ? new Defausse(other.defausse) : null;
+        this.joueur1 = other.joueur1 != null ? new Player(other.joueur1) : null;
+        this.joueur2 = other.joueur2 != null ? new Player(other.joueur2) : null;
+        if (other.joueurCourant == other.joueur1) {
+            this.joueurCourant = this.joueur1;
+        } else if (other.joueurCourant == other.joueur2) {
+            this.joueurCourant = this.joueur2;
+        } else {
+            this.joueurCourant = null; // Ou autre gestion d'erreur si nécessaire
+        }
+        this.phase = other.phase;
     }
 
     /**
@@ -55,6 +62,26 @@ public class Plateau {
         this.carteJoueur2 = carteJoueur2;
     }
 
+    public Plateau clone() {
+        return new Plateau(this);
+
+    }
+
+    public Card getCardAdversaire() {
+        if (joueurCourant == joueur1) {
+            return carteJoueur2;
+        } else {
+            return carteJoueur1;
+        }
+    }
+
+    public Hand getHandAdversaire() {
+        if (joueurCourant == joueur1) {
+            return joueur2.getHand();
+        } else {
+            return joueur1.getHand();
+        }
+      
     /**
      * Changer la phase du jeu.
      *
@@ -77,6 +104,15 @@ public class Plateau {
 
     public boolean getPhase() {
         return phase;
+    }
+
+    /**
+     * Changer la phase du jeu.
+     *
+     * @param val
+     */
+    public void setPhase(boolean val) {
+        phase = val;
     }
 
     /**
@@ -142,6 +178,13 @@ public class Plateau {
 
     public void setCarteJoueur2(Card carteJoueur2) {
         this.carteJoueur2 = carteJoueur2;
+    }
+
+    public void setCarteJoeurCouant(Card card) {
+        if (joueurCourant.equals(joueur1)) {
+            carteJoueur1 = card;
+        } else
+            carteJoueur2 = card;
     }
 
     /**
@@ -243,8 +286,8 @@ public class Plateau {
         Hand mainJoueur1 = pioche.getHandOf13Cards();
         Hand mainJoueur2 = pioche.getHandOf13Cards();
         //creation des joueurs
-        joueur1 = new Player("Joueur 1");
-        joueur2 = new Player("Joueur 2");
+        joueur1 = new Player("Facile");
+        joueur2 = new Player("Intermediare");
         //initialiser les mains des joueurs
         joueur1.setHand(mainJoueur1);
         joueur2.setHand(mainJoueur2);
@@ -286,7 +329,7 @@ public class Plateau {
     }
 
     /**
-     * verifierle joueur courant est le leader
+     * verifier le joueur courant est le leader
      *
      * @return true si le joueur courant est le leader, false sinon
      */
@@ -298,7 +341,14 @@ public class Plateau {
         }
     }
 
-
+    public void setCardAffiche(Card card) {
+        carteAffichee = card;
+    }
+      
+    public boolean estLeader2() {
+        return getCardAdversaire() == null;
+    }
+      
     public void switchJoueur() {
         if (joueurCourant == joueur1) {
             joueurCourant = joueur2;
@@ -312,7 +362,7 @@ public class Plateau {
 
         if (r.carteEgaux(carteJoueur1, carteJoueur2)) {
             // determiner le leader
-            if (joueurCourant.getName() == joueur2.getName()) { // si le joueur 1 est le leader
+            if (joueurCourant.getName().equals(joueur2.getName())) { // si le joueur 1 est le leader
                 r.applyUndeadRule(joueur1, carteJoueur1, carteJoueur2, defausse);
                 joueur1.getHandScndPhase().addCard(carteAffichee);
                 joueur2.getHandScndPhase().addCard(pioche.getCard());
@@ -335,6 +385,19 @@ public class Plateau {
                 r.applyFirstPhaseRules(joueur2, carteJoueur2, carteJoueur1, defausse);
                 joueurCourant = joueur2;
             }
+        }
+    }
+
+    public void jouerCarte2(Card card) {
+        // jouer une carte quelconque de sa main
+
+        if (getJoueurCourant().getHandScndPhase().contains(card)) {
+            getJoueurCourant().getHandScndPhase().removeCard(card);
+        }
+        if (joueurCourant == joueur1) {
+            setCarteJoueur1(card);
+        } else if (joueurCourant == joueur2) {
+            setCarteJoueur2(card);
         }
     }
 
@@ -384,6 +447,10 @@ public class Plateau {
         } else {
             joueurCourant = getJoueur2();
         }
+    }
+
+    public GeneralPlayer joueurCourant() {
+        return null;
     }
 
     public void setPioche(Cards pioche) {

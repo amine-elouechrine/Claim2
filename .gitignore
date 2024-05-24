@@ -80,6 +80,12 @@ build/
 /src/main/java/org/example/Modele/.idea/
 /src/main/java/org/example/Modele/out/production/Modele/
 /.idea/
+/src/main/resources/card_template.xcf
+/src/main/resources/cartes_ressources.zip
+/src/main/resources/Claim_ressources.xcf
+/src/main/resources/doppelganger_2_template.png
+/src/main/resources/dwarf_5_template.png
+/src/main/resources/faction_power_rule_applicable_template.png
 /src/main/resources/resources.zip
 /src/main/resources/cartes_ressources.zip
 /src/main/resources/card_template.xcf
@@ -94,6 +100,7 @@ build/
 /src/main/resources/icon_und_template.png
 /src/main/resources/knight_9_template.png
 /src/main/resources/question_mark_template.png
+/src/main/resources/resources.zip
 /src/main/resources/template.zip
 /src/main/resources/tombstone_template.png
 /src/main/resources/undead_1_template.png
