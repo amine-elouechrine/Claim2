@@ -61,3 +61,5 @@ build/
 /src/main/resources/yellow_square_2.png
 /src/main/java/org/example/Modele/structureSauve.txt
 /src/main/resources/Claim_ressources.xcf
+*.txt
+/framework/
