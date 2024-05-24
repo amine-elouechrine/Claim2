@@ -1,6 +1,5 @@
 package org.example.Vue;
 
-import org.example.Patternes.Observateur;
 import java.io.IOException;
 
 public interface CollecteurEvenements {
@@ -59,9 +58,9 @@ public interface CollecteurEvenements {
 
     /* Adaptateurs */
     void refaire();
-  
-    void annuler() throws IOException;
-  
+
+    void annuler();
+
     void sauve(String filename);
   
     void restaure(String filename) throws IOException;

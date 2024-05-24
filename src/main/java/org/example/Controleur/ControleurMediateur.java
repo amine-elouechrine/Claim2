@@ -124,7 +124,7 @@ public class ControleurMediateur implements CollecteurEvenements {
     }
 
     @Override
-    public void annuler() throws IOException {
+    public void annuler() {
         jeu.annulerCoup();
         if (jeu.getPlateau().getCarteJoueur1() == null && jeu.getPlateau().getCarteJoueur2() != null) {
             carteLeader = jeu.getPlateau().getCarteJoueur2();
