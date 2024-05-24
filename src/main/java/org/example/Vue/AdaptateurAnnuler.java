@@ -2,7 +2,6 @@ package org.example.Vue;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 
 public class AdaptateurAnnuler implements ActionListener {
     CollecteurEvenements control;
@@ -13,11 +12,7 @@ public class AdaptateurAnnuler implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        try {
-            control.annuler();
-        } catch (IOException ex) {
-            throw new RuntimeException(ex);
-        }
+        control.annuler();
         System.out.println("Clique sur le bouton annuler");
     }
 }

@@ -239,7 +239,7 @@ public class Jeu extends Observable {
         return joueur.getName();
     }
 
-    public void annulerCoup() throws IOException {
+    public void annulerCoup() {
         System.out.println(getPlateau().getCarteJoueur1());
         g.annuler(plateau);
         System.out.println(getPlateau().getCarteJoueur1());

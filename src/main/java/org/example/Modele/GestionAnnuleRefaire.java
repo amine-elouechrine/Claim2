@@ -59,7 +59,7 @@ public class GestionAnnuleRefaire {
         }
     }
 
-    public void annuler(Plateau p) throws IOException {
+    public void annuler(Plateau p) {
         if (peutAnnuler()) {
 
             Plateau np = annule.pop();
