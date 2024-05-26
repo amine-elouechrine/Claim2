@@ -267,4 +267,8 @@ public class Jeu extends Observable {
 
     public void restaure(String filename) throws IOException {
     }
+
+    public Player getJoueur1() {
+        return getPlateau().getJoueur1();
+    }
 }
