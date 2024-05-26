@@ -31,8 +31,7 @@ public class ControleurMediateur implements CollecteurEvenements {
     Sequence<Animation> animations;
     int dureePause;
     Animation mouvement;
-    boolean animationsSupportees, animationsActives;
-
+    boolean animationsSupportees, animationsActives, pause;
 
 
     boolean jouable = true;
@@ -146,23 +145,27 @@ public class ControleurMediateur implements CollecteurEvenements {
     public int getCarteJoueur1V() {
         return jeu.getCarteJoueur1V();
     }
+
     @Override
-    public void annuler(){
+    public void annuler() {
         jeu.annuler();
         jeu.metAJour();
     }
+
     @Override
-    public void refaire(){
+    public void refaire() {
         jeu.refaire();
         jeu.metAJour();
     }
+
     @Override
-    public void sauve(String filename ){
+    public void sauve(String filename) {
         jeu.sauve(filename);
         jeu.metAJour();
     }
+
     @Override
-    public void restaure(String filename ) throws IOException  {
+    public void restaure(String filename) throws IOException {
         jeu.restaure(filename);
         jeu.metAJour();
     }
@@ -173,7 +176,6 @@ public class ControleurMediateur implements CollecteurEvenements {
         jeu.setCarteJouer();
         jeu.metAJour();
     }
-
 
 
     public int getCarteJoueur1F() {
@@ -190,6 +192,9 @@ public class ControleurMediateur implements CollecteurEvenements {
 
     /* Récupération d'un clique de souris pour un tour de jeu */
     public void clicSouris(int index) {
+        if (pause) {
+            return;
+        }
         if (index == -1) {
             System.out.println("Clic ailleurs que sur une carte\n");
         } else {
@@ -199,6 +204,9 @@ public class ControleurMediateur implements CollecteurEvenements {
     }
 
     public void clicSourisJ2(int index) {
+        if (pause) {
+            return;
+        }
         if (index == -1) {
             System.out.println("Clic ailleurs que sur une carte\n");
         } else {
@@ -238,12 +246,14 @@ public class ControleurMediateur implements CollecteurEvenements {
             // Ajouter temporisation / Animation pour la bataille et l'attribution des cartes après le plie
             // mouvement = new AnimationPause(dureePause, this);
             // animations.insereQueue(mouvement);
+            pause = true;
             Timer timer = new Timer(dureePause, new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     jeu.playTrick();
                     jeu.setCarteJouer();
                     jeu.metAJour();
+                    pause = false;
                 }
             });
             timer.setRepeats(false);
@@ -254,7 +264,6 @@ public class ControleurMediateur implements CollecteurEvenements {
             jeu.switchJoueur();
         }
     }
-
 
 
     @Override
@@ -293,7 +302,7 @@ public class ControleurMediateur implements CollecteurEvenements {
         vue = v;
     }
 
-    public void pause(){
+    public void pause() {
         vue.pause();
     }
 
