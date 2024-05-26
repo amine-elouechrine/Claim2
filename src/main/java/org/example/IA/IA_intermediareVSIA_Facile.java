@@ -91,8 +91,6 @@ public class IA_intermediareVSIA_Facile {
                 plateau.switchPhase();*/
                 i++;
             }
-            if(i!=13)
-            plateau.setCardAffiche(plateau.getPioche().getCard());
 
         }
 
@@ -194,13 +192,11 @@ public class IA_intermediareVSIA_Facile {
         plateau = new Plateau();
         Facile=new Facile();
         Intermediare=new Intermediare();
-        while(i<1000){
+       while(i<1000){
             plateau.initialiserJeu();
-
-            Test_IA_F_VS_I();i++;
-        }
-
-
+            Test_IA_F_VS_I();
+            i++;
+       }
         System.out.println("Le nombre de matchs gagnés par Facile est : " + nb_match_gagne_facile);
         System.out.println("Le nombre de matchs gagnés par Intermediare est : " + nb_match_gagne_intermediare);
     }

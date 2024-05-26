@@ -36,7 +36,7 @@ public class Facile extends IA {
         if (carteJouable.isEmpty()) {
             if(plateau.estPhase1_2()){
                 return jouerCarteAleatoire(plateau.getJoueurCourant().getHand());
-            }else return jouerCarteAleatoire(plateau.getJoueurCourant().getHandScndPhase());
+            }else return jouerCarteAleatoire(plateau.getJoueurCourant().getHand());
 
         } else {
             return choisirCarteAleatoire(carteJouable);
@@ -87,7 +87,7 @@ public class Facile extends IA {
 
     // mainIA : doit etre handScndPhase
     public Card jouerCoupPhase2F(Plateau plateau) {
-        System.out.println(";;;''''''" + handScndPhase.size());
+        //System.out.println(";;;''''''" + handScndPhase.size());
         if (!plateau.estLeader()) {
             return jouerAvecSuiviFaction(plateau);
         } else {

@@ -407,7 +407,7 @@ public class Plateau {
     public void attribuerCarteSecondPhase(Card winningCard, ReglesDeJeu r) {// on doit changer la fonction ApplyDwarveRule:c'est fait
         if (r.carteEgaux(carteJoueur1, carteJoueur2)) {
             // determiner le leader
-            if (joueurCourant.getName() == joueur2.getName()) { // si le joueur 1 est le leader
+            if (joueurCourant.getName() .equals( joueur2.getName())) { // si le joueur 1 est le leader
                 r.applySecondPhaseRules(joueur1, joueur2, carteJoueur1, carteJoueur2);
                 joueurCourant = joueur1;
             } else {
