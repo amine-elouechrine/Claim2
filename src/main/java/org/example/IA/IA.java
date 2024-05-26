@@ -13,9 +13,9 @@ public abstract class IA extends GeneralPlayer{
         super(Name);
     }
     //public abstract Card jouer_coup_phase1(Hand mainIA, boolean suivre_faction, Card carte_adversaire);
-    public abstract Card jouerCoupPhase1(Plateau plateau);
+    public abstract Card jouerCoupPhase1(Hand mainIA, boolean suivre_faction, Card carte_adversaire);
     //public abstract Card jouer_coup_phase2(Hand mainIA, boolean suivre_faction, Card carte_adversaire);
-    public abstract Card jouerCoupPhase2(Plateau plateau);
+    public abstract Card jouerCoupPhase2(Hand mainIA, boolean suivre_faction, Card carte_adversaire);
 
     
     /**
@@ -40,7 +40,7 @@ public abstract class IA extends GeneralPlayer{
 
         return cardsOfSameFaction;
     }
-
+  
     public Hand getCardsOfSameFaction2(Hand hand,String faction) {
         if (hand == null || hand.isEmpty()) {
             return new Hand();
@@ -56,7 +56,6 @@ public abstract class IA extends GeneralPlayer{
 
         return cardsOfSameFaction;
     }
-
     
     public void addHandScndPhase(Card card) {
         handScndPhase.addCard(card);
@@ -83,14 +82,14 @@ public abstract class IA extends GeneralPlayer{
             throw new IllegalArgumentException("La liste de cartes de même faction est vide ou nulle.");
         }
 
-        Card smallestHigherCard =CarteSameFaction.get(0);
+        Card smallestHigherCard = null;
         int smallestHigherValue = Integer.MAX_VALUE;
 
-        for (int i=1;i<CarteSameFaction.size();i++) {
+        for (Card handCard : CarteSameFaction) {
             // Vérifier si la carte est plus grande que celle passée en paramètre
-            if (CarteSameFaction.get(i).getValeur() > card.getValeur() && CarteSameFaction.get(i).getValeur() < smallestHigherValue) {
-                smallestHigherCard = CarteSameFaction.get(i);
-                smallestHigherValue = CarteSameFaction.get(i).getValeur();
+            if (handCard.getValeur() > card.getValeur() && handCard.getValeur() < smallestHigherValue) {
+                smallestHigherCard = handCard;
+                smallestHigherValue = handCard.getValeur();
             }
         }
 

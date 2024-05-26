@@ -3,7 +3,7 @@ package org.example.IA;
 import org.example.Modele.Plateau;
 import java.util.ArrayList;
 import java.util.List;
-import java.io.PrintWriter;
+
 
 public class Node {
 
@@ -20,7 +20,6 @@ public class Node {
 
     public Node (Plateau plateau){
         this.plateau=plateau;
-        enfants=new ArrayList<>();
     }
 
     public void setEnfants(List<Node> enfants) {
@@ -53,21 +52,23 @@ public class Node {
     }
 
 
-    public void afficherArbreProfondeur(PrintWriter writer, String prefix, int profondeur) {
-        if (profondeur < 0) {
-            return; // Si la profondeur est négative, on ne fait rien
+    /*public static void printArbre(Node node, int level, PrintWriter writer) {
+        if (node == null) {
+            return;
         }
-        writer.println("--------------------------------------------");
-        writer.println(prefix +plateau.getJoueurCourant().getName());
-        writer.println(prefix +plateau.getJoueur1().getName());
-        writer.println(prefix +plateau.getCarteJoueur1());
-        writer.println(prefix +plateau.getJoueur2().getName());
-        writer.println(prefix +plateau.getCarteJoueur2());
-        if (profondeur > 0) {
-            for (Node enfant : enfants) {
-                enfant.afficherArbreProfondeur(writer, prefix + "       ", profondeur - 1);
-            }
+
+        // Indentation selon le niveau de profondeur
+        for (int i = 0; i < level; i++) {
+            writer.print("    ");
         }
-    }
+
+        // Afficher les informations du nœud courant
+        writer.println("Niveau " + level +"Carte joue par l'ia "+node.carteIA+" Carte joue par l'adversaire "+ node.Adversaire+ " | Carte Gagnante: " + node.CarteGagnante);
+
+        // Appel récursif pour les enfants
+        for (Node enfant : node.getEnfants()) {
+            printArbre(enfant, level + 1, writer);
+        }
+    }*/
 }
 
