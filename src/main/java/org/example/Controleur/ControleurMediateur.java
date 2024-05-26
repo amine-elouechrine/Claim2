@@ -6,6 +6,7 @@ import org.example.Modele.Jeu;
 import org.example.Modele.Player;
 import org.example.Vue.CollecteurEvenements;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class ControleurMediateur implements CollecteurEvenements {
@@ -139,11 +140,23 @@ public class ControleurMediateur implements CollecteurEvenements {
     @Override
     public void refaire() {
         jeu.refaireCoup();
+        System.out.println("carte Leader " + carteLeader);
+        /*if (jeu.getPlateau().getCarteJoueur1() != null ||jeu.getPlateau().getCarteJoueur2() != null ) {
+            carteLeader=null;
+        }
+        else{
+            if (jeu.getPlateau().getJoueurCourant() == jeu.getPlateau().getJoueur1()) {
+                carteLeader=jeu.getPlateau().getCarteJoueur1();
+            }
+            else{
+                carteLeader=jeu.getPlateau().getCarteJoueur2();
+            }
+        }*/
         jeu.metAJour();
     }
 
     @Override
-    public void sauve(String filename) {
+    public void sauve(String filename) throws FileNotFoundException {
         jeu.sauve(filename);
         jeu.metAJour();
     }
@@ -151,6 +164,13 @@ public class ControleurMediateur implements CollecteurEvenements {
     @Override
     public void restaure(String filename) throws IOException {
         jeu.restaure(filename);
+        if(jeu.getPlateau().getCarteJoueur1()!=null){
+            carteLeader=jeu.getPlateau().getCarteJoueur1();
+        }
+        else if (jeu.getPlateau().getCarteJoueur2()!=null) {
+            carteLeader=jeu.getPlateau().getCarteJoueur2();
+        }else carteLeader=null;
+
         jeu.metAJour();
     }
 
@@ -158,6 +178,7 @@ public class ControleurMediateur implements CollecteurEvenements {
     public void nouvellePartie() {
         jeu.getPlateau().initialiserJeu();
         jeu.setCarteJouer();
+        carteLeader=null;
         jeu.metAJour();
     }
 
