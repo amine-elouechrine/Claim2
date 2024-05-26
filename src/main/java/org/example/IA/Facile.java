@@ -29,10 +29,12 @@ public class Facile extends IA {
     }
 
     private Card jouerAvecSuiviFaction(Plateau plateau) {
-        Hand carteJouable = getCardsOfSameFaction2(plateau.getJoueurCourant().getHand(),plateau.getCarteAffichee().getFaction());
+        Hand carteJouable;
+
+            carteJouable = getCardsOfSameFaction2(plateau.getJoueurCourant().getHand(),plateau.getCardAdversaire().getFaction());
 
         if (carteJouable.isEmpty()) {
-            if(plateau.estPhase1()){
+            if(plateau.estPhase1_2()){
                 return jouerCarteAleatoire(plateau.getJoueurCourant().getHand());
             }else return jouerCarteAleatoire(plateau.getJoueurCourant().getHandScndPhase());
 
@@ -43,15 +45,16 @@ public class Facile extends IA {
 
     private Card jouerCarteAleatoire(Hand main) {
         int index = rand.nextInt(main.getAllCards().size());
+
         Card carte = main.getAllCards().get(index);
-        System.out.println("jouer carte : " + carte.getFaction() + " " + carte.getValeur());
+        //System.out.println("jouer carte : " + carte.getFaction() + " " + carte.getValeur());
         return carte;
     }
 
     private Card choisirCarteAleatoire(Hand carteJouable) {
         int index = rand.nextInt(carteJouable.getAllCards().size());
         Card carte = carteJouable.getAllCards().get(index);
-        System.out.println("jouer carte : " + carte.getFaction() + " " + carte.getValeur());
+        //System.out.println("jouer carte : " + carte.getFaction() + " " + carte.getValeur());
         return carte;
     }
 
@@ -88,7 +91,7 @@ public class Facile extends IA {
         if (!plateau.estLeader()) {
             return jouerAvecSuiviFaction(plateau);
         } else {
-            return jouerCarteAleatoire(plateau.getJoueurCourant().getHandScndPhase());
+            return jouerCarteAleatoire(plateau.getJoueurCourant().getHand());
         }
     }
 
@@ -126,6 +129,15 @@ public class Facile extends IA {
     @Override
     public Card jouerCoupPhase2(Plateau plateau) {
         return jouerCoupPhase2F(plateau);
+    }
+
+    public static void main(String[] args) {
+        Facile ia = new Facile();
+        Plateau plateau = new Plateau();
+        plateau.initialiserJeu();
+        plateau.setCarteJoueur2(plateau.getJoueur2().getHand().getCard(0));
+        Card card=ia.joueCoupPhase1F(plateau);
+        System.out.println(card);
     }
 
 

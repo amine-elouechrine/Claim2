@@ -339,6 +339,11 @@ public class Plateau {
 		}
 	}
 
+	public void setHand(Hand hand1,Hand hand2) {
+		joueur1.setHand(hand1);
+		joueur2.setHand(hand2);
+	}
+
 	// use apply phirst phase rule function
 	public void attribuerCarteFirstPhase(Card winningCard, ReglesDeJeu r) {
 
@@ -415,6 +420,10 @@ public class Plateau {
 
 	public Boolean estPhase1() {
 		return !(joueur1.getHand().isEmpty() && joueur2.getHand().isEmpty());
+	}
+
+	public Boolean estPhase1_2() {
+		return phase;
 	}
 
 

@@ -37,7 +37,7 @@ public class Hand extends CardCollection{
 
 
 
-    public Card getSmallestHigherCard(Card card) {
+    /*public Card getSmallestHigherCard(Card card) {
         if (cards == null || cards.isEmpty()) {
             throw new IllegalStateException("La main est vide ou nulle.");
         }
@@ -54,7 +54,7 @@ public class Hand extends CardCollection{
         }
 
         return smallestHigherCard;
-    }
+    }*/
 
 
     public void setHand(List<Card> cards) {

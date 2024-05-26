@@ -109,6 +109,7 @@ public class Intermediare extends IA {
 		} else {
 			cardToPlay = getHighestValueCard(plateau.getJoueurCourant().getHand().getAllCards());
 		}
+		//System.out.println("---------------Carte jouée par l'IA : " + cardToPlay.getFaction() + " " + cardToPlay.getValeur());
 		return cardToPlay;
 	}
 
@@ -121,20 +122,40 @@ public class Intermediare extends IA {
 		}
 		return cardToPlay;
 	}
+	public Card getSmallestHigherCard(Hand hand,Card card) {
+
+		if (hand == null || hand.isEmpty()) {
+			throw new IllegalStateException("La main est vide ou nulle.");
+		}
+
+		Card smallestHigherCard = hand.getCard(0);
+		int smallestHigherValue = Integer.MAX_VALUE;
+
+		for (int i=0;i<hand.size();i++) {
+			// Vérifier si la carte est plus grande que celle passée en paramètre
+			if (hand.getCard(i).getValeur() > card.getValeur() && hand.getCard(i).getValeur() < smallestHigherValue) {
+				smallestHigherCard = hand.getCard(i);
+				smallestHigherValue = hand.getCard(i).getValeur();
+			}
+		}
+
+		return smallestHigherCard;
+	}
+
 
 	private Card suivreFactionAdversaire(Plateau plateau) {
-		Hand cartesJouables = getCardsOfSameFaction(plateau.getCardAdversaire().getFaction());
+		Hand cartesJouables = getCardsOfSameFaction(plateau);
 
 		if (cartesJouables.isEmpty()) {
-			return getLowestValueCard((plateau.getJoueurCourant().getHandScndPhase().getAllCards()));
+			return getLowestValueCard((plateau.getJoueurCourant().getHand().getAllCards()));
 		} else {
-			return cartesJouables.getSmallestHigherCard(plateau.getCardAdversaire());
+			return getSmallestHigherCard(cartesJouables, plateau.getCardAdversaire());
 		}
 	}
 
 
 	private Card jouerAvecNains(Plateau plateau) {
-		List<Card> carteJouable = getCardsOfSameFaction2(plateau.getJoueurCourant().getHandScndPhase(), plateau.getCardAdversaire().getFaction()).getAllCards();
+		List<Card> carteJouable = getCardsOfSameFaction2(plateau.getJoueurCourant().getHand(), plateau.getCardAdversaire().getFaction()).getAllCards();
 
 		if (getLowestValueCard(carteJouable).getValeur() > plateau.getCardAdversaire().getValeur()) {
 			return getHighestValueCard(carteJouable);
