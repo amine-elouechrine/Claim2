@@ -1,7 +1,5 @@
 package org.example.Vue;
 
-import org.example.Controleur.ControleurMediateur;
-
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -28,10 +26,10 @@ public class AdaptateurClavier extends KeyAdapter implements KeyListener {
         } else if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_S) {
             //control.sauvegarder(fichier);
             sc.setVisible(true);
-        }else if(e.isControlDown() && e.getKeyCode() == KeyEvent.VK_N) {
+        } else if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_N) {
             control.nouvellePartie();
-        }else{
-            //pas d'action pour les autres clés
+        } else {
+            // pas d'action pour les autres clés
         }
     }
 }

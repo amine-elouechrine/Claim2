@@ -1,133 +1,172 @@
-/*package org.example.IA;
+package org.example.IA;
 
 import org.example.Modele.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Intermediare extends IA {
 
-     public Intermediare(){
-          super("Intermediare");
-     }
+	public Intermediare() {
+		super("Intermediare");
+	}
 
-     public Card jouerCoupPhase1(Hand mainIA, boolean suivre_faction, Card carte_adversaire,Plateau plateau) {
-          if (suivre_faction) {
-               return jouerAvecSuiviFaction(hand, carte_adversaire,plateau);
-          } else {
-               return getHighestValueCard(plateau);
-          }
-     }
+	public Card jouerCoupPhase1(Plateau plateau) {
+		Card cardToPlay;
 
-     public Card getHighestValueCard(List<Card> cards) {
-          Card highestCard = cards.get(0);
-          for (Card card : cards) {
-              if (card.getValeur() > highestCard.getValeur()) {
-                  highestCard = card;
-              }
-          }
-          return highestCard;
-      }
+		if (!plateau.estLeader2()) {//Si l'IA n'est pas le leader elle doit suivra la faction
+			cardToPlay = jouerAvecSuiviFaction(plateau);
+		} else {
+			cardToPlay = getHighestValueCard(plateau);
+		}
+		return cardToPlay;
+	}
 
-     public Card jouerAvecSuiviFaction(Hand mainIA, Card carte_adversaire,Plateau plateau) {
-        List<Card> cartesJouables = (List<Card>)getCardsOfSameFaction(carte_adversaire.getFaction());
-      
-          if (cartesJouables.isEmpty()) {
-              return jouerSansCarteDeMemeFaction(mainIA, carte_adversaire);
-          } else {
-              return jouerAvecCarteDeMemeFaction(cartesJouables, carte_adversaire);
-          }
-     }
+	public Card getHighestValueCard(Plateau plateau) {
+		List<Card> cards = plateau.getJoueurCourant().getHand().getAllCards();
+		Card highestCard = cards.get(0);
+		for (Card card : cards) {
+			if (card.getValeur() > highestCard.getValeur()) {
+				highestCard = card;
+			}
+		}
+		return highestCard;
+	}
 
-     private Card jouerAvecCarteDeMemeFaction(List<Card> cartesJouables, Card carte_adversaire) {
-          Card reponse = getSmallestHigherCard(carte_adversaire, cartesJouables);
-          if (reponse != null && reponse.getValeur() > carte_adversaire.getValeur()) {
-              return reponse;
-          } else {
-              return getLowestValueCard(cartesJouables);
-          }
-      }
+	public Hand getCardsOfSameFaction(Plateau plateau, String faction) {
+		if (plateau.getJoueurCourant().getHand() == null || plateau.getJoueurCourant().getHand().isEmpty()) {
+			return null;
+		}
 
-     private Card jouerSansCarteDeMemeFaction(Hand mainIA, Card carte_adversaire) {
-          if (carte_adversaire.getFaction().equals("Goblins") && containsKnight()) {
-              return jouerChevalier(mainIA);
-          } else {
-              return jouerDoppelgangerOuMin(mainIA);
-          }
-     }
+		Hand cardsOfSameFaction = new Hand();
 
-     private Card jouerDoppelgangerOuMin(Hand mainIA) {
-          Hand doppelgangers = getCardsOfSameFaction("Doppelganger");
-          if (doppelgangers.isEmpty()) {
-              return getLowestValueCard(hand.getAllCards());
-          } else {
-              return getLowestValueCard(hand.getAllCards());
-          }
-      }
+		for (Card handCard : plateau.getJoueurCourant().getHand().getAllCards()) {
+			if (handCard.getFaction().equals(faction)) {
+				cardsOfSameFaction.addCard(handCard);
+			}
+		}
 
+		return cardsOfSameFaction;
+	}
 
-     public Card jouerChevalier(Hand mainIA) {
-          Hand chevaliers = getCardsOfSameFaction("Chevalier");
-          return chevaliers.getMin();
-     }
+	public Card jouerAvecSuiviFaction(Plateau plateau) {
+		// Retrieve the list of playable cards of the same faction
+		Hand cartesJouables = getCardsOfSameFaction(plateau, plateau.getCardAdversaire().getFaction());
+
+		// Ensure cartesJouables is not null
+		if (cartesJouables == null) {
+			cartesJouables = new Hand();
+		}
+
+		// Check if the list of cards of the same faction is empty
+		if (cartesJouables.isEmpty()) {
+			// Play without cards of the same faction
+			return jouerSansCarteDeMemeFaction(plateau.getJoueurCourant().getHand(), plateau.getCardAdversaire(), plateau);
+		} else {
+			// Play with cards of the same faction
+			return jouerAvecCarteDeMemeFaction(cartesJouables.getAllCards(), plateau.getCardAdversaire());
+		}
+	}
 
 
-     public Card jouerCoupPhase2(Hand mainI, boolean suivre_faction, Card carte_adversaire) {
-          if (suivre_faction) {
-              return jouerAvecSuiviFactionPhase2(carte_adversaire);
-          } else {
-              return getHighestValueCard(handScndPhase.getAllCards());
-          }
-     }
+	private Card jouerAvecCarteDeMemeFaction(List<Card> cartesJouables, Card carte_adversaire) {
+		Card reponse = getSmallestHigherCard(carte_adversaire, cartesJouables);
+		if (reponse != null && reponse.getValeur() > carte_adversaire.getValeur()) {
+			return reponse;
+		} else {
+			return getLowestValueCard(cartesJouables);
+		}
+	}
 
-     private Card jouerAvecSuiviFactionPhase2(Card carte_adversaire) {
-          if (carte_adversaire.getFaction().equals("Nains")) {
-              return jouerAvecNains(carte_adversaire);
-          } else {
-              return suivreFactionAdversaire(carte_adversaire);
-          }
-     }
+	private Card jouerSansCarteDeMemeFaction(Hand mainIA, Card carte_adversaire, Plateau plateau) {
+		if (carte_adversaire.getFaction().equals("Goblins") && containsKnight()) {
+			return jouerChevalier(plateau);
+		} else {
+			return jouerDoppelgangerOuMin(plateau);
+		}
+	}
 
-     private Card suivreFactionAdversaire(Card carte_adversaire) {
-          Hand cartesJouables = getCardsOfSameFaction(carte_adversaire.getFaction());
-      
-          if (cartesJouables.isEmpty()) {
-              return getLowestValueCard((List<Card>)handScndPhase);
-          } else {
-               return cartesJouables.getSmallestHigherCard(carte_adversaire);
-          }
-      }
-
-
-     private Card jouerAvecNains(Card carte_adversaire) {
-          List<Card> carteJouable = getCardsOfSameFaction("Nains").getAllCards();
-      
-          if (getLowestValueCard(carteJouable).getValeur() > carte_adversaire.getValeur()) {
-              return getHighestValueCard(carteJouable);
-          } else {
-              return getHighestCardSmallerThan(carte_adversaire, carteJouable);
-          }
-     }
-
-     @Override
-     public Card jouerCarte(int indexCard) {
-          // TODO Auto-generated method stub
-          throw new UnsupportedOperationException("Unimplemented method 'jouerCarte'");
-     }
+	private Card jouerDoppelgangerOuMin(Plateau plateau) {
+		Hand doppelgangers = getCardsOfSameFaction(plateau, "Doppelganger");
+		if (doppelgangers.isEmpty()) {
+			return getLowestValueCard(plateau.getJoueurCourant().getHand().getAllCards());
+		} else {//si l'IA a des doppelgangers
+			return getSmallestHigherCard(plateau.getCardAdversaire(), doppelgangers.getAllCards());
+		}
+	}
 
 
-    /* public static void main(String[] args) {;
-          Cards pioche = new Cards();
-          pioche.shuffle();
-          Hand hand1 = pioche.getHandOf13Cards();
-          Hand handIA =new Hand();
-          Intermediare i = new Intermediare();
-          i.hand=pioche.getHandOf13Cards();
-          Card cartejouer = hand1.getRandomCard();
-          i.hand.printHand();
-          System.out.println("La carte jouer par le joueur 1 est : "+cartejouer.getFaction()+" "+cartejouer.getValeur());
-          //Card card=i.jouer_coup_phase1(handIA, true, cartejouer);
-          Card card=i.jouerCoupPhase1(handIA, true, cartejouer);
-          System.out.println("La carte jouer par l'IA est : "+card.getFaction()+" "+card.getValeur());
-     }
+	public Card jouerChevalier(Plateau plateau) {
+		Hand chevaliers = getCardsOfSameFaction(plateau, "Chevalier");
+		return chevaliers.getMin();
+	}
 
-}*/
+
+	public Card jouerCoupPhase2(Plateau plateau) {
+		Card cardToPlay;
+		if (!plateau.estLeader2()) {
+			cardToPlay = jouerAvecSuiviFactionPhase2(plateau);
+		} else {
+			cardToPlay = getHighestValueCard(plateau.getJoueurCourant().getHand().getAllCards());
+		}
+		//System.out.println("---------------Carte jouée par l'IA : " + cardToPlay.getFaction() + " " + cardToPlay.getValeur());
+		return cardToPlay;
+	}
+
+	private Card jouerAvecSuiviFactionPhase2(Plateau plateau) {
+		Card cardToPlay;
+		if (plateau.getCardAdversaire().getFaction().equals("Nains")) {
+			cardToPlay = jouerAvecNains(plateau);
+		} else {
+			cardToPlay = suivreFactionAdversaire(plateau);
+		}
+		return cardToPlay;
+	}
+	public Card getSmallestHigherCard(Hand hand,Card card) {
+
+		if (hand == null || hand.isEmpty()) {
+			throw new IllegalStateException("La main est vide ou nulle.");
+		}
+
+		Card smallestHigherCard = hand.getCard(0);
+		int smallestHigherValue = Integer.MAX_VALUE;
+
+		for (int i=0;i<hand.size();i++) {
+			// Vérifier si la carte est plus grande que celle passée en paramètre
+			if (hand.getCard(i).getValeur() > card.getValeur() && hand.getCard(i).getValeur() < smallestHigherValue) {
+				smallestHigherCard = hand.getCard(i);
+				smallestHigherValue = hand.getCard(i).getValeur();
+			}
+		}
+
+		return smallestHigherCard;
+	}
+
+
+	private Card suivreFactionAdversaire(Plateau plateau) {
+		Hand cartesJouables = getCardsOfSameFaction(plateau);
+
+		if (cartesJouables.isEmpty()) {
+			return getLowestValueCard((plateau.getJoueurCourant().getHand().getAllCards()));
+		} else {
+			return getSmallestHigherCard(cartesJouables, plateau.getCardAdversaire());
+		}
+	}
+
+
+	private Card jouerAvecNains(Plateau plateau) {
+		List<Card> carteJouable = getCardsOfSameFaction2(plateau.getJoueurCourant().getHand(), plateau.getCardAdversaire().getFaction()).getAllCards();
+
+		if (getLowestValueCard(carteJouable).getValeur() > plateau.getCardAdversaire().getValeur()) {
+			return getHighestValueCard(carteJouable);
+		} else {
+			return getHighestCardSmallerThan(plateau.getCardAdversaire(), carteJouable);
+		}
+	}
+
+
+	@Override
+	public Card jouerCarte(int indexCard) {
+		return null;
+	}
+}

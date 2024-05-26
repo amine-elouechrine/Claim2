@@ -1,8 +1,10 @@
 package org.example.Modele;
+
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
-public class Cards extends CardCollection{
+public class Cards extends CardCollection {
 
     // Constructeur
     public Cards() {
@@ -10,9 +12,8 @@ public class Cards extends CardCollection{
     }
 
 
-
     // Méthode pour créer les cartes Gobelin
-    public void addAllCards(){
+    public void addAllCards() {
         createGobelinCards();
         createKnightCards();
         createUndeadCards();
@@ -26,14 +27,14 @@ public class Cards extends CardCollection{
             addCard(new Card(0, "Goblins"));
         }
         for (int i = 1; i < 10; i++) {
-            addCard(new Card(i , "Goblins"));
+            addCard(new Card(i, "Goblins"));
         }
     }
 
     // Méthode pour créer les cartes Knight
     private void createKnightCards() {
         for (int i = 2; i < 10; i++) {
-            addCard(new Card(i , "Knight"));
+            addCard(new Card(i, "Knight"));
         }
     }
 
@@ -54,7 +55,7 @@ public class Cards extends CardCollection{
     // Méthode pour créer les cartes Doppelganger
     private void createDoppelgangerCards() {
         for (int i = 0; i < 10; i++) {
-            addCard(new Card(i , "Doppelganger"));
+            addCard(new Card(i, "Doppelganger"));
         }
     }
 
@@ -73,6 +74,7 @@ public class Cards extends CardCollection{
 
         return maxCard;
     }
+
     public Cards getCardsOfSameFactionAs(Card opponentCard) {
         if (cards.isEmpty()) {
             throw new IllegalStateException("La pile de cartes est vide.");
@@ -89,6 +91,7 @@ public class Cards extends CardCollection{
 
         return cardsOfSameFaction;
     }
+
     // Méthode pour obtenir la carte la plus grande qui est plus petite que la carte jouée par l'adversaire
     public Card getHighestCardSmallerThan(Card opponentCard) {
         if (cards.isEmpty()) {
@@ -145,10 +148,11 @@ public class Cards extends CardCollection{
         return cards;
     }
 
-    public boolean isEmpty(){
+    public boolean isEmpty() {
         return cards.isEmpty();
     }
-    public void setCard(Card c){
+
+    public void setCard(Card c) {
         addCard(c);
     }
 
@@ -161,7 +165,29 @@ public class Cards extends CardCollection{
         for (int i = 0; i < 13; i++) {
             hand.addCard(getCard());
         }
+        hand = ranger(hand);
         return hand;
+    }
+
+    // Méthode pour ranger la main par ordre de faction puis valeurs
+    public static Hand ranger(Hand hand) {
+        List<Card> cards = hand.getAllCards();
+
+        Collections.sort(cards, new Comparator<Card>() {
+            @Override
+            public int compare(Card c1, Card c2) {
+                int factionComparison = c1.getFaction().compareTo(c2.getFaction());
+                if (factionComparison != 0) {
+                    return factionComparison;
+                } else {
+                    return Integer.compare(c1.getValeur(), c2.getValeur());
+                }
+            }
+        });
+
+        Hand sortedHand = new Hand();
+        sortedHand.setHand(cards);
+        return sortedHand;
     }
 
     public void removeCard() {
