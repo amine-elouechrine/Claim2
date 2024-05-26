@@ -1,5 +1,6 @@
 package org.example.Controleur;
 
+import org.example.IA.IA;
 import org.example.Modele.Card;
 import org.example.Modele.Hand;
 import org.example.Modele.Jeu;
@@ -13,10 +14,13 @@ public class ControleurMediateur implements CollecteurEvenements {
 
     Jeu jeu;
     Card carteLeader;
+    IA iaFacile;
     boolean jouable = true;
+    Card carteIA;
 
-    public ControleurMediateur(Jeu j) {
+    public ControleurMediateur(Jeu j, IA ia) {
         jeu = j;
+        iaFacile = ia;
     }
 
     /* Getteurs pour la communication entre interface et moteur */
@@ -69,7 +73,7 @@ public class ControleurMediateur implements CollecteurEvenements {
     }
 
     public boolean isJoueurCourantJoueur1() {
-        return (getPlayerCourant().Name.equals("Joueur 1"));
+        return (getJoueurCourant().equals(jeu.getJoueur1()));
     }
 
     public int getNbCardFactionFromPileScoreJ1(String factionName) {
@@ -104,8 +108,8 @@ public class ControleurMediateur implements CollecteurEvenements {
         return jeu.getPlateau().getJoueurCourant().getHand();
     }
 
-    public Player getPlayerCourant() {
-        return jeu.getPlateau().getJoueurCourant();
+    public Player getJoueurCourant() {
+        return jeu.getJoueurCourant();
     }
 
     public int[][] getCarteJouable() {
@@ -117,7 +121,7 @@ public class ControleurMediateur implements CollecteurEvenements {
     }
 
     public String getNomJoueurCourant() {
-        return jeu.getNomJoueur(getPlayerCourant());
+        return jeu.getNomJoueur(getJoueurCourant());
     }
 
     public int getCarteJoueur1V() {
@@ -218,6 +222,18 @@ public class ControleurMediateur implements CollecteurEvenements {
         jeu.metAJour();
     }
 
+    public void tourIA() {
+        if (getPhase())
+            carteIA = iaFacile.jouerCoupPhase1(jeu.getPlateau());
+        else
+            carteIA = iaFacile.jouerCoupPhase2(jeu.getPlateau());
+
+        if (jeu.estFinPartie()) {
+            // Calcul des scores
+        }
+        jouerCarteIA(carteIA);
+    }
+
     public void joueTour(int index) {
 
         if (jeu.estFinPartie()) {
@@ -234,13 +250,24 @@ public class ControleurMediateur implements CollecteurEvenements {
             jeu.addAction();
             jouerCarte(index);
         }
-        // Ajouter temporisation / animation
+        while (jeu.getJoueur2() == jeu.getJoueurCourant()) {
+            tourIA();
+        }
+    }
 
-        // L'IA joue une carte
-        // IA.joue() ?
-
-        // Ajouter temporisation / animation pour la carte jouer par l'IA
-
+    private void jouerCarteIA(Card carte) {
+        jeu.getPlateau().jouerCarte(carte);
+        jeu.getJoueur2().getHand().removeCard(carte);
+        if (jeu.estCarteJoueJ1() && jeu.estCarteJoueJ2()) {
+            jeu.playTrick();
+            // On joue le plie
+            // Ajouter temporisation / Animation pour la bataille et l'attribution des cartes après le plie
+            jeu.setCarteJouer();
+            carteLeader = null;
+        } else {
+            carteLeader = carte;
+            jeu.switchJoueur();
+        }
     }
 
     private void jouerCarte(int index) {

@@ -9,9 +9,7 @@ import java.util.List;
 public class Jeu extends Observable {
 
     Plateau plateau;
-
     GestionAnnuleRefaire g;
-
     ReglesDeJeu r;
 
     public Jeu() {
@@ -50,6 +48,14 @@ public class Jeu extends Observable {
         // Changer main joueur 2
         main = getPlateau().getJoueur2().getHandScndPhase();
         getPlateau().getJoueur2().hand = main;
+    }
+
+    public Player getJoueur2() {
+        return getPlateau().getJoueur2();
+    }
+
+    public Player getJoueurCourant() {
+        return getPlateau().getJoueurCourant();
     }
 
     public Hand getHandJ1P1() {
@@ -258,5 +264,9 @@ public class Jeu extends Observable {
 
     public void restaure(String filename) throws IOException {
         this.plateau=g.restaure(filename);
+    }
+
+    public Player getJoueur1() {
+        return getPlateau().getJoueur1();
     }
 }
