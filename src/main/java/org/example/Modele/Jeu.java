@@ -49,6 +49,14 @@ public class Jeu extends Observable {
         getPlateau().getJoueur2().hand = main;
     }
 
+    public Player getJoueur2() {
+        return getPlateau().getJoueur2();
+    }
+
+    public Player getJoueurCourant() {
+        return getPlateau().getJoueurCourant();
+    }
+
     public Hand getHandJ1P1() {
         return getPlateau().getJoueur1().getHand();
     }

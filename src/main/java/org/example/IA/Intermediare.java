@@ -165,5 +165,8 @@ public class Intermediare extends IA {
 	}
 
 
-
+	@Override
+	public Card jouerCarte(int indexCard) {
+		return null;
+	}
 }

@@ -1,5 +1,6 @@
 package org.example.Controleur;
 
+import org.example.IA.IA;
 import org.example.Modele.Card;
 import org.example.Modele.Hand;
 import org.example.Modele.Jeu;
@@ -12,10 +13,13 @@ public class ControleurMediateur implements CollecteurEvenements {
 
     Jeu jeu;
     Card carteLeader;
+    IA iaFacile;
     boolean jouable = true;
+    Card carteIA;
 
-    public ControleurMediateur(Jeu j) {
+    public ControleurMediateur(Jeu j, IA ia) {
         jeu = j;
+        iaFacile = ia;
     }
 
     /* Getteurs pour la communication entre interface et moteur */
@@ -178,7 +182,6 @@ public class ControleurMediateur implements CollecteurEvenements {
         if (index == -1) {
             System.out.println("Clic ailleurs que sur une carte\n");
         } else {
-			//System.out.println("Clic sur la carte " + index + "\n");
             joueTour(index);
         }
         jeu.metAJour();
@@ -191,6 +194,18 @@ public class ControleurMediateur implements CollecteurEvenements {
             joueTour(index);
         }
         jeu.metAJour();
+    }
+
+    public void tourIA() {
+        if (getPhase())
+            carteIA = iaFacile.jouerCoupPhase1(jeu.getPlateau());
+        else
+            carteIA = iaFacile.jouerCoupPhase2(jeu.getPlateau());
+
+        if (jeu.estFinPartie()) {
+            // Calcul des scores
+        }
+        jouerCarteIA(carteIA);
     }
 
     public void joueTour(int index) {
@@ -209,13 +224,24 @@ public class ControleurMediateur implements CollecteurEvenements {
             jeu.addAction();
             jouerCarte(index);
         }
-        // Ajouter temporisation / animation
+        while (jeu.getJoueur2() == jeu.getJoueurCourant()) {
+            tourIA();
+        }
+    }
 
-        // L'IA joue une carte
-        // IA.joue() ?
-
-        // Ajouter temporisation / animation pour la carte jouer par l'IA
-
+    private void jouerCarteIA(Card carte) {
+        jeu.getPlateau().jouerCarte(carte);
+        jeu.getJoueur2().getHand().removeCard(carte);
+        if (jeu.estCarteJoueJ1() && jeu.estCarteJoueJ2()) {
+            jeu.playTrick();
+            // On joue le plie
+            // Ajouter temporisation / Animation pour la bataille et l'attribution des cartes après le plie
+            jeu.setCarteJouer();
+            carteLeader = null;
+        } else {
+            carteLeader = carte;
+            jeu.switchJoueur();
+        }
     }
 
     private void jouerCarte(int index) {
