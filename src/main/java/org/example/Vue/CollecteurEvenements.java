@@ -1,9 +1,10 @@
 package org.example.Vue;
 
-import org.example.Patternes.Observateur;
 import java.io.IOException;
 
 public interface CollecteurEvenements {
+
+    /* Getteurs */
     boolean getPhase();
 
     int getNbCardsJ1P1();
@@ -48,17 +49,21 @@ public interface CollecteurEvenements {
 
     int getMaxValueFromPileScore(String factionName);
 
+    /* State check */
     boolean isJoueur1WinningFactionOnEquality(String factionName);
 
     boolean isJoueur2WinningFactionOnEquality(String factionName);
-  
+
+    boolean isJoueurCourantJoueur1();
+
+    /* Adaptateurs */
     void refaire();
-  
+
     void annuler();
-  
+
     void sauve(String filename);
   
-    void restaure(String filename ) throws IOException;
+    void restaure(String filename) throws IOException;
   
     void nouvellePartie();
 

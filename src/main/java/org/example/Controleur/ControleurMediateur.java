@@ -7,260 +7,263 @@ import org.example.Modele.Hand;
 import org.example.Modele.Jeu;
 import org.example.Modele.Player;
 import org.example.Vue.CollecteurEvenements;
-import org.example.Modele.GestionAnnuleRefaire;
-import org.example.Vue.CollecteurEvenements;
-import org.example.Modele.Jeu;
-import org.example.Patternes.Observable;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.Map;
 
 public class ControleurMediateur implements CollecteurEvenements {
 
-	Jeu jeu;
+    Jeu jeu;
+    Card carteLeader;
+    IA iaFacile;
+    boolean jouable = true;
+    Card carteIA;
 
-	Card carteLeader;
+    public ControleurMediateur(Jeu j, IA ia) {
+        jeu = j;
+        iaFacile = ia;
+    }
 
-	IA iaFacile;
+    /* Getteurs pour la communication entre interface et moteur */
+    public boolean getPhase() {
+        return jeu.getPhase();
+    }
 
-	boolean jouable = true;
+    public int getNbCardsJ1P1() {
+        return jeu.getHandJ1P1().size();
+    }
 
-	Card carteIA;
+    public int getNbCardsJ2P1() {
+        return jeu.getHandJ2P1().size();
+    }
 
-	public ControleurMediateur(Jeu j, IA ia) {
-		jeu = j;
-		iaFacile = ia;
-	}
+    public int getNbCardsJ1P2() {
+        return jeu.getHandJ1P2().size();
+    }
 
-	/* Getteurs pour la communication entre interface et moteur */
-	public boolean getPhase() {
-		return jeu.getPhase();
-	}
+    public int getNbCardsJ2P2() {
+        return jeu.getHandJ2P2().size();
+    }
 
-	public int getNbCardsJ1P1() {
-		return jeu.getHandJ1P1().size();
-	}
+    public int[][] getHandJ1P1() {
+        return jeu.getMainJoueur1Phase1();
+    }
 
-	public int getNbCardsJ2P1() {
-		return jeu.getHandJ2P1().size();
-	}
+    public int[][] getHandJ2P1() {
+        return jeu.getMainJoueur2Phase1();
+    }
 
-	public int getNbCardsJ1P2() {
-		return jeu.getHandJ1P2().size();
-	}
+    public int[][] getHandJ1P2() {
+        return jeu.getMainJoueur1Phase2();
+    }
 
-	public int getNbCardsJ2P2() {
-		return jeu.getHandJ2P2().size();
-	}
+    public int[][] getHandJ2P2() {
+        return jeu.getMainJoueur2Phase2();
+    }
 
-	public int[][] getHandJ1P1() {
-		return jeu.getMainJoueur1Phase1();
-	}
+    public int[][] getMainJoueurCourant() {
+        return jeu.getHand(jeu.getPlateau().getJoueurCourant().getHand());
+    }
 
-	public int[][] getHandJ2P1() {
-		return jeu.getMainJoueur2Phase1();
-	}
+    public int getCarteAfficheeFactionScore() {
+        return jeu.getCarteAfficheeFactionScore();
+    }
 
-	public int[][] getHandJ1P2() {
-		return jeu.getMainJoueur1Phase2();
-	}
+    public int getCarteAfficheeValeur() {
+        return jeu.getCarteAfficheeValeur();
+    }
 
-	public int[][] getHandJ2P2() {
-		return jeu.getMainJoueur2Phase2();
-	}
+    public boolean isJoueurCourantJoueur1() {
+        return (getPlayerCourant().Name.equals("Joueur 1"));
+    }
 
-	public int[][] getMainJoueurCourant() {
-		return jeu.getHand(jeu.getPlateau().getJoueurCourant().getHand());
-	}
+    public int getNbCardFactionFromPileScoreJ1(String factionName) {
+        return jeu.getNbCardFactionFromPileScoreJ1(factionName);
+    }
 
-	public int getCarteAfficheeFactionScore() {
-		return jeu.getCarteAfficheeFactionScore();
-	}
+    public int getNbCardFactionFromPileScoreJ2(String factionName) {
+        return jeu.getNbCardFactionFromPileScoreJ2(factionName);
+    }
 
-	public int getCarteAfficheeValeur() {
-		return jeu.getCarteAfficheeValeur();
-	}
+    public int getMaxValueoOfFactionFromPileScoreJ1(String factionName) {
+        return jeu.getMaxValueoOfFactionFromPileScoreJ1(factionName);
+    }
 
-	public int getNbCardFactionFromPileScoreJ1(String factionName) {
-		return jeu.getNbCardFactionFromPileScoreJ1(factionName);
-	}
+    public int getMaxValueoOfFactionFromPileScoreJ2(String factionName) {
+        return jeu.getMaxValueoOfFactionFromPileScoreJ2(factionName);
+    }
 
-	public int getNbCardFactionFromPileScoreJ2(String factionName) {
-		return jeu.getNbCardFactionFromPileScoreJ2(factionName);
-	}
+    public int getMaxValueFromPileScore(String factionName) {
+        return Math.max(getMaxValueoOfFactionFromPileScoreJ1(factionName), getMaxValueoOfFactionFromPileScoreJ2(factionName));
+    }
 
-	public int getMaxValueoOfFactionFromPileScoreJ1(String factionName) {
-		return jeu.getMaxValueoOfFactionFromPileScoreJ1(factionName);
-	}
+    public boolean isJoueur1WinningFactionOnEquality(String factionName) {
+        return (getMaxValueoOfFactionFromPileScoreJ1(factionName) > getMaxValueoOfFactionFromPileScoreJ2(factionName));
+    }
 
-	public int getMaxValueoOfFactionFromPileScoreJ2(String factionName) {
-		return jeu.getMaxValueoOfFactionFromPileScoreJ2(factionName);
-	}
+    public boolean isJoueur2WinningFactionOnEquality(String factionName) {
+        return (getMaxValueoOfFactionFromPileScoreJ1(factionName) < getMaxValueoOfFactionFromPileScoreJ2(factionName));
+    }
 
-	public int getMaxValueFromPileScore(String factionName) {
-		return Math.max(getMaxValueoOfFactionFromPileScoreJ1(factionName), getMaxValueoOfFactionFromPileScoreJ2(factionName));
-	}
+    public Hand getHandCourant() {
+        return jeu.getPlateau().getJoueurCourant().getHand();
+    }
 
-	public boolean isJoueur1WinningFactionOnEquality(String factionName) {
-		return (getMaxValueoOfFactionFromPileScoreJ1(factionName) > getMaxValueoOfFactionFromPileScoreJ2(factionName));
-	}
+    public Player getPlayerCourant() {
+        return jeu.getPlateau().getJoueurCourant();
+    }
 
-	public boolean isJoueur2WinningFactionOnEquality(String factionName) {
-		return (getMaxValueoOfFactionFromPileScoreJ1(factionName) < getMaxValueoOfFactionFromPileScoreJ2(factionName));
-	}
+    public int[][] getCarteJouable() {
+        if (carteLeader != null) {
+            return jeu.getCarteJouable(carteLeader, getHandCourant());
+        } else {
+            return getMainJoueurCourant();
+        }
+    }
 
-	public Hand getHandCourant() {
-		return jeu.getPlateau().getJoueurCourant().getHand();
-	}
+    public String getNomJoueurCourant() {
+        return jeu.getNomJoueur(getPlayerCourant());
+    }
 
-	public Player getPlayerCourant() {
-		return jeu.getPlateau().getJoueurCourant();
-	}
+    public int getCarteJoueur1V() {
+        return jeu.getCarteJoueur1V();
+    }
 
-	public int[][] getCarteJouable() {
-		if (carteLeader != null) {
-			return jeu.getCarteJouable(carteLeader, getHandCourant());
-		} else {
-			return getMainJoueurCourant();
-		}
-	}
+    @Override
+    public void annuler() {
+        jeu.annulerCoup();
+        if (jeu.getPlateau().getCarteJoueur1() == null && jeu.getPlateau().getCarteJoueur2() != null) {
+            carteLeader = jeu.getPlateau().getCarteJoueur2();
+        } else if (jeu.getPlateau().getCarteJoueur1() != null && jeu.getPlateau().getCarteJoueur2() == null) {
+            carteLeader = jeu.getPlateau().getCarteJoueur1();
+        } else {
+            carteLeader = null;
+        }
+        jeu.metAJour();
+    }
 
-	public String getNomJoueurCourant() {
-		return jeu.getNomJoueur(getPlayerCourant());
-	}
+    @Override
+    public void refaire() {
+        jeu.refaireCoup();
+        jeu.metAJour();
+    }
 
-	public int getCarteJoueur1V() {
-		return jeu.getCarteJoueur1V();
-	}
+    @Override
+    public void sauve(String filename) {
+        jeu.sauve(filename);
+        jeu.metAJour();
+    }
 
-	@Override
-	public void annuler() {
-		jeu.annuler();
-		jeu.metAJour();
-	}
+    @Override
+    public void restaure(String filename) throws IOException {
+        jeu.restaure(filename);
+        jeu.metAJour();
+    }
 
-	@Override
-	public void refaire() {
-		jeu.refaire();
-		jeu.metAJour();
-	}
+    @Override
+    public void nouvellePartie() {
+        jeu.getPlateau().initialiserJeu();
+        jeu.setCarteJouer();
+        jeu.metAJour();
+    }
+  
+    public int getCarteJoueur1F() {
+        return jeu.getCarteJoueur1F();
+    }
 
-	@Override
-	public void sauve(String filename) {
-		jeu.sauve(filename);
-		jeu.metAJour();
-	}
+    public int getCarteJoueur2V() {
+        return jeu.getCarteJoueur2V();
+    }
 
-	@Override
-	public void restaure(String filename) throws IOException {
-		jeu.restaure(filename);
-		jeu.metAJour();
-	}
+    public int getCarteJoueur2F() {
+        return jeu.getCarteJoueur2F();
+    }
 
-	@Override
-	public void nouvellePartie() {
-		jeu.getPlateau().initialiserJeu();
-		jeu.metAJour();
-	}
+    /* Récupération d'un clique de souris pour un tour de jeu */
+    public void clicSouris(int index) {
+        if (index == -1) {
+            System.out.println("Clic ailleurs que sur une carte\n");
+        } else {
+            joueTour(index);
+        }
+        jeu.metAJour();
+    }
 
+    public void clicSourisJ2(int index) {
+        if (index == -1) {
+            System.out.println("Clic ailleurs que sur une carte\n");
+        } else {
+            joueTour(index);
+        }
+        jeu.metAJour();
+    }
 
-	public int getCarteJoueur1F() {
-		return jeu.getCarteJoueur1F();
-	}
+    public void tourIA() {
+        System.out.println(jeu.getPlateau().getJoueur1().getHand().size() + "-" + jeu.getPlateau().getJoueur1().getHand().size());
+        System.out.println(jeu.getPlateau().getPioche().getSize());
+        if (getPhase())
+            carteIA = iaFacile.jouerCoupPhase1(jeu.getPlateau());
+        else
+            carteIA = iaFacile.jouerCoupPhase2(jeu.getPlateau());
 
-	public int getCarteJoueur2V() {
-		return jeu.getCarteJoueur2V();
-	}
+        if (jeu.estFinPartie()) {
+            // Calcul des scores
+            System.out.println("La partie est terminée\n");
+        }
 
-	public int getCarteJoueur2F() {
-		return jeu.getCarteJoueur2F();
-	}
+        jouerCarteIA(carteIA);
+        System.out.println(jeu.getPlateau().getPioche().getSize());
 
-	/* Récupération d'un clique de souris pour un tour de jeu */
-	public void clicSouris(int index) {
-		if (index == -1) {
-			System.out.println("Clic ailleurs que sur une carte\n");
-		} else {
-			joueTour(index);
-		}
-		jeu.metAJour();
-	}
+    }
 
-	public void clicSourisJ2(int index) {
-		if (index == -1) {
-			System.out.println("Clic ailleurs que sur une carte\n");
-		} else {
-			joueTour(index);
-		}
-		jeu.metAJour();
-	}
+    public void joueTour(int index) {
 
-	public void tourIA() {
-		System.out.println(jeu.getPlateau().getJoueur1().getHand().size() + "-" + jeu.getPlateau().getJoueur1().getHand().size());
-		System.out.println(jeu.getPlateau().getPioche().getSize());
-		if (getPhase())
-			carteIA = iaFacile.jouerCoupPhase1(jeu.getPlateau());
-		else
-			carteIA = iaFacile.jouerCoupPhase2(jeu.getPlateau());
+        if (jeu.estFinPartie()) {
+            // Calcul des scores
+            System.out.println("La partie est terminée\n");
+        }
 
-		if (jeu.estFinPartie()) {
-			// Calcul des scores
-			System.out.println("La partie est terminée\n");
-		}
+        // Application des règles de jeu pour la selection de carte
+        if (carteLeader != null) {
+            jouable = jeu.estCarteJouable(carteLeader, index);
+        }
 
-		jouerCarteIA(carteIA);
-		System.out.println(jeu.getPlateau().getPioche().getSize());
+        if (jouable) {
+            jeu.addAction();
+            jouerCarte(index);
+        }
+        while (jeu.getJoueur2() == jeu.getJoueurCourant()) {
+            tourIA();
+        }
+    }
 
-	}
+    private void jouerCarteIA(Card carte) {
+        jeu.getPlateau().jouerCarte(carte);
+        jeu.getJoueur2().getHand().removeCard(carte);
+        if (jeu.estCarteJoueJ1() && jeu.estCarteJoueJ2()) {
+            jeu.playTrick();
+            // On joue le plie
+            // Ajouter temporisation / Animation pour la bataille et l'attribution des cartes après le plie
+            jeu.setCarteJouer();
+            carteLeader = null;
+        } else {
+            carteLeader = carte;
+            jeu.switchJoueur();
+        }
 
-	public void joueTour(int index) {
-		if (jeu.estFinPartie()) {
-			// Calcul des scores
-			System.out.println("La partie est terminée\n");
-		}
+        System.out.println(carte);
+    }
 
-		// Application des règles de jeu pour la selection de carte
-		if (carteLeader != null) {
-			jouable = jeu.estCarteJouable(carteLeader, index);
-		}
-
-		if (jouable) {
-			jouerCarte(index);
-		}
-		while (jeu.getJoueur2() == jeu.getJoueurCourant()) {
-			tourIA();
-		}
-	}
-
-	private void jouerCarteIA(Card carte) {
-		jeu.getPlateau().jouerCarte(carte);
-		jeu.getJoueur2().getHand().removeCard(carte);
-		if (jeu.estCarteJoueJ1() && jeu.estCarteJoueJ2()) {
-			jeu.playTrick();
-			// On joue le plie
-			// Ajouter temporisation / Animation pour la bataille et l'attribution des cartes après le plie
-			jeu.setCarteJouer();
-			carteLeader = null;
-		} else {
-			carteLeader = carte;
-			jeu.switchJoueur();
-		}
-
-		System.out.println(carte);
-	}
-
-	private void jouerCarte(int index) {
-		Card carteJoue = jeu.getPlateau().jouerCarte(index);
-		if (jeu.estCarteJoueJ1() && jeu.estCarteJoueJ2()) {
-			jeu.playTrick();
-			// On joue le plie
-			// Ajouter temporisation / Animation pour la bataille et l'attribution des cartes après le plie
-			jeu.setCarteJouer();
-			carteLeader = null;
-		} else {
-			carteLeader = carteJoue;
-			jeu.switchJoueur();
-		}
-	}
+    private void jouerCarte(int index) {
+        Card carteJoue = jeu.getPlateau().jouerCarte(index);
+        if (jeu.estCarteJoueJ1() && jeu.estCarteJoueJ2()) {
+            jeu.playTrick();
+            // On joue le plie
+            // Ajouter temporisation / Animation pour la bataille et l'attribution des cartes après le plie
+            jeu.setCarteJouer();
+            carteLeader = null;
+        } else {
+            carteLeader = carteJoue;
+            jeu.switchJoueur();
+        }
+    }
 }

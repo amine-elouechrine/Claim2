@@ -164,33 +164,4 @@ public class Intermediare extends IA {
 		}
 	}
 
-
-	public static void main(String[] args) {
-		;
-		Plateau plateau = new Plateau();
-		plateau.initialiserJeu();
-		plateau.getJoueur1().getHand().printHand();
-		plateau.getJoueur2().getHand().printHand();
-		Intermediare intermediare = new Intermediare();
-          /*Card cartejoueur=intermediare.jouerCoupPhase1(plateau);
-          System.out.println("La carte jouer par le joueur 1 est : "+cartejoueur.getFaction()+" "+cartejoueur.getValeur());
-          System.out.println(plateau.getCarteJoueur1());
-          Card x=plateau.getJoueurCourant().getHand().removeCard(0);
-          plateau.switchJoueur();
-          plateau.setCarteJoueur2(x);
-          plateau.setCarteJoueur1(null);
-          plateau.setCarteJoueur2(null);
-          plateau.switchJoueur();
-          x=plateau.getJoueurCourant().getHand().removeCard(0);
-          plateau.setCarteJoeurCouant(x);
-          System.out.println("commence"+x);
-          Card reponse=intermediare.jouerCoupPhase1(plateau);
-          System.out.println("reponse"+reponse);*/
-		plateau.setCarteJoueur2(plateau.getJoueur2().getHand().removeCard(0));
-		intermediare.jouerCoupPhase1(plateau);
-		System.out.println(plateau.getCarteJoueur2());
-		System.out.println(plateau.getCarteJoueur1());
-
-	}
-
 }
