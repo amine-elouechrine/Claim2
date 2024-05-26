@@ -125,7 +125,7 @@ public class ControleurMediateur implements CollecteurEvenements {
     }
 
     @Override
-    public void annuler() {
+    public void annuler() throws IOException {
         jeu.annulerCoup();
         if (jeu.getPlateau().getCarteJoueur1() == null && jeu.getPlateau().getCarteJoueur2() != null) {
             carteLeader = jeu.getPlateau().getCarteJoueur2();
@@ -164,13 +164,17 @@ public class ControleurMediateur implements CollecteurEvenements {
     @Override
     public void restaure(String filename) throws IOException {
         jeu.restaure(filename);
+
         if(jeu.getPlateau().getCarteJoueur1()!=null){
             carteLeader=jeu.getPlateau().getCarteJoueur1();
         }
         else if (jeu.getPlateau().getCarteJoueur2()!=null) {
             carteLeader=jeu.getPlateau().getCarteJoueur2();
         }else carteLeader=null;
-
+        System.out.println("carte leader " + carteLeader);
+        for(Card carte : jeu.getPlateau().getJoueurCourant().getHandScndPhase().getAllCards()){
+            System.out.println(carte);
+        }
         jeu.metAJour();
     }
 
@@ -178,6 +182,7 @@ public class ControleurMediateur implements CollecteurEvenements {
     public void nouvellePartie() {
         jeu.getPlateau().initialiserJeu();
         jeu.setCarteJouer();
+        jeu.getPlateau().setPhase(true);
         carteLeader=null;
         jeu.metAJour();
     }

@@ -240,7 +240,7 @@ public class Jeu extends Observable {
         return joueur.getName();
     }
 
-    public void annulerCoup() {
+    public void annulerCoup() throws IOException {
         g.annuler(getPlateau());
     }
 
