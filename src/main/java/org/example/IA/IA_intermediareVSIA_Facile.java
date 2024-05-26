@@ -30,7 +30,7 @@ public class IA_intermediareVSIA_Facile {
         while (i < 13) {//phase 1
             System.out.println("i= " + i);
             System.out.println(plateau.getJoueur1().getHand().size()+"--"+plateau.getJoueur2().getHand().size());
-            if (plateau.getJoueurCourant().getName().equals("Facile")){
+            if (plateau.getJoueurCourant().getName().equals("Joueur 1")){//Joueur1=Facile
                 //Card cartejouefacile=Facile.jouer_coup_phase1(null,false,null);
                 Card cartejouefacile = Facile.jouerCoupPhase1(plateau);
                 plateau.setCarteJoueur1(cartejouefacile);
@@ -80,7 +80,7 @@ public class IA_intermediareVSIA_Facile {
                 if (winningCard == null) {//le leader qui gagne la manche en cas d'egalite
                     winningCard = cartejoueintermediare;
                 }
-                IA gagnantMancheIA = determinerGagnantMancheIA(Facile, Intermediare, cartejoueintermediare, carteadversaire, plateau);
+                IA gagnantMancheIA = determinerGagnantMancheIA(Facile, Intermediare, new Card(cartejoueintermediare.getValeur(),cartejoueintermediare.getFaction()),new Card( carteadversaire.getValeur(),carteadversaire.getFaction()), plateau);
                 plateau.attribuerCarteFirstPhase(winningCard, r);
                 System.out.println("Carte gagnante : " + winningCard);
                 System.out.println("Le gagnant de la manche est : " + gagnantMancheIA.Name);
@@ -91,6 +91,10 @@ public class IA_intermediareVSIA_Facile {
                 plateau.switchPhase();*/
                 i++;
             }
+            if(i!=13){
+                plateau.setCardAffiche(plateau.getPioche().getCard());
+            }
+
 
         }
 
@@ -107,7 +111,7 @@ public class IA_intermediareVSIA_Facile {
         while(i<13){
             System.out.println("i= "+i);
            // System.out.println("----+-------->"+plateau.getJoueur1().getHand().size()+"--"+plateau.getJoueur2().getHand().size());
-            if(plateau.getJoueurCourant().getName().equals("Facile")){
+            if(plateau.getJoueurCourant().getName().equals("Joueur 1")){
 
 
                 //Card cartejouefacile=Facile.jouer_coup_phase2(null,false,null);
@@ -192,7 +196,7 @@ public class IA_intermediareVSIA_Facile {
         plateau = new Plateau();
         Facile=new Facile();
         Intermediare=new Intermediare();
-       while(i<1000){
+       while(i<100000){
             plateau.initialiserJeu();
             Test_IA_F_VS_I();
             i++;
