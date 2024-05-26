@@ -29,7 +29,7 @@ public class AdaptateurSouris extends MouseAdapter implements MouseListener {
         carte = -1;
         hauteurR = niv.hauteurCarte();
         largeurR = niv.largeurCarte();
-
+        System.out.println("Clic sur la carte " + carte + "\n");
         // Si le joueurCourant est le joueur 1
         if (control.isJoueurCourantJoueur1()) {
             if (i > niv.posXMainJ1() && i < (niv.getLargeurMainJ1() + niv.posXMainJ1()) && j > niv.posYMainJ1() && j < (niv.posYMainJ1() + niv.getHauteurMain())) {

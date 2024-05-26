@@ -10,7 +10,7 @@ public class Jeu extends Observable {
     public ReglesDeJeu r;
     Plateau plateau;
     GestionAnnuleRefaire g;
-    ReglesDeJeu r;
+    //ReglesDeJeu r;
 
     public Jeu() {
         plateau = new Plateau();
@@ -246,9 +246,10 @@ public class Jeu extends Observable {
         return getPlateau().getJoueurCourant();
     }
 
-    public void annuler() {
+    /*public void annuler() {
         g.annuler();
         plateau = g.getPlateau();
+    }*/
     public void annulerCoup() {
         g.annuler(getPlateau());
     }

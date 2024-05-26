@@ -73,7 +73,7 @@ public class ControleurMediateur implements CollecteurEvenements {
     }
 
     public boolean isJoueurCourantJoueur1() {
-        return (getPlayerCourant().Name.equals("Joueur 1"));
+        return (getPlayerCourant().Name.equals("Facile"));
     }
 
     public int getNbCardFactionFromPileScoreJ1(String factionName) {
@@ -183,6 +183,7 @@ public class ControleurMediateur implements CollecteurEvenements {
         if (index == -1) {
             System.out.println("Clic ailleurs que sur une carte\n");
         } else {
+			//System.out.println("Clic sur la carte " + index + "\n");
             joueTour(index);
         }
         jeu.metAJour();

@@ -454,6 +454,12 @@ public class Plateau {
 		return phase;
 	}
 
+    public void setHand(Hand hand1,Hand hand2){
+        joueur1.setHand(hand1);
+        joueur2.setHand(hand2);
+
+    }
+
 
     public GeneralPlayer joueurCourant() {
         return null;

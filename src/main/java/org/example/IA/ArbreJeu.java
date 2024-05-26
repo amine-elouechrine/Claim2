@@ -261,9 +261,9 @@ public class ArbreJeu {
         return cartesJouables;
     }
 
-    public static List<Card> cartesJouables1(Card carteAd , Node racine){
+    /*public static List<Card> cartesJouables1(Card carteAd , Node racine){
         return ReglesDeJeu.cartesJouables(carteAd, racine.plateau.getJoueurCourant().getHand());
-    }
+    }*/
 
 
 
@@ -310,10 +310,10 @@ public class ArbreJeu {
         Node racine = new Node(plateau);
         construireArbre2(racine, profondeur);
         return racine;
-        plateau1.getJoueur1().getHandScndPhase().printHand();
+       /* plateau1.getJoueur1().getHandScndPhase().printHand();
         plateau1.getJoueur2().getHandScndPhase().printHand();
         ArbreJeu arbreJeu = new ArbreJeu(new Node(plateau1));
-        Node racine = arbreJeu.construireArbreJeu2(plateau1, 1, true, Integer.MIN_VALUE, Integer.MAX_VALUE); // a l'apel initi alpha et beta doivent avoir ces valeurs
+        Node racine = arbreJeu.construireArbreJeu2(plateau1, 1, true, Integer.MIN_VALUE, Integer.MAX_VALUE); // a l'apel initi alpha et beta doivent avoir ces valeurs*/
 
     }
 
