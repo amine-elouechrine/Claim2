@@ -68,7 +68,7 @@ public class ControleurMediateur implements CollecteurEvenements {
     }
 
     public boolean isJoueurCourantJoueur1() {
-        return (getPlayerCourant().Name.equals("Joueur 1"));
+        return (getJoueurCourant().equals(jeu.getJoueur1()));
     }
 
     public int getNbCardFactionFromPileScoreJ1(String factionName) {
@@ -103,8 +103,8 @@ public class ControleurMediateur implements CollecteurEvenements {
         return jeu.getPlateau().getJoueurCourant().getHand();
     }
 
-    public Player getPlayerCourant() {
-        return jeu.getPlateau().getJoueurCourant();
+    public Player getJoueurCourant() {
+        return jeu.getJoueurCourant();
     }
 
     public int[][] getCarteJouable() {
@@ -116,7 +116,7 @@ public class ControleurMediateur implements CollecteurEvenements {
     }
 
     public String getNomJoueurCourant() {
-        return jeu.getNomJoueur(getPlayerCourant());
+        return jeu.getNomJoueur(getJoueurCourant());
     }
 
     public int getCarteJoueur1V() {
@@ -178,6 +178,7 @@ public class ControleurMediateur implements CollecteurEvenements {
         if (index == -1) {
             System.out.println("Clic ailleurs que sur une carte\n");
         } else {
+			//System.out.println("Clic sur la carte " + index + "\n");
             joueTour(index);
         }
         jeu.metAJour();

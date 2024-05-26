@@ -23,9 +23,11 @@ public abstract class IA extends GeneralPlayer{
      * @param opponentCard
      * @return la liste de cartes de la meme faction que la carte passée en paramètre (opponentCard)
      */
-    public Hand getCardsOfSameFaction(String faction) {
+    public Hand getCardsOfSameFaction(Plateau plateau) {
+        Hand hand=plateau.getJoueurCourant().getHand();
+        String faction = plateau.getCardAdversaire().getFaction();
         if (hand == null || hand.isEmpty()) {
-            return null;
+            return new Hand();
         }
 
         Hand cardsOfSameFaction = new Hand();
@@ -38,7 +40,22 @@ public abstract class IA extends GeneralPlayer{
 
         return cardsOfSameFaction;
     }
+  
+    public Hand getCardsOfSameFaction2(Hand hand,String faction) {
+        if (hand == null || hand.isEmpty()) {
+            return new Hand();
+        }
 
+        Hand cardsOfSameFaction = new Hand();
+
+        for (Card handCard : hand.getAllCards()) {
+            if (handCard.getFaction().equals(faction)) {
+                cardsOfSameFaction.addCard(handCard);
+            }
+        }
+
+        return cardsOfSameFaction;
+    }
     
     public void addHandScndPhase(Card card) {
         handScndPhase.addCard(card);
