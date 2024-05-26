@@ -15,17 +15,18 @@ public class TestIAMinMax {
         // Création d'un plateau de jeu initial
         Plateau plateauInitial = createInitialPlateau();
 
+
         // Création de l'instance de l'IA Minimax
         IAMinMax iaMinMax = new IAMinMax();
 
-        /*// Boucle principale de jeu
-        boolean partieTerminee = false;
+        // Boucle principale de jeu
+        /*boolean partieTerminee = false;
         Scanner scanner = new Scanner(System.in);
         while (!partieTerminee) {
             // Tour de l'IA
             System.out.println("Tour de l'IA...");
             Node racine = new Node(plateauInitial);
-            int meilleurCoup = iaMinMax.minimax(racine, 9, true, Integer.MIN_VALUE , Integer.MAX_VALUE); // Profondeur de recherche = 3
+            int meilleurCoup = iaMinMax.minimax(racine, 13, true, Integer.MIN_VALUE , Integer.MAX_VALUE); // Profondeur de recherche = 3
             // Récupération de l'enfant correspondant au meilleur coup
             Node meilleurNoeud = racine.getEnfantAvecEvaluation(meilleurCoup);
             // Récupération de la carte à jouer dans ce node
@@ -56,17 +57,39 @@ public class TestIAMinMax {
 
         }*/
 
-        Card c1 = new Card(9 , "Goblin");
-        Card c2 = new Card(3 , "Doppelganger");
-        plateauInitial.setCarteJoueur1(c1);
-        plateauInitial.setCarteJoueur2(c2);
-        // Appel de l'algorithme Minimax pour évaluer le meilleur coup
+        // Créer un noeud racine avec le plateau initial
         Node racine = new Node(plateauInitial);
-        // au depart il faut pas commancer avec Carte J1 = une valeur et Carte J2 = une valeur quelconque
-        int meilleurCoup = iaMinMax.minimax(racine, 13, true, Integer.MIN_VALUE , Integer.MAX_VALUE); // Profondeur de recherche = 3
 
-        // Affichage du meilleur coup calculé
-        System.out.println("Meilleur coup calculé par l'algorithme Minimax : " + meilleurCoup);
+        // Réinitialiser le compteur de nodes visités
+        //iaMinMax.nodeCount = 0;
+
+
+        // Appel de l'algorithme Minimax pour évaluer le meilleur coup
+        // au depart il faut pas commancer avec Carte J1 = une valeur et Carte J2 = une valeur quelconque
+        IAMinMax.Result result = iaMinMax.minimax(racine, 55, true, Integer.MIN_VALUE , Integer.MAX_VALUE ); // Profondeur de recherche = 3
+
+
+        // Afficher le score et la carte choisie par l'IA
+        System.out.println("Score: " + result.score);
+        System.out.println("Carte choisie par l'IA: " + result.coup);
+
+        // Afficher le nombre de nodes visités
+        System.out.println("Nombre de nodes: " + iaMinMax.getNodeCount());
+
+        // afficher la table de memeorisation pour voir les configurations deja calculer
+        // Afficher le contenu de la memo
+        //iaMinMax.afficherMemo();
+
+        System.out.println("-------------------------------------------------");
+
+        /*Plateau plateauInitial1 = createInitialPlateau();
+        Node racine1 = new Node(plateauInitial1);
+        IAMinMax iaMinMax2 = new IAMinMax();
+        Card meilleurCoup = iaMinMax2.carteJouerIa(racine);
+        System.out.println("Nombre de nodes: " + iaMinMax2.getNodeCount());
+        System.out.println("Carte choisie par l'IA: " + meilleurCoup);*/
+
+
     }
 
     private static Plateau createInitialPlateau() {
@@ -87,7 +110,13 @@ public class TestIAMinMax {
         // configuration du plateau
         plateau.setJoueur1(joueur1);  // ia
         plateau.setJoueur2(joueur2); // adversaire
-        plateau.setJoueurCourant(joueur1); // on commande par l'i
+        plateau.setJoueurCourant(joueur1); // on commande par l'ia
+
+        // Initialisation des cartes des joueurs à une valeur quelconque
+        Card c1 = new Card(-1 , " ");
+        Card c2 = new Card(-1 , " ");
+        plateau.setCarteJoueur1(c1);
+        plateau.setCarteJoueur2(c2);
 
         return plateau;
     }

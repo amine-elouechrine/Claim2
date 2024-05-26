@@ -1,4 +1,4 @@
-package org.example.IA;
+/*package org.example.IA;
 
 import org.example.Modele.Plateau;
 
@@ -27,4 +27,4 @@ class MinimaxTask extends RecursiveTask<Integer> {
         IAMinMax iam = new IAMinMax(memo);
         return iam.minimax(node, depth, maximizingPlayer, alpha, beta);
     }
-}
+}*/

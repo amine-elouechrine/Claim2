@@ -45,6 +45,45 @@ public class Cards extends CardCollection{
         }
     }
 
+    public static int getNbCarteGobelins(){
+        return 14;
+    }
+
+    public static int getNbCarteKnights(){
+        return 8;
+    }
+
+    public static int getNbCarteUndeads(){
+        return 10;
+    }
+
+    public static int getNbCarteDwarves(){
+        return 10;
+    }
+
+    public static int getNbCarteDoppelgangers(){
+        return 10;
+    }
+
+    public static int getNbCarteFaction(String faction){
+        switch (faction) {
+            case "Goblins":
+                return getNbCarteGobelins();
+            case "Knight":
+                return getNbCarteKnights();
+            case "Undead":
+                return getNbCarteUndeads();
+            case "Dwarves":
+                return getNbCarteDwarves();
+            case "Doppelganger":
+                return getNbCarteDoppelgangers();
+            default:
+                return 0;
+        }
+    }
+
+
+
     // Méthode pour créer les cartes Knight
     private void createKnightCards() {
         for (int i = 2; i < 10; i++) {

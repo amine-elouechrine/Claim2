@@ -170,6 +170,14 @@ public class ReglesDeJeu {
             }
         }
 
+        if(carteAdversaire.getFaction().equals("Goblins")){
+            for (Card carte : mainJoueur.getAllCards()) {
+                if (carte.getFaction().equals("Knights")) {
+                    cartesJouables.add(carte);
+                }
+            }
+        }
+
         // Si le joueur n'a pas de carte de la même faction, il peut jouer n'importe quelle carte
         if (cartesJouables.isEmpty()) {
             cartesJouables.addAll(mainJoueur.getAllCards());
@@ -180,6 +188,32 @@ public class ReglesDeJeu {
 
         return cartesJouables;
     }
+
+    public static  List<Card> cartesJouablesGagnant(Card carteAdversaire, List<Card> carteJouable , Plateau plateau) {
+        List<Card> cartesGagnates = new ArrayList<>();
+        for (Card carte : carteJouable) {
+            Card carteGangante = carteGagnante(carte, carteAdversaire , plateau);
+            if(carteGangante == carte){
+                cartesGagnates.add(carte);
+            }
+        }
+        return cartesGagnates;
+    }
+
+    public static List<Card> cartesJouablesPerdant(Card carteAdversaire, List<Card> carteJouable , Plateau plateau) {
+        List<Card> cartesPerdantes = new ArrayList<>();
+        for (Card carte : carteJouable) {
+            Card carteGangante = carteGagnante(carte, carteAdversaire , plateau);
+            if(carteGangante != carte){
+                cartesPerdantes.add(carte);
+            }
+        }
+        return cartesPerdantes;
+    }
+
+
+
+
 
     /**
      * Méthode pour déterminer le gagnant d'une partie.

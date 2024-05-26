@@ -6,16 +6,12 @@ import org.example.Modele.Defausse;
 import org.example.Modele.Player;
 
 public class PlateauState {
-    //private Card carteAffichee;
     private Card carteJoueur1;
     private Card carteJoueur2;
-    //private Cards pioche;
-    private Defausse defausse;
     private Player joueur1;
     private Player joueur2;
     private Player joueurCourant;
     private Boolean phase;
-    //private int numberCardPlayed;
 
     public PlateauState(Card carteJoueur1, Card carteJoueur2,
                         Player joueur1, Player joueur2 , Player CurrentPlayer) {
@@ -27,6 +23,18 @@ public class PlateauState {
         this.phase = false;
     }
 
+    public PlateauState(Plateau other){
+        this.carteJoueur1 = other.carteJoueur1 != null ? new Card(other.carteJoueur1) : null;
+        this.carteJoueur2 = other.carteJoueur2 != null ? new Card(other.carteJoueur2) : null;
+        this.joueur1 = other.joueur1 != null ? new Player(other.joueur1) : null;
+        this.joueur2 = other.joueur2 != null ? new Player(other.joueur2) : null;
+        if (other.joueurCourant == other.joueur1) {
+            this.joueurCourant = this.joueur1;
+        } else {
+            this.joueurCourant = this.joueur2;
+        }
+        this.phase = other.phase;
+    }
 
     public Card getCarteJoueur1() {
         return carteJoueur1;
@@ -36,9 +44,6 @@ public class PlateauState {
         return carteJoueur2;
     }
 
-    public Defausse getDefausse() {
-        return defausse;
-    }
 
     public Player getJoueur1() {
         return joueur1;

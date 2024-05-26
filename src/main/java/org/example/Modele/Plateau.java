@@ -32,7 +32,7 @@ public class Plateau {
 
     /**
      * Constructeur de la classe Plateau pour l'intelligence artificielle pour puisse faire une copie du plateau.
-     * @param plateau
+     * @param
      */
     // Constructeur de copie phase 2
     public Plateau(Plateau other) {
@@ -54,21 +54,30 @@ public class Plateau {
 
     // Sauvegarde l'état actuel du plateau
     public PlateauState saveState() {
+
+        // Cloner les cartes des joueurs
+        Card clonedCarteJoueur1 = carteJoueur1.clone();
+        Card clonedCarteJoueur2 = carteJoueur2.clone();
+
+        // Cloner les joueurs
+        Player clonedJoueur1 = joueur1.clone();
+        Player clonedJoueur2 = joueur2.clone();
+
         Player CurrentPlayer ;
         if(joueur1 == joueurCourant){
-            CurrentPlayer = joueur1 ;
+            CurrentPlayer = clonedJoueur1 ;
         }else{
-            CurrentPlayer = joueur2 ;
+            CurrentPlayer = clonedJoueur2 ;
         }
-        return new PlateauState(carteJoueur1.clone(), carteJoueur2.clone(), joueur1.clone(), joueur2.clone() , CurrentPlayer);
+        return new PlateauState(clonedCarteJoueur1, clonedCarteJoueur2, clonedJoueur1, clonedJoueur2, CurrentPlayer);
     }
 
     // Restaure un état précédemment sauvegardé
     public void restoreState(PlateauState state) {
         this.carteJoueur1 = state.getCarteJoueur1();
         this.carteJoueur2 = state.getCarteJoueur2();
-        this.joueur1 = state.getJoueur1().clone();
-        this.joueur2 = state.getJoueur2().clone();
+        this.joueur1 = state.getJoueur1();
+        this.joueur2 = state.getJoueur2();
         if (state.getJoueurCourant() == state.getJoueur1())
             this.joueurCourant = this.joueur1 ;
         else
