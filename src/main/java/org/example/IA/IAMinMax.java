@@ -115,6 +115,7 @@ public class IAMinMax {
 
     // carte jouer par l'ia (c'est la carte qui a le meilleur score) : (on peu passer soit node en paramettre soit plateau
     public static Card carteJouerIa(Node racine){
+
         Result result = minimax(racine, 13, true, Integer.MIN_VALUE , Integer.MAX_VALUE );
         return result.coup;
     }

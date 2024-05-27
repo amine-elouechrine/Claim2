@@ -66,7 +66,7 @@ public class TestIAMinMax {
 
         // Appel de l'algorithme Minimax pour évaluer le meilleur coup
         // au depart il faut pas commancer avec Carte J1 = une valeur et Carte J2 = une valeur quelconque
-        IAMinMax.Result result = iaMinMax.minimax(racine, 55, true, Integer.MIN_VALUE , Integer.MAX_VALUE ); // Profondeur de recherche = 3
+        IAMinMax.Result result = iaMinMax.minimax(racine, 13, true, Integer.MIN_VALUE , Integer.MAX_VALUE ); // Profondeur de recherche = 3
 
 
         // Afficher le score et la carte choisie par l'IA
