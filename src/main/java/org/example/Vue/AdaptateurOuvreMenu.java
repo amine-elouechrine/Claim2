@@ -8,15 +8,24 @@ public class AdaptateurOuvreMenu implements ActionListener {
 
     JToggleButton toggle;
     JFrame fenetre;
+    NiveauGraphique niv;
 
-    AdaptateurOuvreMenu(JToggleButton t, JFrame f) {
+
+    AdaptateurOuvreMenu(JToggleButton t, JFrame f, NiveauGraphique n) {
         toggle = t;
         fenetre = f;
+        niv = n;
         f.setVisible(false);
+
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        fenetre.setVisible(toggle.isSelected());
+        if(toggle.isSelected()) {
+            fenetre.setVisible(true);
+        }else{
+            fenetre.setVisible(false);
+            niv.requestFocus();
+        }
     }
 }

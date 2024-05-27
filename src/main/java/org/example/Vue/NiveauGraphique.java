@@ -24,21 +24,16 @@ public class NiveauGraphique extends JComponent implements Observateur {
     int rectHeight;
     int rectWidth;
     int spacing;
-    int startXJ1P1;
-    int startXJ2P1;
-    int startXJ1P2;
-    int startXJ2P2;
-    int posYJ1;
-    int posYJ2;
-    int totalWidthJ1P1;
-    int totalWidthJ2P1;
-    int totalWidthJ1P2;
-    int totalWidthJ2P2;
+    int startHandXJ1;
+    int startHandXJ2;
+    int posHandYJ1;
+    int posHandYJ2;
+    int totalWidthJ1;
+    int totalWidthJ2;
     int totalHeight;
-    int HandJ1P1;
-    int HandJ1P2;
-    int HandJ2P1;
-    int HandJ2P2;
+    int nbCardHandJ1;
+    int nbCardHandJ2;
+
     int x, y;
     int fontSize_1;
     int fontSize_2;
@@ -46,7 +41,11 @@ public class NiveauGraphique extends JComponent implements Observateur {
     int panelHeight;
     int positionCarteJoueJ1X, positionCarteJoueJ1Y;
     int positionCarteJoueJ2X, positionCarteJoueJ2Y;
-
+    int positionCarteAfficheeX, positionCarteAfficheeY;
+    int positionDeckX, positionDeckY;
+    double deltaX, deltaY;
+    int totalIterations;
+    double currentX, currentY;
     // Variables pour l'affichage du score
     int numRows;
     int cellHeight;
@@ -137,10 +136,10 @@ public class NiveauGraphique extends JComponent implements Observateur {
         panelHeight = getHeight();
 
         // Taille de la main
-        HandJ1P1 = control.getNbCardsJ1P1(); // Nombre de carte dans la main du joueur 1 à la phase 1
-        HandJ1P2 = control.getNbCardsJ1P2(); // Nombre de carte dans la main du joueur 1 à la phase 2
-        HandJ2P1 = control.getNbCardsJ2P1(); // Nombre de carte dans la main du joueur 2 à la phase 1
-        HandJ2P2 = control.getNbCardsJ2P2(); // Nombre de carte dans la main du joueur 2 à la phase 2
+        nbCardHandJ1 = control.getNbCardsJ1P1(); // Nombre de carte dans la main du joueur 1 à la phase 1
+        // HandJ1P2 = control.getNbCardsJ1P2(); // Nombre de carte dans la main du joueur 1 à la phase 2
+        nbCardHandJ2 = control.getNbCardsJ2P1(); // Nombre de carte dans la main du joueur 2 à la phase 1
+        // HandJ2P2 = control.getNbCardsJ2P2(); // Nombre de carte dans la main du joueur 2 à la phase 2
 
         // Si une carte est jouée :
         carteJ1V = control.getCarteJoueur1V();
@@ -170,30 +169,32 @@ public class NiveauGraphique extends JComponent implements Observateur {
         spacing = 0;
 
         // Calculate total width of all rectangles and spacing
-        totalWidthJ1P1 = HandJ1P1 * rectWidth + (HandJ1P1 - 1) * spacing;
-        totalWidthJ2P1 = HandJ2P1 * rectWidth + (HandJ2P1 - 1) * spacing;
-        totalWidthJ1P2 = HandJ1P2 * rectWidth + (HandJ1P2 - 1) * spacing;
-        totalWidthJ2P2 = HandJ2P2 * rectWidth + (HandJ2P2 - 1) * spacing;
+        totalWidthJ1 = nbCardHandJ1 * rectWidth + (nbCardHandJ1 - 1) * spacing;
+        totalWidthJ2 = nbCardHandJ2 * rectWidth + (nbCardHandJ2 - 1) * spacing;
+        // totalWidthJ1P2 = HandJ1P2 * rectWidth + (HandJ1P2 - 1) * spacing;
+        // totalWidthJ2P2 = HandJ2P2 * rectWidth + (HandJ2P2 - 1) * spacing;
 
         // Calculate starting x position to center the rectangles
-        startXJ1P1 = (panelWidth - totalWidthJ1P1) / 2;
-        startXJ2P1 = (panelWidth - totalWidthJ2P1) / 2;
-        startXJ1P2 = (panelWidth - totalWidthJ1P2) / 2;
-        startXJ2P2 = (panelWidth - totalWidthJ2P2) / 2;
+        startHandXJ1 = (panelWidth - totalWidthJ1) / 2;
+        startHandXJ2 = (panelWidth - totalWidthJ2) / 2;
+        // startXJ1P2 = (panelWidth - totalWidthJ1P2) / 2;
+        // startXJ2P2 = (panelWidth - totalWidthJ2P2) / 2;
 
-        posYJ1 = hauteur() - rectHeight - 10;
-        posYJ2 = 10;
+        posHandYJ1 = hauteur() - rectHeight - 10;
+        posHandYJ2 = 10;
         totalHeight = rectHeight;
 
-        positionCarteJoueJ1X = totalWidthJ1P1 / 2 + startXJ1P1;
+        positionCarteJoueJ1X = totalWidthJ1 / 2 + startHandXJ1;
         positionCarteJoueJ1Y = panelHeight - totalHeight * 5 / 2 - 10;
-        positionCarteJoueJ2X = totalWidthJ2P1 / 2 + startXJ2P1;
+        positionCarteJoueJ2X = totalWidthJ2 / 2 + startHandXJ2;
         positionCarteJoueJ2Y = totalHeight * 3 / 2 + 10;
 
 
         /* Phase 1 */
         if (control.getPhase()) {
 
+
+            // A mettre en toggle-able dans le menu
             /*
             // Dessin de la main face caché du joueur 2 si il est une IA
             for (int i = 0; i < HandJ2P1; i++) {
@@ -208,16 +209,16 @@ public class NiveauGraphique extends JComponent implements Observateur {
             y = hauteur() - rectHeight - 10;
             main = control.getHandJ1P1();
             // Dessin des cartes de la main du joueur 1
-            for (int i = 0; i < HandJ1P1; i++) {
-                x = startXJ1P1 + i * (rectWidth + spacing);
+            for (int i = 0; i < nbCardHandJ1; i++) {
+                x = startHandXJ1 + i * (rectWidth + spacing);
                 drawHand(g, i, main, "Joueur 2");
             }
 
             y = 10;
             mainJ2 = control.getHandJ2P1();
             // Dessin de la main du joueur 2
-            for (int i = 0; i < HandJ2P1; i++) {
-                x = startXJ2P1 + i * (rectWidth + spacing);
+            for (int i = 0; i < nbCardHandJ2; i++) {
+                x = startHandXJ2 + i * (rectWidth + spacing);
                 drawHand(g, i, mainJ2, "Joueur 1");
             }
 
@@ -225,6 +226,8 @@ public class NiveauGraphique extends JComponent implements Observateur {
             drawFollowerDeck(g);
 
             // Draw carte a gagne
+            positionCarteAfficheeX = rectWidth * 5 / 2 + largeur() / 2;
+            positionCarteAfficheeY = hauteur() / 2 - rectHeight / 2;
             drawCardToWin(g);
 
             // Draw deck
@@ -242,16 +245,16 @@ public class NiveauGraphique extends JComponent implements Observateur {
             y = hauteur() - rectHeight - 10;
             main = control.getHandJ1P2();
             // Dessin des cartes de la main du joueur 1
-            for (int i = 0; i < HandJ1P2; i++) {
-                x = startXJ1P2 + i * (rectWidth + spacing);
+            for (int i = 0; i < nbCardHandJ1; i++) {
+                x = startHandXJ1 + i * (rectWidth + spacing);
                 drawHand(g, i, main, "Joueur 2");
             }
 
             y = 10;
             mainJ2 = control.getHandJ2P2();
             // Dessin de la main du joueur 2
-            for (int i = 0; i < HandJ2P2; i++) {
-                x = startXJ2P2 + i * (rectWidth + spacing);
+            for (int i = 0; i < nbCardHandJ2; i++) {
+                x = startHandXJ2 + i * (rectWidth + spacing);
                 drawHand(g, i, mainJ2, "Joueur 1");
             }
 
@@ -266,12 +269,19 @@ public class NiveauGraphique extends JComponent implements Observateur {
 
     /* Dessine la carte à gagner dans la phase 1 */
     private void drawCardToWin(Graphics g) {
-        x = rectWidth * 5 / 2 + largeur() / 2;
-        y = hauteur() / 2 - rectHeight / 2;
+
         getStrImage(control.getCarteAfficheeFactionScore());
         strImage += "_" + control.getCarteAfficheeValeur();
         image = imageMap.get(strImage);
-        g.drawImage(image, x, y, rectWidth, rectHeight, this);
+        if (currentX == 0 && currentY == 0) {
+            g.drawImage(image, positionCarteAfficheeX, positionCarteAfficheeY, rectWidth, rectHeight, this);
+        } else if (currentX<positionCarteAfficheeX||currentX>positionDeckX) {
+            g.drawImage(image, positionCarteAfficheeX, positionCarteAfficheeY, rectWidth, rectHeight, this);
+        } else if (currentY>positionCarteAfficheeY||currentY<positionDeckY) {
+            g.drawImage(image, positionCarteAfficheeX, positionCarteAfficheeY, rectWidth, rectHeight, this);
+        } else {
+            g.drawImage(image, (int) currentX, (int) currentY, rectWidth, rectHeight, this);
+        }
     }
 
     /* Dessine la pile de score */
@@ -324,10 +334,10 @@ public class NiveauGraphique extends JComponent implements Observateur {
     /* Dessine la pioche pour la phase 1 */
     private void drawDeck(Graphics g) {
         g.setColor(Color.ORANGE);
-        x = largeur() - largeur() / 8;
-        y = hauteur() / 2 - rectHeight * 3 / 4;
+        positionDeckX = largeur() - largeur() / 8;
+        positionDeckY = hauteur() / 2 - rectHeight * 3 / 4;
         // g.fillRect(x, y, rectHeight, rectWidth); // Rectangle latéral
-        g.drawImage(imageMap.get("backside"), x, y, rectWidth, rectHeight, this);
+        g.drawImage(imageMap.get("backside"), positionDeckX, positionDeckY, rectWidth, rectHeight, this);
     }
 
     /* Dessine la main selon un couple d'entier */
@@ -524,43 +534,35 @@ public class NiveauGraphique extends JComponent implements Observateur {
     }
 
     public int posYMainJ1() {
-        return posYJ1;
+        return posHandYJ1;
     }
 
     public int posYMainJ2() {
-        return posYJ2;
+        return posHandYJ2;
     }
 
     public int posXMainJ1() {
-        return startXJ1P1;
+        return startHandXJ1;
     }
 
     public int posXMainJ2() {
-        return startXJ2P1;
+        return startHandXJ2;
     }
 
     public int getLargeurMainJ1() {
-        return totalWidthJ1P1;
+        return totalWidthJ1;
     }
 
     public int getLargeurMainJ2() {
-        return totalWidthJ2P1;
+        return totalWidthJ2;
     }
 
-    public int getLargeurMainJ1P2() {
-        return totalWidthJ1P2;
+    public int getHandJ1() {
+        return nbCardHandJ1;
     }
 
-    public int getLargeurMainJ2P2() {
-        return totalWidthJ2P2;
-    }
-
-    public int getHandJ1P1() {
-        return HandJ1P1;
-    }
-
-    public int getHandJ1P2() {
-        return HandJ1P2;
+    public int getNbCardHandJ2() {
+        return nbCardHandJ2;
     }
 
     public int getHauteurMain() {
@@ -570,6 +572,22 @@ public class NiveauGraphique extends JComponent implements Observateur {
     @Override
     public void miseAJour() {
         repaint();
+    }
+
+    public void initializeAnimation(int totalIterations) {
+        this.totalIterations = totalIterations;
+
+        this.deltaX = (positionDeckX - positionCarteAfficheeX) / (double) totalIterations;
+        this.deltaY = (positionDeckY - positionCarteAfficheeY) / (double) totalIterations;
+        this.currentX = positionDeckX;
+        this.currentY = positionDeckY;
+
+    }
+
+    public void distribuer() {
+        currentX -= deltaX;
+        currentY -= deltaY;
+        miseAJour();
     }
 
     // Pour charger les images dans le hashMap
@@ -585,5 +603,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
             }
         }
     }
+
+
 }
 
