@@ -45,6 +45,7 @@ public class Cards extends CardCollection {
         }
     }
 
+    // Méthode pour obtenir le nombre de cartes de chaque faction dans le jeu (c'etait utiliser dans l'heurestique phase2)
     public static int getNbCarteGobelins(){
         return 14;
     }

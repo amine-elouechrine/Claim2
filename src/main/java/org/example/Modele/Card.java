@@ -19,7 +19,6 @@ public class Card {
     }
 
 
-
     public Card() {
         // Constructeur vide pour les tests
     }

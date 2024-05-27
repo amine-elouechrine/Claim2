@@ -2,13 +2,12 @@ package org.example.IA;
 
 import java.util.Scanner;
 
-import org.example.Modele.Card;
-import org.example.Modele.Cards;
-import org.example.Modele.Plateau;
-import org.example.Modele.Player;
+import org.example.Modele.*;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.example.IA.IA.determinerGagnantMancheIA;
 
 public class TestIAMinMax {
     public static void main(String[] args) {
@@ -18,7 +17,7 @@ public class TestIAMinMax {
 
         // Création de l'instance de l'IA Minimax
         IAMinMax iaMinMax = new IAMinMax();
-        Facile facile =new Facile();
+        //Facile facile =new Facile();
 
         // Boucle principale de jeu
         /*boolean partieTerminee = false;
@@ -67,29 +66,53 @@ public class TestIAMinMax {
 
         // Appel de l'algorithme Minimax pour évaluer le meilleur coup
         // au depart il faut pas commancer avec Carte J1 = une valeur et Carte J2 = une valeur quelconque
-        //IAMinMax.Result result = iaMinMax.minimax(racine, 13, true, Integer.MIN_VALUE , Integer.MAX_VALUE ); // Profondeur de recherche = 3
+        IAMinMax.Result result = iaMinMax.minimax(racine, 13, true, Integer.MIN_VALUE , Integer.MAX_VALUE ); // Profondeur de recherche = 3
 
         // Afficher le score et la carte choisie par l'IA
-        //System.out.println("Score: " + result.score);
-        //System.out.println("Carte choisie par l'IA: " + result.coup);
-        System.out.println("Carte choisie par l'IA: " + meilleurCoup);
+        System.out.println("Score: " + result.score);
+        System.out.println("Carte choisie par l'IA: " + result.coup);
 
         // Afficher le nombre de nodes visités
         System.out.println("Nombre de nodes: " + iaMinMax.getNodeCount());
 
         // afficher la table de memeorisation pour voir les configurations deja calculer
         // Afficher le contenu de la memo
-        //iaMinMax.afficherMemo();
-        int i = 0;
+        iaMinMax.afficherMemo();
+        /*int i = 0;
         while(i<13){
             System.out.println("i= "+i);
             if(racine.plateau.getJoueurCourant().getName().equals("MinMax")){
                 Card meilleurCoup = iaMinMax.carteJouerIa(racine);
                 racine.plateau.jouerCarte(meilleurCoup);
                 System.out.println("Carte choisie par l'IA: " + meilleurCoup);
-                Card carteFacile=.jouerCoupPhase2(plateau);
+                racine.plateau.switchJoueur();
+                Card carteFacile= facile.jouerCoupPhase2(racine.plateau);
+                racine.plateau.jouerCarte(carteFacile);
+                System.out.println("Carte jouée par facile : "+carteFacile);
+                racine.plateau.switchJoueur();
+
+                Card winningCard = ReglesDeJeu.determinerCarteGagnante(meilleurCoup, carteFacile , racine.plateau);
+                System.out.println("Carte gagnante : "+winningCard);
+
+                racine.plateau.attribuerCarteSecondPhase(winningCard, new ReglesDeJeu());
+                System.out.println("Le gagnant de la manche est : "+racine.plateau.getJoueurCourant());
+                i++;
+            }else{
+                Card carteFacile= facile.jouerCoupPhase2(racine.plateau);
+                racine.plateau.jouerCarte(carteFacile);
+                System.out.println("Carte jouée par facile : "+carteFacile);
+                Card meilleurCoup = iaMinMax.carteJouerIa(racine);
+                racine.plateau.jouerCarte(meilleurCoup);
+                System.out.println("Carte choisie par l'IA: " + meilleurCoup);
+
+                Card winningCard = ReglesDeJeu.determinerCarteGagnante(meilleurCoup, carteFacile , racine.plateau);
+                System.out.println("Carte gagnante : "+winningCard);
+
+                racine.plateau.attribuerCarteSecondPhase(winningCard, new ReglesDeJeu());
+                System.out.println("Le gagnant de la manche est : "+racine.plateau.getJoueurCourant());
+                i++;
             }
-        }
+        }*/
 
 
         System.out.println("-------------------------------------------------");

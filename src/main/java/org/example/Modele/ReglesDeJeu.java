@@ -189,14 +189,6 @@ public class ReglesDeJeu {
             }
         }
 
-        /*if(carteAdversaire.getFaction().equals("Goblins")){
-            for (Card carte : mainJoueur.getAllCards()) {
-                if (carte.getFaction().equals("Knights")) {
-                    cartesJouables.add(carte);
-                }
-            }
-        }*/
-
         // Si le joueur n'a pas de carte de la même faction, il peut jouer n'importe quelle carte
         if (cartesJouables.isEmpty()) {
             cartesJouables.addAll(mainJoueur.getAllCards());

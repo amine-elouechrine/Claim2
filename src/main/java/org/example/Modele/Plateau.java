@@ -130,6 +130,15 @@ public class Plateau {
         }
     }
 
+    public String generateState() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getJoueur1().getHandScndPhase().toString());
+        sb.append(getJoueur2().getHandScndPhase().toString());
+        sb.append(getCarteJoueur1().toString());
+        sb.append(getCarteJoueur2().toString());
+        return sb.toString();
+    }
+
 
 
     public boolean getPhase() {
@@ -460,23 +469,6 @@ public class Plateau {
 
     public Boolean estPhase1() {
         return !(joueur1.getHand().isEmpty() && joueur2.getHand().isEmpty());
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Plateau plateau = (Plateau) o;
-
-        // sa suffit pas de comparer la carte joueur1 et carte joueur2 seulement parce qu'il y a plusieurs gobelins
-        // Compare relevant fields to determine equality
-        return  Objects.equals(carteJoueur1, plateau.carteJoueur1) &&
-                Objects.equals(carteJoueur2, plateau.carteJoueur2) &&
-                Objects.equals(joueur1.pileDeScore, plateau.joueur1.pileDeScore) &&
-                Objects.equals(joueur2.pileDeScore, plateau.joueur2.pileDeScore) &&
-                Objects.equals(joueurCourant.getName(), plateau.joueurCourant.getName()) &&
-                Objects.equals(phase, plateau.phase);
     }
 
     @Override
