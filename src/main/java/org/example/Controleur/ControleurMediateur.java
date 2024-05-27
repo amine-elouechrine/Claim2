@@ -255,7 +255,7 @@ public class ControleurMediateur implements CollecteurEvenements {
                 public void actionPerformed(ActionEvent e) {
                     jeu.playTrick();
                     jeu.setCarteJouer();
-                    jeu.metAJour();
+                    //jeu.metAJour();
                     startDistributionAnimation(iterations);
                     pause = false;
                 }

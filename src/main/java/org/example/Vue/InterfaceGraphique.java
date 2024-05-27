@@ -15,11 +15,13 @@ public class InterfaceGraphique implements Runnable, InterfaceUtilisateur {
     JFrame fenetre;
     CollecteurEvenements control;
     AdaptateurClavier adaptateurClavier;
+    AdaptateurTransitionPhases adaptateurTransitionPhases;
 
     InterfaceGraphique(Jeu jeu, CollecteurEvenements c) {
         j = jeu;
         control = c;
         adaptateurClavier = new AdaptateurClavier(control, new ComposantSauvegarde(control));
+        adaptateurTransitionPhases = new AdaptateurTransitionPhases(control);
     }
 
     public static void demarrer(Jeu j, CollecteurEvenements c) {
@@ -57,9 +59,12 @@ public class InterfaceGraphique implements Runnable, InterfaceUtilisateur {
         JToggleButton menu = new JToggleButton("Menu");
         menuPanel.add(menu, BorderLayout.NORTH);
         ComposantMenuPartie menuPartie = new ComposantMenuPartie(BoxLayout.PAGE_AXIS, control, j);
-        menu.addActionListener(new AdaptateurOuvreMenu(menu, menuPartie));
+        menu.addActionListener(new AdaptateurOuvreMenu(menu, menuPartie,niv));
         fenetre.add(menuPanel, BorderLayout.EAST);
         fenetre.add(bh, BorderLayout.NORTH);
+        ComposantTransitionPhases transitionPhases = new ComposantTransitionPhases();
+        //fenetre.add(transitionPhases);
+
 
         Timer chrono = new Timer(1, new AdaptateurTemps(control));
         chrono.start();
