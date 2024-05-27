@@ -2,6 +2,7 @@ package org.example.Modele;
 
 import org.example.Patternes.Observable;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
@@ -245,7 +246,7 @@ public class Jeu extends Observable {
         return joueur.getName();
     }
 
-    public void annulerCoup() {
+    public void annulerCoup() throws IOException {
         g.annuler(getPlateau());
     }
 
@@ -257,10 +258,12 @@ public class Jeu extends Observable {
         g.addToHistory(getPlateau());
     }
 
-    public void sauve(String filename) {
+    public void sauve(String filename) throws FileNotFoundException {
+        g.sauve(filename,getPlateau());
     }
 
     public void restaure(String filename) throws IOException {
+        this.plateau=g.restaure(filename);
     }
 
     public Player getJoueur1() {

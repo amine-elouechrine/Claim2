@@ -1,5 +1,7 @@
 package org.example.Vue;
 
+import org.example.Patternes.Observateur;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public interface CollecteurEvenements {
@@ -58,10 +60,10 @@ public interface CollecteurEvenements {
 
     /* Adaptateurs */
     void refaire();
-
-    void annuler();
-
-    void sauve(String filename);
+  
+    void annuler() throws IOException;
+  
+    void sauve(String filename) throws FileNotFoundException;
   
     void restaure(String filename) throws IOException;
   
@@ -71,5 +73,9 @@ public interface CollecteurEvenements {
 
     void clicSourisJ2(int index);
 
+    void tictac();
 
+    void ajouteInterfaceUtilisateur(InterfaceUtilisateur vue);
+
+    void startDistributionAnimation(int totalIterations);
 }

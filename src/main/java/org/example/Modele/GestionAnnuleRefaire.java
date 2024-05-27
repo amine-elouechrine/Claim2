@@ -62,13 +62,18 @@ public class GestionAnnuleRefaire {
     public void annuler(Plateau p) {
         if (peutAnnuler()) {
             Plateau np = annule.pop();
-            refaire.push(np);
+            Plateau n=clonePlateau(p);
+            refaire.push(n);
 
             p.setPhase(np.getPhase());
             p.setPioche(np.getPioche());
             p.setDefausse(np.getDefausse());
             p.setJoueur1(np.getJoueur1());
             p.setJoueur2(np.getJoueur2());
+            if (!np.phase){
+                p.getJoueur1().setHand(p.getJoueur1().getHandScndPhase());
+                p.getJoueur2().setHand(p.getJoueur2().getHandScndPhase());
+            }
             p.setCarteAffichee(np.getCarteAffichee());
             p.setCarteJoueur1(np.getCarteJoueur1());
             p.setCarteJoueur2(np.getCarteJoueur2());
@@ -79,23 +84,25 @@ public class GestionAnnuleRefaire {
     public void refaire(Plateau p) {
         if (peutRefaire()) {
             Plateau np = refaire.pop();
-            annule.push(np);
+            Plateau n = clonePlateau(p);
+            annule.push(n);
 
             p.setPhase(np.getPhase());
             p.setPioche(np.getPioche());
             p.setDefausse(np.getDefausse());
             p.setJoueur1(np.getJoueur1());
             p.setJoueur2(np.getJoueur2());
+            if (!np.phase){
+                p.getJoueur1().setHand(p.getJoueur1().getHandScndPhase());
+                p.getJoueur2().setHand(p.getJoueur2().getHandScndPhase());
+            }
             p.setCarteAffichee(np.getCarteAffichee());
             p.setCarteJoueur1(np.getCarteJoueur1());
             p.setCarteJoueur2(np.getCarteJoueur2());
             p.setJoueurCourant(np.getJoueurCourant());
         }
     }
-
-
-    // Ajoute un plateau à la pile annule
-    public void addToHistory(Plateau plateau) {
+    public Plateau clonePlateau(Plateau plateau){
         Plateau p = new Plateau();
 
         p.setPhase(plateau.getPhase());
@@ -196,7 +203,12 @@ public class GestionAnnuleRefaire {
             joueurCour = nPlayer2;
         }
         p.setJoueurCourant(joueurCour);
+        return p;
+    }
 
+    // Ajoute un plateau à la pile annule
+    public void addToHistory(Plateau plateau) {
+        Plateau p = clonePlateau(plateau);
         annule.push(p);
         clearStack();
     }
@@ -363,7 +375,10 @@ public class GestionAnnuleRefaire {
         PileDeScore pileJ1 = restaurePileDeScore(r);
         int scoreJ1 = Integer.parseInt(r.readLine());
         Player joueur1 = new Player(namePlayer1);
-        joueur1.setHand(handP1J1);
+        if (phase)
+            joueur1.setHand(handP1J1);
+        else
+            joueur1.setHand(handP2J1);
         joueur1.setScore(scoreJ1);
         joueur1.setHandScndPhase(handP2J1);
         joueur1.setPileDeScore(pileJ1);
