@@ -20,7 +20,7 @@ public abstract class GeneralPlayer {
     }
 
     public void setHand(Hand main) {
-        this.hand = main;
+        this.hand = main ;
     }
 
     public Hand getHandScndPhase() {

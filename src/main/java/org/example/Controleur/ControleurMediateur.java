@@ -1,5 +1,6 @@
 package org.example.Controleur;
 
+import org.example.IA.IA;
 import org.example.Modele.Card;
 import org.example.Modele.Hand;
 import org.example.Modele.Jeu;
@@ -18,9 +19,8 @@ import org.example.Vue.InterfaceUtilisateur;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.List;
-import java.util.Map;
 
 public class ControleurMediateur implements CollecteurEvenements {
 
@@ -34,16 +34,18 @@ public class ControleurMediateur implements CollecteurEvenements {
     Animation mouvement;
     boolean animationsSupportees, animationsActives, pause;
 
-
+    IA iaFacile;
     boolean jouable = true;
+    Card carteIA;
 
-    public ControleurMediateur(Jeu j) {
+    public ControleurMediateur(Jeu j, IA ia) {
         jeu = j;
         animations = new SequenceListe<>();
         dureePause = 1600;
         iterations = 60;
         animationsSupportees = false;
         animationsActives = false;
+        iaFacile = ia;
     }
 
     /* Getteurs pour la communication entre interface et moteur */
@@ -95,6 +97,10 @@ public class ControleurMediateur implements CollecteurEvenements {
         return jeu.getCarteAfficheeValeur();
     }
 
+    public boolean isJoueurCourantJoueur1() {
+        return (getJoueurCourant().equals(jeu.getJoueur1()));
+    }
+
     public int getNbCardFactionFromPileScoreJ1(String factionName) {
         return jeu.getNbCardFactionFromPileScoreJ1(factionName);
     }
@@ -127,8 +133,8 @@ public class ControleurMediateur implements CollecteurEvenements {
         return jeu.getPlateau().getJoueurCourant().getHand();
     }
 
-    public Player getPlayerCourant() {
-        return jeu.getPlateau().getJoueurCourant();
+    public Player getJoueurCourant() {
+        return jeu.getJoueurCourant();
     }
 
     public int[][] getCarteJouable() {
@@ -140,7 +146,7 @@ public class ControleurMediateur implements CollecteurEvenements {
     }
 
     public String getNomJoueurCourant() {
-        return jeu.getNomJoueur(getPlayerCourant());
+        return jeu.getNomJoueur(getJoueurCourant());
     }
 
     public int getCarteJoueur1V() {
@@ -148,19 +154,38 @@ public class ControleurMediateur implements CollecteurEvenements {
     }
 
     @Override
-    public void annuler() {
-        jeu.annuler();
+    public void annuler() throws IOException {
+        jeu.annulerCoup();
+        if (jeu.getPlateau().getCarteJoueur1() == null && jeu.getPlateau().getCarteJoueur2() != null) {
+            carteLeader = jeu.getPlateau().getCarteJoueur2();
+        } else if (jeu.getPlateau().getCarteJoueur1() != null && jeu.getPlateau().getCarteJoueur2() == null) {
+            carteLeader = jeu.getPlateau().getCarteJoueur1();
+        } else {
+            carteLeader = null;
+        }
         jeu.metAJour();
     }
 
     @Override
     public void refaire() {
-        jeu.refaire();
+        jeu.refaireCoup();
+        System.out.println("carte Leader " + carteLeader);
+        /*if (jeu.getPlateau().getCarteJoueur1() != null ||jeu.getPlateau().getCarteJoueur2() != null ) {
+            carteLeader=null;
+        }
+        else{
+            if (jeu.getPlateau().getJoueurCourant() == jeu.getPlateau().getJoueur1()) {
+                carteLeader=jeu.getPlateau().getCarteJoueur1();
+            }
+            else{
+                carteLeader=jeu.getPlateau().getCarteJoueur2();
+            }
+        }*/
         jeu.metAJour();
     }
 
     @Override
-    public void sauve(String filename) {
+    public void sauve(String filename) throws FileNotFoundException {
         jeu.sauve(filename);
         jeu.metAJour();
     }
@@ -168,6 +193,17 @@ public class ControleurMediateur implements CollecteurEvenements {
     @Override
     public void restaure(String filename) throws IOException {
         jeu.restaure(filename);
+
+        if(jeu.getPlateau().getCarteJoueur1()!=null){
+            carteLeader=jeu.getPlateau().getCarteJoueur1();
+        }
+        else if (jeu.getPlateau().getCarteJoueur2()!=null) {
+            carteLeader=jeu.getPlateau().getCarteJoueur2();
+        }else carteLeader=null;
+        System.out.println("carte leader " + carteLeader);
+        for(Card carte : jeu.getPlateau().getJoueurCourant().getHandScndPhase().getAllCards()){
+            System.out.println(carte);
+        }
         jeu.metAJour();
     }
 
@@ -175,10 +211,11 @@ public class ControleurMediateur implements CollecteurEvenements {
     public void nouvellePartie() {
         jeu.getPlateau().initialiserJeu();
         jeu.setCarteJouer();
+        jeu.getPlateau().setPhase(true);
+        carteLeader=null;
         jeu.metAJour();
         startDistributionAnimation(iterations);
     }
-
 
     public int getCarteJoueur1F() {
         return jeu.getCarteJoueur1F();
@@ -217,7 +254,20 @@ public class ControleurMediateur implements CollecteurEvenements {
         jeu.metAJour();
     }
 
+    public void tourIA() {
+        if (getPhase())
+            carteIA = iaFacile.jouerCoupPhase1(jeu.getPlateau());
+        else
+            carteIA = iaFacile.jouerCoupPhase2(jeu.getPlateau());
+
+        if (jeu.estFinPartie()) {
+            // Calcul des scores
+        }
+        jouerCarteIA(carteIA);
+    }
+
     public void joueTour(int index) {
+
         if (jeu.estFinPartie()) {
             // Calcul des scores
             System.out.println("La partie est terminée\n");
@@ -229,6 +279,7 @@ public class ControleurMediateur implements CollecteurEvenements {
         }
 
         if (jouable) {
+            jeu.addAction();
             jouerCarte(index);
         }
 
@@ -237,7 +288,24 @@ public class ControleurMediateur implements CollecteurEvenements {
         // IA.joue() ?
 
         // Ajouter temporisation / animation pour la carte jouer par l'IA
+        while (jeu.getJoueur2() == jeu.getJoueurCourant()) {
+            tourIA();
+        }
+    }
 
+    private void jouerCarteIA(Card carte) {
+        jeu.getPlateau().jouerCarte(carte);
+        jeu.getJoueur2().getHand().removeCard(carte);
+        if (jeu.estCarteJoueJ1() && jeu.estCarteJoueJ2()) {
+            jeu.playTrick();
+            // On joue le plie
+            // Ajouter temporisation / Animation pour la bataille et l'attribution des cartes après le plie
+            jeu.setCarteJouer();
+            carteLeader = null;
+        } else {
+            carteLeader = carte;
+            jeu.switchJoueur();
+        }
     }
 
 
