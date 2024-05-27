@@ -1,70 +1,76 @@
 package org.example.Modele;
+
 import org.example.Patternes.Observable;
 
 import java.io.IOException;
 import java.util.List;
 
 public class Jeu extends Observable {
+
     Plateau plateau;
-    Player joueur1;
-    Player joueur2;
-    Cards cards;
     GestionAnnuleRefaire g;
-
-    public ReglesDeJeu r;
-
+    ReglesDeJeu r;
 
     public Jeu() {
         plateau = new Plateau();
         plateau.initialiserJeu();
+        g = new GestionAnnuleRefaire();
+        g.addToHistory(getPlateau());
         r = new ReglesDeJeu();
-        g = new GestionAnnuleRefaire(plateau);
     }
 
     public boolean getPhase() {
-        return plateau.getPhase();
+        return getPlateau().getPhase();
     }
 
     public void switchPhase() {
-        plateau.switchPhase();
+        getPlateau().switchPhase();
         switchHand();
     }
 
     public void switchJoueur() {
-        r.switchJoueur(plateau);
+        r.switchJoueur(getPlateau());
     }
 
     public void afficherMain() {
-        plateau.joueur1.getHand().printHand();
-        plateau.joueur2.getHand().printHand();
+        getPlateau().joueur1.getHand().printHand();
+        getPlateau().joueur2.getHand().printHand();
 
     }
 
     public void switchHand() {
         // Changer main joueur 1
         Hand main;
-        main = plateau.getJoueur1().getHandScndPhase();
-        plateau.joueur1.hand = main;
+        main = getPlateau().getJoueur1().getHandScndPhase();
+        getPlateau().getJoueur1().hand = main;
 
         // Changer main joueur 2
-        main = plateau.getJoueur2().getHandScndPhase();
-        plateau.joueur2.hand = main;
+        main = getPlateau().getJoueur2().getHandScndPhase();
+        getPlateau().getJoueur2().hand = main;
+    }
+
+    public Player getJoueur2() {
+        return getPlateau().getJoueur2();
+    }
+
+    public Player getJoueurCourant() {
+        return getPlateau().getJoueurCourant();
     }
 
     public Hand getHandJ1P1() {
-        return plateau.getJoueur1().getHand();
+        return getPlateau().getJoueur1().getHand();
     }
 
     public Hand getHandJ2P1() {
-        return plateau.getJoueur2().getHand();
+        return getPlateau().getJoueur2().getHand();
     }
 
     public Hand getHandJ1P2() {
-        return plateau.getJoueur1().getHandScndPhase();
+        return getPlateau().getJoueur1().getHandScndPhase();
     }
 
     public Hand getHandJ2P2() {
-        return plateau.getJoueur2().getHandScndPhase();
+        return getPlateau().getJoueur2().getHandScndPhase();
     }
 
     public Plateau getPlateau() {
@@ -72,11 +78,11 @@ public class Jeu extends Observable {
     }
 
     public boolean estFinPhase1() {
-        return plateau.estFinPhase(plateau.getPhase());
+        return getPlateau().estFinPhase(getPlateau().getPhase());
     }
 
     public boolean estFinPartie() {
-        return plateau.isEndOfGame();
+        return getPlateau().isEndOfGame();
     }
 
     private int[][] getListeCarte(List<Card> listeCarte) {
@@ -121,7 +127,7 @@ public class Jeu extends Observable {
     }
 
     public String getCardtoString(int index) {
-        Card carte = plateau.joueurCourant.hand.getCard(index);
+        Card carte = getPlateau().getJoueurCourant().getHand().getCard(index);
         int valeur = carte.getValeur();
         String faction = carte.getFaction();
         return "\nCarte jouée : " + faction + " " + valeur;
@@ -133,15 +139,15 @@ public class Jeu extends Observable {
 
     public boolean estCarteJouable(Card CarteAdverse, int indiceCarteJoue) {
         List<Card> preselected = preselected(CarteAdverse, getPlateau().getJoueurCourant().getHand());
-        return plateau.coupJouable(preselected, indiceCarteJoue, plateau.getJoueurCourant().getHand());
+        return getPlateau().coupJouable(preselected, indiceCarteJoue, getPlateau().getJoueurCourant().getHand());
     }
 
     public int getCarteFaction(int index) {
-        return plateau.joueurCourant.hand.getCard(index).getFactionScore();
+        return getPlateau().getJoueurCourant().getHand().getCard(index).getFactionScore();
     }
 
     public int getCarteValeur(int index) {
-        return plateau.joueurCourant.hand.getCard(index).getValeur();
+        return getPlateau().getJoueurCourant().getHand().getCard(index).getValeur();
     }
 
     public int getCarteAfficheeFactionScore() {
@@ -169,8 +175,8 @@ public class Jeu extends Observable {
     }
 
     public int getCarteJoueur1F() {
-        if (plateau.getCarteJoueur1() != null)
-            return plateau.getCarteJoueur1().getFactionScore();
+        if (getPlateau().getCarteJoueur1() != null)
+            return getPlateau().getCarteJoueur1().getFactionScore();
         else
             return -1;
     }
@@ -180,79 +186,84 @@ public class Jeu extends Observable {
     }
 
     public int getCarteJoueur1V() {
-        if (plateau.getCarteJoueur1() != null)
-            return plateau.getCarteJoueur1().getValeur();
+        if (getPlateau().getCarteJoueur1() != null)
+            return getPlateau().getCarteJoueur1().getValeur();
         else
             return -1;
     }
 
     public int getCarteJoueur2F() {
-        if (plateau.getCarteJoueur2() != null)
-            return plateau.getCarteJoueur2().getFactionScore();
+        if (getPlateau().getCarteJoueur2() != null)
+            return getPlateau().getCarteJoueur2().getFactionScore();
         else
             return -1;
     }
 
     public int getCarteJoueur2V() {
-        if (plateau.getCarteJoueur2() != null)
-            return plateau.getCarteJoueur2().getValeur();
+        if (getPlateau().getCarteJoueur2() != null)
+            return getPlateau().getCarteJoueur2().getValeur();
         else
             return -1;
     }
 
     public boolean estCarteJoueJ1() {
-        return (plateau.getCarteJoueur1() != null);
+        return (getPlateau().getCarteJoueur1() != null);
     }
 
     public boolean estCarteJoueJ2() {
-        return (plateau.getCarteJoueur2() != null);
+        return (getPlateau().getCarteJoueur2() != null);
     }
 
     public void playTrick() {
         if (getPhase()) {
-            Card carteGagnante = ReglesDeJeu.carteGagnante(plateau.getCarteJoueur1(), plateau.getCarteJoueur2() , plateau);
-            plateau.attribuerCarteFirstPhase(carteGagnante,r);
+            Card carteGagnante = ReglesDeJeu.carteGagnante(getPlateau().getCarteJoueur1(), getPlateau().getCarteJoueur2(), getPlateau());
+            getPlateau().attribuerCarteFirstPhase(carteGagnante, r);
             if (estFinPhase1()) {
                 switchPhase();
             }
             if (getPhase()) {
-                plateau.carteAffichee = plateau.pioche.getCard();
+                getPlateau().carteAffichee = getPlateau().getPioche().getCard();
             }
         } else {
-            Card carteGagnante = ReglesDeJeu.carteGagnante(plateau.getCarteJoueur1(), plateau.getCarteJoueur2() , plateau);
-            plateau.attribuerCarteSecondPhase(carteGagnante, r);
+            Card carteGagnante = ReglesDeJeu.carteGagnante(getPlateau().getCarteJoueur1(), getPlateau().getCarteJoueur2(), getPlateau());
+            getPlateau().attribuerCarteSecondPhase(carteGagnante, r);
 
         }
     }
 
     public void setCarteJouer() {
-        plateau.setCarteJoueur1(null);
-        plateau.setCarteJoueur2(null);
+        getPlateau().setCarteJoueur1(null);
+        getPlateau().setCarteJoueur2(null);
     }
 
 
     public void getHandtoString() {
-        plateau.joueurCourant.hand.printHand();
+        getPlateau().getJoueurCourant().getHand().printHand();
     }
 
     public String getNomJoueur(Player joueur) {
         return joueur.getName();
     }
 
-    public void annuler() {
-        g.annuler();
-        plateau = g.getPlateau();
+    public void annulerCoup() {
+        g.annuler(getPlateau());
     }
 
-    public void refaire() {
-        g.refaire();
-        plateau = g.getPlateau();
+    public void refaireCoup() {
+        g.refaire(getPlateau());
+    }
+
+    public void addAction() {
+        g.addToHistory(getPlateau());
     }
 
     public void sauve(String filename) {
-        g.sauve(filename);
     }
+
     public void restaure(String filename) throws IOException {
-        g.restaure(filename);
+    }
+
+    public Player getJoueur1() {
+        return getPlateau().getJoueur1();
     }
 }

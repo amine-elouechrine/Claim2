@@ -2,6 +2,7 @@ package org.example.IA;
 
 import org.example.Modele.Card;
 import org.example.Modele.Hand;
+import org.example.Modele.Plateau;
 import org.example.Modele.Player;
 
 import java.util.Random;
@@ -16,22 +17,33 @@ public class Facile extends IA {
         rand = new Random();
     }
 
+    public static void main(String[] args) {
+        Facile ia = new Facile();
+        Plateau plateau = new Plateau();
+        plateau.initialiserJeu();
+        plateau.setCarteJoueur2(plateau.getJoueur2().getHand().getCard(0));
+        Card card = ia.joueCoupPhase1F(plateau);
+        System.out.println(card);
+    }
 
-    // mainIA : doit etre hand 
-    public Card joueCoupPhase1F(Hand mainIA, boolean suivre_faction, Card carte_adversaire) {
-        System.out.println(";;;''''''" + mainIA.size());
-        if (suivre_faction) {
-            return jouerAvecSuiviFaction(carte_adversaire, mainIA);
+    public Card joueCoupPhase1F(Plateau plateau) {
+        if (!plateau.estLeader()) {
+            return jouerAvecSuiviFaction(plateau);
         } else {
-            return jouerCarteAleatoire(mainIA);
+            return jouerCarteAleatoire(plateau.getJoueurCourant().getHand());
         }
     }
 
-    private Card jouerAvecSuiviFaction(Card carte_adversaire , Hand main) {
-        Hand carteJouable = getCardsOfSameFaction(carte_adversaire.getFaction());
+    private Card jouerAvecSuiviFaction(Plateau plateau) {
+        Hand carteJouable;
+
+        carteJouable = getCardsOfSameFaction2(plateau.getJoueurCourant().getHand(), plateau.getCardAdversaire().getFaction());
 
         if (carteJouable.isEmpty()) {
-            return jouerCarteAleatoire(main);
+            if (plateau.estPhase1_2()) {
+                return jouerCarteAleatoire(plateau.getJoueurCourant().getHand());
+            } else return jouerCarteAleatoire(plateau.getJoueurCourant().getHand());
+
         } else {
             return choisirCarteAleatoire(carteJouable);
         }
@@ -39,21 +51,15 @@ public class Facile extends IA {
 
     private Card jouerCarteAleatoire(Hand main) {
         int index = rand.nextInt(main.getAllCards().size());
+
         Card carte = main.getAllCards().get(index);
-        System.out.println("jouer carte : " + carte.getFaction() + " " + carte.getValeur());
-        return carte;
-    }
-
-    private Card choisirCarteAleatoire(Hand carteJouable) {
-        int index = rand.nextInt(carteJouable.getAllCards().size());
-        Card carte = carteJouable.getAllCards().get(index);
-        System.out.println("jouer carte : " + carte.getFaction() + " " + carte.getValeur());
+        //System.out.println("jouer carte : " + carte.getFaction() + " " + carte.getValeur());
         return carte;
     }
 
 
 
-    public Card jouer_coup_phase1_F(Hand mainIA, boolean suivre_faction, Card carte_adversaire) {
+    /*public Card jouer_coup_phase1_F(Plateau plateau) {
         System.out.println(";;;''''''"+hand.size());
         if(suivre_faction){
             Hand carteJouable;
@@ -76,20 +82,17 @@ public class Facile extends IA {
             //System.out.println("jouer carte par facile: " + carte.getFaction() + " " + carte.getValeur());
             return carte;
         }
-    }
+    }*/
 
-    // mainIA : doit etre handScndPhase
-    public Card jouerCoupPhase2F(Hand mainIA, boolean suivre_faction, Card carte_adversaire) {
-        System.out.println(";;;''''''" + handScndPhase.size());
-        if (suivre_faction) {
-            return jouerAvecSuiviFaction(carte_adversaire , mainIA); 
-        } else {
-            return jouerCarteAleatoire(handScndPhase);
-        }
+    private Card choisirCarteAleatoire(Hand carteJouable) {
+        int index = rand.nextInt(carteJouable.getAllCards().size());
+        Card carte = carteJouable.getAllCards().get(index);
+        //System.out.println("jouer carte : " + carte.getFaction() + " " + carte.getValeur());
+        return carte;
     }
 
 
-    public Card jouer_coup_phase2_F(Hand mainIA, boolean suivre_faction, Card carte_adversaire) {
+    /*public Card jouer_coup_phase2_F(Plateau plateau) {
         System.out.println(";;;''''''"+handScndPhase.size());
         if(suivre_faction){
             Hand carteJouable;
@@ -112,22 +115,30 @@ public class Facile extends IA {
             //System.out.println("jouer carte par facile: " + carte.getFaction() + " " + carte.getValeur());
             return carte;
         }
+    }*/
+
+    // mainIA : doit etre handScndPhase
+    public Card jouerCoupPhase2F(Plateau plateau) {
+        //System.out.println(";;;''''''" + handScndPhase.size());
+        if (!plateau.estLeader()) {
+            return jouerAvecSuiviFaction(plateau);
+        } else {
+            return jouerCarteAleatoire(plateau.getJoueurCourant().getHand());
+        }
     }
 
     @Override
-    public Card jouerCoupPhase1(Hand mainIA, boolean suivre_faction, Card carte_adversaire) {
-        return jouer_coup_phase1_F(mainIA, suivre_faction, carte_adversaire);
+    public Card jouerCoupPhase1(Plateau plateau) {
+        return joueCoupPhase1F(plateau);
     }
 
     @Override
-    public Card jouerCoupPhase2(Hand mainIA, boolean suivre_faction, Card carte_adversaire) {
-        return jouer_coup_phase2_F(mainIA, suivre_faction, carte_adversaire);
+    public Card jouerCoupPhase2(Plateau plateau) {
+        return jouerCoupPhase2F(plateau);
     }
-
 
     @Override
     public Card jouerCarte(int indexCard) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'jouerCarte'");
+        return null;
     }
 }

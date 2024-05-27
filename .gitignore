@@ -36,47 +36,30 @@ build/
 
 ### Mac OS ###
 .DS_Store
-target/
-!.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
-
-### IntelliJ IDEA ###
-.idea/modules.xml
-.idea/jarRepositories.xml
-.idea/compiler.xml
-.idea/libraries/
-*.iws
-*.iml
-*.ipr
-
-### Eclipse ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
-
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
-build/
-!**/src/main/**/build/
-!**/src/test/**/build/
-
-### VS Code ###
-.vscode/
-
-### Mac OS ###
-.DS_Store
 /.idea/
 /src/main/resources/maquette_carte_Claim.xcf
 /src/main/java/org/example/Modele/out/production/Modele/
 /src/main/java/org/example/Modele/.idea/
-/src/main/java/org/example/Modele/out/production/Modele/
-/.idea/
+/src/main/resources/resources.zip
+/src/main/resources/cartes_ressources.zip
+/src/main/resources/card_template.xcf
+/src/main/resources/doppelganger_2_template.png
+/src/main/resources/dwarf_5_template.png
+/src/main/resources/faction_power_rule_applicable_template.png
+/src/main/resources/goblin_0_template.png
+/src/main/resources/icon_dop_template.png
+/src/main/resources/icon_dwa_template.png
+/src/main/resources/icon_gob_template.png
+/src/main/resources/icon_kni_template.png
+/src/main/resources/icon_und_template.png
+/src/main/resources/knight_9_template.png
+/src/main/resources/question_mark_template.png
+/src/main/resources/template.zip
+/src/main/resources/tombstone_template.png
+/src/main/resources/undead_1_template.png
+/src/main/resources/unselected_card_template.png
+/src/main/resources/yellow_square_2.png
+/src/main/java/org/example/Modele/structureSauve.txt
+/src/main/resources/Claim_ressources.xcf
+*.txt
+/framework/

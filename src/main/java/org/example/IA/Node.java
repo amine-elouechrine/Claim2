@@ -2,9 +2,10 @@ package org.example.IA;
 
 import org.example.Modele.Card;
 import org.example.Modele.Plateau;
+
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
-import java.io.PrintWriter;
 
 public class Node {
 
@@ -53,7 +54,7 @@ public class Node {
     }
 
     public void setScore(int score) {
-        this.score=score;
+        this.score = score;
     }
 
     public void setCarteJoueeParIa(Card carte) {
@@ -65,4 +66,3 @@ public class Node {
     }
 
 }
-
