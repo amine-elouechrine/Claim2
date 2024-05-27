@@ -41,7 +41,12 @@ public class NiveauGraphique extends JComponent implements Observateur {
     int panelHeight;
     int positionCarteJoueJ1X, positionCarteJoueJ1Y;
     int positionCarteJoueJ2X, positionCarteJoueJ2Y;
-
+    int positionCarteAfficheeX, positionCarteAfficheeY;
+    int positionDeckX, positionDeckY;
+    int deltaX;
+    int deltaY;
+    int totalIterations;
+    double currentX, currentY;
     // Variables pour l'affichage du score
     int numRows;
     int cellHeight;
@@ -93,6 +98,10 @@ public class NiveauGraphique extends JComponent implements Observateur {
     /* Load assets */
     Map<String, BufferedImage> imageMap = new HashMap<>();
 
+    public NiveauGraphique() {
+        this.currentX = positionDeckX;
+        this.currentY = positionDeckY;
+    }
     public NiveauGraphique(Jeu j, CollecteurEvenements c) {
 
         control = c;
@@ -222,6 +231,8 @@ public class NiveauGraphique extends JComponent implements Observateur {
             drawFollowerDeck(g);
 
             // Draw carte a gagne
+            positionCarteAfficheeX = rectWidth * 5 / 2 + largeur() / 2;
+            positionCarteAfficheeY = hauteur() / 2 - rectHeight / 2;
             drawCardToWin(g);
 
             // Draw deck
@@ -263,12 +274,15 @@ public class NiveauGraphique extends JComponent implements Observateur {
 
     /* Dessine la carte à gagner dans la phase 1 */
     private void drawCardToWin(Graphics g) {
-        x = rectWidth * 5 / 2 + largeur() / 2;
-        y = hauteur() / 2 - rectHeight / 2;
+
         getStrImage(control.getCarteAfficheeFactionScore());
         strImage += "_" + control.getCarteAfficheeValeur();
         image = imageMap.get(strImage);
-        g.drawImage(image, x, y, rectWidth, rectHeight, this);
+        if (currentX == 0 && currentY == 0) {
+            g.drawImage(image, positionCarteAfficheeX, positionCarteAfficheeY, rectWidth, rectHeight, this);
+        } else {
+            g.drawImage(image, (int) currentX, (int) currentY, rectWidth, rectHeight, this);
+        }
     }
 
     /* Dessine la pile de score */
@@ -321,10 +335,10 @@ public class NiveauGraphique extends JComponent implements Observateur {
     /* Dessine la pioche pour la phase 1 */
     private void drawDeck(Graphics g) {
         g.setColor(Color.ORANGE);
-        x = largeur() - largeur() / 8;
-        y = hauteur() / 2 - rectHeight * 3 / 4;
+        positionDeckX = largeur() - largeur() / 8;
+        positionDeckY = hauteur() / 2 - rectHeight * 3 / 4;
         // g.fillRect(x, y, rectHeight, rectWidth); // Rectangle latéral
-        g.drawImage(imageMap.get("backside"), x, y, rectWidth, rectHeight, this);
+        g.drawImage(imageMap.get("backside"), positionDeckX, positionDeckY, rectWidth, rectHeight, this);
     }
 
     /* Dessine la main selon un couple d'entier */
@@ -545,7 +559,9 @@ public class NiveauGraphique extends JComponent implements Observateur {
         return nbCardHandJ1;
     }
 
-    public int getNbCardHandJ2() { return nbCardHandJ2; }
+    public int getNbCardHandJ2() {
+        return nbCardHandJ2;
+    }
 
     public int getHauteurMain() {
         return totalHeight;
@@ -556,12 +572,22 @@ public class NiveauGraphique extends JComponent implements Observateur {
         repaint();
     }
 
-    public void pause(){
-        // Garder les deux cartes jouees
-        System.out.println("STOP");
+    public void initializeAnimation(int totalIterations) {
+        this.totalIterations = totalIterations;
 
-        //miseAJour();
+        this.deltaX = (positionDeckX - positionCarteAfficheeX) / totalIterations;
+        this.deltaY = (positionDeckY - positionCarteAfficheeY) / totalIterations;
+
+        this.currentX = positionDeckX;
+        this.currentY = positionDeckY;
     }
+
+    public void distribuer() {
+        currentX -= deltaX;
+        currentY -= deltaY;
+        miseAJour();
+    }
+
     // Pour charger les images dans le hashMap
     private void acceptFile(File file) {
         String fileName = file.getName();
@@ -575,5 +601,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
             }
         }
     }
+
+
 }
 

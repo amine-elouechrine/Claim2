@@ -2,5 +2,7 @@ package org.example.Vue;
 
 
 public interface InterfaceUtilisateur {
-    void pause();
+    void distribuer();
+
+    void initializeAnimation(int totalIterations);
 }

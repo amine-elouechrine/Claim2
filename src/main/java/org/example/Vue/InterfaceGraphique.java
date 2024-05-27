@@ -5,7 +5,6 @@ import org.example.Modele.Jeu;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
 import java.io.File;
 import java.io.IOException;
 
@@ -62,7 +61,7 @@ public class InterfaceGraphique implements Runnable, InterfaceUtilisateur {
         fenetre.add(menuPanel, BorderLayout.EAST);
         fenetre.add(bh, BorderLayout.NORTH);
 
-        Timer chrono = new Timer(16, new AdaptateurTemps(control));
+        Timer chrono = new Timer(1, new AdaptateurTemps(control));
         chrono.start();
 
         fenetre.pack();
@@ -83,7 +82,12 @@ public class InterfaceGraphique implements Runnable, InterfaceUtilisateur {
         */
     }
 
-    public void pause() {
-        niv.pause();
+    public void distribuer() {
+        niv.distribuer();
+    }
+
+    @Override
+    public void initializeAnimation(int totalIterations) {
+        niv.initializeAnimation(totalIterations);
     }
 }

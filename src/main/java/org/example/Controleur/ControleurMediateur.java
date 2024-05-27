@@ -30,6 +30,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 
     Sequence<Animation> animations;
     int dureePause;
+    int iterations;
     Animation mouvement;
     boolean animationsSupportees, animationsActives, pause;
 
@@ -40,6 +41,7 @@ public class ControleurMediateur implements CollecteurEvenements {
         jeu = j;
         animations = new SequenceListe<>();
         dureePause = 2000;
+        iterations =60;
         animationsSupportees = false;
         animationsActives = false;
 
@@ -229,6 +231,7 @@ public class ControleurMediateur implements CollecteurEvenements {
         if (jouable) {
             jouerCarte(index);
         }
+
         // Ajouter temporisation / animation
         // L'IA joue une carte
         // IA.joue() ?
@@ -254,6 +257,7 @@ public class ControleurMediateur implements CollecteurEvenements {
                     jeu.setCarteJouer();
                     jeu.metAJour();
                     pause = false;
+                    startDistributionAnimation(iterations);
                 }
             });
             timer.setRepeats(false);
@@ -263,6 +267,7 @@ public class ControleurMediateur implements CollecteurEvenements {
             carteLeader = carteJoue;
             jeu.switchJoueur();
         }
+
     }
 
 
@@ -302,8 +307,15 @@ public class ControleurMediateur implements CollecteurEvenements {
         vue = v;
     }
 
-    public void pause() {
-        vue.pause();
+
+    public void distribuer() {
+        vue.distribuer();
+    }
+
+    public void startDistributionAnimation(int totalIterations) {
+        vue.initializeAnimation(totalIterations);
+        mouvement = new AnimationDistribuer(totalIterations, this);
+        animations.insereQueue(mouvement);
     }
 
 }
