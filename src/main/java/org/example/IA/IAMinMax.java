@@ -52,9 +52,9 @@ public class IAMinMax {
             Card bestCard = null;
             for (Coup c : Coup.determinerCoupsPossibles(node.plateau)) {
                 //joueur un coup sur le meme plateau
-                node.plateau.jouerCarte2(c.getCarte1());
+                node.plateau.jouerCarte(c.getCarte1());
                 node.plateau.switchJoueur();
-                node.plateau.jouerCarte2(c.getCarte2());
+                node.plateau.jouerCarte(c.getCarte2());
                 Card carteGagnante = ReglesDeJeu.carteGagnante(c.getCarte1(), c.getCarte2(), node.plateau);
                 node.plateau.attribuerCarteSecondPhase(carteGagnante, new ReglesDeJeu());
                 //creer un nouveau noeud avec le plateau apres avoir jouer
@@ -83,9 +83,9 @@ public class IAMinMax {
             Card bestCard = null;
             for (Coup c : Coup.determinerCoupsPossibles(node.plateau)) {
                 //joueur un coup sur le meme plateau
-                node.plateau.jouerCarte2(c.getCarte1());
+                node.plateau.jouerCarte(c.getCarte1());
                 node.plateau.switchJoueur();
-                node.plateau.jouerCarte2(c.getCarte2());
+                node.plateau.jouerCarte(c.getCarte2());
                 Card carteGagnante = ReglesDeJeu.carteGagnante(c.getCarte1(), c.getCarte2(), node.plateau);
                 node.plateau.attribuerCarteSecondPhase(carteGagnante, new ReglesDeJeu());
                 //creer un nouveau noeud avec le plateau apres avoir jouer

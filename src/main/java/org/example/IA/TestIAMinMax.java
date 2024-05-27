@@ -18,6 +18,7 @@ public class TestIAMinMax {
 
         // Création de l'instance de l'IA Minimax
         IAMinMax iaMinMax = new IAMinMax();
+        Facile facile =new Facile();
 
         // Boucle principale de jeu
         /*boolean partieTerminee = false;
@@ -66,12 +67,12 @@ public class TestIAMinMax {
 
         // Appel de l'algorithme Minimax pour évaluer le meilleur coup
         // au depart il faut pas commancer avec Carte J1 = une valeur et Carte J2 = une valeur quelconque
-        IAMinMax.Result result = iaMinMax.minimax(racine, 13, true, Integer.MIN_VALUE , Integer.MAX_VALUE ); // Profondeur de recherche = 3
-
+        //IAMinMax.Result result = iaMinMax.minimax(racine, 13, true, Integer.MIN_VALUE , Integer.MAX_VALUE ); // Profondeur de recherche = 3
 
         // Afficher le score et la carte choisie par l'IA
-        System.out.println("Score: " + result.score);
-        System.out.println("Carte choisie par l'IA: " + result.coup);
+        //System.out.println("Score: " + result.score);
+        //System.out.println("Carte choisie par l'IA: " + result.coup);
+        System.out.println("Carte choisie par l'IA: " + meilleurCoup);
 
         // Afficher le nombre de nodes visités
         System.out.println("Nombre de nodes: " + iaMinMax.getNodeCount());
@@ -79,23 +80,28 @@ public class TestIAMinMax {
         // afficher la table de memeorisation pour voir les configurations deja calculer
         // Afficher le contenu de la memo
         //iaMinMax.afficherMemo();
+        int i = 0;
+        while(i<13){
+            System.out.println("i= "+i);
+            if(racine.plateau.getJoueurCourant().getName().equals("MinMax")){
+                Card meilleurCoup = iaMinMax.carteJouerIa(racine);
+                racine.plateau.jouerCarte(meilleurCoup);
+                System.out.println("Carte choisie par l'IA: " + meilleurCoup);
+                Card carteFacile=.jouerCoupPhase2(plateau);
+            }
+        }
+
 
         System.out.println("-------------------------------------------------");
 
-        /*Plateau plateauInitial1 = createInitialPlateau();
-        Node racine1 = new Node(plateauInitial1);
-        IAMinMax iaMinMax2 = new IAMinMax();
-        Card meilleurCoup = iaMinMax2.carteJouerIa(racine);
-        System.out.println("Nombre de nodes: " + iaMinMax2.getNodeCount());
-        System.out.println("Carte choisie par l'IA: " + meilleurCoup);*/
 
 
     }
 
     private static Plateau createInitialPlateau() {
         // Création des joueurs
-        Player joueur1 = new Player("IA");
-        Player joueur2 = new Player("Adversaire");
+        Player joueur1 = new Player("MinMax");
+        Player joueur2 = new Player("Facile");
 
         // creation des mains des joueurs
         Cards pioche = new Cards();

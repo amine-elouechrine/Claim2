@@ -3,6 +3,7 @@ package org.example.Modele;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.ArrayList;
 
 public class Cards extends CardCollection {
 
@@ -11,6 +12,19 @@ public class Cards extends CardCollection {
         super();
     }
 
+
+
+// Constructeur de copie
+    public Cards(Cards other) {
+        this.cards = new ArrayList<>();
+        for (Card card : other.cards) {
+            this.cards.add(new Card(card));
+        }
+    }
+
+    public Cards clone() {
+        return new Cards(this);
+    }
 
     // Méthode pour créer les cartes Gobelin
     public void addAllCards() {

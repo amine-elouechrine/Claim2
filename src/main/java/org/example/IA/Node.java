@@ -3,9 +3,6 @@ package org.example.IA;
 import org.example.Modele.Card;
 import org.example.Modele.Plateau;
 
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Node {
 

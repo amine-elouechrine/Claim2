@@ -94,17 +94,6 @@ public class Plateau {
         this.carteJoueur2 = carteJoueur2;
     }
 
-    /**
-     * constructeur de la classe Plateau pour les jeux de test.
-     */
-    /*public Plateau(Card carteJoeur1, Card carteJoueur2) {
-        this.carteJoueur1 = carteJoeur1;
-        this.carteJoueur2 = carteJoueur2;
-    }*/
-    public Plateau clone() {
-        return new Plateau(this);
-
-    }
 
     public Card getCardAdversaire() {
         if (joueurCourant == joueur1) {
@@ -361,7 +350,7 @@ public class Plateau {
         return carteJoue;
     }
 
-    public Card jouerCarte2(Card card) {
+    public Card jouerCarte(Card card) {
         Card carteJoue;
         if(getPhase())
             carteJoue = joueurCourant.jouerCarte(card);
@@ -377,13 +366,6 @@ public class Plateau {
         return carteJoue;
     }
 
-    public void setCardAffiche(Card card) {
-        carteAffichee = card;
-    }
-
-    public boolean estLeader2() {
-        return getCardAdversaire() == null;
-    }
 
     public void setCardAffiche(Card card) {
         carteAffichee = card;
