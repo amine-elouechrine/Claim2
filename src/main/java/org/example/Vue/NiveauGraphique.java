@@ -43,8 +43,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
     int positionCarteJoueJ2X, positionCarteJoueJ2Y;
     int positionCarteAfficheeX, positionCarteAfficheeY;
     int positionDeckX, positionDeckY;
-    int deltaX;
-    int deltaY;
+    double deltaX, deltaY;
     int totalIterations;
     double currentX, currentY;
     // Variables pour l'affichage du score
@@ -98,10 +97,6 @@ public class NiveauGraphique extends JComponent implements Observateur {
     /* Load assets */
     Map<String, BufferedImage> imageMap = new HashMap<>();
 
-    public NiveauGraphique() {
-        this.currentX = positionDeckX;
-        this.currentY = positionDeckY;
-    }
     public NiveauGraphique(Jeu j, CollecteurEvenements c) {
 
         control = c;
@@ -279,6 +274,10 @@ public class NiveauGraphique extends JComponent implements Observateur {
         strImage += "_" + control.getCarteAfficheeValeur();
         image = imageMap.get(strImage);
         if (currentX == 0 && currentY == 0) {
+            g.drawImage(image, positionCarteAfficheeX, positionCarteAfficheeY, rectWidth, rectHeight, this);
+        } else if (currentX<positionCarteAfficheeX||currentX>positionDeckX) {
+            g.drawImage(image, positionCarteAfficheeX, positionCarteAfficheeY, rectWidth, rectHeight, this);
+        } else if (currentY>positionCarteAfficheeY||currentY<positionDeckY) {
             g.drawImage(image, positionCarteAfficheeX, positionCarteAfficheeY, rectWidth, rectHeight, this);
         } else {
             g.drawImage(image, (int) currentX, (int) currentY, rectWidth, rectHeight, this);
@@ -575,11 +574,11 @@ public class NiveauGraphique extends JComponent implements Observateur {
     public void initializeAnimation(int totalIterations) {
         this.totalIterations = totalIterations;
 
-        this.deltaX = (positionDeckX - positionCarteAfficheeX) / totalIterations;
-        this.deltaY = (positionDeckY - positionCarteAfficheeY) / totalIterations;
-
+        this.deltaX = (positionDeckX - positionCarteAfficheeX) / (double) totalIterations;
+        this.deltaY = (positionDeckY - positionCarteAfficheeY) / (double) totalIterations;
         this.currentX = positionDeckX;
         this.currentY = positionDeckY;
+
     }
 
     public void distribuer() {

@@ -40,11 +40,10 @@ public class ControleurMediateur implements CollecteurEvenements {
     public ControleurMediateur(Jeu j) {
         jeu = j;
         animations = new SequenceListe<>();
-        dureePause = 2000;
-        iterations =60;
+        dureePause = 1600;
+        iterations = 60;
         animationsSupportees = false;
         animationsActives = false;
-
     }
 
     /* Getteurs pour la communication entre interface et moteur */
@@ -177,6 +176,7 @@ public class ControleurMediateur implements CollecteurEvenements {
         jeu.getPlateau().initialiserJeu();
         jeu.setCarteJouer();
         jeu.metAJour();
+        startDistributionAnimation(iterations);
     }
 
 
@@ -256,8 +256,8 @@ public class ControleurMediateur implements CollecteurEvenements {
                     jeu.playTrick();
                     jeu.setCarteJouer();
                     jeu.metAJour();
-                    pause = false;
                     startDistributionAnimation(iterations);
+                    pause = false;
                 }
             });
             timer.setRepeats(false);

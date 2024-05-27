@@ -66,7 +66,7 @@ public class InterfaceGraphique implements Runnable, InterfaceUtilisateur {
 
         fenetre.pack();
         fenetre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        fenetre.setSize(1280, 960);
+        fenetre.setSize(960, 720);
         fenetre.getContentPane().setBackground(Color.DARK_GRAY);
         fenetre.setVisible(true);
         fenetre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

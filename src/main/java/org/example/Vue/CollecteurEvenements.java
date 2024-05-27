@@ -51,7 +51,7 @@ public interface CollecteurEvenements {
     boolean isJoueur1WinningFactionOnEquality(String factionName);
 
     boolean isJoueur2WinningFactionOnEquality(String factionName);
-  
+
     void refaire();
   
     void annuler();
@@ -69,4 +69,6 @@ public interface CollecteurEvenements {
     void tictac();
 
     void ajouteInterfaceUtilisateur(InterfaceUtilisateur vue);
+
+    void startDistributionAnimation(int totalIterations);
 }
