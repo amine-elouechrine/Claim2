@@ -283,11 +283,6 @@ public class ControleurMediateur implements CollecteurEvenements {
             jouerCarte(index);
         }
 
-        // Ajouter temporisation / animation
-        // L'IA joue une carte
-        // IA.joue() ?
-
-        // Ajouter temporisation / animation pour la carte jouer par l'IA
         while (jeu.getJoueur2() == jeu.getJoueurCourant()) {
             tourIA();
         }
@@ -298,8 +293,6 @@ public class ControleurMediateur implements CollecteurEvenements {
         jeu.getJoueur2().getHand().removeCard(carte);
         if (jeu.estCarteJoueJ1() && jeu.estCarteJoueJ2()) {
             jeu.playTrick();
-            // On joue le plie
-            // Ajouter temporisation / Animation pour la bataille et l'attribution des cartes après le plie
             jeu.setCarteJouer();
             carteLeader = null;
         } else {
@@ -308,34 +301,43 @@ public class ControleurMediateur implements CollecteurEvenements {
         }
     }
 
+//
+//    private void jouerCarte(int index) {
+//        Card carteJoue = jeu.getPlateau().jouerCarte(index);
+//        if (jeu.estCarteJoueJ1() && jeu.estCarteJoueJ2()) {
+//            pause = true;
+//            Timer timer = new Timer(dureePause, new ActionListener() {
+//                @Override
+//                public void actionPerformed(ActionEvent e) {
+//                    jeu.playTrick();
+//                    jeu.setCarteJouer();
+//                    startDistributionAnimation(iterations);
+//                    pause = false;
+//                }
+//            });
+//            timer.setRepeats(false);
+//            timer.start();
+//            carteLeader = null;
+//        } else {
+//            carteLeader = carteJoue;
+//            jeu.switchJoueur();
+//        }
+//
+//    }
+
 
     private void jouerCarte(int index) {
         Card carteJoue = jeu.getPlateau().jouerCarte(index);
         if (jeu.estCarteJoueJ1() && jeu.estCarteJoueJ2()) {
-
+            jeu.playTrick();
             // On joue le plie
             // Ajouter temporisation / Animation pour la bataille et l'attribution des cartes après le plie
-            // mouvement = new AnimationPause(dureePause, this);
-            // animations.insereQueue(mouvement);
-            pause = true;
-            Timer timer = new Timer(dureePause, new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    jeu.playTrick();
-                    jeu.setCarteJouer();
-                    //jeu.metAJour();
-                    startDistributionAnimation(iterations);
-                    pause = false;
-                }
-            });
-            timer.setRepeats(false);
-            timer.start();
+            jeu.setCarteJouer();
             carteLeader = null;
         } else {
             carteLeader = carteJoue;
             jeu.switchJoueur();
         }
-
     }
 
 

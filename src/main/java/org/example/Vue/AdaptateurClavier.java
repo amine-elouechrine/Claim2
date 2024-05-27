@@ -23,8 +23,6 @@ public class AdaptateurClavier extends KeyAdapter implements KeyListener {
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
-            System.out.println("Clique sur le bouton annuler");
-            control.annuler();
         } else if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_R) {
             control.refaire();
             System.out.println("Clique sur le bouton refaire");
