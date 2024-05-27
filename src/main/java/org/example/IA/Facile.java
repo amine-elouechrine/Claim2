@@ -26,9 +26,7 @@ public class Facile extends IA {
         System.out.println(card);
     }
 
-    // mainIA : doit etre hand
     public Card joueCoupPhase1F(Plateau plateau) {
-        //System.out.println(";;;''''''" + mainIA.size());
         if (!plateau.estLeader()) {
             return jouerAvecSuiviFaction(plateau);
         } else {
