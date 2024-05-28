@@ -2,16 +2,57 @@ package org.example.Vue;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
-class RoundedButton extends JButton {
+public class RoundedButton extends JButton {
     private int arcWidth = 20;
     private int arcHeight = 20;
+    private Color hoverBackgroundColor;
+    private Color pressedBackgroundColor;
 
     public RoundedButton(String text) {
         super(text);
+        init();
+    }
+
+    public RoundedButton(String text, Icon icon) {
+        super(text, icon);
+        init();
+    }
+
+    private void init() {
         setContentAreaFilled(false);
-        setFocusPainted(true);
+        setFocusPainted(false);
         setBorderPainted(false);
+        setOpaque(false);
+        setForeground(Color.WHITE);
+        setBackground(new Color(70, 130, 180)); // Steel blue background color
+        hoverBackgroundColor = new Color(100, 149, 237); // Cornflower blue
+        pressedBackgroundColor = new Color(25, 25, 112); // Midnight blue
+
+        // Adding hover effect
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                setBackground(hoverBackgroundColor);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                setBackground(new Color(70, 130, 180)); // Steel blue background color
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                setBackground(pressedBackgroundColor);
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                setBackground(hoverBackgroundColor);
+            }
+        });
     }
 
     public void setButtonSize(Dimension size) {
@@ -25,8 +66,10 @@ class RoundedButton extends JButton {
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
         // Background
-        if (getModel().isArmed()) {
-            g2.setColor(getBackground().darker());
+        if (getModel().isPressed()) {
+            g2.setColor(pressedBackgroundColor);
+        } else if (getModel().isRollover()) {
+            g2.setColor(hoverBackgroundColor);
         } else {
             g2.setColor(getBackground());
         }

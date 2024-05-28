@@ -7,7 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 
-class BackgroundImage extends JPanel {
+public class BackgroundImage extends JPanel {
     private BufferedImage backgroundImage;
 
     public BackgroundImage(String filePath) {

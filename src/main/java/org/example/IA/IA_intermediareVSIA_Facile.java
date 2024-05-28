@@ -180,9 +180,9 @@ public class IA_intermediareVSIA_Facile {
 
 
         }
-        IA Gagnat = IA.determinerGagnantPartieIA(Facile, Intermediare);
+        String Gagnat = ReglesDeJeu.determinerGagnantPartie(plateau.getJoueur1(), plateau.getJoueur2());
         System.out.println("Le gagnant est : " + Gagnat);
-        if (Gagnat.Name.equals("Facile")) {
+        if (Gagnat.equals("Joueur 1")) {
             nb_match_gagne_facile++;
         } else {
             nb_match_gagne_intermediare++;
@@ -196,7 +196,7 @@ public class IA_intermediareVSIA_Facile {
         plateau = new Plateau();
         Facile=new Facile();
         Intermediare=new Intermediare();
-       while(i<100000){
+       while(i<1000){
             plateau.initialiserJeu();
             Test_IA_F_VS_I();
             i++;
