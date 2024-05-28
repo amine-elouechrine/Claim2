@@ -31,7 +31,8 @@ public class Player extends GeneralPlayer {
             // Si la carte n'est pas dans la main du joueur, retourne null
             return null;
         }
-    }
+
+    }}
 
 
 
