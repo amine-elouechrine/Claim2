@@ -26,10 +26,10 @@ public class RoundedButton extends JButton {
         setFocusPainted(false);
         setBorderPainted(false);
         setOpaque(false);
-        setForeground(Color.WHITE);
-        setBackground(new Color(70, 130, 180)); // Steel blue background color
-        hoverBackgroundColor = new Color(100, 149, 237); // Cornflower blue
-        pressedBackgroundColor = new Color(25, 25, 112); // Midnight blue
+        setForeground(Color.BLACK);
+        setBackground(new Color(255, 255, 255)); // Steel blue background color
+        hoverBackgroundColor = new Color(230, 230, 230); // Cornflower blue
+        pressedBackgroundColor = new Color(200, 200, 200); // Midnight blue
 
         // Adding hover effect
         addMouseListener(new MouseAdapter() {
@@ -40,7 +40,7 @@ public class RoundedButton extends JButton {
 
             @Override
             public void mouseExited(MouseEvent e) {
-                setBackground(new Color(70, 130, 180)); // Steel blue background color
+                setBackground(new Color(255, 255, 255)); // Steel blue background color
             }
 
             @Override
@@ -57,6 +57,7 @@ public class RoundedButton extends JButton {
 
     public void setButtonSize(Dimension size) {
         setPreferredSize(size);
+        setMinimumSize(size);
         setMaximumSize(size);
     }
 
@@ -87,6 +88,5 @@ public class RoundedButton extends JButton {
         g2.drawString(getText(), (getWidth() - textWidth) / 2, (getHeight() + textHeight) / 2 - fm.getDescent());
 
         g2.dispose();
-        super.paintComponent(g);
     }
 }

@@ -81,6 +81,7 @@ public class InterfaceGraphique implements Runnable, InterfaceUtilisateur {
 
         // Masquer menu recommencer
         rec.setVisible(false);
+
         /*
         // Aligning the vertical panel to the right side
         JPanel verticalPanel = new JPanel();

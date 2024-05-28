@@ -25,12 +25,13 @@ public class InterfacePartieCustom extends JFrame implements Runnable {
         this.setTitle("Claim jeu de carte");
 
         try {
-            this.setIconImage(ImageIO.read(new File("src/main/resources/assets/claim.png")));
+            this.setIconImage(ImageIO.read(new File("src/main/resources/Claim.png")));
         } catch (IOException exc) {
             System.out.println("Erreur de chargement de l'icone");
         }
 
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        // Quand on quitte la fênetre
+        this.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
         setSize(1000, 650); // Set initial size
         setLocationRelativeTo(null);
 
@@ -113,6 +114,7 @@ public class InterfacePartieCustom extends JFrame implements Runnable {
         add(panel);
         setVisible(true);
     }
+
 
     private void setNiveaux(ControleurMediateur control, String niveaux) {
         // control.setIA(niveaux);
