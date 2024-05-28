@@ -19,9 +19,19 @@ public class Card {
     }
 
 
-
     public Card() {
         // Constructeur vide pour les tests
+    }
+
+    public Card(Card card) {
+        this.value = card.value;
+        this.faction = card.faction;
+    }
+    
+    
+    public Card clone() {
+        // Assuming Card has a copy constructor
+        return new Card(this);
     }
 
     /**
@@ -30,6 +40,18 @@ public class Card {
      */
     public int getValeur() {
         return value;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Card card = (Card) o;
+
+        if (value != card.value) return false;
+        return faction.equals(card.faction);
     }
 
     /**

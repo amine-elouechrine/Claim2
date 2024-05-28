@@ -27,7 +27,8 @@ public class ReglesDeJeu {
         String faction2 = carte2.getFaction();
 
         // Règle spéciale pour les Gobelins et les Chevaliers
-        if (faction1.equals("Goblins") && faction2.equals("Knights") || faction1.equals("Knights") && faction2.equals("Goblins")) {
+        if ((faction1.equals("Goblins") && faction2.equals("Knight")) || (faction1.equals("Knight") && faction2.equals("Goblins"))) {
+            System.out.println("gobelin versus knight");
             return GobelinVsKnight(carte1, carte2);
         }
 
@@ -105,7 +106,7 @@ public class ReglesDeJeu {
      */
     public static Card GobelinVsKnight(Card carte1, Card carte2) {
 
-        if (carte1.getFaction().equals("Goblins") && carte2.getFaction().equals("Knights")) {
+        if (carte1.getFaction().equals("Goblins") && carte2.getFaction().equals("Knight")) {
             return carte2; // Le Chevalier bat toujours le Gobelin
         } else {
             return carte1; // Le Chevalier bat toujours le Gobelin
@@ -184,13 +185,20 @@ public class ReglesDeJeu {
 
         // Vérifier si le joueur possède une carte de la même faction que celle jouée par l'adversaire
         for (Card carte : mainJoueur.getAllCards()) {
-            if ((carte.getFaction().equals(carteAdversaire.getFaction())) || (carte.getFaction().equals("Doppelganger"))) {
+            if ((carte.getFaction().equals(carteAdversaire.getFaction())) || ((carteAdversaire.getFaction().equals("Goblins"))&&(carte.getFaction().equals("Knight")))) {
                 cartesJouables.add(carte);
+            }
+        }
+        if (!cartesJouables.isEmpty()){
+            for(Card carte : mainJoueur.getAllCards()){
+                if((carte.getFaction().equals("Doppelganger"))){
+                    cartesJouables.add(carte);
+                }
             }
         }
 
         // Si le joueur n'a pas de carte de la même faction, il peut jouer n'importe quelle carte
-        if (cartesJouables.isEmpty()) {
+        else {
             cartesJouables.addAll(mainJoueur.getAllCards());
         }
 
@@ -199,6 +207,32 @@ public class ReglesDeJeu {
 
         return cartesJouables;
     }
+
+    public static  List<Card> cartesJouablesGagnant(Card carteAdversaire, List<Card> carteJouable , Plateau plateau) {
+        List<Card> cartesGagnates = new ArrayList<>();
+        for (Card carte : carteJouable) {
+            Card carteGangante = carteGagnante(carte, carteAdversaire , plateau);
+            if(carteGangante == carte){
+                cartesGagnates.add(carte);
+            }
+        }
+        return cartesGagnates;
+    }
+
+    public static List<Card> cartesJouablesPerdant(Card carteAdversaire, List<Card> carteJouable , Plateau plateau) {
+        List<Card> cartesPerdantes = new ArrayList<>();
+        for (Card carte : carteJouable) {
+            Card carteGangante = carteGagnante(carte, carteAdversaire , plateau);
+            if(carteGangante != carte){
+                cartesPerdantes.add(carte);
+            }
+        }
+        return cartesPerdantes;
+    }
+
+
+
+
 
     /**
      * Méthode pour déterminer le gagnant d'une partie.

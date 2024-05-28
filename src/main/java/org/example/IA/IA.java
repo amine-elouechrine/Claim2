@@ -157,6 +157,7 @@ public abstract class IA extends GeneralPlayer {
     }
 
     public void addPileDeScore(Card card) {
+
         pileDeScore.addCard(card);
     }
 

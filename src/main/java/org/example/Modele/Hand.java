@@ -15,33 +15,32 @@ public class Hand extends CardCollection{
     }
 
 
+    // Constructeur de copie
     public Hand(Hand other) {
-        this.cards = new ArrayList<>(other.cards.size());
+        this.cards = new ArrayList<>();
         for (Card card : other.cards) {
-            this.cards.add(new Card(card.getValeur(),card.getFaction())); // Ensure Card has a copy constructor
+            this.cards.add(new Card(card));
         }
     }
 
+    @Override
+    public Hand clone() {
+        return new Hand(this);
+    }
 
-
-    /*public Card getSmallestHigherCard(Card card) {
-        if (cards == null || cards.isEmpty()) {
-            throw new IllegalStateException("La main est vide ou nulle.");
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Hand{");
+        for (Card card : cards) {
+            sb.append(card.toString()).append(", ");
         }
-
-        Card smallestHigherCard = card;
-        int smallestHigherValue = Integer.MAX_VALUE;
-
-        for (Card handCard : cards) {
-            // Vérifier si la carte est plus grande que celle passée en paramètre
-            if (handCard.getValeur() > card.getValeur() && handCard.getValeur() < smallestHigherValue) {
-                smallestHigherCard = handCard;
-                smallestHigherValue = handCard.getValeur();
-            }
+        if (!cards.isEmpty()) {
+            sb.setLength(sb.length() - 2); // Enlever la dernière virgule et l'espace
         }
-
-        return smallestHigherCard;
-    }*/
+        sb.append("}");
+        return sb.toString();
+    }
 
 
     public void setHand(List<Card> cards) {
