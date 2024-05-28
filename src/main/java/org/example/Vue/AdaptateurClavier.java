@@ -17,14 +17,12 @@ public class AdaptateurClavier extends KeyAdapter implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-
         if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_A) {
             try {
                 control.annuler();
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
-            System.out.println("Clique sur le bouton annuler");
         } else if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_R) {
             control.refaire();
             System.out.println("Clique sur le bouton refaire");
@@ -34,7 +32,7 @@ public class AdaptateurClavier extends KeyAdapter implements KeyListener {
         } else if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_N) {
             control.nouvellePartie();
         } else {
-            // pas d'action pour les autres clés
+            //pas d'action pour les autres clés
         }
     }
 }

@@ -3,6 +3,7 @@ package org.example.Modele;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.ArrayList;
 
 public class Cards extends CardCollection {
 
@@ -11,6 +12,19 @@ public class Cards extends CardCollection {
         super();
     }
 
+
+
+// Constructeur de copie
+    public Cards(Cards other) {
+        this.cards = new ArrayList<>();
+        for (Card card : other.cards) {
+            this.cards.add(new Card(card));
+        }
+    }
+
+    public Cards clone() {
+        return new Cards(this);
+    }
 
     // Méthode pour créer les cartes Gobelin
     public void addAllCards() {
@@ -30,6 +44,46 @@ public class Cards extends CardCollection {
             addCard(new Card(i, "Goblins"));
         }
     }
+
+    // Méthode pour obtenir le nombre de cartes de chaque faction dans le jeu (c'etait utiliser dans l'heurestique phase2)
+    public static int getNbCarteGobelins(){
+        return 14;
+    }
+
+    public static int getNbCarteKnights(){
+        return 8;
+    }
+
+    public static int getNbCarteUndeads(){
+        return 10;
+    }
+
+    public static int getNbCarteDwarves(){
+        return 10;
+    }
+
+    public static int getNbCarteDoppelgangers(){
+        return 10;
+    }
+
+    public static int getNbCarteFaction(String faction){
+        switch (faction) {
+            case "Goblins":
+                return getNbCarteGobelins();
+            case "Knight":
+                return getNbCarteKnights();
+            case "Undead":
+                return getNbCarteUndeads();
+            case "Dwarves":
+                return getNbCarteDwarves();
+            case "Doppelganger":
+                return getNbCarteDoppelgangers();
+            default:
+                return 0;
+        }
+    }
+
+
 
     // Méthode pour créer les cartes Knight
     private void createKnightCards() {

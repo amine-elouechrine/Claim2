@@ -211,6 +211,32 @@ public class ReglesDeJeu {
         return cartesJouables;
     }
 
+    public static  List<Card> cartesJouablesGagnant(Card carteAdversaire, List<Card> carteJouable , Plateau plateau) {
+        List<Card> cartesGagnates = new ArrayList<>();
+        for (Card carte : carteJouable) {
+            Card carteGangante = carteGagnante(carte, carteAdversaire , plateau);
+            if(carteGangante == carte){
+                cartesGagnates.add(carte);
+            }
+        }
+        return cartesGagnates;
+    }
+
+    public static List<Card> cartesJouablesPerdant(Card carteAdversaire, List<Card> carteJouable , Plateau plateau) {
+        List<Card> cartesPerdantes = new ArrayList<>();
+        for (Card carte : carteJouable) {
+            Card carteGangante = carteGagnante(carte, carteAdversaire , plateau);
+            if(carteGangante != carte){
+                cartesPerdantes.add(carte);
+            }
+        }
+        return cartesPerdantes;
+    }
+
+
+
+
+
     /**
      * Méthode pour déterminer le gagnant d'une partie.
      *

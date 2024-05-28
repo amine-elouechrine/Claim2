@@ -20,7 +20,7 @@ public class ComposantPhase extends Box implements Observateur {
         this.jeu.ajouteObservateur(this);
         phase = "1";
         // Affichage du joueur courant
-        p = new JLabel("PHASE ACTUELLE : " + phase);
+        p = new JLabel("PHASE ACTUELLE : " + phase + " | ");
         add(p);
         add(Box.createGlue());
     }

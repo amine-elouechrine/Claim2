@@ -58,6 +58,8 @@ public interface CollecteurEvenements {
 
     boolean isJoueurCourantJoueur1();
 
+    public boolean estFinPartie();
+
     /* Adaptateurs */
     void refaire();
   
@@ -73,5 +75,9 @@ public interface CollecteurEvenements {
 
     void clicSourisJ2(int index);
 
+    void tictac();
 
+    void ajouteInterfaceUtilisateur(InterfaceUtilisateur vue);
+
+    void startDistributionAnimation(int totalIterations);
 }

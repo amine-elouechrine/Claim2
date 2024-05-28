@@ -1,5 +1,6 @@
 package org.example.Modele;
 import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Cette classe représente la pile de cartes défaussées dans le jeu.
@@ -14,6 +15,18 @@ public class Defausse extends CardCollection {
      */
     public Defausse() {
         super();
+    }
+
+    // Constructeur de copie
+    public Defausse(Defausse other) {
+        this.cards = new ArrayList<>();
+        for (Card card : other.cards) {
+            this.cards.add(new Card(card));
+        }
+    }
+
+    public Defausse clone() {
+        return new Defausse(this);
     }
 
     /**

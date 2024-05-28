@@ -3,6 +3,7 @@ package org.example.Modele;
 //import javax.smartcardio.Card;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Cette classe représente le plateau de jeu dans lequel les cartes sont placées pendant la partie.
@@ -19,7 +20,6 @@ public class Plateau {
     Player joueur2;
     Player joueurCourant;
     Boolean phase; // true si on est dans la phase 1, false sinon
-    int numberCardPlayed;
 
     /**
      * Constructeur de la classe Plateau.
@@ -32,20 +32,59 @@ public class Plateau {
 
     /**
      * Constructeur de la classe Plateau pour l'intelligence artificielle pour puisse faire une copie du plateau.
-     *
-     * @param plateau
+     * @param
      */
-    public Plateau(Plateau plateau) {
-        this.carteAffichee = plateau.getCarteAffichee();
-        this.carteJoueur1 = plateau.getCarteJoueur1();
-        this.carteJoueur2 = plateau.getCarteJoueur2();
-        this.pioche = plateau.getPioche();
-        this.defausse = plateau.getDefausse();
-        this.joueur1 = plateau.getJoueur1();
-        this.joueur2 = plateau.getJoueur2();
-        this.joueurCourant = plateau.getJoueurCourant();
-        this.phase = plateau.getPhase();
+    // Constructeur de copie phase 2
+    public Plateau(Plateau other) {
+        this.carteJoueur1 = other.carteJoueur1 != null ? new Card(other.carteJoueur1) : null;
+        this.carteJoueur2 = other.carteJoueur2 != null ? new Card(other.carteJoueur2) : null;
+        this.joueur1 = other.joueur1 != null ? new Player(other.joueur1) : null;
+        this.joueur2 = other.joueur2 != null ? new Player(other.joueur2) : null;
+        if (other.joueurCourant == other.joueur1) {
+            this.joueurCourant = this.joueur1;
+        } else {
+            this.joueurCourant = this.joueur2;
+        }
+        this.phase = other.phase;
     }
+
+    public Plateau clone() {
+        return new Plateau(this);
+    }
+
+    // Sauvegarde l'état actuel du plateau
+    /*public PlateauState saveState() {
+
+        // Cloner les cartes des joueurs
+        Card clonedCarteJoueur1 = carteJoueur1.clone();
+        Card clonedCarteJoueur2 = carteJoueur2.clone();
+
+        // Cloner les joueurs
+        Player clonedJoueur1 = joueur1.clone();
+        Player clonedJoueur2 = joueur2.clone();
+
+        Player CurrentPlayer ;
+        if(joueur1 == joueurCourant){
+            CurrentPlayer = clonedJoueur1 ;
+        }else{
+            CurrentPlayer = clonedJoueur2 ;
+        }
+        return new PlateauState(clonedCarteJoueur1, clonedCarteJoueur2, clonedJoueur1, clonedJoueur2, CurrentPlayer);
+    }*/
+
+    // Restaure un état précédemment sauvegardé
+    public void restoreState(PlateauState state) {
+        this.carteJoueur1 = state.getCarteJoueur1();
+        this.carteJoueur2 = state.getCarteJoueur2();
+        this.joueur1 = state.getJoueur1();
+        this.joueur2 = state.getJoueur2();
+        if (state.getJoueurCourant() == state.getJoueur1())
+            this.joueurCourant = this.joueur1 ;
+        else
+            this.joueurCourant = this.joueur2;
+        this.phase = false;
+    }
+
 
     /**
      * constructeur de la classe Plateau pour les jeux de test.
@@ -55,17 +94,6 @@ public class Plateau {
         this.carteJoueur2 = carteJoueur2;
     }
 
-    /**
-     * constructeur de la classe Plateau pour les jeux de test.
-     */
-    /*public Plateau(Card carteJoeur1, Card carteJoueur2) {
-        this.carteJoueur1 = carteJoeur1;
-        this.carteJoueur2 = carteJoueur2;
-    }*/
-    public Plateau clone() {
-        return new Plateau(this);
-
-    }
 
     public Card getCardAdversaire() {
         if (joueurCourant == joueur1) {
@@ -93,6 +121,25 @@ public class Plateau {
             System.out.println("Vous etes deja dans la phase 2");
         }
     }
+
+    public GeneralPlayer getAdversaire(){
+        if(joueurCourant == joueur1){
+            return joueur2;
+        }else{
+            return joueur1;
+        }
+    }
+
+    public String generateState() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getJoueur1().getHandScndPhase().toString());
+        sb.append(getJoueur2().getHandScndPhase().toString());
+        sb.append(getCarteJoueur1().toString());
+        sb.append(getCarteJoueur2().toString());
+        return sb.toString();
+    }
+
+
 
     public boolean getPhase() {
         return phase;
@@ -127,10 +174,9 @@ public class Plateau {
      * @return true si c'est la fin du jeu, false sinon
      */
     public boolean isEndOfGame() {
-        if (phase == false) { // si on est dans la 2eme phase
-            return estFinPhase(getPhase());
-        }
-        return false;
+        System.out.println("Phase actuelle : " + getPhase());
+        System.out.println("Nb carte mains : " + getJoueur1().getHand().size() + " " + getJoueur2().getHand().size());
+        return !phase && getJoueur1().getHand().isEmpty() && getJoueur2().getHand().isEmpty();
     }
 
     /**
@@ -312,13 +358,22 @@ public class Plateau {
         return carteJoue;
     }
 
-    public void jouerCarte(Card card) {
-        if (joueurCourant.equals(joueur1)) {
-            setCarteJoueur1(card);
-        } else if (joueurCourant.equals(joueur2)) {
-            setCarteJoueur2(card);
+    public Card jouerCarte(Card card) {
+        Card carteJoue;
+        if(getPhase())
+            carteJoue = joueurCourant.jouerCarte(card);
+        else
+            carteJoue = joueurCourant.jouerCarte2(card);
+
+        if(joueurCourant == joueur1) {
+            setCarteJoueur1(carteJoue);
         }
+        else if (joueurCourant == joueur2) {
+            setCarteJoueur2(carteJoue);
+        }
+        return carteJoue;
     }
+
 
     public void setCardAffiche(Card card) {
         carteAffichee = card;
@@ -377,9 +432,14 @@ public class Plateau {
                 joueurCourant = joueur2;
             }
         }
+        
     }
 
-    // use applay sndphaserule function
+
+
+
+    
+    // use applay sndphaserule function 
     public void attribuerCarteSecondPhase(Card winningCard, ReglesDeJeu r) {// on doit changer la fonction ApplyDwarveRule:c'est fait
         if (r.carteEgaux(carteJoueur1, carteJoueur2)) {
             // determiner le leader
@@ -407,6 +467,12 @@ public class Plateau {
 
     public Boolean estPhase1() {
         return !(joueur1.getHand().isEmpty() && joueur2.getHand().isEmpty());
+    }
+
+    @Override
+    public int hashCode() {
+        // Generate hash code based on relevant fields
+        return Objects.hash(carteJoueur1, carteJoueur2, joueur1.pileDeScore, joueur2.pileDeScore, joueurCourant.getName(), phase);
     }
 
     public void setPlateau(boolean phase, Card carteAffichee, Card carteJoueur1, Card carteJoueur2, Defausse defausse, Player joueur1, Player joueur2, Cards pioche, String nameCurrentPlayer, Hand mainJ1, Hand mainJ2) {
@@ -437,16 +503,5 @@ public class Plateau {
 
     }
 
-    public void jouerCarte2(Card card) {
-        // jouer une carte quelconque de sa main
 
-        if (getJoueurCourant().getHandScndPhase().contains(card)) {
-            getJoueurCourant().getHandScndPhase().removeCard(card);
-        }
-        if (joueurCourant == joueur1) {
-            setCarteJoueur1(card);
-        } else if (joueurCourant == joueur2) {
-            setCarteJoueur2(card);
-        }
-    }
 }

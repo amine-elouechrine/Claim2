@@ -5,25 +5,29 @@ import org.example.Modele.Jeu;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
 import java.io.File;
 import java.io.IOException;
 
-public class InterfaceGraphique implements Runnable {
+public class InterfaceGraphique implements Runnable, InterfaceUtilisateur {
 
     Jeu j;
+    NiveauGraphique niv;
     JFrame fenetre;
     CollecteurEvenements control;
     AdaptateurClavier adaptateurClavier;
+    AdaptateurTransitionPhases adaptateurTransitionPhases;
 
     InterfaceGraphique(Jeu jeu, CollecteurEvenements c) {
         j = jeu;
         control = c;
         adaptateurClavier = new AdaptateurClavier(control, new ComposantSauvegarde(control));
+        adaptateurTransitionPhases = new AdaptateurTransitionPhases(control);
     }
 
-    public static void demarrer(Jeu jeu, CollecteurEvenements control) {
-        SwingUtilities.invokeLater(new InterfaceGraphique(jeu, control));
+    public static void demarrer(Jeu j, CollecteurEvenements c) {
+        InterfaceGraphique vue = new InterfaceGraphique(j, c);
+        c.ajouteInterfaceUtilisateur(vue);
+        SwingUtilities.invokeLater(vue);
     }
 
     @Override
@@ -41,8 +45,11 @@ public class InterfaceGraphique implements Runnable {
         // BarreHaute
         ComposantBarreHaute bh = new ComposantBarreHaute(BoxLayout.X_AXIS, control, j);
 
+        // Recommencer partie
+        ComposantRejouer rec = new ComposantRejouer(control);
+
         // Dessin du NiveauGraphique
-        NiveauGraphique niv = new NiveauGraphique(j, control);
+        niv = new NiveauGraphique(j, control, rec);
         niv.setFocusable(true);
         niv.requestFocusInWindow();
         niv.addMouseListener(new AdaptateurSouris(niv, control));
@@ -55,16 +62,25 @@ public class InterfaceGraphique implements Runnable {
         JToggleButton menu = new JToggleButton("Menu");
         menuPanel.add(menu, BorderLayout.NORTH);
         ComposantMenuPartie menuPartie = new ComposantMenuPartie(BoxLayout.PAGE_AXIS, control, j);
-        menu.addActionListener(new AdaptateurOuvreMenu(menu, menuPartie));
+        menu.addActionListener(new AdaptateurOuvreMenu(menu, menuPartie,niv));
         fenetre.add(menuPanel, BorderLayout.EAST);
         fenetre.add(bh, BorderLayout.NORTH);
+        ComposantTransitionPhases transitionPhases = new ComposantTransitionPhases();
+        //fenetre.add(transitionPhases);
+
+
+        Timer chrono = new Timer(1, new AdaptateurTemps(control));
+        chrono.start();
 
         fenetre.pack();
         fenetre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        fenetre.setSize(1280, 960);
+        fenetre.setSize(960, 720);
         fenetre.getContentPane().setBackground(Color.DARK_GRAY);
         fenetre.setVisible(true);
         fenetre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Masquer menu recommencer
+        rec.setVisible(false);
 
         /*
         // Aligning the vertical panel to the right side
@@ -75,5 +91,14 @@ public class InterfaceGraphique implements Runnable {
         wrapperPanel.add(verticalPanel);
         fenetre.add(wrapperPanel, BorderLayout.CENTER);
         */
+    }
+
+    public void distribuer() {
+        niv.distribuer();
+    }
+
+    @Override
+    public void initializeAnimation(int totalIterations) {
+        niv.initializeAnimation(totalIterations);
     }
 }
