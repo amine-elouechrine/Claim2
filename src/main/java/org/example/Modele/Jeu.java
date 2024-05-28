@@ -137,6 +137,12 @@ public class Jeu extends Observable {
     public int[][] getCarteJouable(Card carteJoue, Hand main) {
         return getListeCarte(ReglesDeJeu.cartesJouables(carteJoue, main));
     }
+    public int[][] getCarteJouableGagnante(Card carteJoue, Hand main) {
+        return getListeCarte(ReglesDeJeu.cartesJouablesGagnant(carteJoue, ReglesDeJeu.cartesJouables(carteJoue, main), getPlateau()));
+    }
+    public int[][] getCarteJouablePerdante(Card carteJoue, Hand main) {
+        return getListeCarte(ReglesDeJeu.cartesJouablesGagnant(carteJoue, ReglesDeJeu.cartesJouables(carteJoue, main), getPlateau()));
+    }
 
     public boolean estCarteJouable(Card CarteAdverse, int indiceCarteJoue) {
         List<Card> preselected = preselected(CarteAdverse, getPlateau().getJoueurCourant().getHand());
