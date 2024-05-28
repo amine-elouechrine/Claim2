@@ -80,10 +80,10 @@ public abstract class IA extends GeneralPlayer {
         }
     }
 
-    //public abstract Card jouer_coup_phase1(Hand mainIA, boolean suivre_faction, Card carte_adversaire);
+    // public abstract Card jouer_coup_phase1(Hand mainIA, boolean suivre_faction, Card carte_adversaire);
     public abstract Card jouerCoupPhase1(Plateau plateau);
 
-    //public abstract Card jouer_coup_phase2(Hand mainIA, boolean suivre_faction, Card carte_adversaire);
+    // public abstract Card jouer_coup_phase2(Hand mainIA, boolean suivre_faction, Card carte_adversaire);
     public abstract Card jouerCoupPhase2(Plateau plateau);
 
     /**

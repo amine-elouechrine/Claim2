@@ -1,0 +1,129 @@
+package org.example.Vue;
+
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
+
+import org.example.Controleur.ControleurMediateur;
+import org.example.IA.Intermediare;
+import org.example.Modele.Jeu;
+import org.example.IA.IA;
+
+public class InterfacePartieCustom extends JFrame implements Runnable {
+
+    private JTextField joueur1Field;
+    private JTextField joueur2Field;
+    private JComboBox<String> IA1ComboBox;
+
+    IA ia;
+
+    public InterfacePartieCustom() {
+        this.setTitle("Claim jeu de carte");
+
+        try {
+            this.setIconImage(ImageIO.read(new File("src/main/resources/assets/claim.png")));
+        } catch (IOException exc) {
+            System.out.println("Erreur de chargement de l'icone");
+        }
+
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(1000, 650); // Set initial size
+        setLocationRelativeTo(null);
+
+        JPanel panel = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.insets = new Insets(5, 5, 5, 5);
+
+
+        JLabel joueur1Label = new JLabel("Nom du joueur 1 : ");
+        joueur1Field = new JTextField(10);
+        panel.add(joueur1Label, gbc);
+        gbc.gridx++;
+        panel.add(joueur1Field, gbc);
+        gbc.gridx = 0;
+        gbc.gridy++;
+
+        JLabel joueur2Label = new JLabel("Nom du joueur 2 : ");
+        joueur2Field = new JTextField(10);
+        panel.add(joueur2Label, gbc);
+        gbc.gridx++;
+        panel.add(joueur2Field, gbc);
+        gbc.gridx = 0;
+        gbc.gridy++;
+
+        String[] options = {"Humain", "Facile", "Difficile"};
+        IA1ComboBox = new JComboBox<>(options);
+
+        gbc.gridx = 0;
+        panel.add(new JLabel("IA Joueur:"), gbc);
+        gbc.gridx++;
+        panel.add(IA1ComboBox, gbc);
+        IA1ComboBox.setSelectedIndex(0);
+        gbc.gridy++;
+
+        gbc.gridx = 0;
+        JButton startButton = new JButton("Commencer le jeu");
+        gbc.gridwidth = 2;
+        gbc.anchor = GridBagConstraints.CENTER;
+        panel.add(startButton, gbc);
+
+
+        startButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    String joueur1 = joueur1Field.getText();
+                    String joueur2 = joueur2Field.getText();
+
+                    if (joueur1 != null && joueur2 != null) {
+                        Jeu jeu = new Jeu();
+                        String IA1Selected = (String) IA1ComboBox.getSelectedItem();
+                        ControleurMediateur control;
+                        switch (IA1Selected) {
+                            case "Facile":
+                                ia = new Intermediare();
+                                control = new ControleurMediateur(jeu, ia);
+                                break;
+                            case "Difficile":
+                                // Création de l'IA
+                                ia = new Intermediare();
+                                control = new ControleurMediateur(jeu, ia);
+                                break;
+
+                            default:
+                                control = new ControleurMediateur(jeu, null);
+                                break;
+                        }
+                        InterfaceGraphique.demarrer(jeu, control);
+                        setVisible(false);
+                    }
+                } catch (NumberFormatException ex) {
+                    // Show a dialog to the user
+                    JOptionPane.showMessageDialog(null, "Erreur de nom de joueur", "Erreur", JOptionPane.ERROR_MESSAGE);
+                }
+
+            }
+        });
+        add(panel);
+        setVisible(true);
+    }
+
+    private void setNiveaux(ControleurMediateur control, String niveaux) {
+        // control.setIA(niveaux);
+    }
+
+    public static void demarrer() {
+        SwingUtilities.invokeLater(InterfacePartieCustom::new);
+    }
+
+    @Override
+    public void run() {
+        SwingUtilities.invokeLater(InterfacePartieCustom::new);
+    }
+}

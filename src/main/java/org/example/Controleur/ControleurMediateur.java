@@ -27,14 +27,12 @@ public class ControleurMediateur implements CollecteurEvenements {
     Jeu jeu;
     InterfaceUtilisateur vue;
     Card carteLeader;
-
     Sequence<Animation> animations;
     int dureePause;
     int iterations;
     Animation mouvement;
     boolean animationsSupportees, animationsActives, pause;
-
-    IA iaFacile;
+    IA iaJeu;
     boolean jouable = true;
     Card carteIA;
 
@@ -45,7 +43,9 @@ public class ControleurMediateur implements CollecteurEvenements {
         iterations = 60;
         animationsSupportees = false;
         animationsActives = false;
-        iaFacile = ia;
+        if (ia != null) {
+            iaJeu = ia;
+        }
     }
 
     /* Getteurs pour la communication entre interface et moteur */
@@ -194,14 +194,13 @@ public class ControleurMediateur implements CollecteurEvenements {
     public void restaure(String filename) throws IOException {
         jeu.restaure(filename);
 
-        if(jeu.getPlateau().getCarteJoueur1()!=null){
-            carteLeader=jeu.getPlateau().getCarteJoueur1();
-        }
-        else if (jeu.getPlateau().getCarteJoueur2()!=null) {
-            carteLeader=jeu.getPlateau().getCarteJoueur2();
-        }else carteLeader=null;
+        if (jeu.getPlateau().getCarteJoueur1() != null) {
+            carteLeader = jeu.getPlateau().getCarteJoueur1();
+        } else if (jeu.getPlateau().getCarteJoueur2() != null) {
+            carteLeader = jeu.getPlateau().getCarteJoueur2();
+        } else carteLeader = null;
         System.out.println("carte leader " + carteLeader);
-        for(Card carte : jeu.getPlateau().getJoueurCourant().getHandScndPhase().getAllCards()){
+        for (Card carte : jeu.getPlateau().getJoueurCourant().getHandScndPhase().getAllCards()) {
             System.out.println(carte);
         }
         jeu.metAJour();
@@ -212,7 +211,7 @@ public class ControleurMediateur implements CollecteurEvenements {
         jeu.getPlateau().initialiserJeu();
         jeu.setCarteJouer();
         jeu.getPlateau().setPhase(true);
-        carteLeader=null;
+        carteLeader = null;
         jeu.metAJour();
         startDistributionAnimation(iterations);
     }
@@ -256,9 +255,9 @@ public class ControleurMediateur implements CollecteurEvenements {
 
     public void tourIA() {
         if (getPhase())
-            carteIA = iaFacile.jouerCoupPhase1(jeu.getPlateau());
+            carteIA = iaJeu.jouerCoupPhase1(jeu.getPlateau());
         else
-            carteIA = iaFacile.jouerCoupPhase2(jeu.getPlateau());
+            carteIA = iaJeu.jouerCoupPhase2(jeu.getPlateau());
 
         if (jeu.estFinPartie()) {
             // Calcul des scores
@@ -283,14 +282,15 @@ public class ControleurMediateur implements CollecteurEvenements {
             jouerCarte(index);
         }
 
-        while (jeu.getJoueur2() == jeu.getJoueurCourant()) {
-            tourIA();
-        }
+        if (iaJeu != null)
+            while (jeu.getJoueur2() == jeu.getJoueurCourant()) {
+                tourIA();
+            }
     }
 
     private void jouerCarteIA(Card carte) {
         jeu.getPlateau().jouerCarte(carte);
-        jeu.getJoueur2().getHand().removeCard(carte);
+        // jeu.getJoueur2().getHand().removeCard(carte);
         if (jeu.estCarteJoueJ1() && jeu.estCarteJoueJ2()) {
             jeu.playTrick();
             jeu.setCarteJouer();
