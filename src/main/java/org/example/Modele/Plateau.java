@@ -351,7 +351,6 @@ public class Plateau {
 
     // use apply phirst phase rule function
     public void attribuerCarteFirstPhase(Card winningCard, ReglesDeJeu r) {
-
         if (r.carteEgaux(carteJoueur1, carteJoueur2)) {
             // determiner le leader
             if (joueurCourant.getName() == joueur2.getName()) { // si le joueur 1 est le leader
