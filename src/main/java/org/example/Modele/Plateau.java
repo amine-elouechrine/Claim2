@@ -174,10 +174,9 @@ public class Plateau {
      * @return true si c'est la fin du jeu, false sinon
      */
     public boolean isEndOfGame() {
-        if (phase == false) { // si on est dans la 2eme phase
-            return estFinPhase(getPhase());
-        }
-        return false;
+        System.out.println("Phase actuelle : " + getPhase());
+        System.out.println("Nb carte mains : " + getJoueur1().getHand().size() + " " + getJoueur2().getHand().size());
+        return !phase && getJoueur1().getHand().isEmpty() && getJoueur2().getHand().isEmpty();
     }
 
     /**

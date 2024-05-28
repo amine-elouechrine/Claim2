@@ -238,6 +238,10 @@ public class ControleurMediateur implements CollecteurEvenements {
         } else {
             joueTour(index);
         }
+        if (jeu.estFinPartie()) {
+            // Calcul des scores
+            System.out.println("La partie est terminée\n");
+        }
         jeu.metAJour();
     }
 
@@ -249,6 +253,10 @@ public class ControleurMediateur implements CollecteurEvenements {
             System.out.println("Clic ailleurs que sur une carte\n");
         } else {
             joueTour(index);
+        }
+        if (jeu.estFinPartie()) {
+            // Calcul des scores
+            System.out.println("La partie est terminée\n");
         }
         jeu.metAJour();
     }
@@ -266,11 +274,6 @@ public class ControleurMediateur implements CollecteurEvenements {
     }
 
     public void joueTour(int index) {
-
-        if (jeu.estFinPartie()) {
-            // Calcul des scores
-            System.out.println("La partie est terminée\n");
-        }
 
         // Application des règles de jeu pour la selection de carte
         if (carteLeader != null) {
