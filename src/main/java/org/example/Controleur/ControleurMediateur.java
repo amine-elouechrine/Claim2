@@ -216,6 +216,7 @@ public class ControleurMediateur implements CollecteurEvenements {
         startDistributionAnimation(iterations);
     }
 
+    public boolean estFinPartie() { return jeu.estFinPartie(); }
     public int getCarteJoueur1F() {
         return jeu.getCarteJoueur1F();
     }

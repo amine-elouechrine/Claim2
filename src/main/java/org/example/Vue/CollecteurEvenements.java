@@ -58,6 +58,8 @@ public interface CollecteurEvenements {
 
     boolean isJoueurCourantJoueur1();
 
+    public boolean estFinPartie();
+
     /* Adaptateurs */
     void refaire();
   
