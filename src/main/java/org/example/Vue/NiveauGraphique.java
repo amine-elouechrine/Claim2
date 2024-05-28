@@ -93,15 +93,18 @@ public class NiveauGraphique extends JComponent implements Observateur {
     int carteJ2V = -1, carteJ2F = -1;
 
     Jeu jeu;
+    ComposantRejouer rec;
 
     /* Load assets */
     Map<String, BufferedImage> imageMap = new HashMap<>();
 
-    public NiveauGraphique(Jeu j, CollecteurEvenements c) {
+    public NiveauGraphique(Jeu j, CollecteurEvenements c, ComposantRejouer rejouer) {
 
         control = c;
         jeu = j;
         jeu.ajouteObservateur(this);
+
+        rec = rejouer;
 
         String directoryPath = "src/main/resources/";
         File directory = new File(directoryPath);
@@ -189,10 +192,11 @@ public class NiveauGraphique extends JComponent implements Observateur {
         positionCarteJoueJ2X = totalWidthJ2 / 2 + startHandXJ2;
         positionCarteJoueJ2Y = totalHeight * 3 / 2 + 10;
 
+        if (control.estFinPartie())
+            rec.setVisible(true);
 
         /* Phase 1 */
         if (control.getPhase()) {
-
 
             // A mettre en toggle-able dans le menu
             /*

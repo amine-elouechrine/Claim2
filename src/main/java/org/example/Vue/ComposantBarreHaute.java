@@ -16,7 +16,7 @@ public class ComposantBarreHaute extends Box {
         add(Box.createGlue());
         add(new ComposantJoueurCourant(axis, j, control));
         add(Box.createGlue());
-        add(new JLabel("ctrl+a : Annuler    |   ctrl+r : Refaire    |   ctrl+s : Sauvegarder/Charger la partie   |   ctrl+n : Nouvelle Partie "));
+        add(new JLabel("ctrl+a : Annuler | ctrl+r : Refaire | ctrl+s : Sauvegarder/Charger la partie | ctrl+n : Nouvelle Partie "));
 
         // Bouton Menu Deroulant
         setBackground(Color.ORANGE);
