@@ -71,6 +71,27 @@ public class Card {
             default:
                 return 0;
         }}
+    public int getWeight(Card carte) {
+        int valCarte ;
+        if (carte.getValeur()>5){
+            valCarte=carte.getValeur()+5;
+        }
+        else
+            valCarte=carte.getValeur()+2;
+        switch (carte.getFaction()) {
+            case "Goblins":
+                return valCarte + 1;
+            case "Knight":
+                return valCarte+ 3;
+            case "Doppelganger":
+                return valCarte + 3;
+            case "Dwarve":
+                return valCarte + 2;
+            case "Undead":
+                return valCarte + 2;
+        }
+        return 0;
+    }
     @Override
     public String toString() {
         return "Card{" + "faction=" + faction + ", value=" + value + '}';

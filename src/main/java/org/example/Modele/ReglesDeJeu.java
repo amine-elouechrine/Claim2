@@ -185,13 +185,16 @@ public class ReglesDeJeu {
 
         // Vérifier si le joueur possède une carte de la même faction que celle jouée par l'adversaire
         for (Card carte : mainJoueur.getAllCards()) {
-            if ((carte.getFaction().equals(carteAdversaire.getFaction())) || ((carteAdversaire.getFaction().equals("Goblins"))&&(carte.getFaction().equals("Knight")))) {
+            if ((carte.getFaction().equals(carteAdversaire.getFaction())) ) {
                 cartesJouables.add(carte);
             }
         }
         if (!cartesJouables.isEmpty()){
             for(Card carte : mainJoueur.getAllCards()){
                 if((carte.getFaction().equals("Doppelganger"))){
+                    cartesJouables.add(carte);
+                }
+                if (carteAdversaire.getFaction().equals("Goblins") && carte.getFaction().equals("Knight")){
                     cartesJouables.add(carte);
                 }
             }

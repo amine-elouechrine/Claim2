@@ -93,15 +93,15 @@ public class Cards extends CardCollection {
     }
 
     // Méthode pour obtenir la carte la plus grande qui est plus petite que la carte jouée par l'adversaire
-    public Card getHighestCardSmallerThan(Card opponentCard) {
-        if (cards.isEmpty()) {
+    public Card getHighestCardSmallerThan(Card opponentCard,Hand hand ) {
+        if (hand.isEmpty()) {
             throw new IllegalStateException("La pile de cartes est vide.");
         }
 
         Card highestSmallerCard = null;
         int opponentValue = opponentCard.getValeur();
 
-        for (Card card : cards) {
+        for (Card card : hand.getCards()) {
             int cardValue = card.getValeur();
             if (cardValue < opponentValue && (highestSmallerCard == null || cardValue > highestSmallerCard.getValeur())) {
                 highestSmallerCard = card;
