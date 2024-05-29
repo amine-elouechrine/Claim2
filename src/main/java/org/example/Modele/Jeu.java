@@ -218,11 +218,11 @@ public class Jeu extends Observable {
     public void playTrick() {
         if (getPhase()) {
             Card carteGagnante;
-            if (getPlateau().getJoueurCourant()==getPlateau().getJoueur1())
+            if (getPlateau().getJoueurCourant() == getPlateau().getJoueur1())
                 carteGagnante = ReglesDeJeu.carteGagnante(getPlateau().getCarteJoueur2(), getPlateau().getCarteJoueur1(), getPlateau());
             else
                 carteGagnante = ReglesDeJeu.carteGagnante(getPlateau().getCarteJoueur1(), getPlateau().getCarteJoueur2(), getPlateau());
-            System.out.println("la carte gagnante est "+ carteGagnante);
+            System.out.println("la carte gagnante est " + carteGagnante);
             getPlateau().attribuerCarteFirstPhase(carteGagnante, r);
             if (estFinPhase1()) {
                 switchPhase();
@@ -232,14 +232,27 @@ public class Jeu extends Observable {
             }
         } else {
             Card carteGagnante;
-            if (getPlateau().getJoueurCourant()==getPlateau().getJoueur1())
+            if (getPlateau().getJoueurCourant() == getPlateau().getJoueur1())
                 carteGagnante = ReglesDeJeu.carteGagnante(getPlateau().getCarteJoueur2(), getPlateau().getCarteJoueur1(), getPlateau());
             else
                 carteGagnante = ReglesDeJeu.carteGagnante(getPlateau().getCarteJoueur1(), getPlateau().getCarteJoueur2(), getPlateau());
-            System.out.println("la carte gagnante est "+ carteGagnante);
+            System.out.println("la carte gagnante est " + carteGagnante);
             getPlateau().attribuerCarteSecondPhase(carteGagnante, r);
 
         }
+    }
+
+    public Player getJoueurGagnant() {
+        Card carteGagnante;
+        if (getPlateau().getJoueurCourant() == getPlateau().getJoueur1())
+            carteGagnante = ReglesDeJeu.carteGagnante(getPlateau().getCarteJoueur2(), getPlateau().getCarteJoueur1(), getPlateau());
+        else
+            carteGagnante = ReglesDeJeu.carteGagnante(getPlateau().getCarteJoueur1(), getPlateau().getCarteJoueur2(), getPlateau());
+
+        if(carteGagnante == getPlateau().getCarteJoueur1())
+            return getPlateau().getJoueur1();
+        else
+            return getPlateau().getJoueur2();
     }
 
     public void setCarteJouer() {
@@ -269,11 +282,11 @@ public class Jeu extends Observable {
     }
 
     public void sauve(String filename) throws FileNotFoundException {
-        g.sauve(filename,getPlateau());
+        g.sauve(filename, getPlateau());
     }
 
     public void restaure(String filename) throws IOException {
-        this.plateau=g.restaure(filename);
+        this.plateau = g.restaure(filename);
     }
 
     public Player getJoueur1() {

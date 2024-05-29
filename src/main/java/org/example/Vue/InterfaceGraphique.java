@@ -62,7 +62,7 @@ public class InterfaceGraphique implements Runnable, InterfaceUtilisateur {
         JToggleButton menu = new JToggleButton("Menu");
         menuPanel.add(menu, BorderLayout.NORTH);
         ComposantMenuPartie menuPartie = new ComposantMenuPartie(BoxLayout.PAGE_AXIS, control, j);
-        menu.addActionListener(new AdaptateurOuvreMenu(menu, menuPartie,niv));
+        menu.addActionListener(new AdaptateurOuvreMenu(menu, menuPartie, niv));
         fenetre.add(menuPanel, BorderLayout.EAST);
         fenetre.add(bh, BorderLayout.NORTH);
         ComposantTransitionPhases transitionPhases = new ComposantTransitionPhases();
@@ -97,8 +97,27 @@ public class InterfaceGraphique implements Runnable, InterfaceUtilisateur {
         niv.distribuer();
     }
 
+    public void distribuerGagne() {
+        niv.distribuerGagne();
+    }
+
     @Override
-    public void initializeAnimation(int totalIterations) {
-        niv.initializeAnimation(totalIterations);
+    public void distribuerDefausse() {
+        niv.distribuerDefausse();
+    }
+
+    @Override
+    public void initializeAnimationDistribuer(int totalIterations) {
+        niv.initializeAnimationDistribuer(totalIterations);
+    }
+
+    @Override
+    public void initializeAnimationGagne(int totalIterations, int joueur) {
+        niv.initializeAnimationGagne(totalIterations, joueur);
+    }
+
+    @Override
+    public void initializeAnimationDefausse(int totalIterations, int card1Faction, int card2Faction) {
+        niv.initializeAnimationDefausse(totalIterations, card1Faction, card2Faction);
     }
 }
