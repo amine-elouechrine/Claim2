@@ -154,7 +154,7 @@ public class ControleurMediateur implements CollecteurEvenements {
     }
 
     @Override
-    public void annuler() throws IOException {
+    public void annuler() {
         jeu.annulerCoup();
         if (jeu.getPlateau().getCarteJoueur1() == null && jeu.getPlateau().getCarteJoueur2() != null) {
             carteLeader = jeu.getPlateau().getCarteJoueur2();
@@ -295,7 +295,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 
     private void jouerCarteIA(Card carte) {
         jeu.getPlateau().jouerCarte(carte);
-        jeu.getJoueur2().getHand().removeCard(carte);
+        //jeu.getJoueur2().getHand().removeCard(carte);
         if (jeu.estCarteJoueJ1() && jeu.estCarteJoueJ2()) {
             jeu.playTrick();
             // On joue le plie

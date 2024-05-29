@@ -56,8 +56,19 @@ public class Plateau {
     public PlateauState saveState() {
 
         // Cloner les cartes des joueurs
-        Card clonedCarteJoueur1 = carteJoueur1.clone();
-        Card clonedCarteJoueur2 = carteJoueur2.clone();
+        Card clonedCarteJoueur1;
+        if (carteJoueur1 == null) {
+            clonedCarteJoueur1 = null;
+        } else {
+            clonedCarteJoueur1 = carteJoueur1.clone();
+        }
+
+        Card clonedCarteJoueur2;
+        if (carteJoueur2 == null) {
+            clonedCarteJoueur2 = null;
+        } else {
+            clonedCarteJoueur2 = carteJoueur2.clone();
+        }
 
         // Cloner les joueurs
         Player clonedJoueur1 = joueur1.clone();
@@ -130,12 +141,34 @@ public class Plateau {
         }
     }
 
+    /**
+     * Génère une chaîne de caractères représentant l'état actuel du plateau.
+     * L'état inclut les mains des deux joueurs pour la seconde phase et les cartes jouées par chaque joueur.
+     * Si une carte est nulle, elle est représentée par "null" dans la chaîne générée.
+     *
+     * @return une chaîne de caractères représentant l'état actuel du plateau.
+     */
     public String generateState() {
         StringBuilder sb = new StringBuilder();
+
+        // Ajouter les mains des deux joueurs pour la seconde phase
         sb.append(getJoueur1().getHandScndPhase().toString());
         sb.append(getJoueur2().getHandScndPhase().toString());
-        sb.append(getCarteJoueur1().toString());
-        sb.append(getCarteJoueur2().toString());
+
+        // Ajouter la carte jouée par le joueur 1 ou "null" si la carte est nulle
+        if (getCarteJoueur1() == null) {
+            sb.append("null");
+        } else {
+            sb.append(getCarteJoueur1().toString());
+        }
+
+        // Ajouter la carte jouée par le joueur 2 ou "null" si la carte est nulle
+        if (getCarteJoueur2() == null) {
+            sb.append("null");
+        } else {
+            sb.append(getCarteJoueur2().toString());
+        }
+
         return sb.toString();
     }
 

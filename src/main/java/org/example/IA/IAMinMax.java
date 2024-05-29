@@ -7,11 +7,8 @@ import java.util.*;
 
 public class IAMinMax {
 
-    // Hach map  de Node qui stock tous les cofiguration tester (ou une noeud represente une configuration de jeu)
-    private static Map<String, Result> memo;  // memorisation des configurations deja calculer
 
     public IAMinMax() {
-        memo = new HashMap<>();
     }
 
     // Classe pour encapsuler le score et le coup
@@ -28,11 +25,7 @@ public class IAMinMax {
     private static int nodeCount = 0;      // Variable pour compter les noeuds visités
 
     public static Result minimax(Node node, int depth, boolean maximizingPlayer, int alpha, int beta) {
-        String state = node.plateau.generateState();
 
-        if (memo.containsKey(state)) {       // Vérifier si l'état est déjà calculé
-            return memo.get(state);
-        }
 
         // Incrémenter le compteur de nœuds
         nodeCount++;
@@ -41,7 +34,6 @@ public class IAMinMax {
         if (depth == 0 || node.plateau.isEndOfGame()) {
             int evaluation = evaluer(node);
             Result result = new Result(evaluation, null);
-            memo.put(state, result);
             return result;
         }
         PlateauState savedState = node.plateau.saveState(); // Sauvegarder l'état du plateau
@@ -73,7 +65,6 @@ public class IAMinMax {
             node.setScore(maxEval); // Mettre à jour la valeur d'évaluation du node
             node.setCarteJoueeParIa(bestCard); // Mettre à jour la carte jouée par l'IA
             Result result = new Result(maxEval, bestCard);
-            memo.put(state, result);
             //return maxEval;
             return new Result(maxEval, bestCard);
         } else {   // si c'est le tour de l'adversaire (isIaTurn doit etre false)
@@ -105,7 +96,6 @@ public class IAMinMax {
             node.setScore(minEval); // Mettre à jour la valeur d'évaluation du node
             node.setCarteJoueeParIa(bestCard); // Mettre à jour la carte jouée par l'IA
             Result result = new Result(minEval, bestCard);
-            memo.put(state, result);
             //return minEval;
             return new Result(minEval, bestCard);
         }
@@ -117,20 +107,24 @@ public class IAMinMax {
      * Elle évalue toutes les configurations possibles du plateau de jeu jusqu'au profondeur 13 (fin de l'arbres de recherche)
      * et retourne la carte qui maximise les chances de victoire pour l'IA.
      *
-     * @param racine Le nœud racine représentant l'état actuel du plateau de jeu.
+     * @param plateau Le nœud racine représentant l'état actuel du plateau de jeu.
      * @return La meilleure carte à jouer pour l'IA.
      */
     // carte jouer par l'ia (c'est la carte qui a le meilleur score) : (on peu passer soit node en paramettre soit plateau
-    public static Card carteJouerIa(Node racine){
+    public static Card carteJouerIa(Plateau plateau){
+        Node racine = new Node(plateau);
         Node nodeRacine = racine.clone();
+        Result result;
         if(nodeRacine.plateau.getJoueurCourant().getName().equals("MinMax")){
             // Appel de l'algorithme Minimax pour évaluer le meilleur coup
-            Result result = minimax(nodeRacine, 13, true, Integer.MIN_VALUE , Integer.MAX_VALUE );
+            result = minimax(nodeRacine, 13, true, Integer.MIN_VALUE , Integer.MAX_VALUE );
             return result.coup;
         }else{
             // Appel de l'algorithme Minimax pour évaluer le meilleur coup
-            Result result = minimax(nodeRacine, 13, false, Integer.MIN_VALUE , Integer.MAX_VALUE );
+             result = minimax(nodeRacine, 13, false, Integer.MIN_VALUE , Integer.MAX_VALUE );
             return result.coup;
+
+            // si l'ia joue en deuxieme position a la fin du trick alors elle return null ! donc il faut faire une condition pour set le coup a la derniere carte
         }
     }
 
@@ -153,11 +147,17 @@ public class IAMinMax {
     public static int nbrCarteEnJeuFaction(Plateau plateau, String faction){
         int nbrCarteTotFaction = Cards.getNbCarteFaction(faction);
         int nbrCarteDefausse = 0;
-        for (Card card : plateau.getDefausse().getCartes()) {
-            if (card.getFaction().equals(faction)) {
-                nbrCarteDefausse++;
+        // Vérifier si la défausse n'est pas null avant d'accéder à ses cartes
+        if (plateau.getDefausse() != null) {
+            for (Card card : plateau.getDefausse().getCartes()) {
+                if (card.getFaction().equals(faction)) {
+                    nbrCarteDefausse++;
+                }
             }
+        }else{
+            //System.err.println("La défausse est null.");
         }
+
         return nbrCarteTotFaction - nbrCarteDefausse;
     }
 
@@ -190,7 +190,7 @@ public class IAMinMax {
     }
 
 
-    private static int evaluer(Node node) {
+    private static int evaluer1(Node node) {
         Plateau plateau = node.getPlateau();
         int scoreIa = 0;
         int nbrFactionGagner;
@@ -212,18 +212,30 @@ public class IAMinMax {
         return scoreIa + nbrCarteGagner;
     }
 
+    private static int evaluer(Node node) {
+        Plateau plateau = node.getPlateau();
+        int scoreIa = 0;
 
+        // Liste des factions disponibles dans le jeu
+        List<String> factions = Arrays.asList("Goblins", "Knight", "Undead", "Dwarves", "Doppelganger"); // Remplacer par les vraies factions du jeu
 
-    // Méthode pour afficher le contenu de la memo
-    public void afficherMemo() {
-        for (Map.Entry<String, Result> entry : memo.entrySet()) {
-            String state = entry.getKey();
-            Result result = entry.getValue();
-            System.out.println("État du Plateau: " + state);
-            System.out.println("Résultat: " + result);
-            System.out.println("----------------------");
+        // Calculer le score de l'IA pour chaque faction gagner par l'IA ajouter 100 pour le score
+        for (String faction : factions) {
+            // Vérifier si l'IA a gagné cette faction
+            if (gagnerFaction(plateau, faction)) {
+                // Ajouter 100 points pour la faction gagnée
+                scoreIa += 1;
+            }
         }
+        if(scoreIa >= 3){
+            return 1;
+        }else{
+            return 0;
+        }
+
+
     }
+
 
 
 }

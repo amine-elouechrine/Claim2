@@ -28,7 +28,7 @@ public class ReglesDeJeu {
 
         // Règle spéciale pour les Gobelins et les Chevaliers
         if ((faction1.equals("Goblins") && faction2.equals("Knight")) || (faction1.equals("Knight") && faction2.equals("Goblins"))) {
-            System.out.println("gobelin versus knight");
+            //System.out.println("gobelin versus knight");
             return GobelinVsKnight(carte1, carte2);
         }
 

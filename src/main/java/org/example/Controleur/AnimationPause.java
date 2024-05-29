@@ -12,7 +12,7 @@ public class AnimationPause extends Animation {
     @Override
     public void miseAJour() {
         duration--;
-        control.pause();
+        //control.pause();
         //System.out.println("AnimationPause miseAJour called, remaining duration: " + duration);
     }
 
