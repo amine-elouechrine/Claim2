@@ -37,7 +37,7 @@ public class IAMinMax {
             Result result = new Result(evaluation, null);
             return result;
         }
-        PlateauState savedState = node.plateau.saveState();
+        PlateauState savedState =new PlateauState(node.plateau);
         if (maximizingPlayer) { // si c'est le tour de l'ia (verifier isIaTurn dans le noeud si c'est vrai
             int maxEval = Integer.MIN_VALUE;
             Card bestCard = null;

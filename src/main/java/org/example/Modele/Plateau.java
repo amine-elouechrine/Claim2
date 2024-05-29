@@ -53,7 +53,7 @@ public class Plateau {
     }
 
     // Sauvegarde l'état actuel du plateau
-    public PlateauState saveState() {
+    /*public PlateauState saveState() {
 
         // Cloner les cartes des joueurs
         if(carteJoueur1 == null){
@@ -79,7 +79,7 @@ public class Plateau {
             CurrentPlayer = clonedJoueur2 ;
         }
         return new PlateauState(clonedCarteJoueur1, clonedCarteJoueur2, clonedJoueur1, clonedJoueur2, CurrentPlayer);
-    }
+    }*/
 
     // Restaure un état précédemment sauvegardé
     public void restoreState(PlateauState state) {
