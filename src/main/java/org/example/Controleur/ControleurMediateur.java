@@ -153,6 +153,9 @@ public class ControleurMediateur implements CollecteurEvenements {
         return jeu.getCarteJoueur1V();
     }
 
+    public Player getJoueurGagnant() { return jeu.getJoueurGagnant(); }
+
+    /* Methodes qui modifient le jeu */
     @Override
     public void annuler() throws IOException {
         jeu.annulerCoup();
