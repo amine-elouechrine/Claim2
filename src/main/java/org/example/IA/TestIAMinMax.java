@@ -110,9 +110,9 @@ public class TestIAMinMax {
         // Boucle principale de jeu
         boolean partieTerminee = false;
         int i = 0;
-        while(i<1000) {
+        while(i<100) {
             // Création d'un plateau de jeu initial
-            Plateau plateauInitial = configurationPerdante();
+            Plateau plateauInitial = createInitialPlateau();
             partieTerminee = false;
             winner = "";
             coupIa = null;

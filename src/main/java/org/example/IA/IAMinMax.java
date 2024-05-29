@@ -102,11 +102,21 @@ public class IAMinMax {
         }
     }
 
-    // carte jouer par l'ia (c'est la carte qui a le meilleur score) : (on peu passer soit node en paramettre soit plateau
     public static Card carteJouerIa(Plateau plateau){
-        Node racine = new Node(plateau, null);
-        Result result = minimax(racine, 13, true, Integer.MIN_VALUE , Integer.MAX_VALUE );
-        return result.coup;
+        Node racine = new Node(plateau);
+        Node nodeRacine = racine.clone();
+        Result result;
+        if(nodeRacine.plateau.getJoueurCourant().getName().equals("MinMax")){
+            // Appel de l'algorithme Minimax pour évaluer le meilleur coup
+            result = minimax(nodeRacine, 13, true, Integer.MIN_VALUE , Integer.MAX_VALUE );
+            return result.coup;
+        }else{
+            // Appel de l'algorithme Minimax pour évaluer le meilleur coup
+            result = minimax(nodeRacine, 13, false, Integer.MIN_VALUE , Integer.MAX_VALUE );
+            return result.coup;
+
+            // si l'ia joue en deuxieme position a la fin du trick alors elle return null ! donc il faut faire une condition pour set le coup a la derniere carte
+        }
     }
 
     // Méthode pour obtenir le nombre de nœuds
