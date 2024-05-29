@@ -117,7 +117,7 @@ public class IA_intermediareVSIA_Facile {
                 //Card cartejouefacile=Facile.jouer_coup_phase2(null,false,null);
                 Card cartejouefacile=Facile.jouerCoupPhase2(plateau);
                 plateau.setCarteJoueur1(cartejouefacile);
-                plateau.getJoueur1().getHand().removeCard(cartejouefacile);
+                plateau.jouerCarte(cartejouefacile);
                 plateau.switchJoueur();
                 System.out.println("Carte jouée par Facile : "+cartejouefacile);
                 //Facile.hand.removeCard(cartejouefacile);
@@ -196,7 +196,7 @@ public class IA_intermediareVSIA_Facile {
         plateau = new Plateau();
         Facile=new Facile();
         Intermediare=new Intermediare();
-       while(i<100000){
+       while(i<10){
             plateau.initialiserJeu();
             Test_IA_F_VS_I();
             i++;
