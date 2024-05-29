@@ -646,12 +646,12 @@ public class NiveauGraphique extends JComponent implements Observateur {
         this.deltaDefausse2X = (positionCarteJoueJ2X - positionDefausseX) / (double) totalIterations;
         this.deltaDefausse2Y = (positionCarteJoueJ2Y - positionDefausseY) / (double) totalIterations;
 
-        if (card1Faction == 5) {
+        if (card1Faction == 5||!(jeu.getPhase())) {
             this.deltaDefausse1X = (positionCarteJoueJ1X - positionPileScoreX) / (double) totalIterations;
             this.deltaDefausse1Y = (positionCarteJoueJ1Y - positionPileScoreY) / (double) totalIterations;
         }
 
-        if (card2Faction == 5) {
+        if (card2Faction == 5||!(jeu.getPhase())) {
             this.deltaDefausse2X = (positionCarteJoueJ2X - positionPileScoreX) / (double) totalIterations;
             this.deltaDefausse2Y = (positionCarteJoueJ2Y - positionPileScoreY) / (double) totalIterations;
         }
