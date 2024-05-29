@@ -8,10 +8,8 @@ import java.util.*;
 public class IAMinMax {
 
     // Hach map  de Node qui stock tous les cofiguration tester (ou une noeud represente une configuration de jeu)
-    private static Map<Plateau, Result> memo;  // memorisation des configurations deja calculer
 
     public IAMinMax() {
-        memo = new HashMap<>();
     }
 
     // Classe pour encapsuler le score et le coup
@@ -28,13 +26,7 @@ public class IAMinMax {
     private static int nodeCount = 0;      // Variable pour compter les noeuds visités
 
     public static Result minimax(Node node, int depth, boolean maximizingPlayer, int alpha, int beta) {
-        // Vérifiez si l'état du plateau actuel a déjà été évalué
-        // il faut retourner le score et la carte jouée par l'ia
-        /*if (memo.containsKey(node.plateau)) {                             // ==> la memorisation pour le momoent ne sera a rien de cette facon parce que tous les noeuds auront le meme plateau puisqu'on fait pas de clonnage il faut trouver autre chose pour distinguer la configuration deja calculer
-            // Obtenir la carte jouée par l'IA et le score de la configuration
-            Result memoResult = memo.get(node.plateau);
-            return new Result(memoResult.score, memoResult.coup);
-        }*/
+
 
         // Incrémenter le compteur de nœuds
         nodeCount++;
@@ -43,7 +35,6 @@ public class IAMinMax {
         if (depth == 0 || node.plateau.isEndOfGame()) {
             int evaluation = evaluer(node);
             Result result = new Result(evaluation, null);
-            memo.put(node.plateau, result);
             return result;
         }
         PlateauState savedState = node.plateau.saveState();
@@ -75,7 +66,6 @@ public class IAMinMax {
             node.setScore(maxEval); // Mettre à jour la valeur d'évaluation du node
             node.setCarteJoueeParIa(bestCard); // Mettre à jour la carte jouée par l'IA
             Result result = new Result(maxEval, bestCard);
-            memo.put(node.plateau, result);
             //return maxEval;
             return new Result(maxEval, bestCard);
         } else {   // si c'est le tour de l'adversaire (isIaTurn doit etre false)
@@ -107,15 +97,14 @@ public class IAMinMax {
             node.setScore(minEval); // Mettre à jour la valeur d'évaluation du node
             node.setCarteJoueeParIa(bestCard); // Mettre à jour la carte jouée par l'IA
             Result result = new Result(minEval, bestCard);
-            memo.put(node.plateau, result);
             //return minEval;
             return new Result(minEval, bestCard);
         }
     }
 
     // carte jouer par l'ia (c'est la carte qui a le meilleur score) : (on peu passer soit node en paramettre soit plateau
-    public static Card carteJouerIa(Node racine){
-
+    public static Card carteJouerIa(Plateau plateau){
+        Node racine = new Node(plateau, null);
         Result result = minimax(racine, 13, true, Integer.MIN_VALUE , Integer.MAX_VALUE );
         return result.coup;
     }
@@ -167,17 +156,5 @@ public class IAMinMax {
         // calculer le nbr de carte gagner par l'ia et l'ajouter au score
     }*/
 
-
-
-    // Méthode pour afficher le contenu de la memo
-    public void afficherMemo() {
-        for (Map.Entry<Plateau, Result> entry : memo.entrySet()) {
-            Plateau plateau = entry.getKey();
-            Result result = entry.getValue();
-            System.out.println("Plateau: " + plateau);
-            System.out.println("Result: " + result);
-            System.out.println("----------------------");
-        }
-    }
 
 }

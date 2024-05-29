@@ -56,8 +56,17 @@ public class Plateau {
     public PlateauState saveState() {
 
         // Cloner les cartes des joueurs
-        Card clonedCarteJoueur1 = carteJoueur1.clone();
-        Card clonedCarteJoueur2 = carteJoueur2.clone();
+        if(carteJoueur1 == null){
+            carteJoueur1 = new Card();
+        }else{
+            carteJoueur1 = carteJoueur1.clone();
+        }
+        if(carteJoueur2 == null){
+            carteJoueur2 = new Card();
+        }else{
+            carteJoueur2 = carteJoueur2.clone();
+        }
+
 
         // Cloner les joueurs
         Player clonedJoueur1 = joueur1.clone();
