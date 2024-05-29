@@ -35,6 +35,7 @@ public class Plateau {
      * @param
      */
     // Constructeur de copie phase 2
+    // ajouter la defausse et la pioche pour la phase 2
     public Plateau(Plateau other) {
         this.carteJoueur1 = other.carteJoueur1 != null ? new Card(other.carteJoueur1) : null;
         this.carteJoueur2 = other.carteJoueur2 != null ? new Card(other.carteJoueur2) : null;
