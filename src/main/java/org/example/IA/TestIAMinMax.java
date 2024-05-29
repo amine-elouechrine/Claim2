@@ -112,7 +112,7 @@ public class TestIAMinMax {
         int i = 0;
         while(i<100) {
             // Création d'un plateau de jeu initial
-            Plateau plateauInitial = createInitialPlateau();
+            Plateau plateauInitial = configurationPerdante();
             partieTerminee = false;
             winner = "";
             coupIa = null;
