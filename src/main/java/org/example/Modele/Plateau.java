@@ -25,6 +25,8 @@ public class Plateau {
      * Constructeur de la classe Plateau.
      * Initialise la défausse .
      */
+
+    // fait la creation de defausse ailleur et une fonction pour set defausse
     public Plateau() {
         this.defausse = new Defausse();
         this.phase = true; // commancer a la phase 1
@@ -45,7 +47,9 @@ public class Plateau {
         } else {
             this.joueurCourant = this.joueur2;
         }
-        this.phase = other.phase;
+        this.pioche = other.pioche != null ? new Cards(other.pioche) : null;
+        this.defausse = other.defausse != null ? new Defausse(other.defausse) : null;
+        this.phase = false;
     }
 
     public Plateau clone() {
@@ -534,5 +538,8 @@ public class Plateau {
 
     }
 
+    public boolean estPartieTerminer() {
+        return !phase && getJoueur1().getHandScndPhase().isEmpty() && getJoueur2().getHandScndPhase().isEmpty();
+    }
 
 }

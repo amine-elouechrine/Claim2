@@ -8,6 +8,7 @@ public class Player extends GeneralPlayer {
     public Player(String Name) {
         super(Name);
     }
+
     public Player(Player other) {
         super(other.Name);
         this.handScndPhase = new Hand(other.handScndPhase);

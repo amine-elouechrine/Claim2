@@ -23,6 +23,7 @@ public abstract class GeneralPlayer {
         this.hand = main ;
     }
 
+    // fait une fonction getHandScndPhase qui retourne la main de la seconde phase ranger dans une autre fonction
     public Hand getHandScndPhase() {
         // return handScndPhase;
         return Cards.ranger(handScndPhase);

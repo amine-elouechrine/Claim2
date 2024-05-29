@@ -11,17 +11,10 @@ public class PlateauState {
     private Player joueur1;
     private Player joueur2;
     private Player joueurCourant;
+    Cards pioche;
+    Defausse defausse;
     private Boolean phase;
 
-    public PlateauState(Card carteJoueur1, Card carteJoueur2,
-                        Player joueur1, Player joueur2 , Player CurrentPlayer) {
-        this.carteJoueur1 = carteJoueur1;
-        this.carteJoueur2 = carteJoueur2;
-        this.joueur1 = joueur1;
-        this.joueur2 = joueur2;
-        this.joueurCourant = joueur1 ;
-        this.phase = false;
-    }
 
     public PlateauState(Plateau other){
         this.carteJoueur1 = other.carteJoueur1 != null ? new Card(other.carteJoueur1) : null;
@@ -33,8 +26,19 @@ public class PlateauState {
         } else {
             this.joueurCourant = this.joueur2;
         }
-        this.phase = other.phase;
+        this.pioche = other.pioche ; // pas besoin de clonner la pioche parce quelle n'est pas utiliser lors du deuxieme phase
+        this.defausse = new Defausse(other.defausse);
+        this.phase = other.getPhase();
     }
+
+    public Cards getPioche() {
+        return pioche;
+    }
+
+    public Defausse getDefausse() {
+        return defausse;
+    }
+
 
     public Card getCarteJoueur1() {
         return carteJoueur1;
