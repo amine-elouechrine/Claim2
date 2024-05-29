@@ -217,6 +217,7 @@ public class ControleurMediateur implements CollecteurEvenements {
     }
 
     public boolean estFinPartie() { return jeu.estFinPartie(); }
+
     public int getCarteJoueur1F() {
         return jeu.getCarteJoueur1F();
     }
@@ -239,10 +240,6 @@ public class ControleurMediateur implements CollecteurEvenements {
         } else {
             joueTour(index);
         }
-        if (jeu.estFinPartie()) {
-            // Calcul des scores
-            System.out.println("La partie est terminée\n");
-        }
         jeu.metAJour();
     }
 
@@ -255,41 +252,45 @@ public class ControleurMediateur implements CollecteurEvenements {
         } else {
             joueTour(index);
         }
-        if (jeu.estFinPartie()) {
-            // Calcul des scores
-            System.out.println("La partie est terminée\n");
-        }
         jeu.metAJour();
     }
 
     public void tourIA() {
-        if (getPhase())
-            carteIA = iaJeu.jouerCoupPhase1(jeu.getPlateau());
-        else
-            carteIA = iaJeu.jouerCoupPhase2(jeu.getPlateau());
-
-        if (jeu.estFinPartie()) {
+        if (estFinPartie()) {
             // Calcul des scores
+            System.out.println("La partie est terminée\n");
         }
-        jouerCarteIA(carteIA);
+        else {
+            if (getPhase())
+                carteIA = iaJeu.jouerCoupPhase1(jeu.getPlateau());
+            else
+                carteIA = iaJeu.jouerCoupPhase2(jeu.getPlateau());
+
+            jouerCarteIA(carteIA);
+        }
     }
 
     public void joueTour(int index) {
 
-        // Application des règles de jeu pour la selection de carte
-        if (carteLeader != null) {
-            jouable = jeu.estCarteJouable(carteLeader, index);
+        if (estFinPartie()) {
+            // Calcul des scores
+            System.out.println("La partie est terminée\n");
         }
-
-        if (jouable) {
-            jeu.addAction();
-            jouerCarte(index);
-        }
-
-        if (iaJeu != null)
-            while (jeu.getJoueur2() == jeu.getJoueurCourant()) {
-                tourIA();
+        else {
+            // Application des règles de jeu pour la selection de carte
+            if (carteLeader != null) {
+                jouable = jeu.estCarteJouable(carteLeader, index);
             }
+            if (jouable) {
+                jeu.addAction();
+                jouerCarte(index);
+            }
+
+            if (iaJeu != null)
+                while (jeu.getJoueur2() == jeu.getJoueurCourant()) {
+                    tourIA();
+                }
+        }
     }
 
     private void jouerCarteIA(Card carte) {
@@ -371,7 +372,7 @@ public class ControleurMediateur implements CollecteurEvenements {
     private void testFin() {
         if (jeu.estFinPhase1()) {
             jeu.switchPhase();
-            if (jeu.estFinPartie())
+            if (estFinPartie())
                 System.exit(0);
         }
     }
