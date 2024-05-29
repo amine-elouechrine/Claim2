@@ -141,7 +141,7 @@ public class Jeu extends Observable {
         return getListeCarte(ReglesDeJeu.cartesJouablesGagnant(carteJoue, ReglesDeJeu.cartesJouables(carteJoue, main), getPlateau()));
     }
     public int[][] getCarteJouablePerdante(Card carteJoue, Hand main) {
-        return getListeCarte(ReglesDeJeu.cartesJouablesGagnant(carteJoue, ReglesDeJeu.cartesJouables(carteJoue, main), getPlateau()));
+        return getListeCarte(ReglesDeJeu.cartesJouablesPerdant(carteJoue, ReglesDeJeu.cartesJouables(carteJoue, main), getPlateau()));
     }
 
     public boolean estCarteJouable(Card CarteAdverse, int indiceCarteJoue) {

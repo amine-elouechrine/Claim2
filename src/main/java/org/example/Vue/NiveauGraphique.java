@@ -113,6 +113,13 @@ public class NiveauGraphique extends JComponent implements Observateur {
         } else {
             System.out.println("No files found in the directory.");
         }
+
+        // Chargement icons
+        icon_goblin = imageMap.get("icon_goblin");
+        icon_knight = imageMap.get("icon_knight");
+        icon_undead = imageMap.get("icon_undead");
+        icon_dwarve = imageMap.get("icon_dwarve");
+        icon_doppleganger = imageMap.get("icon_doppleganger");
     }
 
     /*
@@ -126,7 +133,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
         paintGameBoard(g);
     }
 
-    private void paintGameBoard(Graphics g) {
+    private void paintGameBoard(Graphics2D g) {
 
         // Set bigger font size
         font = g.getFont().deriveFont(Font.BOLD, largeur() / 25f); // Adjust font size based on panel width
@@ -154,19 +161,12 @@ public class NiveauGraphique extends JComponent implements Observateur {
         fontSize_2 = fontSize_1 * 3 / 4;
         font_2 = new Font("Arial", Font.PLAIN, fontSize_2);
 
-        // Chargement icons
-        icon_goblin = imageMap.get("icon_goblin");
-        icon_knight = imageMap.get("icon_knight");
-        icon_undead = imageMap.get("icon_undead");
-        icon_dwarve = imageMap.get("icon_dwarve");
-        icon_doppleganger = imageMap.get("icon_doppleganger");
-
         // Calculate rectangle dimensions based on panel size
         rectWidth = (int) (panelWidth * 0.05);
         rectHeight = Math.max(rectWidth, (panelHeight * 4) / 30); // Ensure height is always greater than width
 
         // Calculate spacing between rectangles
-        spacing = 0;
+        spacing = 5;
 
         // Calculate total width of all rectangles and spacing
         totalWidthJ1 = nbCardHandJ1 * rectWidth + (nbCardHandJ1 - 1) * spacing;
@@ -341,30 +341,72 @@ public class NiveauGraphique extends JComponent implements Observateur {
     }
 
     /* Dessine la main selon un couple d'entier */
-    private void drawHand(Graphics g, int i, int[][] main, String Joueur) {
+    private void drawHand(Graphics2D g, int i, int[][] main, String Joueur) {
         getStrImage(main[i][1]);
         strImage += "_" + main[i][0];
         image = imageMap.get(strImage);
-        grayImage = toGrayScale(image);
         isPlayable = false;
         for (int[] carteJouable : control.getCarteJouable()) {
             if (main[i][0] == carteJouable[0] && main[i][1] == carteJouable[1]) {
                 isPlayable = true;
                 break;
             }
+
         }
         if (isPlayable) {
             if (strImage.equals("goblin_0") && control.getNomJoueurCourant().equals(Joueur)) {
+                grayImage = toGrayScale(image);
                 g.drawImage(grayImage, x, y, rectWidth, rectHeight, this);
             } else {
-                if (control.isJoueurCourantJoueur1())
-                    g.drawImage(image, x, y - 20, rectWidth, rectHeight, this);
-                else
-                    g.drawImage(image, x, y + 20, rectWidth, rectHeight, this);
+                if(control.estCarteJoueJ2()) {
+                    g.setStroke(new BasicStroke(5));
+                    for (int[] carteGagnante : control.getCarteGagnante()) {
+                        if (main[i][0] == carteGagnante[0] && main[i][1] == carteGagnante[1]) {
+                            g.setColor(Color.GREEN);
+                            DrawWinLoseCards(g);
+                        }
+                    }
+                    for (int[] cartePerdante : control.getCartePerdante()) {
+                        if (main[i][0] == cartePerdante[0] && main[i][1] == cartePerdante[1]) {
+                            g.setColor(Color.RED);
+                            DrawWinLoseCards(g);
+                        }
+                    }
+                }
+                else {
+                    if (control.isJoueurCourantJoueur1()) {
+                        // Dessiner rectangle vert de stroke de taille large
+                        g.drawImage(image, x, y - 20, rectWidth, rectHeight, this);
+                    }
+                    else {
+                        // Dessiner rectangle vert de stroke de taille large
+                        g.drawImage(image, x, y + 20, rectWidth, rectHeight, this);
+                    }
+                }
             }
         } else {
+            grayImage = toGrayScale(image);
             g.drawImage(grayImage, x, y, rectWidth, rectHeight, this);
         }
+        g.setStroke(new BasicStroke(3));
+    }
+
+    private void DrawWinLoseCards(Graphics2D g) {
+        if (control.isJoueurCourantJoueur1()) {
+            // Dessiner rectangle vert de stroke de taille large
+            g.drawImage(image, x, y - 20, rectWidth, rectHeight, this);
+            g.drawRect(x, y - 20, rectWidth, rectHeight);
+        }
+        else {
+            // Dessiner rectangle vert de stroke de taille large
+            g.drawImage(image, x, y + 20, rectWidth, rectHeight, this);
+            g.drawRect(x, y + 20, rectWidth, rectHeight);
+        }
+    }
+
+    private void drawCarteGagnante(Graphics g) {
+
+
     }
 
     /* Permet de trouver le nom de l'image voulu pour la charger */
