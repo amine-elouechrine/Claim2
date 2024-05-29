@@ -1,5 +1,6 @@
 package org.example.Vue;
 
+import org.example.Modele.Player;
 import org.example.Patternes.Observateur;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -51,12 +52,16 @@ public interface CollecteurEvenements {
 
     int getMaxValueFromPileScore(String factionName);
 
+    Player getJoueurGagnant();
+
     /* State check */
     boolean isJoueur1WinningFactionOnEquality(String factionName);
 
     boolean isJoueur2WinningFactionOnEquality(String factionName);
 
     boolean isJoueurCourantJoueur1();
+
+    public boolean estFinPartie();
 
     /* Adaptateurs */
     void refaire();

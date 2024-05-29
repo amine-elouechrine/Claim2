@@ -32,7 +32,8 @@ public class AdaptateurSouris extends MouseAdapter implements MouseListener {
 
         // Si le joueurCourant est le joueur 1
         if (control.isJoueurCourantJoueur1()) {
-            if (i > niv.posXMainJ1() && i < (niv.getLargeurMainJ1() + niv.posXMainJ1()) && j > niv.posYMainJ1() && j < (niv.posYMainJ1() + niv.getHauteurMain())) {
+            if (i > niv.posXMainJ1() && i < (niv.getLargeurMainJ1() + niv.posXMainJ1())
+                    && j > (niv.posYMainJ1() - 20) && j < (niv.posYMainJ1() - 20 + niv.getHauteurMain())) {
                 valeur_carte = (double) (i - niv.posXMainJ1()) / largeurR; // Il faut diviser par la taille des cartes
                 carte = (int) Math.floor(valeur_carte);
                 control.clicSouris(carte);
@@ -41,7 +42,8 @@ public class AdaptateurSouris extends MouseAdapter implements MouseListener {
 
         // Si le joueurCourant est le joueur 2
         else {
-            if (i > niv.posXMainJ2() && i < (niv.getLargeurMainJ2() + niv.posXMainJ2()) && j > niv.posYMainJ2() && j < (niv.posYMainJ2() + niv.getHauteurMain())) {
+            if (i > niv.posXMainJ2() && i < (niv.getLargeurMainJ2() + niv.posXMainJ2())
+                    && j > (niv.posYMainJ2() + 20) && j < (niv.posYMainJ2() + 20 + niv.getHauteurMain())) {
                 valeur_carte = (double) (i - niv.posXMainJ2()) / largeurR; // Il faut diviser par la taille des cartes
                 carte = (int) Math.floor(valeur_carte);
                 control.clicSourisJ2(carte);
