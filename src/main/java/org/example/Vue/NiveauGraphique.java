@@ -166,7 +166,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
         rectHeight = Math.max(rectWidth, (panelHeight * 4) / 30); // Ensure height is always greater than width
 
         // Calculate spacing between rectangles
-        spacing = 5;
+        spacing = 4;
 
         // Calculate total width of all rectangles and spacing
         totalWidthJ1 = nbCardHandJ1 * rectWidth + (nbCardHandJ1 - 1) * spacing;
@@ -358,8 +358,8 @@ public class NiveauGraphique extends JComponent implements Observateur {
                 grayImage = toGrayScale(image);
                 g.drawImage(grayImage, x, y, rectWidth, rectHeight, this);
             } else {
-                if(control.estCarteJoueJ2()) {
-                    g.setStroke(new BasicStroke(5));
+                g.setStroke(new BasicStroke(4));
+                if(control.estCarteJoueJ2() || control.estCarteJoueJ1()) {
                     for (int[] carteGagnante : control.getCarteGagnante()) {
                         if (main[i][0] == carteGagnante[0] && main[i][1] == carteGagnante[1]) {
                             g.setColor(Color.GREEN);
@@ -388,7 +388,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
             grayImage = toGrayScale(image);
             g.drawImage(grayImage, x, y, rectWidth, rectHeight, this);
         }
-        g.setStroke(new BasicStroke(3));
+        g.setStroke(new BasicStroke(2));
     }
 
     private void DrawWinLoseCards(Graphics2D g) {
@@ -537,14 +537,14 @@ public class NiveauGraphique extends JComponent implements Observateur {
 
         g.setColor(Color.BLUE);
         // Draw follower deck Joueur 2
-        // x = startXJ2 - 20 - rectWidth;
-        x = panelWidth / 9;
+        x = startHandXJ2 - 20 - rectWidth;
+        // x = panelWidth / 9;
         y = 20;
         // g.fillRect(x, y, rectWidth, rectHeight);
         g.drawImage(imageMap.get("yellow_square"), x, y, rectWidth, rectHeight, this);
 
         // Draw follower deck Joueur 1
-        // x = startXJ1 - 20 - rectWidth;
+        x = startHandXJ1 - 20 - rectWidth;
         y = hauteur() - rectHeight - 20;
         // g.fillRect(x, y, rectWidth, rectHeight);
         g.drawImage(imageMap.get("yellow_square"), x, y, rectWidth, rectHeight, this);
