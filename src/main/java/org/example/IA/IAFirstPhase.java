@@ -61,7 +61,7 @@ public class IAFirstPhase {
                 mincard = carte;
             }
         }
-        IAhand.removeCard(mincard);
+        //IAhand.removeCard(mincard);
         return mincard;
     }
     public Card minMaxCard(Hand IAhand,Card carteAdversaire) {
