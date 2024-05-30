@@ -22,6 +22,7 @@ public class InterfaceGraphique implements Runnable, InterfaceUtilisateur {
         control = c;
         adaptateurClavier = new AdaptateurClavier(control, new ComposantSauvegarde(control));
         adaptateurTransitionPhases = new AdaptateurTransitionPhases(control);
+
     }
 
     public static void demarrer(Jeu j, CollecteurEvenements c) {
@@ -29,6 +30,7 @@ public class InterfaceGraphique implements Runnable, InterfaceUtilisateur {
         c.ajouteInterfaceUtilisateur(vue);
         SwingUtilities.invokeLater(vue);
     }
+
 
     @Override
     public void run() {

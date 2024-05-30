@@ -21,6 +21,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ControleurMediateur implements CollecteurEvenements {
 
@@ -48,6 +50,29 @@ public class ControleurMediateur implements CollecteurEvenements {
             iaJeu = ia;
         }
     }
+    @Override
+    public List<Card> getCardsFromPileScoreJ1(String factionName) {
+        List<Card> List=jeu.getPlateau().getJoueur1().pileDeScore.getCardsOfFunction(factionName);
+        if(List!=null){
+            return List;
+        }
+        else{
+            List=new ArrayList<>();
+            return List;
+        }
+    }
+
+    public List<Card> getCardsFromPileScoreJ2(String factionName) {
+        List<Card> List=jeu.getPlateau().getJoueur2().pileDeScore.getCardsOfFunction(factionName);
+        if(List!=null){
+            return List;
+        }
+        else{
+            List=new ArrayList<>();
+            return List;
+        }
+    }
+
 
     /* Getteurs pour la communication entre interface et moteur */
     public boolean getPhase() {
@@ -102,6 +127,14 @@ public class ControleurMediateur implements CollecteurEvenements {
         return (getJoueurCourant().equals(jeu.getJoueur1()));
     }
 
+    public boolean estCarteJoueJ1() {
+        return jeu.estCarteJoueJ1();
+    }
+
+    public boolean estCarteJoueJ2() {
+        return jeu.estCarteJoueJ2();
+    }
+
     public int getNbCardFactionFromPileScoreJ1(String factionName) {
         return jeu.getNbCardFactionFromPileScoreJ1(factionName);
     }
@@ -146,6 +179,22 @@ public class ControleurMediateur implements CollecteurEvenements {
         }
     }
 
+    public int[][] getCarteGagnante() {
+        if (carteLeader != null) {
+            return jeu.getCarteJouableGagnante(carteLeader, getHandCourant());
+        } else {
+            return getMainJoueurCourant();
+        }
+    }
+
+    public int[][] getCartePerdante() {
+        if (carteLeader != null) {
+            return jeu.getCarteJouablePerdante(carteLeader, getHandCourant());
+        } else {
+            return getMainJoueurCourant();
+        }
+    }
+
     public String getNomJoueurCourant() {
         return jeu.getNomJoueur(getJoueurCourant());
     }
@@ -154,12 +203,10 @@ public class ControleurMediateur implements CollecteurEvenements {
         return jeu.getCarteJoueur1V();
     }
 
-    public Player getJoueurGagnant() {
-        return jeu.getJoueurGagnant();
-    }
+
+    public Player getJoueurGagnant() { return jeu.getJoueurGagnant(); }
 
     /* Methodes qui modifient le jeu */
-
     @Override
     public void annuler() throws IOException {
         if (pause) {
@@ -233,9 +280,8 @@ public class ControleurMediateur implements CollecteurEvenements {
         startDistributionAnimation(iterations);
     }
 
-    public boolean estFinPartie() {
-        return jeu.estFinPartie();
-    }
+
+    public boolean estFinPartie() { return jeu.estFinPartie(); }
 
     public int getCarteJoueur1F() {
         return jeu.getCarteJoueur1F();
@@ -274,7 +320,90 @@ public class ControleurMediateur implements CollecteurEvenements {
         jeu.metAJour();
     }
 
-    public void joueTour(int index) {
+// <<<<<<< IHM-animations
+//     public void joueTour(int index) {
+//         pause = true;
+//         if (estFinPartie()) {
+//             // Calcul des scores
+//             System.out.println("La partie est terminée\n");
+//         } else {
+//             // Application des règles de jeu pour la selection de carte
+//             if (carteLeader != null) {
+//                 jouable = jeu.estCarteJouable(carteLeader, index);
+//             }
+//             if (jouable) {
+//                 jeu.addAction();
+//                 jouerCarte(index);
+//             }
+//             if (iaJeu != null)
+//                 if (jeu.getJoueur2() == jeu.getJoueurCourant()) {
+//                     Timer timer = new Timer(dureePause / 500, new ActionListener() {
+//                         @Override
+//                         public void actionPerformed(ActionEvent e) {
+//                             tourIA();
+//                         }
+//                     });
+//                     timer.setRepeats(false);
+//                     timer.start();
+//                 }
+//         }
+//         pause = false;
+// =======
+//     public void tourIA() {
+//         if (estFinPartie()) {
+//             // Calcul des scores
+//             System.out.println("La partie est terminée\n");
+//             jeu.switchJoueur();
+//         }
+//         else {
+//             if (getPhase())
+//                 carteIA = iaJeu.jouerCoupPhase1(jeu.getPlateau());
+//             else
+//                 carteIA = iaJeu.jouerCoupPhase2(jeu.getPlateau());
+
+//             jouerCarteIA(carteIA);
+//         }
+//     }
+// >>>>>>> dev
+
+//     }
+
+// <<<<<<< IHM-animations
+//     public void tourIA() {
+//         if (estFinPartie()) {
+//             // Calcul des scores
+//             System.out.println("La partie est terminée\n");
+//         } else {
+//             if (getPhase())
+//                 carteIA = iaJeu.jouerCoupPhase1(jeu.getPlateau());
+//             else
+//                 carteIA = iaJeu.jouerCoupPhase2(jeu.getPlateau());
+
+//             jouerCarteIA(carteIA);
+// =======
+//         if (estFinPartie()) {
+//             // Calcul des scores
+//             System.out.println("La partie est terminée\n");
+//         }
+//         else {
+//             // Application des règles de jeu pour la selection de carte
+//             if (carteLeader != null) {
+//                 jouable = jeu.estCarteJouable(carteLeader, index);
+//             }
+//             if (jouable) {
+//                 jeu.addAction();
+//                 jouerCarte(index);
+//             }
+
+//             if (iaJeu != null)
+//                 while (jeu.getJoueur2() == jeu.getJoueurCourant()) {
+//                     tourIA();
+//                 }
+// >>>>>>> dev
+//         }
+//     }
+  
+      public void joueTour(int index) {
         pause = true;
         if (estFinPartie()) {
             // Calcul des scores
@@ -301,7 +430,6 @@ public class ControleurMediateur implements CollecteurEvenements {
                 }
         }
         pause = false;
-
     }
 
     public void tourIA() {
@@ -318,7 +446,8 @@ public class ControleurMediateur implements CollecteurEvenements {
         }
     }
 
-    private void jouerCarteIA(Card carte) {
+
+    public void jouerCarteIA(Card carte) {
         jeu.getPlateau().jouerCarte(carte);
         if (jeu.estCarteJoueJ1() && jeu.estCarteJoueJ2()) {
             Player gagnant = getJoueurGagnant();
@@ -380,6 +509,12 @@ public class ControleurMediateur implements CollecteurEvenements {
         }
 
     }
+
+    /*/fonction qui me retourne dans les cartes dans la pile de score du joueur 1 d'une faction donnee
+    public int[] getCardsFromPileScore(String factionName,Player player) {
+        return jeu.getCardsFromPileScore(factionName);
+    }*/
+
 
 
     @Override

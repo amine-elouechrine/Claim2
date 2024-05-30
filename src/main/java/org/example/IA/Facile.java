@@ -1,16 +1,19 @@
 package org.example.IA;
 
 import org.example.Modele.Card;
+
+import org.example.Modele.Cards;
 import org.example.Modele.Hand;
-import org.example.Modele.Plateau;
 import org.example.Modele.Player;
 
 import java.util.Random;
 
 public class Facile extends IA {
+
     Player joueur1;
     Player IA;
     Random rand;
+
 
     public Facile() {
         super("Facile");
@@ -141,4 +144,6 @@ public class Facile extends IA {
     public Card jouerCarte(int indexCard) {
         return null;
     }
+
+    
 }

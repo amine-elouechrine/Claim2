@@ -12,6 +12,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class InterfaceInitiale extends JFrame implements Runnable {
     public InterfaceInitiale() {
@@ -130,6 +133,8 @@ public class InterfaceInitiale extends JFrame implements Runnable {
         Jeu jeu = new Jeu();
         IA ia = new Intermediare();
         CollecteurEvenements control = new ControleurMediateur(jeu, ia);
+        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+        scheduler.scheduleAtFixedRate(() -> control.tictac(), 0, 100, TimeUnit.MILLISECONDS);
         InterfaceGraphique.demarrer(jeu, control);
         JOptionPane.showMessageDialog(this, "La partie commence");
         this.setVisible(false);

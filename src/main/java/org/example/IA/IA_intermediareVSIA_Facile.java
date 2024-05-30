@@ -27,9 +27,14 @@ public class IA_intermediareVSIA_Facile {
         ReglesDeJeu r = new ReglesDeJeu();
         Random rand = new Random();
         int i = 0;
+
+
+
         while (i < 13) {//phase 1
             System.out.println("i= " + i);
             System.out.println(plateau.getJoueur1().getHand().size()+"--"+plateau.getJoueur2().getHand().size());
+
+            System.out.println("La carte au milieu est : " + plateau.getCarteAffichee());
             if (plateau.getJoueurCourant().getName().equals("Joueur 1")){//Joueur1=Facile
                 //Card cartejouefacile=Facile.jouer_coup_phase1(null,false,null);
                 Card cartejouefacile = Facile.jouerCoupPhase1(plateau);
@@ -54,8 +59,8 @@ public class IA_intermediareVSIA_Facile {
                 }
                 System.out.println("Carte gagnante : " + winningCard);
                 //plateau.setJoueurCourant(r.determinerGagnantManche(FacileP,IntermediareP,cartejouefacile,carteadversaire));
-                IA gagnantMancheIA = determinerGagnantMancheIA(Facile, Intermediare, cartejouefacile, carteadversaire, plateau);
-                System.out.println("Le gagnant de la manche est : " + gagnantMancheIA.Name);
+                //IA gagnantMancheIA = determinerGagnantMancheIA(Facile, Intermediare, cartejouefacile, carteadversaire, plateau);
+                //System.out.println("Le gagnant de la manche est : " + gagnantMancheIA.Name);
                 plateau.attribuerCarteFirstPhase(winningCard, r);
                 System.out.println("\n" + i);
                 i++;
@@ -80,10 +85,10 @@ public class IA_intermediareVSIA_Facile {
                 if (winningCard == null) {//le leader qui gagne la manche en cas d'egalite
                     winningCard = cartejoueintermediare;
                 }
-                IA gagnantMancheIA = determinerGagnantMancheIA(Facile, Intermediare, new Card(cartejoueintermediare.getValeur(),cartejoueintermediare.getFaction()),new Card( carteadversaire.getValeur(),carteadversaire.getFaction()), plateau);
+                //IA gagnantMancheIA = determinerGagnantMancheIA(Facile, Intermediare, new Card(cartejoueintermediare.getValeur(),cartejoueintermediare.getFaction()),new Card( carteadversaire.getValeur(),carteadversaire.getFaction()), plateau);
                 plateau.attribuerCarteFirstPhase(winningCard, r);
                 System.out.println("Carte gagnante : " + winningCard);
-                System.out.println("Le gagnant de la manche est : " + gagnantMancheIA.Name);
+                //System.out.println("Le gagnant de la manche est : " + gagnantMancheIA.Name);
                 System.out.println("\n" + i);
                 /*System.out.println("::::>"+plateau.getJoueurCourant().getHandScndPhase().size());
                 plateau.switchJoueur();
@@ -94,6 +99,15 @@ public class IA_intermediareVSIA_Facile {
             if(i!=13){
                 plateau.setCardAffiche(plateau.getPioche().getCard());
             }
+            System.out.println("-----------------------------");
+            System.out.println ("Defausse :"+plateau.getDefausse().getSize());
+            System.out.println("Pioche :"+plateau.getPioche().getSize());
+            System.out.println("Joueur 1 :"+plateau.getJoueur1().getHand().size());
+            System.out.println("Joueur 2 :"+plateau.getJoueur2().getHand().size());
+            System.out.println("Seccond hand J1 "+plateau.getJoueur1().getHandScndPhase().size());
+            System.out.println("Seccond hand J2 "+plateau.getJoueur2().getHandScndPhase().size());
+            System.out.println("-----------------------------");
+
 
 
         }
@@ -138,8 +152,8 @@ public class IA_intermediareVSIA_Facile {
                 }
                 System.out.println("Carte gagnante : "+winningCard);
 
-                IA gagnantMancheIA= determinerGagnantMancheIA(Facile,Intermediare,cartejouefacile,carteadversaire,plateau);
-                System.out.println("Le gagnant de la manche est : "+gagnantMancheIA.Name);
+                //IA gagnantMancheIA= determinerGagnantMancheIA(Facile,Intermediare,cartejouefacile,carteadversaire,plateau);
+                //System.out.println("Le gagnant de la manche est : "+gagnantMancheIA.Name);
                 plateau.attribuerCarteSecondPhase(winningCard,r);
                 //plateau.getJoueurNonCourant().addPileDeScore(pioche.getCard());
                 //System.out.println("\n"+i);
@@ -168,12 +182,11 @@ public class IA_intermediareVSIA_Facile {
                 }
 
                 System.out.println("Carte gagnante : "+winningCard);
-                IA gagnantMancheIA= determinerGagnantMancheIA(Facile,Intermediare,cartejoueintermediare,carteadversaire,plateau);
-                System.out.println("Le gagnant de la manche est : "+gagnantMancheIA.Name);
+                //IA gagnantMancheIA= determinerGagnantMancheIA(Facile,Intermediare,cartejoueintermediare,carteadversaire,plateau);
+                //System.out.println("Le gagnant de la manche est : "+gagnantMancheIA.Name);
                 plateau.attribuerCarteSecondPhase(winningCard,r);
 
-                //plateau.getJoueurNonCourant().addPileDeScore(pioche.getCard());
-                //System.out.println("\n"+i);
+
                 i++;
             }
 
@@ -196,8 +209,16 @@ public class IA_intermediareVSIA_Facile {
         plateau = new Plateau();
         Facile=new Facile();
         Intermediare=new Intermediare();
+        plateau.initialiserJeu();
+        plateau.getJoueur1().getHand().printHand();
+        System.out.println("------------------------------------------------");
+        plateau.getJoueur2().getHand().printHand();
        while(i<1000){
-            plateau.initialiserJeu();
+           plateau.initialiserJeu();
+           if(i %2 == 0) {
+               plateau.setJoueurCourant(plateau.getJoueur1());
+           }else {
+               plateau.setJoueurCourant(plateau.getJoueur2());}
             Test_IA_F_VS_I();
             i++;
        }
