@@ -57,5 +57,8 @@ public class PileDeScore {
             cartesGagnees.put(faction, cartes);
         }
     }
+    public List<Card> getCardsOfFunction (String Faction){
+        return cartesGagnees.get(Faction);
+    }
 
 }

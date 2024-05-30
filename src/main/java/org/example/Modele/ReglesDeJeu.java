@@ -150,7 +150,7 @@ public class ReglesDeJeu {
      * @param carteJoueur2 La carte jouée par le deuxième joueur.
      * @return Le joueur gagnant ou null en cas d'égalité.
      */
-    public static Player determinerGagnantManche(Player joueur1, Player joueur2, Card carteJoueur1, Card carteJoueur2, Plateau Plateau) {
+    public static GeneralPlayer determinerGagnantManche(GeneralPlayer joueur1, GeneralPlayer joueur2, Card carteJoueur1, Card carteJoueur2, Plateau Plateau) {
         Card carteGagnante = carteGagnante(carteJoueur1, carteJoueur2, Plateau);
 
         if (carteGagnante == carteJoueur1) {
