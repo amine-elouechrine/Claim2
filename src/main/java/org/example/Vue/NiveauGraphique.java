@@ -43,6 +43,9 @@ public class NiveauGraphique extends JComponent implements Observateur {
     int positionCarteJoueJ2X, positionCarteJoueJ2Y;
     int positionCarteAfficheeX, positionCarteAfficheeY;
     int positionDeckX, positionDeckY;
+
+    int positionFollowersPileJ1X, positionFollowersPileJ1Y;
+    int positionFollowersPileJ2X, positionFollowersPileJ2Y;
     double deltaX, deltaY;
     int totalIterations;
     double currentX, currentY;
@@ -539,21 +542,26 @@ public class NiveauGraphique extends JComponent implements Observateur {
     // Dessine les decks de followers
     private void drawFollowerDeck(Graphics g) {
 
-        g.setColor(Color.BLUE);
+        // g.setColor(Color.BLUE);
         // Draw follower deck Joueur 2
         x = startHandXJ2 - 20 - rectWidth;
         // x = panelWidth / 9;
         y = 20;
         // g.fillRect(x, y, rectWidth, rectHeight);
+        positionFollowersPileJ2X = x;
+        positionFollowersPileJ2Y = y;
         g.drawImage(imageMap.get("yellow_square"), x, y, rectWidth, rectHeight, this);
 
         // Draw follower deck Joueur 1
         x = startHandXJ1 - 20 - rectWidth;
         y = hauteur() - rectHeight - 20;
         // g.fillRect(x, y, rectWidth, rectHeight);
+        positionFollowersPileJ1X = x;
+        positionFollowersPileJ1Y = y;
         g.drawImage(imageMap.get("yellow_square"), x, y, rectWidth, rectHeight, this);
     }
 
+    /* Getteurs */
     private int largeur() {
         return getWidth();
     }
@@ -615,6 +623,19 @@ public class NiveauGraphique extends JComponent implements Observateur {
         return totalHeight;
     }
 
+    public int getPositionFollowersPileJ1X() {
+        return positionFollowersPileJ1X;
+    }
+    public int getPositionFollowersPileJ1Y() {
+        return positionFollowersPileJ1Y;
+    }
+    public int getPositionFollowersPileJ2X() {
+        return positionFollowersPileJ2X;
+    }
+    public int getPositionFollowersPileJ2Y() {
+        return positionFollowersPileJ2Y;
+    }
+
     @Override
     public void miseAJour() {
         repaint();
@@ -649,7 +670,6 @@ public class NiveauGraphique extends JComponent implements Observateur {
             }
         }
     }
-
 
 }
 
