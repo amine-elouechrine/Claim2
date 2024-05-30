@@ -98,7 +98,7 @@ public abstract class GeneralPlayer {
 
     public Card jouerCarte(Card carte) {
         // Vérifie si la carte est présente dans la main du joueur
-        if (hand.contains(carte)) {
+        /*if (hand.contains(carte)) {
             // Retire la carte de la main du joueur
             hand.removeCard(carte);
             return carte;
@@ -106,7 +106,9 @@ public abstract class GeneralPlayer {
             System.out.println("La carte n'est pas dans la main du joueur.");
             // Si la carte n'est pas dans la main du joueur, retourne null
             return null;
-        }
+        }*/
+        hand.removeCard(carte);
+        return carte;
     }
 
     public Card jouerCarte2(int indexCard) {
