@@ -9,12 +9,18 @@ public class AnimationDistribuer extends Animation {
     public AnimationDistribuer(int d, ControleurMediateur control) {
         super(1, control);
         duration = d;
+        control.setPause(true);
+
     }
 
     @Override
     public void miseAJour() {
         duration--;
         control.distribuer();
+        if (estTerminee()) {
+            control.setPause(false);
+        }
+
     }
 
     @Override

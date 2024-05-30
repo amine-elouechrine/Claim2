@@ -1,24 +1,37 @@
 package org.example.Controleur;
 
-
-import org.example.Vue.NiveauGraphique;
-
-public class AnimationGagne extends Animation {
+public class AnimationGagne extends Animation{
     int duration;
+    int initialDelay;
+    boolean delayCompleted;
+
 
     public AnimationGagne(int d, ControleurMediateur control) {
         super(1, control);
+        initialDelay = 70;
         duration = d;
+        control.setPause(true);
+        delayCompleted = false;
     }
 
     @Override
     public void miseAJour() {
-        duration--;
-        control.distribuerGagne();
+        if (!delayCompleted) {
+            initialDelay--;
+            if (initialDelay <= 0) {
+                delayCompleted = true;
+            }
+        } else {
+            duration--;
+            control.distribuerGagne();
+        }
+
+
     }
 
     @Override
     public boolean estTerminee() {
         return duration <= 0;
     }
+
 }

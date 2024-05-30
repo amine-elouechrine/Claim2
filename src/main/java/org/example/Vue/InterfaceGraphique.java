@@ -101,6 +101,11 @@ public class InterfaceGraphique implements Runnable, InterfaceUtilisateur {
         niv.distribuerGagne();
     }
 
+    public void distribuerPerde() {
+        niv.distribuerPerde();
+    }
+
+
     @Override
     public void distribuerDefausse() {
         niv.distribuerDefausse();
@@ -114,6 +119,10 @@ public class InterfaceGraphique implements Runnable, InterfaceUtilisateur {
     @Override
     public void initializeAnimationGagne(int totalIterations, int joueur) {
         niv.initializeAnimationGagne(totalIterations, joueur);
+    }
+    @Override
+    public void initializeAnimationPerde(int totalIterations, int joueur) {
+        niv.initializeAnimationPerde(totalIterations, joueur);
     }
 
     @Override

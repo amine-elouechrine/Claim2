@@ -51,10 +51,12 @@ public class NiveauGraphique extends JComponent implements Observateur {
 
     double deltaX, deltaY, deltaGagneX, deltaGagneY;
     double deltaDefausse1X, deltaDefausse1Y, deltaDefausse2X, deltaDefausse2Y;
+    double deltaPerdeX, deltaPerdeY;
     int totalIterations;
     double currentCarteaganeeX, currentCarteaganeeY;
     double currentCarteJoue1X, currentCarteJoue1Y;
     double currentCarteJoue2X, currentCarteJoue2Y;
+    double currentCartePerdeX, currentCartePerdeY;
     // Variables pour l'affichage du score
     int numRows;
     int cellHeight;
@@ -236,7 +238,6 @@ public class NiveauGraphique extends JComponent implements Observateur {
             positionFollower2X = panelWidth / 9;
             positionFollower1Y = hauteur() - rectHeight - 20;
             positionFollower2Y = 20;
-            ;
             drawFollowerDeck(g);
 
             // Draw carte a gagne
@@ -245,7 +246,10 @@ public class NiveauGraphique extends JComponent implements Observateur {
             drawCardToWin(g);
 
             // Draw deck
+            positionDeckX = largeur() - largeur() / 8;
+            positionDeckY = hauteur() / 2 - rectHeight * 3 / 4;
             drawDeck(g);
+            drawAnimationPerde(g);
 
             // Draw defausse
             positionDefausseX = largeur() - largeur() / 8;
@@ -354,10 +358,14 @@ public class NiveauGraphique extends JComponent implements Observateur {
     /* Dessine la pioche pour la phase 1 */
     private void drawDeck(Graphics g) {
         g.setColor(Color.ORANGE);
-        positionDeckX = largeur() - largeur() / 8;
-        positionDeckY = hauteur() / 2 - rectHeight * 3 / 4;
         // g.fillRect(x, y, rectHeight, rectWidth); // Rectangle latéral
         g.drawImage(imageMap.get("backside"), positionDeckX, positionDeckY, rectWidth, rectHeight, this);
+    }
+
+    private void drawAnimationPerde(Graphics g) {
+        if(jeu.estCarteJoueJ1() && jeu.estCarteJoueJ2()) {
+            g.drawImage(imageMap.get("backside"), (int) currentCartePerdeX, (int) currentCartePerdeY, rectWidth, rectHeight, this);
+        }
     }
 
     /* Dessine la main selon un couple d'entier */
@@ -637,6 +645,27 @@ public class NiveauGraphique extends JComponent implements Observateur {
         miseAJour();
     }
 
+    public void initializeAnimationPerde(int totalIterations, int joueur) {
+        this.totalIterations = totalIterations;
+        System.out.println(joueur);
+        if (joueur == 1) {
+            this.deltaPerdeX = (positionDeckX - positionFollower2X) / (double) totalIterations;
+            this.deltaPerdeY = (positionDeckY - positionFollower2Y) / (double) totalIterations;
+        } else {
+            this.deltaPerdeX = (positionDeckX - positionFollower1X) / (double) totalIterations;
+            this.deltaPerdeY = (positionDeckY - positionFollower1Y) / (double) totalIterations;
+        }
+
+        this.currentCartePerdeX = positionDeckX;
+        this.currentCartePerdeY = positionDeckY;
+    }
+
+    public void distribuerPerde() {
+        currentCartePerdeX -= deltaPerdeX;
+        currentCartePerdeY -= deltaPerdeY;
+        miseAJour();
+    }
+
     public void initializeAnimationDefausse(int totalIterations, int card1Faction, int card2Faction) {
         this.totalIterations = totalIterations;
         this.positionPileScoreX = rectWidth;
@@ -646,12 +675,12 @@ public class NiveauGraphique extends JComponent implements Observateur {
         this.deltaDefausse2X = (positionCarteJoueJ2X - positionDefausseX) / (double) totalIterations;
         this.deltaDefausse2Y = (positionCarteJoueJ2Y - positionDefausseY) / (double) totalIterations;
 
-        if (card1Faction == 5||!(jeu.getPhase())) {
+        if (card1Faction == 5 || !(jeu.getPhase())) {
             this.deltaDefausse1X = (positionCarteJoueJ1X - positionPileScoreX) / (double) totalIterations;
             this.deltaDefausse1Y = (positionCarteJoueJ1Y - positionPileScoreY) / (double) totalIterations;
         }
 
-        if (card2Faction == 5||!(jeu.getPhase())) {
+        if (card2Faction == 5 || !(jeu.getPhase())) {
             this.deltaDefausse2X = (positionCarteJoueJ2X - positionPileScoreX) / (double) totalIterations;
             this.deltaDefausse2Y = (positionCarteJoueJ2Y - positionPileScoreY) / (double) totalIterations;
         }
