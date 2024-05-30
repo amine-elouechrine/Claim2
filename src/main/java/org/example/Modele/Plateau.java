@@ -25,8 +25,6 @@ public class Plateau {
      * Constructeur de la classe Plateau.
      * Initialise la défausse .
      */
-
-    // fait la creation de defausse ailleur et une fonction pour set defausse
     public Plateau() {
         this.defausse = new Defausse();
         this.phase = true; // commancer a la phase 1
@@ -48,9 +46,7 @@ public class Plateau {
         } else {
             this.joueurCourant = this.joueur2;
         }
-        this.pioche = other.pioche != null ? new Cards(other.pioche) : null;
-        this.defausse = other.defausse != null ? new Defausse(other.defausse) : null;
-        this.phase = false;
+        this.phase = other.phase;
     }
 
     public Plateau clone() {
@@ -58,7 +54,6 @@ public class Plateau {
     }
 
     // Sauvegarde l'état actuel du plateau
-    /*public PlateauState saveState() {
     /*public PlateauState saveState() {
 
         // Cloner les cartes des joueurs
@@ -145,37 +140,6 @@ public class Plateau {
         }
     }
 
-    /**
-     * Génère une chaîne de caractères représentant l'état actuel du plateau.
-     * L'état inclut les mains des deux joueurs pour la seconde phase et les cartes jouées par chaque joueur.
-     * Si une carte est nulle, elle est représentée par "null" dans la chaîne générée.
-     *
-     * @return une chaîne de caractères représentant l'état actuel du plateau.
-     */
-    public String generateState() {
-        StringBuilder sb = new StringBuilder();
-
-        // Ajouter les mains des deux joueurs pour la seconde phase
-        sb.append(getJoueur1().getHandScndPhase().toString());
-        sb.append(getJoueur2().getHandScndPhase().toString());
-
-        // Ajouter la carte jouée par le joueur 1 ou "null" si la carte est nulle
-        if (getCarteJoueur1() == null) {
-            sb.append("null");
-        } else {
-            sb.append(getCarteJoueur1().toString());
-        }
-
-        // Ajouter la carte jouée par le joueur 2 ou "null" si la carte est nulle
-        if (getCarteJoueur2() == null) {
-            sb.append("null");
-        } else {
-            sb.append(getCarteJoueur2().toString());
-        }
-
-        return sb.toString();
-    }
-
 
 
     public boolean getPhase() {
@@ -211,20 +175,17 @@ public class Plateau {
      * @return true si c'est la fin du jeu, false sinon
      */
     public boolean isEndOfGame() {
-        return !phase && getJoueur1().getHand().isEmpty() && getJoueur2().getHand().isEmpty();
+        return !phase && getJoueur1().getHand().isEmpty() && getJoueur2().getHand().isEmpty() ;
+
     }
 
-    /**
-     * verifier si c'est la fin du jeu
-     *
-     * @return true si c'est la fin du jeu, false sinon
-     */
-    /*public boolean isEndOfGame() {
+
+    public boolean estPartieTerminer() {
         if (phase == false) { // si on est dans la 2eme phase
             return estFinPhase(getPhase());
         }
         return false;
-    }*/
+    }
 
 
     /**
@@ -454,6 +415,7 @@ public class Plateau {
 
     // use apply phirst phase rule function
     public void attribuerCarteFirstPhase(Card winningCard, ReglesDeJeu r) {
+
         if (r.carteEgaux(carteJoueur1, carteJoueur2)) {
             // determiner le leader
             if (joueurCourant.getName() == joueur2.getName()) { // si le joueur 1 est le leader
@@ -480,14 +442,14 @@ public class Plateau {
                 joueurCourant = joueur2;
             }
         }
-        
+
     }
 
 
 
 
-    
-    // use applay sndphaserule function 
+
+    // use applay sndphaserule function
     public void attribuerCarteSecondPhase(Card winningCard, ReglesDeJeu r) {// on doit changer la fonction ApplyDwarveRule:c'est fait
         if (r.carteEgaux(carteJoueur1, carteJoueur2)) {
             // determiner le leader
@@ -515,6 +477,23 @@ public class Plateau {
 
     public Boolean estPhase1() {
         return !(joueur1.getHand().isEmpty() && joueur2.getHand().isEmpty());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Plateau plateau = (Plateau) o;
+
+        // sa suffit pas de comparer la carte joueur1 et carte joueur2 seulement parce qu'il y a plusieurs gobelins
+        // Compare relevant fields to determine equality
+        return  Objects.equals(carteJoueur1, plateau.carteJoueur1) &&
+                Objects.equals(carteJoueur2, plateau.carteJoueur2) &&
+                Objects.equals(joueur1.pileDeScore, plateau.joueur1.pileDeScore) &&
+                Objects.equals(joueur2.pileDeScore, plateau.joueur2.pileDeScore) &&
+                Objects.equals(joueurCourant.getName(), plateau.joueurCourant.getName()) &&
+                Objects.equals(phase, plateau.phase);
     }
 
     @Override
@@ -551,8 +530,5 @@ public class Plateau {
 
     }
 
-    public boolean estPartieTerminer() {
-        return !phase && getJoueur1().getHandScndPhase().isEmpty() && getJoueur2().getHandScndPhase().isEmpty();
-    }
 
 }
