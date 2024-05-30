@@ -25,7 +25,7 @@ public class ComposantMenuPartie extends JFrame {
         panel.add(Box.createGlue());
 
         // Boutons et FieldTexts Sauver et Charger une partie
-        JButton loadGameButton = new JButton("Charger Partie");
+        JButton loadGameButton = new JButton("Sauver ou Charger Partie");
         // loadGameButton.setPreferredSize(new Dimension(200, 50));
         loadGameButton.addActionListener(new AdaptateurSauvegarde(control, new ComposantSauvegarde(control)));
         panel.add(loadGameButton);
