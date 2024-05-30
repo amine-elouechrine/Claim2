@@ -174,8 +174,6 @@ public class Plateau {
      * @return true si c'est la fin du jeu, false sinon
      */
     public boolean isEndOfGame() {
-        System.out.println("Phase actuelle : " + getPhase());
-        System.out.println("Nb carte mains : " + getJoueur1().getHand().size() + " " + getJoueur2().getHand().size());
         return !phase && getJoueur1().getHand().isEmpty() && getJoueur2().getHand().isEmpty();
     }
 
@@ -406,7 +404,6 @@ public class Plateau {
 
     // use apply phirst phase rule function
     public void attribuerCarteFirstPhase(Card winningCard, ReglesDeJeu r) {
-
         if (r.carteEgaux(carteJoueur1, carteJoueur2)) {
             // determiner le leader
             if (joueurCourant.getName() == joueur2.getName()) { // si le joueur 1 est le leader
