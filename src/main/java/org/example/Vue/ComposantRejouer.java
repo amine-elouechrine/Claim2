@@ -20,6 +20,7 @@ public class ComposantRejouer extends JFrame {
 
         fenetre = this;
 
+
         // Change l'icone de la fenetre principale
         try {
             this.setIconImage(ImageIO.read(new File("src/main/resources/assets/gaufre.png")));

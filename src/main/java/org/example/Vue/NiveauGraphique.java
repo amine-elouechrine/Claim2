@@ -140,7 +140,6 @@ public class NiveauGraphique extends JComponent implements Observateur {
     }
 
     private void paintGameBoard(Graphics2D g) {
-
         // Set bigger font size
         font = g.getFont().deriveFont(Font.BOLD, largeur() / 25f); // Adjust font size based on panel width
         g.setFont(font);
@@ -168,7 +167,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
         font_2 = new Font("Arial", Font.PLAIN, fontSize_2);
 
         // Calculate rectangle dimensions based on panel size
-        rectWidth = (int) (panelWidth * 0.05);
+        rectWidth = (int) (panelWidth * 0.06);
         rectHeight = Math.max(rectWidth, (panelHeight * 4) / 30); // Ensure height is always greater than width
 
         // Calculate spacing between rectangles

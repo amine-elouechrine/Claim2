@@ -121,7 +121,7 @@ public class InterfaceInitiale extends JFrame implements Runnable {
     private void startGame() {
         // Logic to start the game against an AI
         InterfacePartieCustom.demarrer();
-        JOptionPane.showMessageDialog(this, "La partie commence");
+        // JOptionPane.showMessageDialog(this, "La partie commence");
         this.setVisible(false);
     }
 
@@ -131,7 +131,7 @@ public class InterfaceInitiale extends JFrame implements Runnable {
         IA ia = new Intermediare();
         CollecteurEvenements control = new ControleurMediateur(jeu, ia);
         InterfaceGraphique.demarrer(jeu, control);
-        JOptionPane.showMessageDialog(this, "La partie commence");
+        // JOptionPane.showMessageDialog(this, "La partie commence");
         this.setVisible(false);
     }
     private void showRules() {
