@@ -117,11 +117,11 @@ public class IAMinMax {
         Result result;
         if(nodeRacine.plateau.getJoueurCourant().getName().equals("MinMax")){
             // Appel de l'algorithme Minimax pour évaluer le meilleur coup
-            result = minimax(nodeRacine, 13, true, Integer.MIN_VALUE , Integer.MAX_VALUE );
+            result = minimax(nodeRacine, 13, true, 0, 1);
             return result.coup;
         }else{
             // Appel de l'algorithme Minimax pour évaluer le meilleur coup
-            result = minimax(nodeRacine, 13, false, Integer.MIN_VALUE , Integer.MAX_VALUE );
+            result = minimax(nodeRacine, 13, false, 0, 1 );
             return result.coup;
 
             // si l'ia joue en deuxieme position a la fin du trick alors elle return null ! donc il faut faire une condition pour set le coup a la derniere carte

@@ -73,7 +73,7 @@ public class TestIAMinMax {
         boolean partieTerminee = false;
 
         // Création d'un plateau de jeu initial
-        Plateau plateauInitial = configurationPerdante();
+        Plateau plateauInitial = createInitialPlateau();
 
         while (!partieTerminee) {
             if (plateauInitial.getJoueurCourant().getName().equals("MinMax")) {
@@ -127,11 +127,11 @@ public class TestIAMinMax {
         int scoreMinMax = 0;
         int scoreFacile = 0;
         IAMinMax iaMinMax = new IAMinMax();
-        IA intermediaire = new Intermediare();
+        //IA intermediaire = new Intermediare();
 
         for (int i = 0; i < 100; i++) {
-            //String winner = jouerPartieFacileMinMax(iaMinMax);
-            String winner = MinMaxVsIntermediaire(iaMinMax, intermediaire);
+            String winner = jouerPartieFacileMinMax(iaMinMax);
+            //String winner = MinMaxVsIntermediaire(iaMinMax, intermediaire);
 
             if (winner.equals("MinMax")) {
                 scoreMinMax++;
@@ -275,7 +275,7 @@ private static Hand creatLoserHand(Cards pioche) {
     private static Plateau createInitialPlateau() {
         // Création des joueurs
         Player joueur1 = new Player("MinMax");
-        Player joueur2 = new Player("Intermediaire");
+        Player joueur2 = new Player("Facile");
 
         // creation des mains des joueurs
         Cards pioche = new Cards();
