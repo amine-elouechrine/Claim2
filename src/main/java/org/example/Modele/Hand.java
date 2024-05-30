@@ -204,7 +204,7 @@ public class Hand extends CardCollection{
     }
     
     
-    public Card getRandomCard() {
+    /*public Card getRandomCard() {
         if (cards == null || cards.isEmpty()) {
             throw new IllegalStateException("La main est vide ou nulle.");
         }
@@ -214,5 +214,5 @@ public class Hand extends CardCollection{
         Card randomCard = cards.get(randomIndex);
         cards.remove(randomIndex);
         return randomCard;
-    }
+    }*/
 }

@@ -28,9 +28,9 @@ public class GestionClicPileScore implements MouseListener {
         } else if (ligne == 3) {
             factionCliquee = "Knight";
         }else if(ligne == 4){
-            factionCliquee = "Undead";}
+            factionCliquee = "Doppelganger";}
         else if(ligne == 5){
-            factionCliquee = "Doppelganger";
+            factionCliquee = "Undead";
         }
         return factionCliquee;
     }
