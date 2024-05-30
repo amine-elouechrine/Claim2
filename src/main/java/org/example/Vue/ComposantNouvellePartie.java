@@ -9,7 +9,7 @@ public class ComposantNouvellePartie extends Box {
 
         Box box = Box.createHorizontalBox();
 
-        JButton NouvellePartie = new JButton("Nouvelle Partie");
+        JButton NouvellePartie = new JButton("Nouvelle Partie customisable");
         NouvellePartie.addActionListener(new AdaptateurNouvellePartie(control));
         box.add(NouvellePartie);
         box.setAlignmentX(Component.LEFT_ALIGNMENT);

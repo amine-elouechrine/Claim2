@@ -21,9 +21,7 @@ public class AdaptateurClavier extends KeyAdapter implements KeyListener {
             control.annuler();
         } else if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_R) {
             control.refaire();
-            System.out.println("Clique sur le bouton refaire");
         } else if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_S) {
-            //control.sauvegarder(fichier);
             sc.setVisible(true);
         } else if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_N) {
             control.nouvellePartie();

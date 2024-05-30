@@ -2,12 +2,7 @@ package org.example.TestModel;
 import java.util.List;
 import java.util.Scanner;
 
-import org.example.Modele.Card;
-import org.example.Modele.Cards;
-import org.example.Modele.Hand;
-import org.example.Modele.Plateau;
-import org.example.Modele.Player;
-import org.example.Modele.ReglesDeJeu;
+import org.example.Modele.*;
 
 public class ReglesDeJeuTest {
 
@@ -102,7 +97,7 @@ public class ReglesDeJeuTest {
         System.out.println("joueur2 : " + joueur2.getName() + " carte : " + carteJoueur2.getFaction() + " de valeur " + carteJoueur2.getValeur());
         Card carteGagnante = ReglesDeJeu.carteGagnante(carteJoueur1, carteJoueur2 , new Plateau(carteJoueur1 , carteJoueur2));
         System.out.println("La carte gagnante est : " + carteGagnante.getFaction() + " de valeur " + carteGagnante.getValeur());
-        Player gagnant = ReglesDeJeu.determinerGagnantManche(joueur1, joueur2, carteJoueur1, carteJoueur2 , new Plateau(carteJoueur1 , carteJoueur2));
+        GeneralPlayer gagnant = ReglesDeJeu.determinerGagnantManche(joueur1, joueur2, carteJoueur1, carteJoueur2 , new Plateau(carteJoueur1 , carteJoueur2));
         System.out.println("Le gagnant de la manche est : " + gagnant.getName());
         
         String winner ;
