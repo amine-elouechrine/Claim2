@@ -49,18 +49,18 @@ public class NiveauGraphique extends JComponent implements Observateur {
     int positionPileScoreX;
     int positionPileScoreY;
 
+    double currentCarteJoueX, currentCarteJoueY;
     double deltaX, deltaY, deltaGagneX, deltaGagneY;
     double deltaDefausse1X, deltaDefausse1Y, deltaDefausse2X, deltaDefausse2Y;
     double deltaPerdeX, deltaPerdeY;
 
-    int positionFollowersPileJ1X, positionFollowersPileJ1Y;
-    int positionFollowersPileJ2X, positionFollowersPileJ2Y;
     //double deltaX, deltaY;
     int totalIterations;
     double currentCarteaganeeX, currentCarteaganeeY;
     double currentCarteJoue1X, currentCarteJoue1Y;
     double currentCarteJoue2X, currentCarteJoue2Y;
     double currentCartePerdeX, currentCartePerdeY;
+
     // Variables pour l'affichage du score
     int numRows;
     int cellHeight;
@@ -118,7 +118,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
         control = c;
         jeu = j;
         jeu.ajouteObservateur(this);
-        GestionClicPileScore gestionClicPileScore = new GestionClicPileScore(this,this.control);
+        GestionClicPileScore gestionClicPileScore = new GestionClicPileScore(this, this.control);
         addMouseListener(gestionClicPileScore);
         rec = rejouer;
 
@@ -153,7 +153,6 @@ public class NiveauGraphique extends JComponent implements Observateur {
     }
 
     private void paintGameBoard(Graphics2D g) {
-
         // Set bigger font size
         font = g.getFont().deriveFont(Font.BOLD, largeur() / 25f); // Adjust font size based on panel width
         g.setFont(font);
@@ -181,7 +180,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
         font_2 = new Font("Arial", Font.PLAIN, fontSize_2);
 
         // Calculate rectangle dimensions based on panel size
-        rectWidth = (int) (panelWidth * 0.05);
+        rectWidth = (int) (panelWidth * 0.06);
         rectHeight = Math.max(rectWidth, (panelHeight * 4) / 30); // Ensure height is always greater than width
 
         // Calculate spacing between rectangles
@@ -233,7 +232,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
             if (control.isJoueurCourantJoueur1()) {
                 g.setFont(font_2);
                 g.setColor(Color.RED); // Utiliser la couleur actuelle
-                g.drawString("À toi de jouer", startHandXJ1 + totalWidthJ1 + 10, posHandYJ1 + rectHeight / 2);
+                g.drawString("À toi de jouer", startHandXJ1, posHandYJ1 - rectHeight);
             }
 
 
@@ -246,26 +245,29 @@ public class NiveauGraphique extends JComponent implements Observateur {
             }
 
             // Dessine les decks de followers
-            positionFollower1X = panelWidth / 9;
-            positionFollower2X = panelWidth / 9;
-            positionFollower1Y = hauteur() - rectHeight - 20;
-            positionFollower2Y = 20;
+//            positionFollower1X = panelWidth / 9;
+//            positionFollower2X = panelWidth / 9;
+//            positionFollower1Y = hauteur() - rectHeight - 20;
+//            positionFollower2Y = 20;
             drawFollowerDeck(g);
 
             // Draw carte a gagne
             positionCarteAfficheeX = rectWidth * 5 / 2 + largeur() / 2;
             positionCarteAfficheeY = hauteur() / 2 - rectHeight / 2;
-            drawCardToWin(g);
+            if(control.getPause())
+                drawCardToWinDistribuer(g);
+            else
+                drawCardToWin(g);
 
             // Draw deck
-            positionDeckX = largeur() - largeur() / 8;
-            positionDeckY = hauteur() / 2 - rectHeight * 3 / 4;
             drawDeck(g);
+
+            // Animation perdre
             drawAnimationPerde(g);
 
             // Draw defausse
-            positionDefausseX = largeur() - largeur() / 8;
-            positionDefausseY = hauteur() / 2 + rectHeight / 4;
+//            positionDefausseX = largeur() - largeur() / 8;
+//            positionDefausseY = hauteur() / 2 + rectHeight / 4;
             drawDefausse(g);
 
             // Draw score pile
@@ -313,14 +315,26 @@ public class NiveauGraphique extends JComponent implements Observateur {
         image = imageMap.get(strImage);
         if (currentCarteaganeeX == 0 && currentCarteaganeeY == 0) {
             g.drawImage(image, positionCarteAfficheeX, positionCarteAfficheeY, rectWidth, rectHeight, this);
-        }/* else if (currentCarteaganeeX<positionCarteAfficheeX||currentCarteaganeeX>positionDeckX) {
+        } else if (currentCarteaganeeX < positionCarteAfficheeX || currentCarteaganeeX > positionDeckX) {
             g.drawImage(image, positionCarteAfficheeX, positionCarteAfficheeY, rectWidth, rectHeight, this);
-        } else if (currentCarteaganeeY>positionCarteAfficheeY||currentCarteaganeeY<positionDeckY) {
+        } else if (currentCarteaganeeY > positionCarteAfficheeY || currentCarteaganeeY < positionDeckY) {
             g.drawImage(image, positionCarteAfficheeX, positionCarteAfficheeY, rectWidth, rectHeight, this);
-        }*/ else {
+        } else {
             g.drawImage(image, (int) currentCarteaganeeX, (int) currentCarteaganeeY, rectWidth, rectHeight, this);
         }
     }
+
+    private void drawCardToWinDistribuer(Graphics g) {
+        getStrImage(control.getCarteAfficheeFactionScore());
+        strImage += "_" + control.getCarteAfficheeValeur();
+        image = imageMap.get(strImage);
+        if (currentCarteaganeeX == 0 && currentCarteaganeeY == 0) {
+            g.drawImage(image, positionCarteAfficheeX, positionCarteAfficheeY, rectWidth, rectHeight, this);
+        } else {
+            g.drawImage(image, (int) currentCarteaganeeX, (int) currentCarteaganeeY, rectWidth, rectHeight, this);
+        }
+    }
+
     public Point getPositionScorePile() {
         // Calcul des coordonnées X et Y de la pile de score
         int x = rectWidth; // Position X de la pile de score
@@ -328,6 +342,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
 
         return new Point(x, y);
     }
+
     public int getLigneCliquee(int mouseY) {
         // Récupérer les coordonnées de la pile de score
         Point positionScorePile = getPositionScorePile();
@@ -353,12 +368,14 @@ public class NiveauGraphique extends JComponent implements Observateur {
     }
 
 
-
     /* Dessine la pile de score */
     private void drawScorePile(Graphics g) {
         x = rectWidth;
         y = hauteur() / 2 - rectHeight;
+
+        // Dessin de l'emplacement de la pile de score
         g.drawRect(x, y, rectWidth * 2, rectHeight * 2);
+        g.drawImage(imageMap.get("carte_score"), x * 3, y + rectHeight, rectWidth, rectHeight, this);
 
         numRows = 6;
         cellHeight = rectHeight * 2 / numRows;
@@ -395,19 +412,25 @@ public class NiveauGraphique extends JComponent implements Observateur {
     /* Dessine la défausse pour la phase */
     private void drawDefausse(Graphics g) {
         g.setColor(Color.ORANGE);
+        x = positionDeckX;
+        y = positionDeckY - rectHeight - 20;
+        positionDefausseX = x;
+        positionDefausseY = y;
         // g.fillRect(x, y, rectHeight, rectWidth); // Rectangle latéral
-        g.drawImage(imageMap.get("tombstone"), positionDefausseX, positionDefausseY, rectWidth, rectHeight, this);
+        g.drawImage(imageMap.get("carte_placement_defausse"), x, y, rectWidth, rectHeight, this);
     }
 
     /* Dessine la pioche pour la phase 1 */
     private void drawDeck(Graphics g) {
         g.setColor(Color.ORANGE);
+        positionDeckX = largeur() - largeur() / 8;
+        positionDeckY = hauteur() / 2;
         // g.fillRect(x, y, rectHeight, rectWidth); // Rectangle latéral
-        g.drawImage(imageMap.get("backside"), positionDeckX, positionDeckY, rectWidth, rectHeight, this);
+        g.drawImage(imageMap.get("carte_deck"), positionDeckX, positionDeckY, rectWidth, rectHeight, this);
     }
 
     private void drawAnimationPerde(Graphics g) {
-        if(jeu.estCarteJoueJ1() && jeu.estCarteJoueJ2()) {
+        if (jeu.estCarteJoueJ1() && jeu.estCarteJoueJ2()) {
             g.drawImage(imageMap.get("backside"), (int) currentCartePerdeX, (int) currentCartePerdeY, rectWidth, rectHeight, this);
         }
     }
@@ -415,6 +438,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
     /* Dessine la main selon un couple d'entier */
     private void drawHand(Graphics2D g, int i, int[][] main, String Joueur) {
         // jeu.getPlateau().getJoueur1().getHand().printHand();
+
         getStrImage(main[i][1]);
         strImage += "_" + main[i][0];
         image = imageMap.get(strImage);
@@ -425,14 +449,16 @@ public class NiveauGraphique extends JComponent implements Observateur {
                 break;
             }
         }
+        if (control.getPause()) {
+            isPlayable = false;
+        }
         if (isPlayable) {
             if (strImage.equals("goblin_0") && control.getNomJoueurCourant().equals(Joueur)) {
                 grayImage = toGrayScale(image);
                 g.drawImage(grayImage, x, y, rectWidth, rectHeight, this);
             } else {
                 g.setStroke(new BasicStroke(4));
-                if(control.estCarteJoueJ2() || control.estCarteJoueJ1()) {
-                    System.out.println("l'adversaire a jouer une carte");
+                if (control.estCarteJoueJ2() || control.estCarteJoueJ1()) {
                     for (int[] carteGagnante : control.getCarteGagnante()) {
                         if (main[i][0] == carteGagnante[0] && main[i][1] == carteGagnante[1]) {
                             g.setColor(Color.GREEN);
@@ -445,13 +471,11 @@ public class NiveauGraphique extends JComponent implements Observateur {
                             DrawWinLoseCards(g);
                         }
                     }
-                }
-                else {
+                } else {
                     if (control.isJoueurCourantJoueur1()) {
                         // Dessiner rectangle vert de stroke de taille large
                         g.drawImage(image, x, y - 20, rectWidth, rectHeight, this);
-                    }
-                    else {
+                    } else {
                         // Dessiner rectangle vert de stroke de taille large
                         g.drawImage(image, x, y + 20, rectWidth, rectHeight, this);
                     }
@@ -469,8 +493,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
             // Dessiner rectangle vert de stroke de taille large
             g.drawImage(image, x, y - 20, rectWidth, rectHeight, this);
             g.drawRect(x, y - 20, rectWidth, rectHeight);
-        }
-        else {
+        } else {
             // Dessiner rectangle vert de stroke de taille large
             g.drawImage(image, x, y + 20, rectWidth, rectHeight, this);
             g.drawRect(x, y + 20, rectWidth, rectHeight);
@@ -505,7 +528,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
 
     /* Dessine une carte selon son couple d'entier (valeur, faction) et sa position (X, Y) */
     private void drawCarteJoue(Graphics g, int carteJF, int carteJV, int positionCarteJoueJX, int positionCarteJoueJY, double currentCarteJoueX, double currentCarteJoueY) {
-        g.setColor(Color.RED);
+        g.drawImage(imageMap.get("carte_placement"), positionCarteJoueJX, positionCarteJoueJY, rectWidth, rectHeight, this);
         if (carteJF != -1 && carteJV != -1) {
             // Dessin de la carte jouée
             getStrImage(carteJF);
@@ -519,8 +542,6 @@ public class NiveauGraphique extends JComponent implements Observateur {
                 g.drawImage(image, (int) currentCarteJoueX, (int) currentCarteJoueY, rectWidth, rectHeight, this);
             }
         }
-
-        g.drawRect(positionCarteJoueJX, positionCarteJoueJY, rectWidth, rectHeight);
     }
 
     /* Dessine une icon selon une image pour la pile de score */
@@ -573,7 +594,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
         g.fillRect(x, lineY, rectWidth * 2, cellHeight);
         g.setColor(Color.BLACK);
         g.drawLine(x, lineY, x + rectWidth * 2, lineY);
-        int cellWidth=100;
+        int cellWidth = 100;
         if (i == 0) {
             // Ecris score dans la première ligne
             fm = g.getFontMetrics(font_1);
@@ -584,7 +605,6 @@ public class NiveauGraphique extends JComponent implements Observateur {
             textY = lineY + (cellHeight + textHeight) / 2;
             g.setFont(font_1);
             g.drawString("SCORE", textX, textY);
-
 
 
         }
@@ -619,34 +639,22 @@ public class NiveauGraphique extends JComponent implements Observateur {
     // Dessine les decks de followers
     private void drawFollowerDeck(Graphics g) {
 
-        // g.setColor(Color.BLUE);
-        // Draw follower deck Joueur 2
-        // x = startXJ2 - 20 - rectWidth;
-        //x = panelWidth / 9;
-        //y = 20;
-        // g.fillRect(x, y, rectWidth, rectHeight);
-        g.drawImage(imageMap.get("yellow_square"), positionFollower2X, positionFollower2Y, rectWidth, rectHeight, this);
-
+        x = (panelWidth - rectWidth * 2) + 20;
         // Draw follower deck Joueur 1
-        // x = startXJ1 - 20 - rectWidth;
-        //y = hauteur() - rectHeight - 20;
+        // x = startHandXJ1 + totalWidthJ1 + 20;
+        y = hauteur() - rectHeight - 20;
         // g.fillRect(x, y, rectWidth, rectHeight);
-        g.drawImage(imageMap.get("yellow_square"), positionFollower1X, positionFollower1Y, rectWidth, rectHeight, this);
-//         x = startHandXJ2 - 20 - rectWidth;
-//         // x = panelWidth / 9;
-//         y = 20;
-//         // g.fillRect(x, y, rectWidth, rectHeight);
-//         positionFollowersPileJ2X = x;
-//         positionFollowersPileJ2Y = y;
-//         g.drawImage(imageMap.get("yellow_square"), x, y, rectWidth, rectHeight, this);
+        positionFollower1X = x;
+        positionFollower1Y = y;
+        g.drawImage(imageMap.get("carte_placement_follower"), x, y, rectWidth, rectHeight, this);
 
-//         // Draw follower deck Joueur 1
-//         x = startHandXJ1 - 20 - rectWidth;
-//         y = hauteur() - rectHeight - 20;
-//         // g.fillRect(x, y, rectWidth, rectHeight);
-//         positionFollowersPileJ1X = x;
-//         positionFollowersPileJ1Y = y;
-//         g.drawImage(imageMap.get("yellow_square"), x, y, rectWidth, rectHeight, this);
+        // Draw follower deck Joueur 2
+        // x = startHandXJ2 + totalWidthJ2 + 20;
+        y = 20;
+        // g.fillRect(x, y, rectWidth, rectHeight);
+        positionFollower2X = x;
+        positionFollower2Y = y;
+        g.drawImage(imageMap.get("carte_placement_follower"), x, y, rectWidth, rectHeight, this);
     }
 
     /* Getteurs */
@@ -712,16 +720,19 @@ public class NiveauGraphique extends JComponent implements Observateur {
     }
 
     public int getPositionFollowersPileJ1X() {
-        return positionFollowersPileJ1X;
+        return positionFollower1X;
     }
+
     public int getPositionFollowersPileJ1Y() {
-        return positionFollowersPileJ1Y;
+        return positionFollower1Y;
     }
+
     public int getPositionFollowersPileJ2X() {
-        return positionFollowersPileJ2X;
+        return positionFollower2X;
     }
+
     public int getPositionFollowersPileJ2Y() {
-        return positionFollowersPileJ2Y;
+        return positionFollower2Y;
     }
 
     @Override

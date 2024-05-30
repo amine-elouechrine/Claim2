@@ -63,3 +63,4 @@ build/
 /src/main/resources/Claim_ressources.xcf
 *.txt
 /framework/
+/src/main/resources/carte_placement.xcf
