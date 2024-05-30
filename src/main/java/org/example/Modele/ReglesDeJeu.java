@@ -214,7 +214,7 @@ public class ReglesDeJeu {
     public static  List<Card> cartesJouablesGagnant(Card carteAdversaire, List<Card> carteJouable , Plateau plateau) {
         List<Card> cartesGagnates = new ArrayList<>();
         for (Card carte : carteJouable) {
-            Card carteGangante = carteGagnante(carte, carteAdversaire , plateau);
+            Card carteGangante = carteGagnante(carteAdversaire, carte , plateau);
             if(carteGangante == carte){
                 cartesGagnates.add(carte);
             }
