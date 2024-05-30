@@ -63,6 +63,6 @@ public class ComposantRejouer extends JFrame {
         panel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         add(panel);
-        setVisible(true);
+        setVisible(false);
     }
 }
