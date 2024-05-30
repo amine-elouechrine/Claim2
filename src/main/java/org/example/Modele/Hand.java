@@ -204,15 +204,15 @@ public class Hand extends CardCollection{
     }
     
     
-    public Card getRandomCard() {
-        if (cards == null || cards.isEmpty()) {
-            throw new IllegalStateException("La main est vide ou nulle.");
-        }
-
-        Random random = new Random();
-        int randomIndex = random.nextInt(cards.size());
-        Card randomCard = cards.get(randomIndex);
-        cards.remove(randomIndex);
-        return randomCard;
-    }
+//    public Card getRandomCard() {
+//        if (cards == null || cards.isEmpty()) {
+//            throw new IllegalStateException("La main est vide ou nulle.");
+//        }
+//
+//        Random random = new Random();
+//        int randomIndex = random.nextInt(cards.size());
+//        Card randomCard = cards.get(randomIndex);
+//        cards.remove(randomIndex);
+//        return randomCard;
+//    }
 }

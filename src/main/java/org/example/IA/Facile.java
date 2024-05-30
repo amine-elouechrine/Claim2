@@ -1,10 +1,6 @@
 package org.example.IA;
 
-import org.example.Modele.Card;
-
-import org.example.Modele.Cards;
-import org.example.Modele.Hand;
-import org.example.Modele.Player;
+import org.example.Modele.*;
 
 import java.util.Random;
 
