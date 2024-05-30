@@ -59,8 +59,12 @@ public class InterfaceGraphique implements Runnable, InterfaceUtilisateur {
 
         // Fenetre InterfaceGraphique
         fenetre.add(niv);
+
+        // Ajout d'une barre latéral à droite
         JPanel menuPanel = new JPanel(new BorderLayout());
         menuPanel.setBackground(Color.DARK_GRAY);
+
+        // Menu
         JToggleButton menu = new JToggleButton("Menu");
         menuPanel.add(menu, BorderLayout.NORTH);
         ComposantMenuPartie menuPartie = new ComposantMenuPartie(BoxLayout.PAGE_AXIS, control, j);
@@ -68,7 +72,7 @@ public class InterfaceGraphique implements Runnable, InterfaceUtilisateur {
         fenetre.add(menuPanel, BorderLayout.EAST);
         fenetre.add(bh, BorderLayout.NORTH);
         ComposantTransitionPhases transitionPhases = new ComposantTransitionPhases();
-        //fenetre.add(transitionPhases);
+        // fenetre.add(transitionPhases);
 
 
         Timer chrono = new Timer(1, new AdaptateurTemps(control));
@@ -80,9 +84,6 @@ public class InterfaceGraphique implements Runnable, InterfaceUtilisateur {
         fenetre.getContentPane().setBackground(Color.DARK_GRAY);
         fenetre.setVisible(true);
         fenetre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        // Masquer menu recommencer
-        rec.setVisible(false);
 
         /*
         // Aligning the vertical panel to the right side
