@@ -171,7 +171,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
         rectHeight = Math.max(rectWidth, (panelHeight * 4) / 30); // Ensure height is always greater than width
 
         // Calculate spacing between rectangles
-        spacing = 4;
+        spacing = 0;
 
         // Calculate total width of all rectangles and spacing
         totalWidthJ1 = nbCardHandJ1 * rectWidth + (nbCardHandJ1 - 1) * spacing;
