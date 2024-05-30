@@ -286,6 +286,7 @@ public class ControleurMediateur implements CollecteurEvenements {
         if (estFinPartie()) {
             // Calcul des scores
             System.out.println("La partie est terminée\n");
+            jeu.switchJoueur();
         }
         else {
             if (getPhase())

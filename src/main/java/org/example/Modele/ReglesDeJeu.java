@@ -194,9 +194,6 @@ public class ReglesDeJeu {
                 if((carte.getFaction().equals("Doppelganger"))){
                     cartesJouables.add(carte);
                 }
-                if (carteAdversaire.getFaction().equals("Goblins") && carte.getFaction().equals("Knight")){
-                    cartesJouables.add(carte);
-                }
             }
         }
 
@@ -219,13 +216,16 @@ public class ReglesDeJeu {
                 cartesGagnates.add(carte);
             }
         }
+        for(Card carte : cartesGagnates) {
+            System.out.println(carte.toString());
+        }
         return cartesGagnates;
     }
 
     public static List<Card> cartesJouablesPerdant(Card carteAdversaire, List<Card> carteJouable , Plateau plateau) {
         List<Card> cartesPerdantes = new ArrayList<>();
         for (Card carte : carteJouable) {
-            Card carteGangante = carteGagnante(carte, carteAdversaire , plateau);
+            Card carteGangante = carteGagnante(carteAdversaire, carte , plateau);
             if(carteGangante != carte){
                 cartesPerdantes.add(carte);
             }

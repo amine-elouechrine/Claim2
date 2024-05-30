@@ -172,7 +172,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
         rectHeight = Math.max(rectWidth, (panelHeight * 4) / 30); // Ensure height is always greater than width
 
         // Calculate spacing between rectangles
-        spacing = 4;
+        spacing = 0;
 
         // Calculate total width of all rectangles and spacing
         totalWidthJ1 = nbCardHandJ1 * rectWidth + (nbCardHandJ1 - 1) * spacing;
@@ -349,6 +349,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
 
     /* Dessine la main selon un couple d'entier */
     private void drawHand(Graphics2D g, int i, int[][] main, String Joueur) {
+        // jeu.getPlateau().getJoueur1().getHand().printHand();
         getStrImage(main[i][1]);
         strImage += "_" + main[i][0];
         image = imageMap.get(strImage);
@@ -358,7 +359,6 @@ public class NiveauGraphique extends JComponent implements Observateur {
                 isPlayable = true;
                 break;
             }
-
         }
         if (isPlayable) {
             if (strImage.equals("goblin_0") && control.getNomJoueurCourant().equals(Joueur)) {
@@ -367,6 +367,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
             } else {
                 g.setStroke(new BasicStroke(4));
                 if(control.estCarteJoueJ2() || control.estCarteJoueJ1()) {
+                    System.out.println("l'adversaire a jouer une carte");
                     for (int[] carteGagnante : control.getCarteGagnante()) {
                         if (main[i][0] == carteGagnante[0] && main[i][1] == carteGagnante[1]) {
                             g.setColor(Color.GREEN);
