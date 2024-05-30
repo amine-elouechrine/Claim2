@@ -37,6 +37,7 @@ public class Plateau {
      * @param
      */
     // Constructeur de copie phase 2
+    // ajouter la defausse et la pioche pour la phase 2
     public Plateau(Plateau other) {
         this.carteJoueur1 = other.carteJoueur1 != null ? new Card(other.carteJoueur1) : null;
         this.carteJoueur2 = other.carteJoueur2 != null ? new Card(other.carteJoueur2) : null;
@@ -58,21 +59,20 @@ public class Plateau {
 
     // Sauvegarde l'état actuel du plateau
     /*public PlateauState saveState() {
+    /*public PlateauState saveState() {
 
         // Cloner les cartes des joueurs
-        Card clonedCarteJoueur1;
-        if (carteJoueur1 == null) {
-            clonedCarteJoueur1 = null;
-        } else {
-            clonedCarteJoueur1 = carteJoueur1.clone();
+        if(carteJoueur1 == null){
+            carteJoueur1 = new Card();
+        }else{
+            carteJoueur1 = carteJoueur1.clone();
+        }
+        if(carteJoueur2 == null){
+            carteJoueur2 = new Card();
+        }else{
+            carteJoueur2 = carteJoueur2.clone();
         }
 
-        Card clonedCarteJoueur2;
-        if (carteJoueur2 == null) {
-            clonedCarteJoueur2 = null;
-        } else {
-            clonedCarteJoueur2 = carteJoueur2.clone();
-        }
 
         // Cloner les joueurs
         Player clonedJoueur1 = joueur1.clone();

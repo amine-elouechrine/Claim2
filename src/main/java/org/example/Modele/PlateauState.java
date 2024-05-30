@@ -16,6 +16,7 @@ public class PlateauState {
     private Boolean phase;
 
 
+    // ajouter pioche et defausse
     public PlateauState(Plateau other){
         this.carteJoueur1 = other.carteJoueur1 != null ? new Card(other.carteJoueur1) : null;
         this.carteJoueur2 = other.carteJoueur2 != null ? new Card(other.carteJoueur2) : null;
