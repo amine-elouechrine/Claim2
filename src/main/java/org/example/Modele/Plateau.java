@@ -215,6 +215,19 @@ public class Plateau {
     }
 
     /**
+     * verifier si c'est la fin du jeu
+     *
+     * @return true si c'est la fin du jeu, false sinon
+     */
+    /*public boolean isEndOfGame() {
+        if (phase == false) { // si on est dans la 2eme phase
+            return estFinPhase(getPhase());
+        }
+        return false;
+    }*/
+
+
+    /**
      * Renvoie la carte affichée sur le plateau.
      *
      * @return La carte affichée sur le plateau.

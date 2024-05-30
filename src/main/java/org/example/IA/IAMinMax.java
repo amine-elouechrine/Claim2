@@ -161,7 +161,6 @@ public class IAMinMax {
     // il faut connaitre le nbr totale de cette faction , calculer le nbr de carte de cette faction qui sont dans la defausse
     // ==> le nbr de carte de cette faction qui sont en jeu = nbr totale - nbr defausse ;
     public static int nbrCarteEnJeuFaction(Plateau plateau, String faction){
-    public static int nbrCarteEnJeuFaction(Plateau plateau, String faction){
         int nbrCarteTotFaction = Cards.getNbCarteFaction(faction);
         int nbrCarteDefausse = 0;
         // Vérifier si la défausse n'est pas null avant d'accéder à ses cartes
@@ -210,8 +209,6 @@ public class IAMinMax {
     // est se qu'on a gagner une faction donner
     // il faut ajouter le faite que lorsque l'ia et l'adversaire on le meme nbr de carte il faux comarer la carte de plus haut valeur de l'ia avec celle de l'adversaire
     public static boolean gagnerFaction(Plateau plateau, String faction){
-    // il faut ajouter le faite que lorsque l'ia et l'adversaire on le meme nbr de carte il faux comarer la carte de plus haut valeur de l'ia avec celle de l'adversaire
-    public static boolean gagnerFaction(Plateau plateau, String faction){
         int nbrCarteFactionEnJeu = nbrCarteEnJeuFaction(plateau , faction);
         // de l'ia  : il faut savoir si c'est le joueur1 ou le joueur2 qui est l'ia
         int nbCartePileDeScoreFaction = plateau.getJoueur1().getPileDeScore().getCardFaction(faction).size();
@@ -231,19 +228,12 @@ public class IAMinMax {
 
     private static int evaluer1(Node node) {
         Plateau plateau = node.getPlateau();
-        int scoreIa = 0;
-        int nbrFactionGagner;
-        int nbrCarteGagner = plateau.getJoueur1().getPileDeScore().getAllCards().size();
-
         // Liste des factions disponibles dans le jeu
         List<String> factions = Arrays.asList("Goblins", "Knight", "Undead", "Dwarves", "Doppelganger"); // Remplacer par les vraies factions du jeu
 
         int scoreIa = 0;
         int nbrFactionGagner;
         int nbrCarteGagner = plateau.getJoueur1().getPileDeScore().getAllCards().size();
-
-        // Liste des factions disponibles dans le jeu
-        List<String> factions = Arrays.asList("Goblins", "Knight", "Undead", "Dwarves", "Doppelganger"); // Remplacer par les vraies factions du jeu
 
         // Calculer le score de l'IA pour chaque faction gagner par l'IA ajouter 100 pour le score
         for (String faction : factions) {
@@ -258,36 +248,6 @@ public class IAMinMax {
         return scoreIa + nbrCarteGagner;
     }
 
-    private static int evaluer(Node node) {
-        Plateau plateau = node.getPlateau();
-        int scoreIa = 0;
-
-        // Liste des factions disponibles dans le jeu
-        List<String> factions = Arrays.asList("Goblins", "Knight", "Undead", "Dwarves", "Doppelganger"); // Remplacer par les vraies factions du jeu
-
-        // Calculer le score de l'IA pour chaque faction gagner par l'IA ajouter 100 pour le score
-        for (String faction : factions) {
-            // Vérifier si l'IA a gagné cette faction
-            if (gagnerFaction(plateau, faction)) {
-                // Ajouter 100 points pour la faction gagnée
-                scoreIa += 1;
-            }
-        }
-        if(scoreIa >= 3){
-            return 1;
-        }else{
-            return 0;
-        for (String faction : factions) {
-            // Vérifier si l'IA a gagné cette faction
-            if (gagnerFaction(plateau, faction)) {
-                // Ajouter 100 points pour la faction gagnée
-                scoreIa += 100;
-            }
-        }
-
-        // le nbr de carte gagner par l'ia ajoute au score
-        return scoreIa + nbrCarteGagner;
-    }
 
     private static int evaluer(Node node) {
         Plateau plateau = node.getPlateau();

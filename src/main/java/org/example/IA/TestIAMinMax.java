@@ -1,13 +1,9 @@
 package org.example.IA;
 
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
 
 import org.example.Modele.*;
 import org.example.Modele.*;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.example.IA.IA.determinerGagnantMancheIA;
 
