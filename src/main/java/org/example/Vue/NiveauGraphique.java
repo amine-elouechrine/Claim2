@@ -171,7 +171,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
         rectHeight = Math.max(rectWidth, (panelHeight * 4) / 30); // Ensure height is always greater than width
 
         // Calculate spacing between rectangles
-        spacing = 4;
+        spacing = 0;
 
         // Calculate total width of all rectangles and spacing
         totalWidthJ1 = nbCardHandJ1 * rectWidth + (nbCardHandJ1 - 1) * spacing;
@@ -332,18 +332,18 @@ public class NiveauGraphique extends JComponent implements Observateur {
     private void drawDefausse(Graphics g) {
         g.setColor(Color.ORANGE);
         x = largeur() - largeur() / 8;
-        y = hauteur() / 2 + rectHeight / 4;
+        y = hauteur() / 3 - rectHeight * 3 / 4;
         // g.fillRect(x, y, rectHeight, rectWidth); // Rectangle latéral
-        g.drawImage(imageMap.get("carte_placement"), x, y, rectWidth, rectHeight, this);
+        g.drawImage(imageMap.get("carte_placement_defausse"), x, y, rectWidth, rectHeight, this);
     }
 
     /* Dessine la pioche pour la phase 1 */
     private void drawDeck(Graphics g) {
         g.setColor(Color.ORANGE);
         positionDeckX = largeur() - largeur() / 8;
-        positionDeckY = hauteur() / 2 - rectHeight * 3 / 4;
+        positionDeckY = hauteur() / 2;
         // g.fillRect(x, y, rectHeight, rectWidth); // Rectangle latéral
-        g.drawImage(imageMap.get("carte_placement"), positionDeckX, positionDeckY, rectWidth, rectHeight, this);
+        g.drawImage(imageMap.get("carte_deck"), positionDeckX, positionDeckY, rectWidth, rectHeight, this);
     }
 
     /* Dessine la main selon un couple d'entier */
@@ -438,7 +438,10 @@ public class NiveauGraphique extends JComponent implements Observateur {
 
     /* Dessine une carte selon son couple d'entier (valeur, faction) et sa position (X, Y) */
     private void drawCarteJoue(Graphics g, int carteJF, int carteJV, int positionCarteJoueJX, int positionCarteJoueJY) {
-        g.setColor(Color.RED);
+
+        //g.drawRect(positionCarteJoueJX, positionCarteJoueJY, rectWidth, rectHeight);
+        g.drawImage(imageMap.get("carte_placement"), positionCarteJoueJX, positionCarteJoueJY, rectWidth, rectHeight, this);
+
         if (carteJF != -1 && carteJV != -1) {
             // Dessin de la carte jouée
             getStrImage(carteJF);
@@ -446,9 +449,6 @@ public class NiveauGraphique extends JComponent implements Observateur {
             image = imageMap.get(strImage);
             g.drawImage(image, positionCarteJoueJX, positionCarteJoueJY, rectWidth, rectHeight, this);
         }
-
-        //g.drawRect(positionCarteJoueJX, positionCarteJoueJY, rectWidth, rectHeight);
-        g.drawImage(imageMap.get("carte_placement"), positionCarteJoueJX, positionCarteJoueJY, rectWidth, rectHeight, this);
     }
 
     /* Dessine une icon selon une image pour la pile de score */
@@ -544,21 +544,21 @@ public class NiveauGraphique extends JComponent implements Observateur {
 
         // g.setColor(Color.BLUE);
         // Draw follower deck Joueur 2
-        x = startHandXJ2 - 20 - rectWidth;
+        x = startHandXJ1 + totalWidthJ1 + 20;
         // x = panelWidth / 9;
         y = 20;
         // g.fillRect(x, y, rectWidth, rectHeight);
         positionFollowersPileJ2X = x;
         positionFollowersPileJ2Y = y;
-        g.drawImage(imageMap.get("carte_placement"), x, y, rectWidth, rectHeight, this);
+        g.drawImage(imageMap.get("carte_placement_follower"), x, y, rectWidth, rectHeight, this);
 
         // Draw follower deck Joueur 1
-        x = startHandXJ1 - 20 - rectWidth;
+        x = startHandXJ2 + totalWidthJ2 + 20;
         y = hauteur() - rectHeight - 20;
         // g.fillRect(x, y, rectWidth, rectHeight);
         positionFollowersPileJ1X = x;
         positionFollowersPileJ1Y = y;
-        g.drawImage(imageMap.get("carte_placement"), x, y, rectWidth, rectHeight, this);
+        g.drawImage(imageMap.get("carte_placement_follower"), x, y, rectWidth, rectHeight, this);
     }
 
     /* Getteurs */

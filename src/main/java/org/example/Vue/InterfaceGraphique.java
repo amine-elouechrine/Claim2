@@ -66,7 +66,7 @@ public class InterfaceGraphique implements Runnable, InterfaceUtilisateur {
         JToggleButton menu = new JToggleButton("Menu");
         menuPanel.add(menu, BorderLayout.NORTH);
         ComposantMenuPartie menuPartie = new ComposantMenuPartie(BoxLayout.PAGE_AXIS, control, j);
-        menu.addActionListener(new AdaptateurOuvreMenu(menu, menuPartie,niv));
+        menu.addActionListener(new AdaptateurOuvreMenu(menu, menuPartie, niv));
         fenetre.add(menuPanel, BorderLayout.EAST);
         fenetre.add(bh, BorderLayout.NORTH);
         ComposantTransitionPhases transitionPhases = new ComposantTransitionPhases();
