@@ -259,7 +259,6 @@ public class ControleurMediateur implements CollecteurEvenements {
         } else if (jeu.getPlateau().getCarteJoueur2() != null) {
             carteLeader = jeu.getPlateau().getCarteJoueur2();
         } else carteLeader = null;
-        System.out.println("carte leader " + carteLeader);
         for (Card carte : jeu.getPlateau().getJoueurCourant().getHandScndPhase().getAllCards()) {
             System.out.println(carte);
         }
@@ -280,6 +279,13 @@ public class ControleurMediateur implements CollecteurEvenements {
         startDistributionAnimation(iterations);
     }
 
+
+    public boolean isAnimationEnded() {
+        if(mouvement != null)
+            return mouvement.estTerminee();
+        else
+            return false;
+    }
 
     public boolean estFinPartie() { return jeu.estFinPartie(); }
 
@@ -615,4 +621,7 @@ public class ControleurMediateur implements CollecteurEvenements {
         this.pause = pause;
     }
 
+    public boolean getPause() {
+        return pause;
+    }
 }

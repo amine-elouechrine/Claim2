@@ -76,6 +76,11 @@ public interface CollecteurEvenements {
     boolean estCarteJoueJ2();
   
     boolean estFinPartie();
+
+    boolean isAnimationEnded();
+
+    boolean getPause();
+
     /* Adaptateurs */
     void refaire();
   
