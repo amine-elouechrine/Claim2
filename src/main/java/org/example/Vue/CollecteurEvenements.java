@@ -1,5 +1,6 @@
 package org.example.Vue;
 
+import org.example.Modele.Player;
 import org.example.Patternes.Observateur;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -54,6 +55,8 @@ public interface CollecteurEvenements {
     public int[][] getCarteGagnante();
 
     public int[][] getCartePerdante();
+  
+    Player getJoueurGagnant();
 
     /* State check */
     boolean isJoueur1WinningFactionOnEquality(String factionName);
@@ -61,9 +64,12 @@ public interface CollecteurEvenements {
     boolean isJoueur2WinningFactionOnEquality(String factionName);
 
     boolean isJoueurCourantJoueur1();
-
+  
     boolean estCarteJoueJ1();
+  
     boolean estCarteJoueJ2();
+  
+    boolean estFinPartie();
     /* Adaptateurs */
     void refaire();
   

@@ -22,7 +22,7 @@ public class ComposantJoueurCourant extends Box implements Observateur {
 		// nomJoueurCourant = jeu.getJoueurCourant().getName();
 
 		// Affichage du joueur courant
-		jc = new JLabel("Au tour du joueur : " + nomJoueurCourant);
+		jc = new JLabel("Au tour du joueur : " + nomJoueurCourant + " | ");
 		add(jc);
 		add(Box.createGlue());
 	}
@@ -31,6 +31,6 @@ public class ComposantJoueurCourant extends Box implements Observateur {
 	public void miseAJour() {
 		nomJoueurCourant = control.getNomJoueurCourant();
 		// nomJoueurCourant = jeu.getJoueurCourant().getName();
-		jc.setText("Au tour du joueur : " + nomJoueurCourant);
+		jc.setText("Au tour du joueur : " + nomJoueurCourant + " | ");
 	}
 }

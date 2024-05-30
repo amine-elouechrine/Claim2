@@ -27,14 +27,12 @@ public class ControleurMediateur implements CollecteurEvenements {
     Jeu jeu;
     InterfaceUtilisateur vue;
     Card carteLeader;
-
     Sequence<Animation> animations;
     int dureePause;
     int iterations;
     Animation mouvement;
     boolean animationsSupportees, animationsActives, pause;
-
-    IA iaFacile;
+    IA iaJeu;
     boolean jouable = true;
     Card carteIA;
 
@@ -45,7 +43,9 @@ public class ControleurMediateur implements CollecteurEvenements {
         iterations = 60;
         animationsSupportees = false;
         animationsActives = false;
-        iaFacile = ia;
+        if (ia != null) {
+            iaJeu = ia;
+        }
     }
 
     /* Getteurs pour la communication entre interface et moteur */
@@ -177,6 +177,9 @@ public class ControleurMediateur implements CollecteurEvenements {
         return jeu.getCarteJoueur1V();
     }
 
+    public Player getJoueurGagnant() { return jeu.getJoueurGagnant(); }
+
+    /* Methodes qui modifient le jeu */
     @Override
     public void annuler() throws IOException {
         jeu.annulerCoup();
@@ -218,14 +221,13 @@ public class ControleurMediateur implements CollecteurEvenements {
     public void restaure(String filename) throws IOException {
         jeu.restaure(filename);
 
-        if(jeu.getPlateau().getCarteJoueur1()!=null){
-            carteLeader=jeu.getPlateau().getCarteJoueur1();
-        }
-        else if (jeu.getPlateau().getCarteJoueur2()!=null) {
-            carteLeader=jeu.getPlateau().getCarteJoueur2();
-        }else carteLeader=null;
+        if (jeu.getPlateau().getCarteJoueur1() != null) {
+            carteLeader = jeu.getPlateau().getCarteJoueur1();
+        } else if (jeu.getPlateau().getCarteJoueur2() != null) {
+            carteLeader = jeu.getPlateau().getCarteJoueur2();
+        } else carteLeader = null;
         System.out.println("carte leader " + carteLeader);
-        for(Card carte : jeu.getPlateau().getJoueurCourant().getHandScndPhase().getAllCards()){
+        for (Card carte : jeu.getPlateau().getJoueurCourant().getHandScndPhase().getAllCards()) {
             System.out.println(carte);
         }
         jeu.metAJour();
@@ -236,10 +238,12 @@ public class ControleurMediateur implements CollecteurEvenements {
         jeu.getPlateau().initialiserJeu();
         jeu.setCarteJouer();
         jeu.getPlateau().setPhase(true);
-        carteLeader=null;
+        carteLeader = null;
         jeu.metAJour();
         startDistributionAnimation(iterations);
     }
+
+    public boolean estFinPartie() { return jeu.estFinPartie(); }
 
     public int getCarteJoueur1F() {
         return jeu.getCarteJoueur1F();
@@ -279,36 +283,40 @@ public class ControleurMediateur implements CollecteurEvenements {
     }
 
     public void tourIA() {
-        if (getPhase())
-            carteIA = iaFacile.jouerCoupPhase1(jeu.getPlateau());
-        else
-            carteIA = iaFacile.jouerCoupPhase2(jeu.getPlateau());
-
-        if (jeu.estFinPartie()) {
+        if (estFinPartie()) {
             // Calcul des scores
+            System.out.println("La partie est terminée\n");
         }
-        jouerCarteIA(carteIA);
+        else {
+            if (getPhase())
+                carteIA = iaJeu.jouerCoupPhase1(jeu.getPlateau());
+            else
+                carteIA = iaJeu.jouerCoupPhase2(jeu.getPlateau());
+
+            jouerCarteIA(carteIA);
+        }
     }
 
     public void joueTour(int index) {
 
-        if (jeu.estFinPartie()) {
+        if (estFinPartie()) {
             // Calcul des scores
             System.out.println("La partie est terminée\n");
         }
+        else {
+            // Application des règles de jeu pour la selection de carte
+            if (carteLeader != null) {
+                jouable = jeu.estCarteJouable(carteLeader, index);
+            }
+            if (jouable) {
+                jeu.addAction();
+                jouerCarte(index);
+            }
 
-        // Application des règles de jeu pour la selection de carte
-        if (carteLeader != null) {
-            jouable = jeu.estCarteJouable(carteLeader, index);
-        }
-
-        if (jouable) {
-            jeu.addAction();
-            jouerCarte(index);
-        }
-
-        while (jeu.getJoueur2() == jeu.getJoueurCourant()) {
-            tourIA();
+            if (iaJeu != null)
+                while (jeu.getJoueur2() == jeu.getJoueurCourant()) {
+                    tourIA();
+                }
         }
     }
 
@@ -391,7 +399,7 @@ public class ControleurMediateur implements CollecteurEvenements {
     private void testFin() {
         if (jeu.estFinPhase1()) {
             jeu.switchPhase();
-            if (jeu.estFinPartie())
+            if (estFinPartie())
                 System.exit(0);
         }
     }

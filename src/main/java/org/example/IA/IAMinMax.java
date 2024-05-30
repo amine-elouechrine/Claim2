@@ -44,7 +44,7 @@ public class IAMinMax {
             memo.put(state, result);
             return result;
         }
-        PlateauState savedState = node.plateau.saveState(); // Sauvegarder l'état du plateau
+        PlateauState savedState =new PlateauState(null);//=node.plateau.saveState(); // Sauvegarder l'état du plateau
         if (maximizingPlayer) { // si c'est le tour de l'ia (verifier isIaTurn dans le noeud si c'est vrai
             int maxEval = Integer.MIN_VALUE;
             Card bestCard = null;

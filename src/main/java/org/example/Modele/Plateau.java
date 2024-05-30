@@ -53,7 +53,7 @@ public class Plateau {
     }
 
     // Sauvegarde l'état actuel du plateau
-    public PlateauState saveState() {
+    /*public PlateauState saveState() {
 
         // Cloner les cartes des joueurs
         Card clonedCarteJoueur1 = carteJoueur1.clone();
@@ -70,7 +70,7 @@ public class Plateau {
             CurrentPlayer = clonedJoueur2 ;
         }
         return new PlateauState(clonedCarteJoueur1, clonedCarteJoueur2, clonedJoueur1, clonedJoueur2, CurrentPlayer);
-    }
+    }*/
 
     // Restaure un état précédemment sauvegardé
     public void restoreState(PlateauState state) {
@@ -174,10 +174,7 @@ public class Plateau {
      * @return true si c'est la fin du jeu, false sinon
      */
     public boolean isEndOfGame() {
-        if (phase == false) { // si on est dans la 2eme phase
-            return estFinPhase(getPhase());
-        }
-        return false;
+        return !phase && getJoueur1().getHand().isEmpty() && getJoueur2().getHand().isEmpty();
     }
 
     /**
@@ -407,7 +404,6 @@ public class Plateau {
 
     // use apply phirst phase rule function
     public void attribuerCarteFirstPhase(Card winningCard, ReglesDeJeu r) {
-
         if (r.carteEgaux(carteJoueur1, carteJoueur2)) {
             // determiner le leader
             if (joueurCourant.getName() == joueur2.getName()) { // si le joueur 1 est le leader

@@ -45,8 +45,11 @@ public class InterfaceGraphique implements Runnable, InterfaceUtilisateur {
         // BarreHaute
         ComposantBarreHaute bh = new ComposantBarreHaute(BoxLayout.X_AXIS, control, j);
 
+        // Recommencer partie
+        ComposantRejouer rec = new ComposantRejouer(control);
+
         // Dessin du NiveauGraphique
-        niv = new NiveauGraphique(j, control);
+        niv = new NiveauGraphique(j, control, rec);
         niv.setFocusable(true);
         niv.requestFocusInWindow();
         niv.addMouseListener(new AdaptateurSouris(niv, control));
@@ -75,6 +78,9 @@ public class InterfaceGraphique implements Runnable, InterfaceUtilisateur {
         fenetre.getContentPane().setBackground(Color.DARK_GRAY);
         fenetre.setVisible(true);
         fenetre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Masquer menu recommencer
+        rec.setVisible(false);
 
         /*
         // Aligning the vertical panel to the right side
