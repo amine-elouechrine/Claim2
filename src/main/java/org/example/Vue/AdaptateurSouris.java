@@ -1,5 +1,6 @@
 package org.example.Vue;
 
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -19,6 +20,7 @@ public class AdaptateurSouris extends MouseAdapter implements MouseListener {
 
     }
 
+
     @Override
     public void mousePressed(MouseEvent e) {
 
@@ -29,6 +31,13 @@ public class AdaptateurSouris extends MouseAdapter implements MouseListener {
         carte = -1;
         hauteurR = niv.hauteurCarte();
         largeurR = niv.largeurCarte();
+        System.out.println(niv.getPositionScorePile());
+        if(niv.estDansPileDeScore(i, j)){
+            System.out.println("Clic sur la pile de score");
+            int x=niv.getLigneCliquee(j);
+
+
+        }
 
         // Si le joueurCourant est le joueur 1
         if (control.isJoueurCourantJoueur1()) {

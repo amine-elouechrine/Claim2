@@ -21,6 +21,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ControleurMediateur implements CollecteurEvenements {
 
@@ -47,6 +49,29 @@ public class ControleurMediateur implements CollecteurEvenements {
             iaJeu = ia;
         }
     }
+    @Override
+    public List<Card> getCardsFromPileScoreJ1(String factionName) {
+        List<Card> List=jeu.getPlateau().getJoueur1().pileDeScore.getCardsOfFunction(factionName);
+        if(List!=null){
+            return List;
+        }
+        else{
+            List=new ArrayList<>();
+            return List;
+        }
+    }
+
+    public List<Card> getCardsFromPileScoreJ2(String factionName) {
+        List<Card> List=jeu.getPlateau().getJoueur2().pileDeScore.getCardsOfFunction(factionName);
+        if(List!=null){
+            return List;
+        }
+        else{
+            List=new ArrayList<>();
+            return List;
+        }
+    }
+
 
     /* Getteurs pour la communication entre interface et moteur */
     public boolean getPhase() {
@@ -292,7 +317,7 @@ public class ControleurMediateur implements CollecteurEvenements {
             }
     }
 
-    private void jouerCarteIA(Card carte) {
+    public void jouerCarteIA(Card carte) {
         jeu.getPlateau().jouerCarte(carte);
         // jeu.getJoueur2().getHand().removeCard(carte);
         if (jeu.estCarteJoueJ1() && jeu.estCarteJoueJ2()) {
@@ -343,6 +368,12 @@ public class ControleurMediateur implements CollecteurEvenements {
             jeu.switchJoueur();
         }
     }
+
+    /*/fonction qui me retourne dans les cartes dans la pile de score du joueur 1 d'une faction donnee
+    public int[] getCardsFromPileScore(String factionName,Player player) {
+        return jeu.getCardsFromPileScore(factionName);
+    }*/
+
 
 
     @Override

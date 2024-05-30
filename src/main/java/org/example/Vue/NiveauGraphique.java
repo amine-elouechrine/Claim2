@@ -103,7 +103,8 @@ public class NiveauGraphique extends JComponent implements Observateur {
         control = c;
         jeu = j;
         jeu.ajouteObservateur(this);
-
+        GestionClicPileScore gestionClicPileScore = new GestionClicPileScore(this,this.control);
+        addMouseListener(gestionClicPileScore);
         rec = rejouer;
 
         String directoryPath = "src/main/resources/";
@@ -217,6 +218,13 @@ public class NiveauGraphique extends JComponent implements Observateur {
                 x = startHandXJ1 + i * (rectWidth + spacing);
                 drawHand(g, i, main, "Joueur 2");
             }
+            // Ajouter "À toi de jouer" pour le joueur 1
+            if (control.isJoueurCourantJoueur1()) {
+                g.setFont(font_2);
+                g.setColor(Color.RED); // Utiliser la couleur actuelle
+                g.drawString("À toi de jouer", startHandXJ1 + totalWidthJ1 + 10, posHandYJ1 + rectHeight / 2);
+            }
+
 
             y = 10;
             mainJ2 = control.getHandJ2P1();
@@ -287,6 +295,38 @@ public class NiveauGraphique extends JComponent implements Observateur {
             g.drawImage(image, (int) currentX, (int) currentY, rectWidth, rectHeight, this);
         }
     }
+    public Point getPositionScorePile() {
+        // Calcul des coordonnées X et Y de la pile de score
+        int x = rectWidth; // Position X de la pile de score
+        int y = getHeight() / 2 - rectHeight; // Position Y de la pile de score (centrée verticalement)
+
+        return new Point(x, y);
+    }
+    public int getLigneCliquee(int mouseY) {
+        // Récupérer les coordonnées de la pile de score
+        Point positionScorePile = getPositionScorePile();
+        int scorePileY = positionScorePile.y;
+
+        // Calculer la ligne sur laquelle vous avez cliqué
+        int ligneCliquee = (mouseY - scorePileY) / (rectHeight * 2 / 6);
+
+        return ligneCliquee;
+    }
+
+    public boolean estDansPileDeScore(int x, int y) {
+        // Récupérer les coordonnées de la pile de score
+        Point positionScorePile = getPositionScorePile();
+        int scorePileX = positionScorePile.x;
+        int scorePileY = positionScorePile.y;
+
+        // Vérifier si les coordonnées (x, y) sont dans la pile de score
+        boolean estDansPileDeScore = x >= scorePileX && x <= scorePileX + rectWidth * 2 &&
+                y >= scorePileY && y <= scorePileY + rectHeight * 2;
+
+        return estDansPileDeScore;
+    }
+
+
 
     /* Dessine la pile de score */
     private void drawScorePile(Graphics g) {
@@ -456,7 +496,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
         g.fillRect(x, lineY, rectWidth * 2, cellHeight);
         g.setColor(Color.BLACK);
         g.drawLine(x, lineY, x + rectWidth * 2, lineY);
-
+        int cellWidth=100;
         if (i == 0) {
             // Ecris score dans la première ligne
             fm = g.getFontMetrics(font_1);
@@ -467,9 +507,14 @@ public class NiveauGraphique extends JComponent implements Observateur {
             textY = lineY + (cellHeight + textHeight) / 2;
             g.setFont(font_1);
             g.drawString("SCORE", textX, textY);
+
+
+
         }
         // Draw icon goblin
-        if (i == 1) drawIcon(g, icon_goblin);
+        if (i == 1) {
+            drawIcon(g, icon_goblin);
+        }
         // Draw icon dwarve
         if (i == 2) drawIcon(g, icon_dwarve);
         //Draw icon knight

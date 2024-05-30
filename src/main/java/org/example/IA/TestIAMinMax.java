@@ -7,7 +7,6 @@ import org.example.Modele.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.example.IA.IA.determinerGagnantMancheIA;
 
 public class TestIAMinMax {
     public static void main(String[] args) {
