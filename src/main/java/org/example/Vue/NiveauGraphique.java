@@ -281,9 +281,9 @@ public class NiveauGraphique extends JComponent implements Observateur {
         image = imageMap.get(strImage);
         if (currentX == 0 && currentY == 0) {
             g.drawImage(image, positionCarteAfficheeX, positionCarteAfficheeY, rectWidth, rectHeight, this);
-        } else if (currentX<positionCarteAfficheeX||currentX>positionDeckX) {
+        } else if (currentX < positionCarteAfficheeX || currentX > positionDeckX) {
             g.drawImage(image, positionCarteAfficheeX, positionCarteAfficheeY, rectWidth, rectHeight, this);
-        } else if (currentY>positionCarteAfficheeY||currentY<positionDeckY) {
+        } else if (currentY > positionCarteAfficheeY || currentY < positionDeckY) {
             g.drawImage(image, positionCarteAfficheeX, positionCarteAfficheeY, rectWidth, rectHeight, this);
         } else {
             g.drawImage(image, (int) currentX, (int) currentY, rectWidth, rectHeight, this);
@@ -294,7 +294,10 @@ public class NiveauGraphique extends JComponent implements Observateur {
     private void drawScorePile(Graphics g) {
         x = rectWidth;
         y = hauteur() / 2 - rectHeight;
+
+        // Dessin de l'emplacement de la pile de score
         g.drawRect(x, y, rectWidth * 2, rectHeight * 2);
+        g.drawImage(imageMap.get("carte_score"), x * 3, y + rectHeight, rectWidth, rectHeight, this);
 
         numRows = 6;
         cellHeight = rectHeight * 2 / numRows;
@@ -331,8 +334,8 @@ public class NiveauGraphique extends JComponent implements Observateur {
     /* Dessine la défausse pour la phase */
     private void drawDefausse(Graphics g) {
         g.setColor(Color.ORANGE);
-        x = largeur() - largeur() / 8;
-        y = hauteur() / 3 - rectHeight * 3 / 4;
+        x = positionDeckX;
+        y = positionDeckY - rectHeight - 20;
         // g.fillRect(x, y, rectHeight, rectWidth); // Rectangle latéral
         g.drawImage(imageMap.get("carte_placement_defausse"), x, y, rectWidth, rectHeight, this);
     }
@@ -365,7 +368,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
                 g.drawImage(grayImage, x, y, rectWidth, rectHeight, this);
             } else {
                 g.setStroke(new BasicStroke(4));
-                if(control.estCarteJoueJ2() || control.estCarteJoueJ1()) {
+                if (control.estCarteJoueJ2() || control.estCarteJoueJ1()) {
                     for (int[] carteGagnante : control.getCarteGagnante()) {
                         if (main[i][0] == carteGagnante[0] && main[i][1] == carteGagnante[1]) {
                             g.setColor(Color.GREEN);
@@ -378,13 +381,11 @@ public class NiveauGraphique extends JComponent implements Observateur {
                             DrawWinLoseCards(g);
                         }
                     }
-                }
-                else {
+                } else {
                     if (control.isJoueurCourantJoueur1()) {
                         // Dessiner rectangle vert de stroke de taille large
                         g.drawImage(image, x, y - 20, rectWidth, rectHeight, this);
-                    }
-                    else {
+                    } else {
                         // Dessiner rectangle vert de stroke de taille large
                         g.drawImage(image, x, y + 20, rectWidth, rectHeight, this);
                     }
@@ -402,8 +403,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
             // Dessiner rectangle vert de stroke de taille large
             g.drawImage(image, x, y - 20, rectWidth, rectHeight, this);
             g.drawRect(x, y - 20, rectWidth, rectHeight);
-        }
-        else {
+        } else {
             // Dessiner rectangle vert de stroke de taille large
             g.drawImage(image, x, y + 20, rectWidth, rectHeight, this);
             g.drawRect(x, y + 20, rectWidth, rectHeight);
@@ -542,22 +542,21 @@ public class NiveauGraphique extends JComponent implements Observateur {
     // Dessine les decks de followers
     private void drawFollowerDeck(Graphics g) {
 
-        // g.setColor(Color.BLUE);
-        // Draw follower deck Joueur 2
+        // Draw follower deck Joueur 1
         x = startHandXJ1 + totalWidthJ1 + 20;
+        y = hauteur() - rectHeight - 20;
+        // g.fillRect(x, y, rectWidth, rectHeight);
+        positionFollowersPileJ1X = x;
+        positionFollowersPileJ1Y = y;
+        g.drawImage(imageMap.get("carte_placement_follower"), x, y, rectWidth, rectHeight, this);
+
+        // Draw follower deck Joueur 2
+        x = startHandXJ2 + totalWidthJ2 + 20;
         // x = panelWidth / 9;
         y = 20;
         // g.fillRect(x, y, rectWidth, rectHeight);
         positionFollowersPileJ2X = x;
         positionFollowersPileJ2Y = y;
-        g.drawImage(imageMap.get("carte_placement_follower"), x, y, rectWidth, rectHeight, this);
-
-        // Draw follower deck Joueur 1
-        x = startHandXJ2 + totalWidthJ2 + 20;
-        y = hauteur() - rectHeight - 20;
-        // g.fillRect(x, y, rectWidth, rectHeight);
-        positionFollowersPileJ1X = x;
-        positionFollowersPileJ1Y = y;
         g.drawImage(imageMap.get("carte_placement_follower"), x, y, rectWidth, rectHeight, this);
     }
 
@@ -626,12 +625,15 @@ public class NiveauGraphique extends JComponent implements Observateur {
     public int getPositionFollowersPileJ1X() {
         return positionFollowersPileJ1X;
     }
+
     public int getPositionFollowersPileJ1Y() {
         return positionFollowersPileJ1Y;
     }
+
     public int getPositionFollowersPileJ2X() {
         return positionFollowersPileJ2X;
     }
+
     public int getPositionFollowersPileJ2Y() {
         return positionFollowersPileJ2Y;
     }
