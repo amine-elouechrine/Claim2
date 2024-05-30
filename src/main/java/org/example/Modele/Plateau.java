@@ -374,10 +374,10 @@ public class Plateau {
         else
             carteJoue = joueurCourant.jouerCarte2(card);
 
-        if(joueurCourant == joueur1) {
+        if(joueurCourant.getName().equals(joueur1.getName())) {
             setCarteJoueur1(carteJoue);
         }
-        else if (joueurCourant == joueur2) {
+        else if (joueurCourant.getName().equals(joueur2.getName()))  {
             setCarteJoueur2(carteJoue);
         }
         return carteJoue;
