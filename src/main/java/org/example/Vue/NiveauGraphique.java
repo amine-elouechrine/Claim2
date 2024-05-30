@@ -334,7 +334,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
         x = largeur() - largeur() / 8;
         y = hauteur() / 2 + rectHeight / 4;
         // g.fillRect(x, y, rectHeight, rectWidth); // Rectangle latéral
-        g.drawImage(imageMap.get("tombstone"), x, y, rectWidth, rectHeight, this);
+        g.drawImage(imageMap.get("carte_placement"), x, y, rectWidth, rectHeight, this);
     }
 
     /* Dessine la pioche pour la phase 1 */
@@ -343,7 +343,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
         positionDeckX = largeur() - largeur() / 8;
         positionDeckY = hauteur() / 2 - rectHeight * 3 / 4;
         // g.fillRect(x, y, rectHeight, rectWidth); // Rectangle latéral
-        g.drawImage(imageMap.get("backside"), positionDeckX, positionDeckY, rectWidth, rectHeight, this);
+        g.drawImage(imageMap.get("carte_placement"), positionDeckX, positionDeckY, rectWidth, rectHeight, this);
     }
 
     /* Dessine la main selon un couple d'entier */
@@ -447,7 +447,8 @@ public class NiveauGraphique extends JComponent implements Observateur {
             g.drawImage(image, positionCarteJoueJX, positionCarteJoueJY, rectWidth, rectHeight, this);
         }
 
-        g.drawRect(positionCarteJoueJX, positionCarteJoueJY, rectWidth, rectHeight);
+        //g.drawRect(positionCarteJoueJX, positionCarteJoueJY, rectWidth, rectHeight);
+        g.drawImage(imageMap.get("carte_placement"), positionCarteJoueJX, positionCarteJoueJY, rectWidth, rectHeight, this);
     }
 
     /* Dessine une icon selon une image pour la pile de score */
@@ -549,7 +550,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
         // g.fillRect(x, y, rectWidth, rectHeight);
         positionFollowersPileJ2X = x;
         positionFollowersPileJ2Y = y;
-        g.drawImage(imageMap.get("yellow_square"), x, y, rectWidth, rectHeight, this);
+        g.drawImage(imageMap.get("carte_placement"), x, y, rectWidth, rectHeight, this);
 
         // Draw follower deck Joueur 1
         x = startHandXJ1 - 20 - rectWidth;
@@ -557,7 +558,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
         // g.fillRect(x, y, rectWidth, rectHeight);
         positionFollowersPileJ1X = x;
         positionFollowersPileJ1Y = y;
-        g.drawImage(imageMap.get("yellow_square"), x, y, rectWidth, rectHeight, this);
+        g.drawImage(imageMap.get("carte_placement"), x, y, rectWidth, rectHeight, this);
     }
 
     /* Getteurs */
