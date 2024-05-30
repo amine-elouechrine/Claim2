@@ -4,35 +4,42 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class Hand {
-    private List<Card> cards;
-
+public class Hand extends CardCollection{
 
     /**
      * Constructeur de la classe Hand.
      * Initialise une liste vide pour stocker les cartes.
      */
     public Hand() {
-        cards = new ArrayList<>();
+        super();
     }
 
-    public Card getSmallestHigherCard(Card card) {
-        if (cards == null || cards.isEmpty()) {
-            throw new IllegalStateException("La main est vide ou nulle.");
+
+    // Constructeur de copie
+    public Hand(Hand other) {
+        this.cards = new ArrayList<>();
+        for (Card card : other.cards) {
+            this.cards.add(new Card(card));
         }
+    }
 
-        Card smallestHigherCard = card;
-        int smallestHigherValue = Integer.MAX_VALUE;
+    @Override
+    public Hand clone() {
+        return new Hand(this);
+    }
 
-        for (Card handCard : cards) {
-            // Vérifier si la carte est plus grande que celle passée en paramètre
-            if (handCard.getValeur() > card.getValeur() && handCard.getValeur() < smallestHigherValue) {
-                smallestHigherCard = handCard;
-                smallestHigherValue = handCard.getValeur();
-            }
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Hand{");
+        for (Card card : cards) {
+            sb.append(card.toString()).append(", ");
         }
-
-        return smallestHigherCard;
+        if (!cards.isEmpty()) {
+            sb.setLength(sb.length() - 2); // Enlever la dernière virgule et l'espace
+        }
+        sb.append("}");
+        return sb.toString();
     }
 
 
@@ -62,24 +69,7 @@ public class Hand {
     public void removeCard(Card card) {
         cards.remove(card);
     }
-
-    // Obtenir les cartes de la même faction qu'une carte donnée
-    public Hand getCardsOfSameFaction(Card card) {
-        if (cards == null || cards.isEmpty()) {
-            return null;
-        }
-
-        Hand cardsOfSameFaction = new Hand();
-        Class<?> cardClass = card.getClass();
-
-        for (Card handCard : cards) {
-            if (handCard.getClass() == cardClass) {
-                cardsOfSameFaction.addCard(handCard);
-            }
-        }
-
-        return cardsOfSameFaction;
-    }
+    public Card getCard(int i) {return cards.get(i);} 
 
     public boolean isEmpty() {
         return cards.isEmpty();
@@ -90,6 +80,21 @@ public class Hand {
         return cards.contains(card);
     }
 
+
+    // si le hand du joueur contient une carte de la meme faction que la carte passée en paramètre
+    public boolean containsCardOFaction(Card carte) {
+        for (Card card : cards) {
+            if (card.getFaction().equals(carte.getFaction())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Renvoie la carte la plus petit d'une main.
+     * @return La carte la plus petite de la main.
+     */
     public Card getMin() {
         if (cards == null || cards.isEmpty()) {
             throw new IllegalStateException("La main est vide ou nulle.");
@@ -105,7 +110,9 @@ public class Hand {
         return minCard;
     }
 
-
+    /**
+     * afficher les cartes de la main {faction valeur}
+     */
     public void printHand() {
         if (cards == null || cards.isEmpty()) {
             System.out.println("La main est vide.");
@@ -126,6 +133,10 @@ public class Hand {
     public List<Card> getAllCards() {
         return cards;
     }
+
+
+    //public Card getLargestSmallerCard(Card card) 
+    //public Card getLowestCardWithFactionScore() {
 
     public Card getLargestSmallerCard(Card card) {
         if (cards == null || cards.isEmpty()) {
@@ -164,6 +175,7 @@ public class Hand {
         return randomCard;
     }
 
+
     /**
      * Vide la main en supprimant toutes les cartes.
      */
@@ -172,19 +184,6 @@ public class Hand {
         cards.clear();
     }
 
-    public boolean containsKnight() {
-        if (cards == null || cards.isEmpty()) {
-            return false;
-        }
-
-        for (Card card : cards) {
-            if (card instanceof Knight) {
-                return true;
-            }
-        }
-
-        return false;
-    }
 
     /**
      * Renvoie le nombre de cartes dans la main.
@@ -196,22 +195,24 @@ public class Hand {
         return cards.size();
     }
 
-    public Card getLowestValueCard() {
+
+    public Card get(int i) {
+        if (i < 0 || i >= cards.size()) {
+            throw new IndexOutOfBoundsException("Index hors limites: " + i);
+        }
+        return cards.get(i);
+    }
+    
+    
+    public Card getRandomCard() {
         if (cards == null || cards.isEmpty()) {
-            throw new IllegalStateException("La liste de cartes est vide ou nulle.");
+            throw new IllegalStateException("La main est vide ou nulle.");
         }
 
-        Card lowestCard = cards.get(0);
-        int lowestValue = lowestCard.getValeur();
-
-        for (Card card : cards) {
-            int cardValue = card.getValeur();
-            if (cardValue < lowestValue) {
-                lowestCard = card;
-                lowestValue = cardValue;
-            }
-        }
-
-        return lowestCard;
+        Random random = new Random();
+        int randomIndex = random.nextInt(cards.size());
+        Card randomCard = cards.get(randomIndex);
+        cards.remove(randomIndex);
+        return randomCard;
     }
 }

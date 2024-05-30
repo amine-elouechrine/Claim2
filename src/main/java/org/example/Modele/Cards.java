@@ -1,66 +1,126 @@
 package org.example.Modele;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Stack;
 
-public class Cards {
-    private Stack<Card> pile;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.ArrayList;
+
+public class Cards extends CardCollection {
 
     // Constructeur
     public Cards() {
-        pile = new Stack<>();
+        super();
+    }
+
+
+
+// Constructeur de copie
+    public Cards(Cards other) {
+        this.cards = new ArrayList<>();
+        for (Card card : other.cards) {
+            this.cards.add(new Card(card));
+        }
+    }
+
+    public Cards clone() {
+        return new Cards(this);
+    }
+
+    // Méthode pour créer les cartes Gobelin
+    public void addAllCards() {
         createGobelinCards();
         createKnightCards();
         createUndeadCards();
         createDwarveCards();
         createDoppelgangerCards();
+        shuffle();
     }
 
-    // Méthode pour créer les cartes Gobelin
     private void createGobelinCards() {
         for (int i = 0; i < 5; i++) {
-            pile.push(new Gobelin(0));
+            addCard(new Card(0, "Goblins"));
         }
         for (int i = 1; i < 10; i++) {
-            pile.push(new Gobelin(i));
+            addCard(new Card(i, "Goblins"));
         }
     }
+
+    // Méthode pour obtenir le nombre de cartes de chaque faction dans le jeu (c'etait utiliser dans l'heurestique phase2)
+    public static int getNbCarteGobelins(){
+        return 14;
+    }
+
+    public static int getNbCarteKnights(){
+        return 8;
+    }
+
+    public static int getNbCarteUndeads(){
+        return 10;
+    }
+
+    public static int getNbCarteDwarves(){
+        return 10;
+    }
+
+    public static int getNbCarteDoppelgangers(){
+        return 10;
+    }
+
+    public static int getNbCarteFaction(String faction){
+        switch (faction) {
+            case "Goblins":
+                return getNbCarteGobelins();
+            case "Knight":
+                return getNbCarteKnights();
+            case "Undead":
+                return getNbCarteUndeads();
+            case "Dwarves":
+                return getNbCarteDwarves();
+            case "Doppelganger":
+                return getNbCarteDoppelgangers();
+            default:
+                return 0;
+        }
+    }
+
+
 
     // Méthode pour créer les cartes Knight
     private void createKnightCards() {
         for (int i = 2; i < 10; i++) {
-            pile.push(new Knight(i));
+            addCard(new Card(i, "Knight"));
         }
     }
 
     // Méthode pour créer les cartes Undead
     private void createUndeadCards() {
         for (int i = 0; i < 10; i++) {
-            pile.push(new Undead(i));
+            addCard(new Card(i, "Undead"));
         }
     }
 
     // Méthode pour créer les cartes Dwarve
     private void createDwarveCards() {
         for (int i = 0; i < 10; i++) {
-            pile.push(new Dwarve(i));
+            addCard(new Card(i, "Dwarves"));
         }
     }
 
     // Méthode pour créer les cartes Doppelganger
     private void createDoppelgangerCards() {
         for (int i = 0; i < 10; i++) {
-            pile.push(new Doppelganger(i));
+            addCard(new Card(i, "Doppelganger"));
         }
     }
+
+
     public Card max_valeur() {
-        if (pile.isEmpty()) {
+        if (cards.isEmpty()) {
             throw new IllegalStateException("La pile de cartes est vide.");
         }
 
-        Card maxCard = pile.firstElement();
-        for (Card card : pile) {
+        Card maxCard = cards.get(0);
+        for (Card card : cards) {
             if (card.getValeur() > maxCard.getValeur()) {
                 maxCard = card;
             }
@@ -68,15 +128,16 @@ public class Cards {
 
         return maxCard;
     }
+
     public Cards getCardsOfSameFactionAs(Card opponentCard) {
-        if (pile.isEmpty()) {
+        if (cards.isEmpty()) {
             throw new IllegalStateException("La pile de cartes est vide.");
         }
 
         Cards cardsOfSameFaction = new Cards();
         Class<?> opponentCardClass = opponentCard.getClass();
 
-        for (Card card : pile) {
+        for (Card card : cards) {
             if (card.getClass() == opponentCardClass) {
                 cardsOfSameFaction.setCard(card);
             }
@@ -84,16 +145,17 @@ public class Cards {
 
         return cardsOfSameFaction;
     }
+
     // Méthode pour obtenir la carte la plus grande qui est plus petite que la carte jouée par l'adversaire
     public Card getHighestCardSmallerThan(Card opponentCard) {
-        if (pile.isEmpty()) {
+        if (cards.isEmpty()) {
             throw new IllegalStateException("La pile de cartes est vide.");
         }
 
         Card highestSmallerCard = null;
         int opponentValue = opponentCard.getValeur();
 
-        for (Card card : pile) {
+        for (Card card : cards) {
             int cardValue = card.getValeur();
             if (cardValue < opponentValue && (highestSmallerCard == null || cardValue > highestSmallerCard.getValeur())) {
                 highestSmallerCard = card;
@@ -104,16 +166,16 @@ public class Cards {
     }
 
     public Card min_valeur() {
-        if (pile.isEmpty()) {
+        if (cards.isEmpty()) {
             throw new IllegalStateException("La pile de cartes est vide.");
         }
 
-        Card minCard = pile.firstElement();
-        for (Card card : pile) {
+        Card minCard = cards.get(0);
+        for (Card card : cards) {
             // Si la valeur de la carte actuelle est inférieure à la valeur de la carte minimale
             // ou si la valeur est égale mais la faction a un score plus bas, mettre à jour la carte minimale
             if (card.getValeur() < minCard.getValeur() ||
-                    (card.getValeur() == minCard.getValeur() && getFactionScore(card) < getFactionScore(minCard))) {
+                    (card.getValeur() == minCard.getValeur() && card.getFactionScore() < minCard.getFactionScore())) {
                 minCard = card;
             }
         }
@@ -121,90 +183,68 @@ public class Cards {
         return minCard;
     }
 
-    // Méthode pour vérifier si la pile contient des cartes Knight
-    public boolean containsKnight() {
-        for (Card card : pile) {
-            if (card instanceof Knight) {
-                return true;
-            }
-        }
-        return false;
-    }
-    public int getFactionScore(Card card) {
-        switch (card.getFaction()) {
-            case "Undead":
-                return 5;
-            case "Doppelganger":
-                return 4;
-            case "Chevalier":
-                return 3;
-            case "Nains":
-                return 2;
-            case "Goblins":
-                return 1;
-            default:
-                return 0;
-        }
-    }
+
     // Méthode pour mélanger les cartes dans la pile
     public void shuffle() {
-        Collections.shuffle(pile);
+        Collections.shuffle(cards);
     }
 
-    public Card getLowestCardWithFactionScore() {
-        if (pile.isEmpty()) {
-            throw new IllegalStateException("La pile de cartes est vide.");
-        }
-
-        Card lowestCard = null;
-        int lowestValue = Integer.MAX_VALUE;
-        int lowestFactionScore = Integer.MAX_VALUE;
-
-        for (Card card : pile) {
-            int cardValue = card.getValeur();
-            int cardFactionScore = getFactionScore(card);
-
-            if (cardValue < lowestValue) {
-                lowestCard = card;
-                lowestValue = cardValue;
-                lowestFactionScore = cardFactionScore;
-            } else if (cardValue == lowestValue && cardFactionScore < lowestFactionScore) {
-                lowestCard = card;
-                lowestFactionScore = cardFactionScore;
-            }
-        }
-
-        return lowestCard;
-    }
     // Méthode pour obtenir une carte de la pile
     public Card getCard() {
-        if (pile.isEmpty()) {
+        if (cards.isEmpty()) {
             throw new IllegalStateException("La pile de cartes est vide.");
         }
-        return pile.pop();
+        return removeCard(0);
     }
 
     // Méthode pour obtenir toutes les cartes de la pile
     public List<Card> getCards() {
-        return pile;
+        return cards;
     }
 
-    public boolean isEmpty(){
-        return pile.isEmpty();
+    public boolean isEmpty() {
+        return cards.isEmpty();
     }
-    public void setCard(Card c){
-        pile.push(c);
+
+    public void setCard(Card c) {
+        addCard(c);
     }
 
     // Méthode pour obtenir une main de 13 cartes à partir de la pile
     public Hand getHandOf13Cards() {
-        if (pile.size() < 13) {
+        if (cards.size() < 13) {
             throw new IllegalStateException("La pile de cartes contient moins de 13 cartes.");
         }
         Hand hand = new Hand();
         for (int i = 0; i < 13; i++) {
             hand.addCard(getCard());
         }
+        hand = ranger(hand);
         return hand;
+    }
+
+    // Méthode pour ranger la main par ordre de faction puis valeurs
+    public static Hand ranger(Hand hand) {
+        List<Card> cards = hand.getAllCards();
+
+        Collections.sort(cards, new Comparator<Card>() {
+            @Override
+            public int compare(Card c1, Card c2) {
+                int factionComparison = c1.getFaction().compareTo(c2.getFaction());
+                if (factionComparison != 0) {
+                    return factionComparison;
+                } else {
+                    return Integer.compare(c1.getValeur(), c2.getValeur());
+                }
+            }
+        });
+
+        Hand sortedHand = new Hand();
+        sortedHand.setHand(cards);
+        return sortedHand;
+    }
+
+    public void removeCard() {
+        cards.remove(0);
     }
 }

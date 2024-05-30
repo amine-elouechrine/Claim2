@@ -3,6 +3,7 @@ package org.example.Vue;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
 
 public class AdaptateurSauver implements ActionListener {
     CollecteurEvenements control;
@@ -18,12 +19,16 @@ public class AdaptateurSauver implements ActionListener {
      */
     @Override
     public void actionPerformed(ActionEvent e) {
-        /*
+
         String filename = fichier.getText();
         if (filename.isEmpty())
             filename = "save";
-        control.sauve(filename);
-        */
+        try {
+            control.sauve(filename);
+        } catch (FileNotFoundException ex) {
+            throw new RuntimeException(ex);
+        }
+
         System.out.println("Clique sur le bouton sauver");
     }
 }

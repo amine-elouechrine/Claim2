@@ -12,7 +12,6 @@ public class AdaptateurNouvellePartie implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        // control.nouvellePartie();
-        System.out.println("Clique sur le bouton Nouvelle Partie");
+        control.nouvellePartie();
     }
 }
