@@ -102,6 +102,14 @@ public class ControleurMediateur implements CollecteurEvenements {
         return (getJoueurCourant().equals(jeu.getJoueur1()));
     }
 
+    public boolean estCarteJoueJ1() {
+        return jeu.estCarteJoueJ1();
+    }
+
+    public boolean estCarteJoueJ2() {
+        return jeu.estCarteJoueJ2();
+    }
+
     public int getNbCardFactionFromPileScoreJ1(String factionName) {
         return jeu.getNbCardFactionFromPileScoreJ1(factionName);
     }
@@ -141,6 +149,22 @@ public class ControleurMediateur implements CollecteurEvenements {
     public int[][] getCarteJouable() {
         if (carteLeader != null) {
             return jeu.getCarteJouable(carteLeader, getHandCourant());
+        } else {
+            return getMainJoueurCourant();
+        }
+    }
+
+    public int[][] getCarteGagnante() {
+        if (carteLeader != null) {
+            return jeu.getCarteJouableGagnante(carteLeader, getHandCourant());
+        } else {
+            return getMainJoueurCourant();
+        }
+    }
+
+    public int[][] getCartePerdante() {
+        if (carteLeader != null) {
+            return jeu.getCarteJouablePerdante(carteLeader, getHandCourant());
         } else {
             return getMainJoueurCourant();
         }

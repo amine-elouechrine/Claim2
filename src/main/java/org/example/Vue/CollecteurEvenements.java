@@ -52,6 +52,10 @@ public interface CollecteurEvenements {
 
     int getMaxValueFromPileScore(String factionName);
 
+    public int[][] getCarteGagnante();
+
+    public int[][] getCartePerdante();
+  
     Player getJoueurGagnant();
 
     /* State check */
@@ -60,9 +64,12 @@ public interface CollecteurEvenements {
     boolean isJoueur2WinningFactionOnEquality(String factionName);
 
     boolean isJoueurCourantJoueur1();
-
-    public boolean estFinPartie();
-
+  
+    boolean estCarteJoueJ1();
+  
+    boolean estCarteJoueJ2();
+  
+    boolean estFinPartie();
     /* Adaptateurs */
     void refaire();
   
