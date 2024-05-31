@@ -81,23 +81,26 @@ public class InterfacePartieCustom extends JFrame implements Runnable {
                 try {
                     String joueur1 = joueur1Field.getText();
                     String joueur2 = joueur2Field.getText();
-
+                    Jeu jeu;
                     if (joueur1 != null && joueur2 != null) {
-                        Jeu jeu = new Jeu();
+
                         String IA1Selected = (String) IA1ComboBox.getSelectedItem();
                         ControleurMediateur control;
                         switch (IA1Selected) {
                             case "Facile":
                                 ia = new Intermediare();
+                                jeu = new Jeu(true, joueur1, joueur2);
                                 control = new ControleurMediateur(jeu, ia);
                                 break;
                             case "Difficile":
                                 // Création de l'IA
                                 ia = new Intermediare();
+                                jeu = new Jeu(true, joueur1, joueur2);
                                 control = new ControleurMediateur(jeu, ia);
                                 break;
 
                             default:
+                                jeu = new Jeu(false, joueur1, joueur2);
                                 control = new ControleurMediateur(jeu, null);
                                 break;
                         }

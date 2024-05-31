@@ -33,6 +33,8 @@ public interface CollecteurEvenements {
     int[][] getHandJ2P2();
 
     String getNomJoueurCourant();
+    String getNomJoueur1();
+    String getNomJoueur2();
 
     int[][] getCarteJouable();
 

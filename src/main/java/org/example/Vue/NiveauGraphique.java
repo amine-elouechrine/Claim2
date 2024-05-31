@@ -226,8 +226,9 @@ public class NiveauGraphique extends JComponent implements Observateur {
             // Dessin des cartes de la main du joueur 1
             for (int i = 0; i < nbCardHandJ1; i++) {
                 x = startHandXJ1 + i * (rectWidth + spacing);
-                drawHand(g, i, main, "Joueur 2");
+                drawHand(g, i, main, control.getNomJoueur2());
             }
+
             // Ajouter "À toi de jouer" pour le joueur 1
             if (control.isJoueurCourantJoueur1()) {
                 g.setFont(font_2);
@@ -235,13 +236,12 @@ public class NiveauGraphique extends JComponent implements Observateur {
                 g.drawString("À toi de jouer", startHandXJ1, posHandYJ1 - rectHeight);
             }
 
-
             y = 10;
             mainJ2 = control.getHandJ2P1();
             // Dessin de la main du joueur 2
             for (int i = 0; i < nbCardHandJ2; i++) {
                 x = startHandXJ2 + i * (rectWidth + spacing);
-                drawHand(g, i, mainJ2, "Joueur 1");
+                drawHand(g, i, mainJ2, control.getNomJoueur1());
             }
 
             // Dessine les decks de followers
@@ -779,7 +779,6 @@ public class NiveauGraphique extends JComponent implements Observateur {
 
     public void initializeAnimationPerde(int totalIterations, int joueur) {
         this.totalIterations = totalIterations;
-        System.out.println(joueur);
         if (joueur == 1) {
             this.deltaPerdeX = (positionDeckX - positionFollower2X) / (double) totalIterations;
             this.deltaPerdeY = (positionDeckY - positionFollower2Y) / (double) totalIterations;
