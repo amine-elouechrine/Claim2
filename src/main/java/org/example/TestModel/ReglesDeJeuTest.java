@@ -73,6 +73,7 @@ public class ReglesDeJeuTest {
 
         } else {
             Cards cards = new Cards();
+            cards.addAllCards();
             cards.shuffle();
             carte1 = cards.getCards().get(0);
             carte2 = cards.getCards().get(1);
@@ -81,8 +82,13 @@ public class ReglesDeJeuTest {
         }
 
         // Vérifier quelle carte gagne selon les règles spécifiées
-        Card carteGagnante = ReglesDeJeu.carteGagnante(carte1, carte2, new Plateau(carte1 , carte2)); // dans le plateau il cartejoueur1 et cartejoueur2
-    
+        Card carteGagnante = ReglesDeJeu.carteGagnante(carte2, carte1, new Plateau(carte1 , carte2)); // dans le plateau il cartejoueur1 et cartejoueur2
+        if(carteGagnante == carte1){
+            System.out.println("carte1 gagne");
+        }
+        if(carteGagnante == carte2){
+            System.out.println("carte2 gagne");
+        }
         System.out.println("La carte gagnante est : " + carteGagnante.getFaction() + " de valeur " + carteGagnante.getValeur());
     }
     
@@ -92,6 +98,7 @@ public class ReglesDeJeuTest {
         Player joueur1 = new Player("Alice");
         Player joueur2 = new Player("Bob");
         Cards cards = new Cards();
+        cards.addAllCards();
         cards.shuffle();
         Card carteJoueur1 = new Card();
         Card carteJoueur2 = new Card();
@@ -137,7 +144,9 @@ public class ReglesDeJeuTest {
         Player joueur1 = new Player("Alice");
         Player joueur2 = new Player("Bob");
         // Ajoutez des cartes à la pile de score pour chaque joueur pour simuler une partie
+
         String gagnant = ReglesDeJeu.determinerGagnantPartie(joueur1, joueur2);
+        System.out.println(gagnant);
 
         String winner ;
         if (joueur1.getScore() > joueur2.getScore()) {

@@ -27,7 +27,7 @@ public class ReglesDeJeu {
         String faction2 = carte2.getFaction();
 
         // Règle spéciale pour les Gobelins et les Chevaliers
-        if (faction1.equals("Goblins") && faction2.equals("Knights") || faction1.equals("Knights") && faction2.equals("Goblins")) {
+        if ((faction1.equals("Goblins") && faction2.equals("Knights") )|| (faction1.equals("Knights") && faction2.equals("Goblins"))) {
             return GobelinVsKnight(carte1, carte2);
         }
 
@@ -56,29 +56,28 @@ public class ReglesDeJeu {
     // si le leader a jouer doppelganger et l'autre joueur a jouer doppelganger alors on compare les valeurs des cartes
     // si le leader a jouer une autre carte et l'autre joueur a jouer doppelganger alors on compare les valeurs des cartes
     public static Card DoppelgangerVsCard(Card carte1, Card carte2, Plateau plateau) {
-        // si le leader a jouer doppelganger et l'autre joueur a jouer une autre carte alors le leader gagne le trick
-        // si le leader a jouer doppelganger et l'autre joueur a jouer doppelganger alors on compare les valeurs des cartes
-        // si le leader a jouer une autre carte et l'autre joueur a jouer doppelganger alors on compare les valeurs des cartes
-
         // si les deux cartes sont des doppelgangers alors on compare les valeurs des cartes
         if (carte1.getFaction().equals("Doppelganger")) {
             if (carte2.getFaction().equals("Doppelganger")) {
                 return determinerCarteGagnante(carte1, carte2, plateau);
             } else {
-                return carte1;
+                if (plateau.estLeader()) {
+                    return plateau.getCarteJoueur1();
+                } else {
+                    return plateau.getCarteJoueur2();
+                }
             }
         } else {
-            if (carte2.getFaction().equals("Doppelganger")) {
-                if (carte1.getValeur() > carte2.getValeur()) {
-                    return carte1;
-                } else if (carte1.getValeur() < carte2.getValeur()) {
-                    return carte2;
-                } else {
-                    return carte1;
-                }
-
+            if (carte1.getValeur() > carte2.getValeur()) {
+                return carte1;
+            } else if (carte1.getValeur() < carte2.getValeur()) {
+                return carte2;
             } else {
-                return cardVScard(carte1, carte2, plateau);
+                if (plateau.estLeader()) {
+                    return plateau.getCarteJoueur1();
+                } else {
+                    return plateau.getCarteJoueur2();
+                }
             }
         }
     }
@@ -92,7 +91,11 @@ public class ReglesDeJeu {
      */
     public static Card cardVScard(Card carte1, Card carte2, Plateau plateau) {
         if (!(carte2.getFaction().equals(carte1.getFaction()))) {
-            return carte1;
+            if (plateau.estLeader()) {
+                return plateau.getCarteJoueur1();
+            } else {
+                return plateau.getCarteJoueur2();
+            }
         } else {
             return determinerCarteGagnante(carte1, carte2, plateau);
         }
@@ -135,7 +138,11 @@ public class ReglesDeJeu {
                 }
             }
         } else {
-            return carte1;
+            if (plateau.estLeader()) {
+                return plateau.getCarteJoueur1();
+            } else {
+                return plateau.getCarteJoueur2();
+            }
         }
     }
 
