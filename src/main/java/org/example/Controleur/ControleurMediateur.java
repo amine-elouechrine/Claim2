@@ -39,6 +39,7 @@ public class ControleurMediateur implements CollecteurEvenements {
     IA iaJeu;
     boolean jouable = true;
     Card carteIA;
+    boolean IAreste;
 
 
     public ControleurMediateur(Jeu j, IA ia) {
@@ -52,25 +53,24 @@ public class ControleurMediateur implements CollecteurEvenements {
             iaJeu = ia;
         }
     }
+
     @Override
     public List<Card> getCardsFromPileScoreJ1(String factionName) {
-        List<Card> List=jeu.getPlateau().getJoueur1().pileDeScore.getCardsOfFunction(factionName);
-        if(List!=null){
+        List<Card> List = jeu.getPlateau().getJoueur1().pileDeScore.getCardsOfFunction(factionName);
+        if (List != null) {
             return List;
-        }
-        else{
-            List=new ArrayList<>();
+        } else {
+            List = new ArrayList<>();
             return List;
         }
     }
 
     public List<Card> getCardsFromPileScoreJ2(String factionName) {
-        List<Card> List=jeu.getPlateau().getJoueur2().pileDeScore.getCardsOfFunction(factionName);
-        if(List!=null){
+        List<Card> List = jeu.getPlateau().getJoueur2().pileDeScore.getCardsOfFunction(factionName);
+        if (List != null) {
             return List;
-        }
-        else{
-            List=new ArrayList<>();
+        } else {
+            List = new ArrayList<>();
             return List;
         }
     }
@@ -222,7 +222,9 @@ public class ControleurMediateur implements CollecteurEvenements {
     }
 
 
-    public Player getJoueurGagnant() { return jeu.getJoueurGagnant(); }
+    public Player getJoueurGagnant() {
+        return jeu.getJoueurGagnant();
+    }
 
     /* Methodes qui modifient le jeu */
     @Override
@@ -295,13 +297,15 @@ public class ControleurMediateur implements CollecteurEvenements {
 
 
     public boolean isAnimationEnded() {
-        if(mouvement != null)
+        if (mouvement != null)
             return mouvement.estTerminee();
         else
             return false;
     }
 
-    public boolean estFinPartie() { return jeu.estFinPartie(); }
+    public boolean estFinPartie() {
+        return jeu.estFinPartie();
+    }
 
     public int getCarteJoueur1F() {
         return jeu.getCarteJoueur1F();
@@ -342,6 +346,9 @@ public class ControleurMediateur implements CollecteurEvenements {
 
     public void joueTour(int index) {
         pause = true;
+        System.out.println("pause start");
+
+        IAreste = false;
         if (estFinPartie()) {
             // Calcul des scores
             System.out.println("La partie est terminée\n");
@@ -350,26 +357,45 @@ public class ControleurMediateur implements CollecteurEvenements {
             if (carteLeader != null) {
                 jouable = jeu.estCarteJouable(carteLeader, index);
             }
-            if (jouable) {
+            if (jouable && !IAestJoueurCourant()) {
                 jeu.addAction();
                 jouerCarte(index);
+                System.out.println("Joueur COUP");
             }
-            if (iaJeu != null)
+            if (iaJeu != null) {
                 if (jeu.getJoueur2() == jeu.getJoueurCourant()) {
-                    Timer timer = new Timer(dureePause / 500, new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-                            tourIA();
-                        }
-                    });
-                    timer.setRepeats(false);
-                    timer.start();
+                    timerIA();
+                    IAreste = true;
+                    System.out.println("IA COUP1");
                 }
+                Timer timer = new Timer(dureePause + 700, new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        if (jeu.getJoueur2() == jeu.getJoueurCourant() && IAreste) {
+                            System.out.println("IA COUP2");
+                            timerIA();
+                            IAreste = false;
+                            System.out.println("IA COUP2 fini");
+                        }
+                    }
+                });
+                timer.setRepeats(false);
+                timer.start();
+            }
         }
-        if(IAestJoueurCourant()) {
-            tourIA();
-        }
-        pause = false;
+        //pause = false;
+    }
+
+    public void timerIA() {
+        Timer timer = new Timer(dureePause / 500, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                tourIA();
+            }
+        });
+        timer.setRepeats(false);
+        timer.start();
+
     }
 
     public void tourIA() {
@@ -415,6 +441,7 @@ public class ControleurMediateur implements CollecteurEvenements {
             carteLeader = carte;
             jeu.switchJoueur();
         }
+
     }
 
 
@@ -453,7 +480,6 @@ public class ControleurMediateur implements CollecteurEvenements {
     public int[] getCardsFromPileScore(String factionName,Player player) {
         return jeu.getCardsFromPileScore(factionName);
     }*/
-
 
 
     @Override
