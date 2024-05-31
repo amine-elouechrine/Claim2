@@ -209,14 +209,12 @@ public class ControleurMediateur implements CollecteurEvenements {
 
     /* Methodes qui modifient le jeu */
     @Override
-<<<<<<< HEAD
+
+
     public void annuler() {
-=======
-    public void annuler() throws IOException {
         if (pause) {
             return;
         }
->>>>>>> 18507153fe1de209be4cfb8a97046347e67b3f07
         jeu.annulerCoup();
         if (jeu.getPlateau().getCarteJoueur1() == null && jeu.getPlateau().getCarteJoueur2() != null) {
             carteLeader = jeu.getPlateau().getCarteJoueur2();
@@ -461,12 +459,10 @@ public class ControleurMediateur implements CollecteurEvenements {
     public void jouerCarteIA(Card carte) {
         jeu.getPlateau().jouerCarte(carte);
         if (jeu.estCarteJoueJ1() && jeu.estCarteJoueJ2()) {
-<<<<<<< HEAD
             jeu.playTrick();
             // On joue le plie
             // Ajouter temporisation / Animation pour la bataille et l'attribution des cartes après le plie
             jeu.setCarteJouer();
-=======
             Player gagnant = getJoueurGagnant();
             int card1Faction = getCarteJoueur1F();
             int card2Faction = getCarteJoueur2F();
@@ -488,7 +484,6 @@ public class ControleurMediateur implements CollecteurEvenements {
             });
             timer.setRepeats(false);
             timer.start();
->>>>>>> 18507153fe1de209be4cfb8a97046347e67b3f07
             carteLeader = null;
         } else {
             carteLeader = carte;

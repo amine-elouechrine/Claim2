@@ -23,16 +23,15 @@ public class AdaptateurHelpButton implements ActionListener{
         // Ajouter l'image à un JLabel
         JLabel label = new JLabel(icon);
 
-        // Créer un JPanel pour contenir le JLabel
-        JPanel panel = new JPanel(new BorderLayout());
-        panel.add(label, BorderLayout.CENTER);
+        // Créer un JScrollPane pour contenir le JLabel
+        JScrollPane scrollPane = new JScrollPane(label);
 
-        // Ajouter le panneau au JDialog
-        dialog.getContentPane().add(panel);
+        // Ajouter le JScrollPane au JDialog
+        dialog.getContentPane().add(scrollPane, BorderLayout.CENTER);
 
         // Permettre le redimensionnement du JDialog
         dialog.setResizable(true);
-        dialog.setSize(400, 300); // Taille initiale
+        dialog.setSize(600, 400); // Taille initiale
         dialog.setLocationRelativeTo(null); // Centrer la boîte de dialogue sur l'écran
 
         // Ajouter l'écouteur de redimensionnement

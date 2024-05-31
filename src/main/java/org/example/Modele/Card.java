@@ -21,22 +21,22 @@ public class Card {
 
     public int getWeight(Card carte) {
         int valCarte ;
-        if (carte.getValeur()>5){
-            valCarte=carte.getValeur()+5;
+        if (carte.getValeur()>4){
+            valCarte=carte.getValeur()+4;
         }
         else
             valCarte=carte.getValeur()+2;
         switch (carte.getFaction()) {
             case "Goblins":
-                return valCarte + 1;
+                return valCarte + 2;
             case "Knight":
                 return valCarte+ 3;
             case "Doppelganger":
+                return valCarte + 4;
+            case "Dwarves":
                 return valCarte + 3;
-            case "Dwarve":
-                return valCarte + 2;
             case "Undead":
-                return valCarte + 2;
+                return valCarte + 3;
         }
         return 0;
     }

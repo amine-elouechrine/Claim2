@@ -36,7 +36,7 @@ public class IAMinMax {
             Result result = new Result(evaluation, null);
             return result;
         }
-        PlateauState savedState =new PlateauState(node.plateau);//=node.plateau.saveState(); // Sauvegarder l'état du plateau
+        PlateauState savedState =new PlateauState(node.plateau); // Sauvegarder l'état du plateau
         if (maximizingPlayer) { // si c'est le tour de l'ia (verifier isIaTurn dans le noeud si c'est vrai
             int maxEval = Integer.MIN_VALUE;
             Card bestCard = null;
@@ -124,17 +124,19 @@ public class IAMinMax {
         Node racine = new Node(plateau);
         Node nodeRacine = racine.clone();
         Result result;
-        if(nodeRacine.plateau.getJoueurCourant().getName().equals("MinMax")){
+
+
+        // si MinMax est leader
+        if(nodeRacine.plateau.estLeader()){
             // Appel de l'algorithme Minimax pour évaluer le meilleur coup
             result = minimax(nodeRacine, 13, true, 0, 1);
             return result.coup;
         }else{
             // Appel de l'algorithme Minimax pour évaluer le meilleur coup
-            result = minimax(nodeRacine, 13, false, 0, 1 );
+            result = minimax(nodeRacine, 13, false, 0, 1);
             return result.coup;
-
-            // si l'ia joue en deuxieme position a la fin du trick alors elle return null ! donc il faut faire une condition pour set le coup a la derniere carte
         }
+
     }
 
     // Méthode pour obtenir le nombre de nœuds

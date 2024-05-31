@@ -15,16 +15,32 @@ public class CardsTest {
     }
 
     public static void testShuffle() {
+        boolean testPassed = false;
         Cards cards = new Cards();
+        cards.addAllCards();
         List<Card> cardsBeforeShuffle = new ArrayList<>(cards.getCards());
 
         cards.shuffle();
 
         List<Card> cardsAfterShuffle = cards.getCards();
 
-        // Vérifier que les cartes ont été mélangées en comparant les deux listes
         boolean isShuffled = !cardsBeforeShuffle.equals(cardsAfterShuffle);
-        if (isShuffled) {
+        boolean isDifferentOrder = false;
+
+        for (int j = 0; j < cardsBeforeShuffle.size(); j++) {
+            if (!cardsBeforeShuffle.get(j).equals(cardsAfterShuffle.get(j))) {
+                isDifferentOrder = true;
+                break;
+            }
+        }
+
+        if (isShuffled && isDifferentOrder) {
+            testPassed = true;
+        }
+
+        // Vérifier que les cartes ont été mélangées en comparant les deux listes
+        //boolean isShuffled = !cardsBeforeShuffle.equals(cardsAfterShuffle);
+        if (testPassed) {
             System.out.println("Shuffle test passed. : Les cartes ont été mélangées avec succès.");
         } else {
             System.out.println("Shuffle test failed. : Les cartes n'ont pas été mélangées.");
@@ -33,6 +49,8 @@ public class CardsTest {
 
     public static void testGetHandOf13Cards() {
         Cards cards = new Cards();
+        cards.addAllCards();
+        cards.shuffle();
         Hand hand = cards.getHandOf13Cards();
         if (hand.size() == 13) {
             System.out.println("GetHandOf13Cards test passed.");

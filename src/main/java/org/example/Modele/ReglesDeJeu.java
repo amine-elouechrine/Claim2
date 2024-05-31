@@ -27,8 +27,7 @@ public class ReglesDeJeu {
         String faction2 = carte2.getFaction();
 
         // Règle spéciale pour les Gobelins et les Chevaliers
-        if ((faction1.equals("Goblins") && faction2.equals("Knight")) || (faction1.equals("Knight") && faction2.equals("Goblins"))) {
-            //System.out.println("gobelin versus knight");
+        if ((faction1.equals("Goblins") && faction2.equals("Knights") )|| (faction1.equals("Knights") && faction2.equals("Goblins"))) {
             return GobelinVsKnight(carte1, carte2);
         }
 
@@ -57,29 +56,28 @@ public class ReglesDeJeu {
     // si le leader a jouer doppelganger et l'autre joueur a jouer doppelganger alors on compare les valeurs des cartes
     // si le leader a jouer une autre carte et l'autre joueur a jouer doppelganger alors on compare les valeurs des cartes
     public static Card DoppelgangerVsCard(Card carte1, Card carte2, Plateau plateau) {
-        // si le leader a jouer doppelganger et l'autre joueur a jouer une autre carte alors le leader gagne le trick
-        // si le leader a jouer doppelganger et l'autre joueur a jouer doppelganger alors on compare les valeurs des cartes
-        // si le leader a jouer une autre carte et l'autre joueur a jouer doppelganger alors on compare les valeurs des cartes
-
         // si les deux cartes sont des doppelgangers alors on compare les valeurs des cartes
         if (carte1.getFaction().equals("Doppelganger")) {
             if (carte2.getFaction().equals("Doppelganger")) {
                 return determinerCarteGagnante(carte1, carte2, plateau);
             } else {
-                return carte1;
+                if (plateau.estLeader()) {
+                    return plateau.getCarteJoueur1();
+                } else {
+                    return plateau.getCarteJoueur2();
+                }
             }
         } else {
-            if (carte2.getFaction().equals("Doppelganger")) {
-                if (carte1.getValeur() > carte2.getValeur()) {
-                    return carte1;
-                } else if (carte1.getValeur() < carte2.getValeur()) {
-                    return carte2;
-                } else {
-                    return carte1;
-                }
-
+            if (carte1.getValeur() > carte2.getValeur()) {
+                return carte1;
+            } else if (carte1.getValeur() < carte2.getValeur()) {
+                return carte2;
             } else {
-                return cardVScard(carte1, carte2, plateau);
+                if (plateau.estLeader()) {
+                    return plateau.getCarteJoueur1();
+                } else {
+                    return plateau.getCarteJoueur2();
+                }
             }
         }
     }
@@ -93,7 +91,11 @@ public class ReglesDeJeu {
      */
     public static Card cardVScard(Card carte1, Card carte2, Plateau plateau) {
         if (!(carte2.getFaction().equals(carte1.getFaction()))) {
-            return carte1;
+            if (plateau.estLeader()) {
+                return plateau.getCarteJoueur1();
+            } else {
+                return plateau.getCarteJoueur2();
+            }
         } else {
             return determinerCarteGagnante(carte1, carte2, plateau);
         }
@@ -106,7 +108,7 @@ public class ReglesDeJeu {
      */
     public static Card GobelinVsKnight(Card carte1, Card carte2) {
 
-        if (carte1.getFaction().equals("Goblins") && carte2.getFaction().equals("Knight")) {
+        if (carte1.getFaction().equals("Goblins") && carte2.getFaction().equals("Knights")) {
             return carte2; // Le Chevalier bat toujours le Gobelin
         } else {
             return carte1; // Le Chevalier bat toujours le Gobelin
@@ -136,7 +138,11 @@ public class ReglesDeJeu {
                 }
             }
         } else {
-            return carte1;
+            if (plateau.estLeader()) {
+                return plateau.getCarteJoueur1();
+            } else {
+                return plateau.getCarteJoueur2();
+            }
         }
     }
 
@@ -150,7 +156,7 @@ public class ReglesDeJeu {
      * @param carteJoueur2 La carte jouée par le deuxième joueur.
      * @return Le joueur gagnant ou null en cas d'égalité.
      */
-    public static GeneralPlayer determinerGagnantManche(GeneralPlayer joueur1, GeneralPlayer joueur2, Card carteJoueur1, Card carteJoueur2, Plateau Plateau) {
+    public static Player determinerGagnantManche(Player joueur1, Player joueur2, Card carteJoueur1, Card carteJoueur2, Plateau Plateau) {
         Card carteGagnante = carteGagnante(carteJoueur1, carteJoueur2, Plateau);
 
         if (carteGagnante == carteJoueur1) {
