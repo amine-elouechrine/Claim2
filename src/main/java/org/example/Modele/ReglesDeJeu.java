@@ -136,7 +136,11 @@ public class ReglesDeJeu {
                 }
             }
         } else {
-            return carte1;
+            if (plateau.estLeader()) {
+                return plateau.getCarteJoueur1();
+            } else {
+                return plateau.getCarteJoueur2();
+            }
         }
     }
 
