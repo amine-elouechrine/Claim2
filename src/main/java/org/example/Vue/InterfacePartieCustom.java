@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.IOException;
 
 import org.example.Controleur.ControleurMediateur;
+import org.example.IA.Facile;
 import org.example.IA.Intermediare;
 import org.example.Modele.Jeu;
 import org.example.IA.IA;
@@ -88,14 +89,14 @@ public class InterfacePartieCustom extends JFrame implements Runnable {
                         ControleurMediateur control;
                         switch (IA1Selected) {
                             case "Facile":
-                                ia = new Intermediare();
-                                jeu = new Jeu(true, joueur1, joueur2);
+                                ia = new Facile();
+                                jeu = new Jeu(true, joueur1, "IA Facile");
                                 control = new ControleurMediateur(jeu, ia);
                                 break;
-                            case "Difficile":
+                            case "Intermédiaire":
                                 // Création de l'IA
                                 ia = new Intermediare();
-                                jeu = new Jeu(true, joueur1, joueur2);
+                                jeu = new Jeu(true, joueur1, "IA Intermediare");
                                 control = new ControleurMediateur(jeu, ia);
                                 break;
 

@@ -322,16 +322,11 @@ public class Plateau {
         // creation des joueurs
         if(Objects.equals(nameJ1, "") && Objects.equals(nameJ2, "")) {
             joueur1 = new Player("Joueur 1");
-            if(!ia)
-                joueur2 = new Player("Joueur 2");
-        }
-        if (!Objects.equals(nameJ1, "")) {
+            joueur2 = new Player("Joueur 2");
+        } else {
             joueur1 = new Player(nameJ1);
-        }
-        if (ia)
-            joueur2 = new Player("IA");
-        else if (!Objects.equals(nameJ2, ""))
             joueur2 = new Player(nameJ2);
+        }
 
         //initialiser les mains des joueurs
         joueur1.setHand(mainJoueur1);

@@ -141,7 +141,7 @@ public class Intermediare extends IA {
 
 
 	public Intermediare() {
-		super("IA");
+		super("IA Intermediare");
 	}
 
 	public Card jouerCoupPhase1(Plateau plateau) {

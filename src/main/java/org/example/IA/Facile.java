@@ -12,7 +12,7 @@ public class Facile extends IA {
 
 
     public Facile() {
-        super("Facile");
+        super("IA Facile");
         rand = new Random();
     }
 
