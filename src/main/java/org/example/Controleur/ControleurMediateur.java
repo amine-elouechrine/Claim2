@@ -288,9 +288,12 @@ public class ControleurMediateur implements CollecteurEvenements {
             return;
         }
         dureePause = 4500;
+        jeu.clearStackAnnule();
+        jeu.clearStackRefaire();
         jeu.getPlateau().initialiserJeu(jeu.estIA(), jeu.getNomJoueur(jeu.getJoueur1()), jeu.getNomJoueur(jeu.getJoueur2()));
         jeu.setCarteJouer();
         jeu.getPlateau().setPhase(true);
+
         carteLeader = null;
         jeu.metAJour();
         startDistributionAnimation(iterations);

@@ -53,9 +53,14 @@ public class GestionAnnuleRefaire {
     /**
      * Méthode pour vider la pile refaire
      */
-    public void clearStack() {
+    public void clearStackRefaire() {
         while (!refaire.empty()) {
             refaire.pop();
+        }
+    }
+    public void clearStackAnnule() {
+        while (!annule.empty()) {
+            annule.pop();
         }
     }
 
@@ -210,7 +215,7 @@ public class GestionAnnuleRefaire {
     public void addToHistory(Plateau plateau) {
         Plateau p = clonePlateau(plateau);
         annule.push(p);
-        clearStack();
+        clearStackRefaire();
     }
 
 

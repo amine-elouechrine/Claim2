@@ -77,8 +77,7 @@ public class ComposantMenuPartie extends JFrame {
         panel.add(new ComposantAnnulerRefaire(axis, control));
 
         // Bouton Nouvelle Partie
-        panel.add(new ComposantNouvellePartie(axis, control));
-
+        panel.add(new ComposantNouvellePartie(axis, control, this));
 
         // Bouton Nouvelle partie
         panel.add(Sauvegarde);
