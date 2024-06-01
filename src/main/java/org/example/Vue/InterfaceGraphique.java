@@ -22,6 +22,7 @@ public class InterfaceGraphique implements Runnable, InterfaceUtilisateur {
         control = c;
         adaptateurClavier = new AdaptateurClavier(control, new ComposantSauvegarde(control));
         adaptateurTransitionPhases = new AdaptateurTransitionPhases(control);
+
     }
 
     public static void demarrer(Jeu j, CollecteurEvenements c) {
@@ -29,6 +30,7 @@ public class InterfaceGraphique implements Runnable, InterfaceUtilisateur {
         c.ajouteInterfaceUtilisateur(vue);
         SwingUtilities.invokeLater(vue);
     }
+
 
     @Override
     public void run() {
@@ -79,7 +81,7 @@ public class InterfaceGraphique implements Runnable, InterfaceUtilisateur {
         menuPanel.add(regle);
 
         ComposantMenuPartie menuPartie = new ComposantMenuPartie(BoxLayout.PAGE_AXIS, control, j);
-        menu.addActionListener(new AdaptateurOuvreMenu(menu, menuPartie,niv));
+        menu.addActionListener(new AdaptateurOuvreMenu(menu, menuPartie, niv));
         fenetre.add(menuPanel, BorderLayout.EAST);
         fenetre.add(bh, BorderLayout.NORTH);
         ComposantTransitionPhases transitionPhases = new ComposantTransitionPhases();
@@ -112,9 +114,37 @@ public class InterfaceGraphique implements Runnable, InterfaceUtilisateur {
     }
 
     public static void fermer() { fenetre.dispose(); }
+  
+    public void distribuerGagne() {
+        niv.distribuerGagne();
+    }
+
+    public void distribuerPerde() {
+        niv.distribuerPerde();
+    }
+
 
     @Override
-    public void initializeAnimation(int totalIterations) {
-        niv.initializeAnimation(totalIterations);
+    public void distribuerDefausse() {
+        niv.distribuerDefausse();
+    }
+
+    @Override
+    public void initializeAnimationDistribuer(int totalIterations) {
+        niv.initializeAnimationDistribuer(totalIterations);
+    }
+
+    @Override
+    public void initializeAnimationGagne(int totalIterations, int joueur) {
+        niv.initializeAnimationGagne(totalIterations, joueur);
+    }
+    @Override
+    public void initializeAnimationPerde(int totalIterations, int joueur) {
+        niv.initializeAnimationPerde(totalIterations, joueur);
+    }
+
+    @Override
+    public void initializeAnimationDefausse(int totalIterations, int card1Faction, int card2Faction) {
+        niv.initializeAnimationDefausse(totalIterations, card1Faction, card2Faction);
     }
 }

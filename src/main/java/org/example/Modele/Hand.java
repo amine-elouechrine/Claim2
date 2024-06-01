@@ -134,8 +134,47 @@ public class Hand extends CardCollection{
         return cards;
     }
 
+
     //public Card getLargestSmallerCard(Card card) 
     //public Card getLowestCardWithFactionScore() {
+
+    public Card getLargestSmallerCard(Card card) {
+        if (cards == null || cards.isEmpty()) {
+            throw new IllegalStateException("La main est vide ou nulle.");
+        }
+
+        Card largestSmallerCard = null;
+
+        for (Card handCard : cards) {
+            // Vérifier si la carte est plus grande que celle passée en paramètre
+            if (handCard.getValeur() > card.getValeur()) {
+                // Vérifier si la carte trouvée est plus petite que la carte actuellement retenue
+                if (largestSmallerCard == null || handCard.getValeur() < largestSmallerCard.getValeur()) {
+                    largestSmallerCard = handCard;
+                }
+            }
+        }
+
+        if (largestSmallerCard == null) {
+            throw new IllegalStateException("Aucune carte plus grande mais plus petite trouvée.");
+        }
+
+        return largestSmallerCard;
+    }
+
+
+    public Card getRandomCard() {
+        if (cards == null || cards.isEmpty()) {
+            throw new IllegalStateException("La main est vide ou nulle.");
+        }
+
+        Random random = new Random();
+        int randomIndex = random.nextInt(cards.size());
+        Card randomCard = cards.get(randomIndex);
+        cards.remove(randomIndex);
+        return randomCard;
+    }
+
 
     /**
      * Vide la main en supprimant toutes les cartes.
@@ -165,7 +204,7 @@ public class Hand extends CardCollection{
     }
     
     
-    public Card getRandomCard() {
+    /*public Card getRandomCard() {
         if (cards == null || cards.isEmpty()) {
             throw new IllegalStateException("La main est vide ou nulle.");
         }
@@ -175,5 +214,5 @@ public class Hand extends CardCollection{
         Card randomCard = cards.get(randomIndex);
         cards.remove(randomIndex);
         return randomCard;
-    }
+    }*/
 }

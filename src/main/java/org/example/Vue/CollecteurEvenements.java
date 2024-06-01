@@ -1,9 +1,15 @@
 package org.example.Vue;
 
+
+import org.example.Modele.Card;
+import org.example.Modele.PileDeScore;
+
 import org.example.Modele.Player;
+
 import org.example.Patternes.Observateur;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.List;
 
 public interface CollecteurEvenements {
 
@@ -70,6 +76,11 @@ public interface CollecteurEvenements {
     boolean estCarteJoueJ2();
   
     boolean estFinPartie();
+
+    boolean isAnimationEnded();
+
+    boolean getPause();
+
     /* Adaptateurs */
     void refaire();
   
@@ -90,4 +101,8 @@ public interface CollecteurEvenements {
     void ajouteInterfaceUtilisateur(InterfaceUtilisateur vue);
 
     void startDistributionAnimation(int totalIterations);
+
+    List<Card> getCardsFromPileScoreJ1(String factionName);
+
+    List<Card> getCardsFromPileScoreJ2(String factionName);
 }

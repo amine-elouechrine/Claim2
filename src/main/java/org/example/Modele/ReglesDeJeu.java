@@ -136,7 +136,11 @@ public class ReglesDeJeu {
                 }
             }
         } else {
-            return carte1;
+            if (plateau.estLeader()) {
+                return plateau.getCarteJoueur1();
+            } else {
+                return plateau.getCarteJoueur2();
+            }
         }
     }
 
@@ -150,7 +154,7 @@ public class ReglesDeJeu {
      * @param carteJoueur2 La carte jouée par le deuxième joueur.
      * @return Le joueur gagnant ou null en cas d'égalité.
      */
-    public static Player determinerGagnantManche(Player joueur1, Player joueur2, Card carteJoueur1, Card carteJoueur2, Plateau Plateau) {
+    public static GeneralPlayer determinerGagnantManche(GeneralPlayer joueur1, GeneralPlayer joueur2, Card carteJoueur1, Card carteJoueur2, Plateau Plateau) {
         Card carteGagnante = carteGagnante(carteJoueur1, carteJoueur2, Plateau);
 
         if (carteGagnante == carteJoueur1) {
@@ -194,9 +198,6 @@ public class ReglesDeJeu {
                 if((carte.getFaction().equals("Doppelganger"))){
                     cartesJouables.add(carte);
                 }
-                if (carteAdversaire.getFaction().equals("Goblins") && carte.getFaction().equals("Knight")){
-                    cartesJouables.add(carte);
-                }
             }
         }
 
@@ -214,10 +215,13 @@ public class ReglesDeJeu {
     public static  List<Card> cartesJouablesGagnant(Card carteAdversaire, List<Card> carteJouable , Plateau plateau) {
         List<Card> cartesGagnates = new ArrayList<>();
         for (Card carte : carteJouable) {
-            Card carteGangante = carteGagnante(carte, carteAdversaire , plateau);
+            Card carteGangante = carteGagnante(carteAdversaire, carte , plateau);
             if(carteGangante == carte){
                 cartesGagnates.add(carte);
             }
+        }
+        for(Card carte : cartesGagnates) {
+            System.out.println(carte.toString());
         }
         return cartesGagnates;
     }
@@ -225,7 +229,7 @@ public class ReglesDeJeu {
     public static List<Card> cartesJouablesPerdant(Card carteAdversaire, List<Card> carteJouable , Plateau plateau) {
         List<Card> cartesPerdantes = new ArrayList<>();
         for (Card carte : carteJouable) {
-            Card carteGangante = carteGagnante(carte, carteAdversaire , plateau);
+            Card carteGangante = carteGagnante(carteAdversaire, carte , plateau);
             if(carteGangante != carte){
                 cartesPerdantes.add(carte);
             }
