@@ -109,11 +109,12 @@ public class NiveauGraphique extends JComponent implements Observateur {
 
     Jeu jeu;
     ComposantRejouer rec;
+    ComposantFinPartie fin;
 
     /* Load assets */
     Map<String, BufferedImage> imageMap = new HashMap<>();
 
-    public NiveauGraphique(Jeu j, CollecteurEvenements c, ComposantRejouer rejouer) {
+    public NiveauGraphique(Jeu j, CollecteurEvenements c, ComposantRejouer rejouer, ComposantFinPartie finPartie) {
 
         control = c;
         jeu = j;
@@ -121,6 +122,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
         GestionClicPileScore gestionClicPileScore = new GestionClicPileScore(this, this.control);
         addMouseListener(gestionClicPileScore);
         rec = rejouer;
+        fin = finPartie;
 
         String directoryPath = "src/main/resources/";
         File directory = new File(directoryPath);
@@ -153,6 +155,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
     }
 
     private void paintGameBoard(Graphics2D g) {
+
         // Set bigger font size
         font = g.getFont().deriveFont(Font.BOLD, largeur() / 25f); // Adjust font size based on panel width
         g.setFont(font);
@@ -203,8 +206,10 @@ public class NiveauGraphique extends JComponent implements Observateur {
         totalHeight = rectHeight;
 
 
-        if (control.estFinPartie())
+        if (control.estFinPartie()) {
             rec.setVisible(true);
+            fin.setVisible(true);
+        }
 
         /* Phase 1 */
         if (control.getPhase()) {
