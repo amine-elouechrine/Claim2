@@ -264,7 +264,16 @@ public class NiveauGraphique extends JComponent implements Observateur {
             drawDefausse(g);
 
             // Draw score pile
-            System.out.println("boolean pile score  : " + drawC.isDrawScorePileToggle());
+            x = rectWidth;
+            y = hauteur() / 2 - rectHeight;
+            positionPileScoreJ1X = x * 3;
+            positionPileScoreJ1Y = y + rectHeight;
+            positionPileScoreJ2X = positionPileScoreJ1X;
+            positionPileScoreJ2Y = y;
+            // Pile de score J1
+            g.drawImage(imageMap.get("carte_score"), x * 3, y + rectHeight, rectWidth, rectHeight, this);
+            // Pile de score J2
+            g.drawImage(imageMap.get("carte_score"), x * 3, y, rectWidth, rectHeight, this);
             if(drawC.isDrawScorePileToggle())
                 drawScorePile(g);
 
@@ -284,6 +293,16 @@ public class NiveauGraphique extends JComponent implements Observateur {
             drawHandJ2(g);
 
             // Draw score pile
+            x = rectWidth;
+            y = hauteur() / 2 - rectHeight;
+            positionPileScoreJ1X = x * 3;
+            positionPileScoreJ1Y = y + rectHeight;
+            positionPileScoreJ2X = positionPileScoreJ1X;
+            positionPileScoreJ2Y = y;
+            // Pile de score J1
+            g.drawImage(imageMap.get("carte_score"), x * 3, y + rectHeight, rectWidth, rectHeight, this);
+            // Pile de score J2
+            g.drawImage(imageMap.get("carte_score"), x * 3, y, rectWidth, rectHeight, this);
             if(drawC.isDrawScorePileToggle())
                 drawScorePile(g);
         }
@@ -300,7 +319,6 @@ public class NiveauGraphique extends JComponent implements Observateur {
     }
 
     private void drawHandJ2(Graphics2D g) {
-        System.out.println("boolean hand : " + drawC.isDrawHandToggle());
         if(!drawC.isDrawHandToggle()) {
             // Dessin de la main face caché du joueur 2 si il est une IA
             for (int i = 0; i < nbCardHandJ2; i++) {
@@ -388,15 +406,6 @@ public class NiveauGraphique extends JComponent implements Observateur {
 
         // Dessin de l'emplacement de la pile de score
         g.drawRect(x, y, rectWidth * 2, rectHeight * 2);
-
-        // Pile de score J1
-        g.drawImage(imageMap.get("carte_score"), x * 3, y + rectHeight, rectWidth, rectHeight, this);
-        // Pile de score J2
-        g.drawImage(imageMap.get("carte_score"), x * 3, y, rectWidth, rectHeight, this);
-        positionPileScoreJ1X = x * 3;
-        positionPileScoreJ1Y = y + rectHeight;
-        positionPileScoreJ2X = positionPileScoreJ1X;
-        positionPileScoreJ2Y = y;
 
         numRows = 6;
         cellHeight = rectHeight * 2 / numRows;
