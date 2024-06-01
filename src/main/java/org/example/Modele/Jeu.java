@@ -11,10 +11,11 @@ public class Jeu extends Observable {
     Plateau plateau;
     GestionAnnuleRefaire g;
     ReglesDeJeu r;
+    boolean estIA;
 
-    public Jeu() {
+    public Jeu(boolean ia, String nameJ1, String nameJ2) {
         plateau = new Plateau();
-        plateau.initialiserJeu();
+        plateau.initialiserJeu(ia, nameJ1, nameJ2);
         g = new GestionAnnuleRefaire();
         g.addToHistory(getPlateau());
         r = new ReglesDeJeu();
@@ -84,6 +85,10 @@ public class Jeu extends Observable {
 
     public boolean estFinPartie() {
         return getPlateau().isEndOfGame();
+    }
+
+    public boolean estIA() {
+        return estIA;
     }
 
     private int[][] getListeCarte(List<Card> listeCarte) {

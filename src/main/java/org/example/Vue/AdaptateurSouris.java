@@ -24,6 +24,8 @@ public class AdaptateurSouris extends MouseAdapter implements MouseListener {
     @Override
     public void mousePressed(MouseEvent e) {
 
+        if (control.getPause())
+            return;
         if(!control.getPause()) {
             // Clic sur le niveau graphique
             i = e.getX();
@@ -36,7 +38,6 @@ public class AdaptateurSouris extends MouseAdapter implements MouseListener {
             if (niv.estDansPileDeScore(i, j)) {
                 System.out.println("Clic sur la pile de score");
                 int x = niv.getLigneCliquee(j);
-
 
             }
 

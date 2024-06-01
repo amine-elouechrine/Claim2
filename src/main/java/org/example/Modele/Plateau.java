@@ -309,7 +309,7 @@ public class Plateau {
     /**
      *
      */
-    public void initialiserJeu() {
+    public void initialiserJeu(boolean ia, String nameJ1, String nameJ2) {
         //creation des cartes de jeu et shuffle (pioche)
         pioche = new Cards();
         pioche.addAllCards();
@@ -319,9 +319,14 @@ public class Plateau {
         Hand mainJoueur1 = pioche.getHandOf13Cards();
         Hand mainJoueur2 = pioche.getHandOf13Cards();
 
-        //creation des joueurs
-        joueur1 = new Player("Joueur 1");
-        joueur2 = new Player("Joueur 2");
+        // creation des joueurs
+        if(Objects.equals(nameJ1, "") && Objects.equals(nameJ2, "")) {
+            joueur1 = new Player("Joueur 1");
+            joueur2 = new Player("Joueur 2");
+        } else {
+            joueur1 = new Player(nameJ1);
+            joueur2 = new Player(nameJ2);
+        }
 
         //initialiser les mains des joueurs
         joueur1.setHand(mainJoueur1);
@@ -430,11 +435,7 @@ public class Plateau {
                 joueurCourant = joueur2;
             }
         }
-        
     }
-
-
-
 
     
     // use applay sndphaserule function 
