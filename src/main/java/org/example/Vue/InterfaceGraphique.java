@@ -50,8 +50,11 @@ public class InterfaceGraphique implements Runnable, InterfaceUtilisateur {
         // Recommencer partie
         ComposantRejouer rec = new ComposantRejouer(control);
 
+        // Fin de la partie
+        ComposantFinPartie finPartie = new ComposantFinPartie(control);
+
         // Dessin du NiveauGraphique
-        niv = new NiveauGraphique(j, control, rec);
+        niv = new NiveauGraphique(j, control, rec, finPartie);
         niv.setFocusable(true);
         niv.requestFocusInWindow();
         niv.addMouseListener(new AdaptateurSouris(niv, control));

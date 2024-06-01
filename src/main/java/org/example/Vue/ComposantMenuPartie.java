@@ -2,7 +2,10 @@ package org.example.Vue;
 
 import org.example.Modele.Jeu;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
+import java.io.File;
+import java.io.IOException;
 
 public class ComposantMenuPartie extends JFrame {
 
@@ -11,8 +14,19 @@ public class ComposantMenuPartie extends JFrame {
     Jeu jeu;
 
     ComposantMenuPartie(int axis, CollecteurEvenements control, Jeu jeu) {
+
         this.jeu = jeu;
         c = control;
+
+        // Setting up the frame
+        this.setTitle("Menu de Claim");
+
+        // Change l'icone de la fenetre principale
+        try {
+            this.setIconImage(ImageIO.read(new File("src/main/resources/Claim.png")));
+        } catch (IOException exc) {
+            System.out.println("Erreur de chargement de l'icone");
+        }
 
         this.setSize(600, 400);
         JPanel panel = new JPanel();
