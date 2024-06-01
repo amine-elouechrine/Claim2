@@ -130,7 +130,7 @@ public class InterfaceInitiale extends JFrame implements Runnable {
 
     private void startQuickGame() {
         // Commencer une partie rapide contre une IA moyenne
-        Jeu jeu = new Jeu(true, "", "");
+        Jeu jeu = new Jeu(true, "", "IA Intermediare");
         IA ia = new Intermediare();
         CollecteurEvenements control = new ControleurMediateur(jeu, ia);
         ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
