@@ -21,7 +21,7 @@ public class ComposantMenuPartie extends JFrame {
         panel.add(Box.createGlue());
 
         // Bouton Nouvelle Partie
-        panel.add(new ComposantNouvellePartie(axis, control));
+        panel.add(new ComposantNouvellePartie(axis, control, this));
         panel.add(Box.createGlue());
 
         // Boutons et FieldTexts Sauver et Charger une partie
