@@ -49,12 +49,16 @@ public class InterfaceGraphique implements Runnable, InterfaceUtilisateur {
 
         // Recommencer partie
         ComposantRejouer rec = new ComposantRejouer(control);
-
+      
+        // Toggle state
+        DrawCheck drawCheck = new DrawCheck();
+        // Dessin du NiveauGraphique
+        niv = new NiveauGraphique(j, control, rec, drawCheck);
         // Fin de la partie
         ComposantFinPartie finPartie = new ComposantFinPartie(control);
 
         // Dessin du NiveauGraphique
-        niv = new NiveauGraphique(j, control, rec, finPartie);
+        niv = new NiveauGraphique(j, control, rec, finPartie, drawCheck);
         niv.setFocusable(true);
         niv.requestFocusInWindow();
         niv.addMouseListener(new AdaptateurSouris(niv, control));
@@ -70,7 +74,7 @@ public class InterfaceGraphique implements Runnable, InterfaceUtilisateur {
         // Menu
         JToggleButton menu = new JToggleButton("Menu");
         menuPanel.add(menu, BorderLayout.NORTH);
-        ComposantMenuPartie menuPartie = new ComposantMenuPartie(BoxLayout.PAGE_AXIS, control, j);
+        ComposantMenuPartie menuPartie = new ComposantMenuPartie(BoxLayout.Y_AXIS, control, j, drawCheck);
         menu.addActionListener(new AdaptateurOuvreMenu(menu, menuPartie, niv));
         fenetre.add(menuPanel, BorderLayout.EAST);
         fenetre.add(bh, BorderLayout.NORTH);
