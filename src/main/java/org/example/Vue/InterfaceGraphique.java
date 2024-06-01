@@ -12,7 +12,7 @@ public class InterfaceGraphique implements Runnable, InterfaceUtilisateur {
 
     Jeu j;
     NiveauGraphique niv;
-    JFrame fenetre;
+    static JFrame fenetre;
     CollecteurEvenements control;
     AdaptateurClavier adaptateurClavier;
     AdaptateurTransitionPhases adaptateurTransitionPhases;
@@ -59,7 +59,7 @@ public class InterfaceGraphique implements Runnable, InterfaceUtilisateur {
         fenetre.add(niv);
 
         // Ajout d'une barre latéral à droite
-        JPanel menuPanel = new JPanel(new BorderLayout());
+        JPanel menuPanel = new JPanel(new GridLayout(3, 1, 5, 5));
         menuPanel.setBackground(Color.DARK_GRAY);
 
         // Menu
@@ -71,11 +71,13 @@ public class InterfaceGraphique implements Runnable, InterfaceUtilisateur {
 
         // Bouton règle
         JButton regle = new JButton(("Aide"));
+        // TODO : Ajouter l'adaptateur qui ouvre les règles
         //aide.addActionListener(new AdaptateurAide(control));
 
-        menuPanel.add(menu, BorderLayout.NORTH);
-        menuPanel.add(nouvellePartie, BorderLayout.PAGE_START);
-        menuPanel.add(regle, BorderLayout.PAGE_END);
+        menuPanel.add(menu);
+        menuPanel.add(nouvellePartie);
+        menuPanel.add(regle);
+
         ComposantMenuPartie menuPartie = new ComposantMenuPartie(BoxLayout.PAGE_AXIS, control, j);
         menu.addActionListener(new AdaptateurOuvreMenu(menu, menuPartie,niv));
         fenetre.add(menuPanel, BorderLayout.EAST);
@@ -108,6 +110,8 @@ public class InterfaceGraphique implements Runnable, InterfaceUtilisateur {
     public void distribuer() {
         niv.distribuer();
     }
+
+    public static void fermer() { fenetre.dispose(); }
 
     @Override
     public void initializeAnimation(int totalIterations) {
