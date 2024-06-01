@@ -52,6 +52,7 @@ public class ComposantMenuPartie extends JFrame {
                 drawCheck.setDrawHandToggle(e.getStateChange() == ItemEvent.SELECTED);
                 // Optionally, print the state to the console for debugging
                 System.out.println("Checkbox Hand Draw is checked: " + drawCheck.isDrawHandToggle());
+                jeu.metAJour();
             }
         });
 
@@ -66,6 +67,7 @@ public class ComposantMenuPartie extends JFrame {
                 drawCheck.setDrawScorePileToggle(e.getStateChange() == ItemEvent.SELECTED);
                 // Optionally, print the state to the console for debugging
                 System.out.println("Checkbox Score Pile Draw is checked: " + drawCheck.isDrawScorePileToggle());
+                jeu.metAJour();
             }
         });
 
