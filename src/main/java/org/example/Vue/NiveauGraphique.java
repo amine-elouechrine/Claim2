@@ -47,8 +47,10 @@ public class NiveauGraphique extends JComponent implements Observateur {
     int positionFollower2X, positionFollower2Y;
     int positionDefausseX, positionDefausseY;
     int positionDeckX, positionDeckY;
-    int positionPileScoreX;
-    int positionPileScoreY;
+    int positionPileScoreJ1X;
+    int positionPileScoreJ1Y;
+    int positionPileScoreJ2X;
+    int positionPileScoreJ2Y;
 
     double currentCarteJoueX, currentCarteJoueY;
     double deltaX, deltaY, deltaGagneX, deltaGagneY;
@@ -110,12 +112,12 @@ public class NiveauGraphique extends JComponent implements Observateur {
 
     Jeu jeu;
     ComposantRejouer rec;
+    ComposantFinPartie fin;
 
     /* Load assets */
     Map<String, BufferedImage> imageMap = new HashMap<>();
-
-    public NiveauGraphique(Jeu j, CollecteurEvenements c, ComposantRejouer rejouer, DrawCheck drawCheck) {
-
+    public NiveauGraphique(Jeu j, CollecteurEvenements c, ComposantRejouer rejouer, ComposantFinPartie finPartie, DrawCheck drawCheck) {
+     
         control = c;
         jeu = j;
         jeu.ajouteObservateur(this);
@@ -123,6 +125,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
         addMouseListener(gestionClicPileScore);
         rec = rejouer;
         drawC = drawCheck;
+        fin = finPartie;
 
         String directoryPath = "src/main/resources/";
         File directory = new File(directoryPath);
@@ -206,8 +209,10 @@ public class NiveauGraphique extends JComponent implements Observateur {
         totalHeight = rectHeight;
 
 
-        if (control.estFinPartie())
+        if (control.estFinPartie()) {
             rec.setVisible(true);
+            fin.setVisible(true);
+        }
 
         /* Phase 1 */
         if (control.getPhase()) {
@@ -383,7 +388,15 @@ public class NiveauGraphique extends JComponent implements Observateur {
 
         // Dessin de l'emplacement de la pile de score
         g.drawRect(x, y, rectWidth * 2, rectHeight * 2);
+
+        // Pile de score J1
         g.drawImage(imageMap.get("carte_score"), x * 3, y + rectHeight, rectWidth, rectHeight, this);
+        // Pile de score J2
+        g.drawImage(imageMap.get("carte_score"), x * 3, y, rectWidth, rectHeight, this);
+        positionPileScoreJ1X = x * 3;
+        positionPileScoreJ1Y = y + rectHeight;
+        positionPileScoreJ2X = positionPileScoreJ1X;
+        positionPileScoreJ2Y = y;
 
         numRows = 6;
         cellHeight = rectHeight * 2 / numRows;
@@ -807,21 +820,23 @@ public class NiveauGraphique extends JComponent implements Observateur {
 
     public void initializeAnimationDefausse(int totalIterations, int card1Faction, int card2Faction) {
         this.totalIterations = totalIterations;
-        this.positionPileScoreX = rectWidth;
-        this.positionPileScoreY = hauteur() / 2;
+
+        // TODO ajouter une animation pour la distribution dans la pile de score du joueur 2
+        // this.positionPileScoreJ1X = rectWidth;
+        // this.positionPileScoreJ1Y = hauteur() / 2;
         this.deltaDefausse1X = (positionCarteJoueJ1X - positionDefausseX) / (double) totalIterations;
         this.deltaDefausse1Y = (positionCarteJoueJ1Y - positionDefausseY) / (double) totalIterations;
         this.deltaDefausse2X = (positionCarteJoueJ2X - positionDefausseX) / (double) totalIterations;
         this.deltaDefausse2Y = (positionCarteJoueJ2Y - positionDefausseY) / (double) totalIterations;
 
         if (card1Faction == 5 || !(jeu.getPhase())) {
-            this.deltaDefausse1X = (positionCarteJoueJ1X - positionPileScoreX) / (double) totalIterations;
-            this.deltaDefausse1Y = (positionCarteJoueJ1Y - positionPileScoreY) / (double) totalIterations;
+            this.deltaDefausse1X = (positionCarteJoueJ1X - positionPileScoreJ1X) / (double) totalIterations;
+            this.deltaDefausse1Y = (positionCarteJoueJ1Y - positionPileScoreJ1Y) / (double) totalIterations;
         }
 
         if (card2Faction == 5 || !(jeu.getPhase())) {
-            this.deltaDefausse2X = (positionCarteJoueJ2X - positionPileScoreX) / (double) totalIterations;
-            this.deltaDefausse2Y = (positionCarteJoueJ2Y - positionPileScoreY) / (double) totalIterations;
+            this.deltaDefausse2X = (positionCarteJoueJ2X - positionPileScoreJ1X) / (double) totalIterations;
+            this.deltaDefausse2Y = (positionCarteJoueJ2Y - positionPileScoreJ1Y) / (double) totalIterations;
         }
 
         this.currentCarteJoue1X = positionCarteJoueJ1X;

@@ -15,12 +15,13 @@ public class ComposantMenuPartie extends JFrame {
     CollecteurEvenements c;
 
     Jeu jeu;
-
+  
     ComposantMenuPartie(int axis, CollecteurEvenements control, Jeu jeu, DrawCheck drawCheck) {
         this.jeu = jeu;
         c = control;
-
-        this.setName("Menu Claim");
+  
+        // Setting up the frame
+        this.setTitle("Menu de Claim");
 
         // Change l'icone de la fenetre principale
         try {
