@@ -829,10 +829,6 @@ public class NiveauGraphique extends JComponent implements Observateur {
 
     public void initializeAnimationDefausse(int totalIterations, int card1Faction, int card2Faction) {
         this.totalIterations = totalIterations;
-
-        // TODO ajouter une animation pour la distribution dans la pile de score du joueur 2
-        // this.positionPileScoreJ1X = rectWidth;
-        // this.positionPileScoreJ1Y = hauteur() / 2;
         this.deltaDefausse1X = (positionCarteJoueJ1X - positionDefausseX) / (double) totalIterations;
         this.deltaDefausse1Y = (positionCarteJoueJ1Y - positionDefausseY) / (double) totalIterations;
         this.deltaDefausse2X = (positionCarteJoueJ2X - positionDefausseX) / (double) totalIterations;
@@ -844,8 +840,8 @@ public class NiveauGraphique extends JComponent implements Observateur {
         }
 
         if (card2Faction == 5 || !(jeu.getPhase())) {
-            this.deltaDefausse2X = (positionCarteJoueJ2X - positionPileScoreJ1X) / (double) totalIterations;
-            this.deltaDefausse2Y = (positionCarteJoueJ2Y - positionPileScoreJ1Y) / (double) totalIterations;
+            this.deltaDefausse2X = (positionCarteJoueJ2X - positionPileScoreJ2X) / (double) totalIterations;
+            this.deltaDefausse2Y = (positionCarteJoueJ2Y - positionPileScoreJ2Y) / (double) totalIterations;
         }
 
         this.currentCarteJoue1X = positionCarteJoueJ1X;
