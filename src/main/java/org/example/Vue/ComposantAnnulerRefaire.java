@@ -16,9 +16,7 @@ public class ComposantAnnulerRefaire extends Box {
         refaire.addActionListener(new AdaptateurRefaire(c));
 
         box.add(annuler);
-        box.add(Box.createHorizontalStrut(20));
         box.add(refaire);
-        box.setAlignmentX(Component.LEFT_ALIGNMENT);
         add(box);
     }
 }
