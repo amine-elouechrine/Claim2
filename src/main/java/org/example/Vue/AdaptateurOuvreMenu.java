@@ -16,14 +16,13 @@ public class AdaptateurOuvreMenu implements ActionListener {
         fenetre = f;
         niv = n;
         f.setVisible(false);
-
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(toggle.isSelected()) {
+        if (toggle.isSelected()) {
             fenetre.setVisible(true);
-        }else{
+        } else {
             fenetre.setVisible(false);
             niv.requestFocus();
         }

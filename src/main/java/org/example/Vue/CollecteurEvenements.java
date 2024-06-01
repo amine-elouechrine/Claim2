@@ -1,7 +1,11 @@
 package org.example.Vue;
 
+
 import org.example.Modele.Card;
 import org.example.Modele.PileDeScore;
+
+import org.example.Modele.Player;
+
 import org.example.Patternes.Observateur;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -29,6 +33,8 @@ public interface CollecteurEvenements {
     int[][] getHandJ2P2();
 
     String getNomJoueurCourant();
+    String getNomJoueur1();
+    String getNomJoueur2();
 
     int[][] getCarteJouable();
 
@@ -54,14 +60,28 @@ public interface CollecteurEvenements {
 
     int getMaxValueFromPileScore(String factionName);
 
+    public int[][] getCarteGagnante();
+
+    public int[][] getCartePerdante();
+  
+    Player getJoueurGagnant();
+
     /* State check */
     boolean isJoueur1WinningFactionOnEquality(String factionName);
 
     boolean isJoueur2WinningFactionOnEquality(String factionName);
 
     boolean isJoueurCourantJoueur1();
+  
+    boolean estCarteJoueJ1();
+  
+    boolean estCarteJoueJ2();
+  
+    boolean estFinPartie();
 
-    public boolean estFinPartie();
+    boolean isAnimationEnded();
+
+    boolean getPause();
 
     /* Adaptateurs */
     void refaire();

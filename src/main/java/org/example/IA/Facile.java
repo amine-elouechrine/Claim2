@@ -1,10 +1,6 @@
 package org.example.IA;
 
-import org.example.Modele.Card;
-
-import org.example.Modele.Cards;
-import org.example.Modele.Hand;
-import org.example.Modele.Player;
+import org.example.Modele.*;
 
 import java.util.Random;
 
@@ -16,14 +12,14 @@ public class Facile extends IA {
 
 
     public Facile() {
-        super("Facile");
+        super("IA Facile");
         rand = new Random();
     }
 
     public static void main(String[] args) {
         Facile ia = new Facile();
         Plateau plateau = new Plateau();
-        plateau.initialiserJeu();
+        plateau.initialiserJeu(true, "", "");
         plateau.setCarteJoueur2(plateau.getJoueur2().getHand().getCard(0));
         Card card = ia.joueCoupPhase1F(plateau);
         System.out.println(card);

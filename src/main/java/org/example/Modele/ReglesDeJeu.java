@@ -136,7 +136,11 @@ public class ReglesDeJeu {
                 }
             }
         } else {
-            return carte1;
+            if (plateau.estLeader()) {
+                return plateau.getCarteJoueur1();
+            } else {
+                return plateau.getCarteJoueur2();
+            }
         }
     }
 
@@ -185,7 +189,7 @@ public class ReglesDeJeu {
 
         // Vérifier si le joueur possède une carte de la même faction que celle jouée par l'adversaire
         for (Card carte : mainJoueur.getAllCards()) {
-            if ((carte.getFaction().equals(carteAdversaire.getFaction())) || ((carteAdversaire.getFaction().equals("Goblins"))&&(carte.getFaction().equals("Knight")))) {
+            if ((carte.getFaction().equals(carteAdversaire.getFaction())) ) {
                 cartesJouables.add(carte);
             }
         }
@@ -211,10 +215,13 @@ public class ReglesDeJeu {
     public static  List<Card> cartesJouablesGagnant(Card carteAdversaire, List<Card> carteJouable , Plateau plateau) {
         List<Card> cartesGagnates = new ArrayList<>();
         for (Card carte : carteJouable) {
-            Card carteGangante = carteGagnante(carte, carteAdversaire , plateau);
+            Card carteGangante = carteGagnante(carteAdversaire, carte , plateau);
             if(carteGangante == carte){
                 cartesGagnates.add(carte);
             }
+        }
+        for(Card carte : cartesGagnates) {
+            System.out.println(carte.toString());
         }
         return cartesGagnates;
     }
@@ -222,7 +229,7 @@ public class ReglesDeJeu {
     public static List<Card> cartesJouablesPerdant(Card carteAdversaire, List<Card> carteJouable , Plateau plateau) {
         List<Card> cartesPerdantes = new ArrayList<>();
         for (Card carte : carteJouable) {
-            Card carteGangante = carteGagnante(carte, carteAdversaire , plateau);
+            Card carteGangante = carteGagnante(carteAdversaire, carte , plateau);
             if(carteGangante != carte){
                 cartesPerdantes.add(carte);
             }

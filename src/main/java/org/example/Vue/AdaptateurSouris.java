@@ -24,38 +24,41 @@ public class AdaptateurSouris extends MouseAdapter implements MouseListener {
     @Override
     public void mousePressed(MouseEvent e) {
 
-        // Clic sur le niveau graphique
-        i = e.getX();
-        j = e.getY();
-        valeur_carte = 0f;
-        carte = -1;
-        hauteurR = niv.hauteurCarte();
-        largeurR = niv.largeurCarte();
-        System.out.println(niv.getPositionScorePile());
-        if(niv.estDansPileDeScore(i, j)){
-            System.out.println("Clic sur la pile de score");
-            int x=niv.getLigneCliquee(j);
+        if (control.getPause())
+            return;
+        if(!control.getPause()) {
+            // Clic sur le niveau graphique
+            i = e.getX();
+            j = e.getY();
+            valeur_carte = 0f;
+            carte = -1;
+            hauteurR = niv.hauteurCarte();
+            largeurR = niv.largeurCarte();
+            System.out.println(niv.getPositionScorePile());
+            if (niv.estDansPileDeScore(i, j)) {
+                System.out.println("Clic sur la pile de score");
+                int x = niv.getLigneCliquee(j);
 
-
-        }
-
-        // Si le joueurCourant est le joueur 1
-        if (control.isJoueurCourantJoueur1()) {
-            if (i > niv.posXMainJ1() && i < (niv.getLargeurMainJ1() + niv.posXMainJ1())
-                    && j > (niv.posYMainJ1() - 20) && j < (niv.posYMainJ1() - 20 + niv.getHauteurMain())) {
-                valeur_carte = (double) (i - niv.posXMainJ1()) / largeurR; // Il faut diviser par la taille des cartes
-                carte = (int) Math.floor(valeur_carte);
-                control.clicSouris(carte);
             }
-        }
 
-        // Si le joueurCourant est le joueur 2
-        else {
-            if (i > niv.posXMainJ2() && i < (niv.getLargeurMainJ2() + niv.posXMainJ2())
-                    && j > (niv.posYMainJ2() + 20) && j < (niv.posYMainJ2() + 20 + niv.getHauteurMain())) {
-                valeur_carte = (double) (i - niv.posXMainJ2()) / largeurR; // Il faut diviser par la taille des cartes
-                carte = (int) Math.floor(valeur_carte);
-                control.clicSourisJ2(carte);
+            // Si le joueurCourant est le joueur 1
+            if (control.isJoueurCourantJoueur1()) {
+                if (i > niv.posXMainJ1() && i < (niv.getLargeurMainJ1() + niv.posXMainJ1())
+                        && j > (niv.posYMainJ1() - 20) && j < (niv.posYMainJ1() - 20 + niv.getHauteurMain())) {
+                    valeur_carte = (double) (i - niv.posXMainJ1()) / largeurR; // Il faut diviser par la taille des cartes
+                    carte = (int) Math.floor(valeur_carte);
+                    control.clicSouris(carte);
+                }
+            }
+
+            // Si le joueurCourant est le joueur 2
+            else {
+                if (i > niv.posXMainJ2() && i < (niv.getLargeurMainJ2() + niv.posXMainJ2())
+                        && j > (niv.posYMainJ2() + 20) && j < (niv.posYMainJ2() + 20 + niv.getHauteurMain())) {
+                    valeur_carte = (double) (i - niv.posXMainJ2()) / largeurR; // Il faut diviser par la taille des cartes
+                    carte = (int) Math.floor(valeur_carte);
+                    control.clicSourisJ2(carte);
+                }
             }
         }
     }

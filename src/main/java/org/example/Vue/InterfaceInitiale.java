@@ -124,19 +124,19 @@ public class InterfaceInitiale extends JFrame implements Runnable {
     private void startGame() {
         // Logic to start the game against an AI
         InterfacePartieCustom.demarrer();
-        JOptionPane.showMessageDialog(this, "La partie commence");
+        // JOptionPane.showMessageDialog(this, "La partie commence");
         this.setVisible(false);
     }
 
     private void startQuickGame() {
         // Commencer une partie rapide contre une IA moyenne
-        Jeu jeu = new Jeu();
+        Jeu jeu = new Jeu(true, "", "IA Intermediare");
         IA ia = new Intermediare();
         CollecteurEvenements control = new ControleurMediateur(jeu, ia);
         ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-        scheduler.scheduleAtFixedRate(() -> control.tictac(), 0, 100, TimeUnit.MILLISECONDS);
+        scheduler.scheduleAtFixedRate(control::tictac, 0, 100, TimeUnit.MILLISECONDS);
         InterfaceGraphique.demarrer(jeu, control);
-        JOptionPane.showMessageDialog(this, "La partie commence");
+        // JOptionPane.showMessageDialog(this, "La partie commence");
         this.setVisible(false);
     }
     private void showRules() {

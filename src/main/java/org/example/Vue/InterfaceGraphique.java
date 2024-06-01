@@ -12,7 +12,7 @@ public class InterfaceGraphique implements Runnable, InterfaceUtilisateur {
 
     Jeu j;
     NiveauGraphique niv;
-    JFrame fenetre;
+    static JFrame fenetre;
     CollecteurEvenements control;
     AdaptateurClavier adaptateurClavier;
     AdaptateurTransitionPhases adaptateurTransitionPhases;
@@ -49,9 +49,14 @@ public class InterfaceGraphique implements Runnable, InterfaceUtilisateur {
 
         // Recommencer partie
         ComposantRejouer rec = new ComposantRejouer(control);
+      
+        // Toggle state
+        DrawCheck drawCheck = new DrawCheck();
+        // Fin de la partie
+        ComposantFinPartie finPartie = new ComposantFinPartie(control);
 
         // Dessin du NiveauGraphique
-        niv = new NiveauGraphique(j, control, rec);
+        niv = new NiveauGraphique(j, control, rec, finPartie, drawCheck);
         niv.setFocusable(true);
         niv.requestFocusInWindow();
         niv.addMouseListener(new AdaptateurSouris(niv, control));
@@ -59,16 +64,33 @@ public class InterfaceGraphique implements Runnable, InterfaceUtilisateur {
 
         // Fenetre InterfaceGraphique
         fenetre.add(niv);
-        JPanel menuPanel = new JPanel(new BorderLayout());
+
+        // Ajout d'une barre latéral à droite
+        JPanel menuPanel = new JPanel(new GridLayout(3, 1, 5, 5));
         menuPanel.setBackground(Color.DARK_GRAY);
+
+        // Menu
         JToggleButton menu = new JToggleButton("Menu");
-        menuPanel.add(menu, BorderLayout.NORTH);
-        ComposantMenuPartie menuPartie = new ComposantMenuPartie(BoxLayout.PAGE_AXIS, control, j);
-        menu.addActionListener(new AdaptateurOuvreMenu(menu, menuPartie,niv));
+
+        // Bouton nouvelle partie rapide
+        JButton nouvellePartie = new JButton("Nouvelle Partie");
+        nouvellePartie.addActionListener(new AdaptateurNouvellePartie(control));
+
+        // Bouton règle
+        JButton regle = new JButton(("Aide"));
+        // TODO : Ajouter l'adaptateur qui ouvre les règles
+        //aide.addActionListener(new AdaptateurAide(control));
+
+        menuPanel.add(menu);
+        menuPanel.add(nouvellePartie);
+        menuPanel.add(regle);
+
+        ComposantMenuPartie menuPartie = new ComposantMenuPartie(BoxLayout.PAGE_AXIS, control, j, drawCheck);
+        menu.addActionListener(new AdaptateurOuvreMenu(menu, menuPartie, niv));
         fenetre.add(menuPanel, BorderLayout.EAST);
         fenetre.add(bh, BorderLayout.NORTH);
         ComposantTransitionPhases transitionPhases = new ComposantTransitionPhases();
-        //fenetre.add(transitionPhases);
+        // fenetre.add(transitionPhases);
 
 
         Timer chrono = new Timer(1, new AdaptateurTemps(control));
@@ -80,9 +102,6 @@ public class InterfaceGraphique implements Runnable, InterfaceUtilisateur {
         fenetre.getContentPane().setBackground(Color.DARK_GRAY);
         fenetre.setVisible(true);
         fenetre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        // Masquer menu recommencer
-        rec.setVisible(false);
 
         /*
         // Aligning the vertical panel to the right side
@@ -99,8 +118,38 @@ public class InterfaceGraphique implements Runnable, InterfaceUtilisateur {
         niv.distribuer();
     }
 
+    public static void fermer() { fenetre.dispose(); }
+  
+    public void distribuerGagne() {
+        niv.distribuerGagne();
+    }
+
+    public void distribuerPerde() {
+        niv.distribuerPerde();
+    }
+
+
     @Override
-    public void initializeAnimation(int totalIterations) {
-        niv.initializeAnimation(totalIterations);
+    public void distribuerDefausse() {
+        niv.distribuerDefausse();
+    }
+
+    @Override
+    public void initializeAnimationDistribuer(int totalIterations) {
+        niv.initializeAnimationDistribuer(totalIterations);
+    }
+
+    @Override
+    public void initializeAnimationGagne(int totalIterations, int joueur) {
+        niv.initializeAnimationGagne(totalIterations, joueur);
+    }
+    @Override
+    public void initializeAnimationPerde(int totalIterations, int joueur) {
+        niv.initializeAnimationPerde(totalIterations, joueur);
+    }
+
+    @Override
+    public void initializeAnimationDefausse(int totalIterations, int card1Faction, int card2Faction) {
+        niv.initializeAnimationDefausse(totalIterations, card1Faction, card2Faction);
     }
 }

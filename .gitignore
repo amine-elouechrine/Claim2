@@ -63,3 +63,7 @@ build/
 /src/main/resources/Claim_ressources.xcf
 *.txt
 /framework/
+/src/main/resources/carte_placement.xcf
+/src/main/resources/goblin_0_gagnant.png
+/src/main/resources/goblin_0_perdant.png
+/src/main/java/org/example/ImageWithBorder.java
