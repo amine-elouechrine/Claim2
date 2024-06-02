@@ -3,7 +3,6 @@ package org.example.Vue;
 
 import org.example.Modele.Jeu;
 import org.example.Patternes.Observateur;
-import org.example.Vue.ComposantMenuPartie;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -116,8 +115,9 @@ public class NiveauGraphique extends JComponent implements Observateur {
 
     /* Load assets */
     Map<String, BufferedImage> imageMap = new HashMap<>();
+
     public NiveauGraphique(Jeu j, CollecteurEvenements c, ComposantRejouer rejouer, ComposantFinPartie finPartie, DrawCheck drawCheck) {
-     
+
         control = c;
         jeu = j;
         jeu.ajouteObservateur(this);
@@ -247,7 +247,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
             // Draw carte a gagne
             positionCarteAfficheeX = rectWidth * 5 / 2 + largeur() / 2;
             positionCarteAfficheeY = hauteur() / 2 - rectHeight / 2;
-            if(control.getPause())
+            if (control.getPause())
                 drawCardToWinDistribuer(g);
             else
                 drawCardToWin(g);
@@ -274,7 +274,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
             g.drawImage(imageMap.get("carte_score"), x * 3, y + rectHeight, rectWidth, rectHeight, this);
             // Pile de score J2
             g.drawImage(imageMap.get("carte_score"), x * 3, y, rectWidth, rectHeight, this);
-            if(drawC.isDrawScorePileToggle())
+            if (drawC.isDrawScorePileToggle())
                 drawScorePile(g);
 
             /* Phase 2 */
@@ -303,7 +303,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
             g.drawImage(imageMap.get("carte_score"), x * 3, y + rectHeight, rectWidth, rectHeight, this);
             // Pile de score J2
             g.drawImage(imageMap.get("carte_score"), x * 3, y, rectWidth, rectHeight, this);
-            if(drawC.isDrawScorePileToggle())
+            if (drawC.isDrawScorePileToggle())
                 drawScorePile(g);
         }
 
@@ -319,7 +319,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
     }
 
     private void drawHandJ2(Graphics2D g) {
-        if(!drawC.isDrawHandToggle()) {
+        if (!drawC.isDrawHandToggle()) {
             // Dessin de la main face caché du joueur 2 si il est une IA
             for (int i = 0; i < nbCardHandJ2; i++) {
                 x = startHandXJ2 + i * (rectWidth + spacing);
@@ -327,9 +327,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
                 image = imageMap.get("backside");
                 g.drawImage(image, x, y, rectWidth, rectHeight, this);
             }
-        }
-
-        else {
+        } else {
             // Dessin de la main du joueur 2
             for (int i = 0; i < nbCardHandJ2; i++) {
                 x = startHandXJ2 + i * (rectWidth + spacing);
@@ -368,8 +366,8 @@ public class NiveauGraphique extends JComponent implements Observateur {
 
     public Point getPositionScorePile() {
         // Calcul des coordonnées X et Y de la pile de score
-        int x = rectWidth; // Position X de la pile de score
-        int y = getHeight() / 2 - rectHeight; // Position Y de la pile de score (centrée verticalement)
+        x = rectWidth; // Position X de la pile de score
+        y = getHeight() / 2 - rectHeight; // Position Y de la pile de score (centrée verticalement)
 
         return new Point(x, y);
     }
@@ -380,9 +378,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
         int scorePileY = positionScorePile.y;
 
         // Calculer la ligne sur laquelle vous avez cliqué
-        int ligneCliquee = (mouseY - scorePileY) / (rectHeight * 2 / 6);
-
-        return ligneCliquee;
+        return (mouseY - scorePileY) / (rectHeight * 2 / 6);
     }
 
     public boolean estDansPileDeScore(int x, int y) {
@@ -392,10 +388,9 @@ public class NiveauGraphique extends JComponent implements Observateur {
         int scorePileY = positionScorePile.y;
 
         // Vérifier si les coordonnées (x, y) sont dans la pile de score
-        boolean estDansPileDeScore = x >= scorePileX && x <= scorePileX + rectWidth * 2 &&
-                y >= scorePileY && y <= scorePileY + rectHeight * 2;
 
-        return estDansPileDeScore;
+        return x >= scorePileX && x <= scorePileX + rectWidth * 2 &&
+                y >= scorePileY && y <= scorePileY + rectHeight * 2;
     }
 
 
