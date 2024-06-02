@@ -822,21 +822,63 @@ public class NiveauGraphique extends JComponent implements Observateur {
         miseAJour();
     }
 
-    public void initializeAnimationDefausse(int totalIterations, int card1Faction, int card2Faction) {
+    public void initializeAnimationDefausse(int totalIterations, int card1Faction, int card2Faction, int joueur) {
         this.totalIterations = totalIterations;
         this.deltaDefausse1X = (positionCarteJoueJ1X - positionDefausseX) / (double) totalIterations;
         this.deltaDefausse1Y = (positionCarteJoueJ1Y - positionDefausseY) / (double) totalIterations;
         this.deltaDefausse2X = (positionCarteJoueJ2X - positionDefausseX) / (double) totalIterations;
         this.deltaDefausse2Y = (positionCarteJoueJ2Y - positionDefausseY) / (double) totalIterations;
 
-        if (card1Faction == 5 || !(jeu.getPhase())) {
-            this.deltaDefausse1X = (positionCarteJoueJ1X - positionPileScoreJ1X) / (double) totalIterations;
-            this.deltaDefausse1Y = (positionCarteJoueJ1Y - positionPileScoreJ1Y) / (double) totalIterations;
+        if (card1Faction == 5 && (jeu.getPhase())) {
+            if (joueur == 1) {
+                this.deltaDefausse1X = (positionCarteJoueJ1X - positionPileScoreJ1X) / (double) totalIterations;
+                this.deltaDefausse1Y = (positionCarteJoueJ1Y - positionPileScoreJ1Y) / (double) totalIterations;
+            } else {
+                this.deltaDefausse1X = (positionCarteJoueJ1X - positionPileScoreJ2X) / (double) totalIterations;
+                this.deltaDefausse1Y = (positionCarteJoueJ1Y - positionPileScoreJ2Y) / (double) totalIterations;
+
+            }
         }
 
-        if (card2Faction == 5 || !(jeu.getPhase())) {
-            this.deltaDefausse2X = (positionCarteJoueJ2X - positionPileScoreJ2X) / (double) totalIterations;
-            this.deltaDefausse2Y = (positionCarteJoueJ2Y - positionPileScoreJ2Y) / (double) totalIterations;
+        if (card2Faction == 5 && (jeu.getPhase())) {
+            if (joueur == 1) {
+                this.deltaDefausse2X = (positionCarteJoueJ2X - positionPileScoreJ1X) / (double) totalIterations;
+                this.deltaDefausse2Y = (positionCarteJoueJ2Y - positionPileScoreJ1Y) / (double) totalIterations;
+            } else {
+                this.deltaDefausse2X = (positionCarteJoueJ2X - positionPileScoreJ2X) / (double) totalIterations;
+                this.deltaDefausse2Y = (positionCarteJoueJ2Y - positionPileScoreJ2Y) / (double) totalIterations;
+
+            }
+        }
+
+        if (!jeu.getPhase()) {
+            if (joueur == 1) {
+                this.deltaDefausse1X = (positionCarteJoueJ1X - positionPileScoreJ1X) / (double) totalIterations;
+                this.deltaDefausse1Y = (positionCarteJoueJ1Y - positionPileScoreJ1Y) / (double) totalIterations;
+                this.deltaDefausse2X = (positionCarteJoueJ2X - positionPileScoreJ1X) / (double) totalIterations;
+                this.deltaDefausse2Y = (positionCarteJoueJ2Y - positionPileScoreJ1Y) / (double) totalIterations;
+                if (card1Faction == 2) {
+                    this.deltaDefausse1X = (positionCarteJoueJ1X - positionPileScoreJ2X) / (double) totalIterations;
+                    this.deltaDefausse1Y = (positionCarteJoueJ1Y - positionPileScoreJ2Y) / (double) totalIterations;
+                }
+                if (card2Faction == 2) {
+                    this.deltaDefausse2X = (positionCarteJoueJ2X - positionPileScoreJ2X) / (double) totalIterations;
+                    this.deltaDefausse2Y = (positionCarteJoueJ2Y - positionPileScoreJ2Y) / (double) totalIterations;
+                }
+            } else {
+                this.deltaDefausse1X = (positionCarteJoueJ1X - positionPileScoreJ2X) / (double) totalIterations;
+                this.deltaDefausse1Y = (positionCarteJoueJ1Y - positionPileScoreJ2Y) / (double) totalIterations;
+                this.deltaDefausse2X = (positionCarteJoueJ2X - positionPileScoreJ2X) / (double) totalIterations;
+                this.deltaDefausse2Y = (positionCarteJoueJ2Y - positionPileScoreJ2Y) / (double) totalIterations;
+                if (card1Faction == 2) {
+                    this.deltaDefausse1X = (positionCarteJoueJ1X - positionPileScoreJ1X) / (double) totalIterations;
+                    this.deltaDefausse1Y = (positionCarteJoueJ1Y - positionPileScoreJ1Y) / (double) totalIterations;
+                }
+                if (card2Faction == 2) {
+                    this.deltaDefausse2X = (positionCarteJoueJ2X - positionPileScoreJ1X) / (double) totalIterations;
+                    this.deltaDefausse2Y = (positionCarteJoueJ2Y - positionPileScoreJ1Y) / (double) totalIterations;
+                }
+            }
         }
 
         this.currentCarteJoue1X = positionCarteJoueJ1X;
@@ -845,7 +887,6 @@ public class NiveauGraphique extends JComponent implements Observateur {
         this.currentCarteJoue2Y = positionCarteJoueJ2Y;
 
     }
-
     public void distribuerDefausse() {
         currentCarteJoue1X -= deltaDefausse1X;
         currentCarteJoue1Y -= deltaDefausse1Y;
