@@ -61,7 +61,7 @@ public class InterfaceGraphique implements Runnable, InterfaceUtilisateur {
 
         // Recommencer partie
         ComposantRejouer rec = new ComposantRejouer(control);
-      
+
         // Toggle state
         DrawCheck drawCheck = new DrawCheck();
         // Fin de la partie
@@ -134,8 +134,10 @@ public class InterfaceGraphique implements Runnable, InterfaceUtilisateur {
         niv.distribuer();
     }
 
-    public static void fermer() { fenetre.dispose(); }
-  
+    public static void fermer() {
+        fenetre.dispose();
+    }
+
     public void distribuerGagne() {
         niv.distribuerGagne();
     }
@@ -159,13 +161,14 @@ public class InterfaceGraphique implements Runnable, InterfaceUtilisateur {
     public void initializeAnimationGagne(int totalIterations, int joueur) {
         niv.initializeAnimationGagne(totalIterations, joueur);
     }
+
     @Override
     public void initializeAnimationPerde(int totalIterations, int joueur) {
         niv.initializeAnimationPerde(totalIterations, joueur);
     }
 
     @Override
-    public void initializeAnimationDefausse(int totalIterations, int card1Faction, int card2Faction) {
-        niv.initializeAnimationDefausse(totalIterations, card1Faction, card2Faction);
+    public void initializeAnimationDefausse(int totalIterations, int card1Faction, int card2Faction, int joueur) {
+        niv.initializeAnimationDefausse(totalIterations, card1Faction, card2Faction, joueur);
     }
 }

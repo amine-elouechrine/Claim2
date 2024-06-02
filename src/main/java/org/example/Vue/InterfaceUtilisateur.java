@@ -16,5 +16,5 @@ public interface InterfaceUtilisateur {
 
     void initializeAnimationPerde(int totalIterations, int joueur);
 
-    void initializeAnimationDefausse(int totalIterations, int card1Faction, int card2Faction);
+    void initializeAnimationDefausse(int totalIterations, int card1Faction, int card2Faction, int joueur);
 }
