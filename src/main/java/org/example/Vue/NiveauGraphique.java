@@ -10,8 +10,6 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -115,9 +113,9 @@ public class NiveauGraphique extends JComponent implements Observateur {
     ComposantFinPartie fin;
 
 
-
     /* Load assets */
     Map<String, BufferedImage> imageMap = new HashMap<>();
+
     public NiveauGraphique(Jeu j, CollecteurEvenements c, ComposantRejouer rejouer, ComposantFinPartie finPartie, DrawCheck drawCheck) throws IOException {
         control = c;
         jeu = j;
@@ -128,8 +126,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
         drawC = drawCheck;
         fin = finPartie;
         // Load images
-        String contenu=ResourceManager.readTextFile("/fileNames.txt");
-        System.out.println(contenu);
+        String contenu = ResourceManager.readTextFile("/fileNames.txt");
         String[] lignes = contenu.split("\n");
         for (String ligne : lignes) {
             acceptFile(new File(ligne));
@@ -157,7 +154,21 @@ public class NiveauGraphique extends JComponent implements Observateur {
 
     }
 
-    public void loadImages(){
+    public static BufferedImage imageToBufferedImage(Image image) {
+        // Crée un BufferedImage avec le type ARGB (avec canal alpha) de la même taille que l'image
+        BufferedImage bufferedImage = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+
+        // Obtient le contexte graphique du BufferedImage
+        Graphics2D g2d = bufferedImage.createGraphics();
+
+        // Dessine l'image sur le BufferedImage
+        g2d.drawImage(image, 0, 0, null);
+        g2d.dispose();
+
+        return bufferedImage;
+    }
+
+    public void loadImages() {
         acceptFile(new File("icon_goblin.png"));
     }
 
@@ -274,8 +285,8 @@ public class NiveauGraphique extends JComponent implements Observateur {
             drawAnimationPerde(g);
 
             // Draw defausse
-//            positionDefausseX = largeur() - largeur() / 8;
-//            positionDefausseY = hauteur() / 2 + rectHeight / 4;
+            // positionDefausseX = largeur() - largeur() / 8;
+            // positionDefausseY = hauteur() / 2 + rectHeight / 4;
             drawDefausse(g);
 
             // Draw score pile
@@ -407,7 +418,6 @@ public class NiveauGraphique extends JComponent implements Observateur {
         return x >= scorePileX && x <= scorePileX + rectWidth * 2 &&
                 y >= scorePileY && y <= scorePileY + rectHeight * 2;
     }
-
 
     /* Dessine la pile de score */
     private void drawScorePile(Graphics g) {
@@ -902,6 +912,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
         this.currentCarteJoue2Y = positionCarteJoueJ2Y;
 
     }
+
     public void distribuerDefausse() {
         currentCarteJoue1X -= deltaDefausse1X;
         currentCarteJoue1Y -= deltaDefausse1Y;
@@ -911,49 +922,20 @@ public class NiveauGraphique extends JComponent implements Observateur {
         miseAJour();
     }
 
-    public static BufferedImage imageToBufferedImage(Image image) {
-        // Crée un BufferedImage avec le type ARGB (avec canal alpha) de la même taille que l'image
-        BufferedImage bufferedImage = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
-
-        // Obtient le contexte graphique du BufferedImage
-        Graphics2D g2d = bufferedImage.createGraphics();
-
-        // Dessine l'image sur le BufferedImage
-        g2d.drawImage(image, 0, 0, null);
-        g2d.dispose();
-
-        return bufferedImage;
-    }
-
     // Pour charger les images dans le hashMap
     private void acceptFile(File file) {
         String fileName = file.getName();
-        if (fileName.endsWith(".png")){
+        if (fileName.endsWith(".png")) {
             String imageName = fileName.substring(0, fileName.lastIndexOf("."));
-            Image image3= null;
-            /*
-            * try {
-            java.net.URL imgURL = getClass().getResource(path);
-            if (imgURL != null) {
-                backgroundImage = new ImageIcon(imgURL).getImage();
-            } else {
-                throw new IOException("Image not found");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.err.println("Erreur de chargement de l'image de fond");
-        }*/
+            Image image3 = null;
             try {
-                String filenameModified = "/"+fileName;
-                System.out.println(filenameModified);
+                String filenameModified = "/" + fileName;
                 java.net.URL imageURL = getClass().getResource(filenameModified);
                 if (imageURL != null) {
-                    image3 =  ImageIO.read(imageURL);
+                    image3 = ImageIO.read(imageURL);
                 } else {
                     throw new IOException("Image not found");
                 }
-                //BufferedImage image = ImageIO.read(filenameModified);
-
                 imageMap.put(imageName, imageToBufferedImage(image3));
             } catch (IOException e) {
                 System.out.println("Error loading image: " + e.getMessage());

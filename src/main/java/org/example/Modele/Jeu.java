@@ -233,7 +233,7 @@ public class Jeu extends Observable {
                 carteGagnante = ReglesDeJeu.carteGagnante(getPlateau().getCarteJoueur2(), getPlateau().getCarteJoueur1(), getPlateau());
             else
                 carteGagnante = ReglesDeJeu.carteGagnante(getPlateau().getCarteJoueur1(), getPlateau().getCarteJoueur2(), getPlateau());
-            System.out.println("la carte gagnante est " + carteGagnante);
+            // System.out.println("la carte gagnante est " + carteGagnante);
             getPlateau().attribuerCarteFirstPhase(carteGagnante, r);
             if (estFinPhase1()) {
                 switchPhase();
@@ -247,7 +247,7 @@ public class Jeu extends Observable {
                 carteGagnante = ReglesDeJeu.carteGagnante(getPlateau().getCarteJoueur2(), getPlateau().getCarteJoueur1(), getPlateau());
             else
                 carteGagnante = ReglesDeJeu.carteGagnante(getPlateau().getCarteJoueur1(), getPlateau().getCarteJoueur2(), getPlateau());
-            System.out.println("la carte gagnante est " + carteGagnante);
+            // System.out.println("la carte gagnante est " + carteGagnante);
             getPlateau().attribuerCarteSecondPhase(carteGagnante, r);
 
         }
