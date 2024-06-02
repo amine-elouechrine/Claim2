@@ -8,16 +8,17 @@ import java.io.InputStreamReader;
 public class ResourceManager {
     public static String readTextFile(String path) {
         StringBuilder content = new StringBuilder();
-        try (InputStream inputStream = ResourceManager.class.getResourceAsStream(path);
-             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
+        try (InputStream inputStream = ResourceManager.class.getResourceAsStream(path)) {
+            assert inputStream != null;
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
+                if (inputStream == null) {
+                    throw new IOException("Resource not found: " + path);
+                }
 
-            if (inputStream == null) {
-                throw new IOException("Resource not found: " + path);
-            }
-
-            String line;
-            while ((line = reader.readLine()) != null) {
-                content.append(line).append("\n");
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    content.append(line).append("\n");
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
