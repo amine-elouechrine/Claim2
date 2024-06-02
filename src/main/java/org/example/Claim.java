@@ -11,13 +11,6 @@ import org.example.Vue.InterfaceInitiale;
 
 public class Claim {
     public static void main(String[] args) {
-
-        //Jeu jeu = new Jeu();
-        //IA ia = new Intermediare();
-        //CollecteurEvenements control = new ControleurMediateur(jeu, ia);
-
-
-         //InterfaceGraphique.demarrer(jeu, control);
          InterfaceInitiale.demarrer();
     }
 }
