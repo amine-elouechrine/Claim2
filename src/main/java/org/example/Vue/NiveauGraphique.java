@@ -896,6 +896,15 @@ public class NiveauGraphique extends JComponent implements Observateur {
         miseAJour();
     }
 
+
+    public void initializeAnimationJouer(int totalIterations,int index,int joueur) {
+
+    }
+
+    public void jouer(){
+
+    }
+
     // Pour charger les images dans le hashMap
     private void acceptFile(File file) {
         String fileName = file.getName();
@@ -909,6 +918,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
             }
         }
     }
+
 
 }
 

@@ -406,6 +406,7 @@ public class ControleurMediateur implements CollecteurEvenements {
             if (jouable) {
                 jeu.addAction();
                 jouerCarte(index, () -> {
+                    startAnimationJouer(iterations, index);
                     if (iaJeu != null) {
                         if (jeu.getJoueur2() == jeu.getJoueurCourant() || jeu.getJoueur2() == gagnant) {
                             tourIA(() -> {
@@ -566,9 +567,12 @@ public class ControleurMediateur implements CollecteurEvenements {
         vue.distribuerPerde();
     }
 
-
     public void distribuerDefausse() {
         vue.distribuerDefausse();
+    }
+
+    public void jouer() {
+        vue.jouer();
     }
 
 
@@ -619,6 +623,18 @@ public class ControleurMediateur implements CollecteurEvenements {
         animations.insereQueue(mouvement);
     }
 
+    public void startAnimationJouer(int totalIterations, int index) {
+        int joueur;
+        if (jeu.getJoueurCourant() == jeu.getJoueur1()) {
+            joueur = 1;
+        } else {
+            joueur = 2;
+        }
+        vue.initializeAnimationJouer(totalIterations, index, joueur);
+        mouvement = new AnimationJouer(totalIterations, this);
+        animations.insereQueue(mouvement);
+    }
+
     public void setPause(boolean pause) {
         this.pause = pause;
     }
@@ -626,4 +642,5 @@ public class ControleurMediateur implements CollecteurEvenements {
     public boolean getPause() {
         return pause;
     }
+
 }
