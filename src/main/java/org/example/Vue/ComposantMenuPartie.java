@@ -35,7 +35,7 @@ public class ComposantMenuPartie extends JFrame {
 
         // Boutons et FieldTexts Sauver et Charger une partie
         Box Sauvegarde = Box.createHorizontalBox();
-        JButton loadGameButton = new JButton("Sauvergarder ou Charger Partie");
+        RoundedButton loadGameButton = new RoundedButton("Sauvergarder ou Charger Partie");
         loadGameButton.addActionListener(new AdaptateurSauvegarde(control, new ComposantSauvegarde(control)));
         Sauvegarde.add(loadGameButton);
 

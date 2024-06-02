@@ -25,7 +25,7 @@ public class ComposantRecommencer extends Box implements Observateur {
         control = c;
 
         gagnant = new JLabel("");
-        JButton recommencer = new JButton("Recommencer");
+        RoundedButton recommencer = new RoundedButton("Recommencer");
         recommencer.addActionListener(new AdaptateurNouvellePartie(c));
 
         JButton quitter = new JButton("Quitter");
