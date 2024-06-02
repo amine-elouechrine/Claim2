@@ -8,13 +8,19 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 public class BackgroundImage extends JPanel {
-    private BufferedImage backgroundImage;
+    private Image backgroundImage;
 
-    public BackgroundImage(String filePath) {
+    public BackgroundImage(String path) {
         try {
-            backgroundImage = ImageIO.read(new File(filePath));
+            java.net.URL imgURL = getClass().getResource(path);
+            if (imgURL != null) {
+                backgroundImage = new ImageIcon(imgURL).getImage();
+            } else {
+                throw new IOException("Image not found");
+            }
         } catch (IOException e) {
             e.printStackTrace();
+            System.err.println("Erreur de chargement de l'image de fond");
         }
     }
 

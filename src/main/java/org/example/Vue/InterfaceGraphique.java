@@ -30,6 +30,17 @@ public class InterfaceGraphique implements Runnable, InterfaceUtilisateur {
         c.ajouteInterfaceUtilisateur(vue);
         SwingUtilities.invokeLater(vue);
     }
+    public void setWindowIcon(String path) {
+        // Utilisez getClass().getResource pour obtenir l'URL de la ressource
+        java.net.URL imgURL = getClass().getResource(path);
+        if (imgURL != null) {
+            ImageIcon icon = new ImageIcon(imgURL);
+            Image image = icon.getImage();
+            fenetre.setIconImage(image); // Méthode à appeler sur JFrame pour définir l'icône
+        } else {
+            System.err.println("Erreur de chargement de l'icone");
+        }
+    }
 
 
     @Override
@@ -37,12 +48,13 @@ public class InterfaceGraphique implements Runnable, InterfaceUtilisateur {
         // Nom de la fenêtre
         fenetre = new JFrame("Claim incroyable jeu de carte");
 
-        // Change l'icone de la fenetre principale
+        /*// Change l'icone de la fenetre principale
         try {
             fenetre.setIconImage(ImageIO.read(new File("src/main/resources/Claim.png")));
         } catch (IOException exc) {
             System.out.println("Erreur de chargement de l'icone");
-        }
+        }*/
+        setWindowIcon("/Claim.png");
 
         // BarreHaute
         ComposantBarreHaute bh = new ComposantBarreHaute(BoxLayout.X_AXIS, control, j);
@@ -56,7 +68,11 @@ public class InterfaceGraphique implements Runnable, InterfaceUtilisateur {
         ComposantFinPartie finPartie = new ComposantFinPartie(control);
 
         // Dessin du NiveauGraphique
-        niv = new NiveauGraphique(j, control, rec, finPartie, drawCheck);
+        try {
+            niv = new NiveauGraphique(j, control, rec, finPartie, drawCheck);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         niv.setFocusable(true);
         niv.requestFocusInWindow();
         niv.addMouseListener(new AdaptateurSouris(niv, control));
