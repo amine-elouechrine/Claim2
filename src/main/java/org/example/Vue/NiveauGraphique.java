@@ -36,6 +36,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
     int x, y;
     int fontSize_1;
     int fontSize_2;
+    int fontSize_3;
     int panelWidth;
     int panelHeight;
     int positionCarteJoueJ1X, positionCarteJoueJ1Y;
@@ -54,6 +55,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
     double deltaX, deltaY, deltaGagneX, deltaGagneY;
     double deltaDefausse1X, deltaDefausse1Y, deltaDefausse2X, deltaDefausse2Y;
     double deltaPerdeX, deltaPerdeY;
+    int deltaTransparence;
 
     //double deltaX, deltaY;
     int totalIterations;
@@ -61,6 +63,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
     double currentCarteJoue1X, currentCarteJoue1Y;
     double currentCarteJoue2X, currentCarteJoue2Y;
     double currentCartePerdeX, currentCartePerdeY;
+    int currentTransparence;
 
     // Variables pour l'affichage du score
     int numRows;
@@ -68,6 +71,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
     int imageX, imageY, textX, textY;
     int lineY;
     String faction;
+    String messageGagnant;
     int score;
     int val;
     FontMetrics fm;
@@ -88,10 +92,12 @@ public class NiveauGraphique extends JComponent implements Observateur {
     Font font;
     Font font_1;
     Font font_2;
+    Font font_3;
 
     // Couleur du background
     Color bgColor;
-
+    Color textColor;
+    int transparence;
     // Chargement des assets images pour l'affichage
     BufferedImage image;
     BufferedImage grayImage;
@@ -211,6 +217,9 @@ public class NiveauGraphique extends JComponent implements Observateur {
         fontSize_2 = fontSize_1 * 3 / 4;
         font_2 = new Font("Arial", Font.PLAIN, fontSize_2);
 
+        fontSize_3 = fontSize_1 * 2;
+        font_2 = new Font("Arial", Font.PLAIN, fontSize_2);
+
         // Calculate rectangle dimensions based on panel size
         rectWidth = (int) (panelWidth * 0.06);
         rectHeight = Math.max(rectWidth, (panelHeight * 4) / 30); // Ensure height is always greater than width
@@ -243,6 +252,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
         /* Phase 1 */
         if (control.getPhase()) {
 
+            System.out.println(currentTransparence);
             y = hauteur() - rectHeight - 10;
             main = control.getHandJ1P1();
             // Dessin des cartes de la main du joueur 1
@@ -255,7 +265,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
             if (control.isJoueurCourantJoueur1()) {
                 g.setFont(font_2);
                 g.setColor(Color.RED); // Utiliser la couleur actuelle
-                g.drawString("À toi de jouer", startHandXJ1, posHandYJ1 - rectHeight);
+                g.drawString("À toi de jouer", positionPileScoreJ1X, posHandYJ1 - rectHeight);
             }
 
             y = 10;
@@ -263,6 +273,8 @@ public class NiveauGraphique extends JComponent implements Observateur {
 
             drawHandJ2(g);
 
+
+            drawJoueurGagnant(g);
             // Dessine les decks de followers
 //            positionFollower1X = panelWidth / 9;
 //            positionFollower2X = panelWidth / 9;
@@ -303,6 +315,9 @@ public class NiveauGraphique extends JComponent implements Observateur {
             if (drawC.isDrawScorePileToggle())
                 drawScorePile(g);
 
+            transparence = 0;
+            drawTransitionAnimation(g);
+
             /* Phase 2 */
         } else if (!control.getPhase()) {
 
@@ -317,7 +332,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
             y = 10;
             mainJ2 = control.getHandJ2P2();
             drawHandJ2(g);
-
+            drawJoueurGagnant(g);
             // Draw score pile
             x = rectWidth;
             y = hauteur() / 2 - rectHeight;
@@ -342,6 +357,18 @@ public class NiveauGraphique extends JComponent implements Observateur {
 
         drawCarteJoue(g, carteJ1F, carteJ1V, positionCarteJoueJ1X, positionCarteJoueJ1Y, currentCarteJoue1X, currentCarteJoue1Y);
         drawCarteJoue(g, carteJ2F, carteJ2V, positionCarteJoueJ2X, positionCarteJoueJ2Y, currentCarteJoue2X, currentCarteJoue2Y);
+    }
+
+    private void drawJoueurGagnant(Graphics2D g) {
+        g.setFont(font_2);
+        g.setColor(Color.RED);
+
+        if (messageGagnant != null) {
+            g.drawString(messageGagnant, positionCarteAfficheeX + rectHeight, posHandYJ1 - rectHeight);
+        } else {
+            g.drawString("", positionCarteAfficheeX + rectHeight, posHandYJ1 - rectHeight);
+        }
+
     }
 
     private void drawHandJ2(Graphics2D g) {
@@ -552,7 +579,6 @@ public class NiveauGraphique extends JComponent implements Observateur {
 
     private void drawCarteGagnante(Graphics g) {
 
-
     }
 
     /* Permet de trouver le nom de l'image voulu pour la charger */
@@ -707,6 +733,28 @@ public class NiveauGraphique extends JComponent implements Observateur {
         g.drawImage(imageMap.get("carte_placement_follower"), x, y, rectWidth, rectHeight, this);
     }
 
+    private void drawTransitionAnimation(Graphics g) {
+        g.setFont(new Font("Arial", Font.PLAIN, fontSize_3));
+
+        if (!(jeu.getJoueur1().getHand().size() + jeu.getJoueur2().getHand().size() == 0)) {
+            currentTransparence = 0;
+        }
+        textColor = new Color(192, 192, 192, currentTransparence);
+
+        g.setColor(textColor);
+
+        FontMetrics metrics = g.getFontMetrics();
+        int lineHeight = metrics.getHeight();
+        int stringWidth1 = metrics.stringWidth("Fin de la phase un");
+        int x = (getWidth() - stringWidth1) / 2;
+        int y1 = (getHeight() - 2 * lineHeight) / 2 + lineHeight;
+        int y2 = y1 + lineHeight;
+
+        g.drawString("Fin de la phase 1", x, y1);
+        g.drawString("Début de la phase 2! ", x, y2);
+
+    }
+
     /* Getteurs */
     private int largeur() {
         return getWidth();
@@ -802,12 +850,15 @@ public class NiveauGraphique extends JComponent implements Observateur {
     }
 
     public void distribuer() {
+        if (currentCarteaganeeX != positionDeckX) {
+            messageGagnant = "";
+        }
         currentCarteaganeeX -= deltaX;
         currentCarteaganeeY -= deltaY;
         miseAJour();
     }
 
-    public void initializeAnimationGagne(int totalIterations, int joueur) {
+    public void initializeAnimationGagne(int totalIterations, int joueur, String nomGagnant) {
         this.totalIterations = totalIterations;
         if (joueur == 1) {
             this.deltaGagneX = (positionCarteAfficheeX - positionFollower1X) / (double) totalIterations;
@@ -819,11 +870,14 @@ public class NiveauGraphique extends JComponent implements Observateur {
 
         this.currentCarteaganeeX = positionCarteAfficheeX;
         this.currentCarteaganeeY = positionCarteAfficheeY;
+
+        this.messageGagnant = nomGagnant + " a gagné le tour";
     }
 
     public void distribuerGagne() {
         currentCarteaganeeX -= deltaGagneX;
         currentCarteaganeeY -= deltaGagneY;
+
         miseAJour();
     }
 
@@ -922,6 +976,25 @@ public class NiveauGraphique extends JComponent implements Observateur {
         miseAJour();
     }
 
+    public void initializeAnimationTransition() {
+        this.deltaTransparence = 6;
+        this.currentTransparence = transparence;
+    }
+
+    public void transition() {
+        currentTransparence += deltaTransparence;
+        if (currentTransparence > 170) {
+            currentCarteJoue1X = -999;
+            currentCarteJoue1Y = -999;
+            currentCarteJoue2X = -999;
+            currentCarteJoue2Y = -999;
+            currentCarteaganeeX = -999;
+            currentCarteaganeeY = -999;
+            currentCartePerdeX = -999;
+            currentCartePerdeY = -999;
+        }
+    }
+
     // Pour charger les images dans le hashMap
     private void acceptFile(File file) {
         String fileName = file.getName();
@@ -942,6 +1015,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
             }
         }
     }
+
 
 }
 

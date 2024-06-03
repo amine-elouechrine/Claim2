@@ -15,14 +15,11 @@ public class InterfaceGraphique implements Runnable, InterfaceUtilisateur {
     static JFrame fenetre;
     CollecteurEvenements control;
     AdaptateurClavier adaptateurClavier;
-    AdaptateurTransitionPhases adaptateurTransitionPhases;
 
     InterfaceGraphique(Jeu jeu, CollecteurEvenements c) {
         j = jeu;
         control = c;
         adaptateurClavier = new AdaptateurClavier(control, new ComposantSauvegarde(control));
-        adaptateurTransitionPhases = new AdaptateurTransitionPhases(control);
-
     }
 
     public static void demarrer(Jeu j, CollecteurEvenements c) {
@@ -30,6 +27,7 @@ public class InterfaceGraphique implements Runnable, InterfaceUtilisateur {
         c.ajouteInterfaceUtilisateur(vue);
         SwingUtilities.invokeLater(vue);
     }
+
     public void setWindowIcon(String path) {
         // Utilisez getClass().getResource pour obtenir l'URL de la ressource
         java.net.URL imgURL = getClass().getResource(path);
@@ -105,8 +103,6 @@ public class InterfaceGraphique implements Runnable, InterfaceUtilisateur {
         menu.addActionListener(new AdaptateurOuvreMenu(menu, menuPartie, niv));
         fenetre.add(menuPanel, BorderLayout.EAST);
         fenetre.add(bh, BorderLayout.NORTH);
-        ComposantTransitionPhases transitionPhases = new ComposantTransitionPhases();
-        // fenetre.add(transitionPhases);
 
 
         Timer chrono = new Timer(1, new AdaptateurTemps(control));
@@ -153,13 +149,18 @@ public class InterfaceGraphique implements Runnable, InterfaceUtilisateur {
     }
 
     @Override
+    public void transition() {
+        niv.transition();
+    }
+
+    @Override
     public void initializeAnimationDistribuer(int totalIterations) {
         niv.initializeAnimationDistribuer(totalIterations);
     }
 
     @Override
-    public void initializeAnimationGagne(int totalIterations, int joueur) {
-        niv.initializeAnimationGagne(totalIterations, joueur);
+    public void initializeAnimationGagne(int totalIterations, int joueur, String nomGagnant) {
+        niv.initializeAnimationGagne(totalIterations, joueur, nomGagnant);
     }
 
     @Override
@@ -170,5 +171,10 @@ public class InterfaceGraphique implements Runnable, InterfaceUtilisateur {
     @Override
     public void initializeAnimationDefausse(int totalIterations, int card1Faction, int card2Faction, int joueur) {
         niv.initializeAnimationDefausse(totalIterations, card1Faction, card2Faction, joueur);
+    }
+
+    @Override
+    public void initializeAnimationTransition() {
+        niv.initializeAnimationTransition();
     }
 }
