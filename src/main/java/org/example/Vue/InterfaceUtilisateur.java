@@ -10,6 +10,8 @@ public interface InterfaceUtilisateur {
 
     void distribuerDefausse();
 
+    void transition();
+
     void initializeAnimationDistribuer(int totalIterations);
 
     void initializeAnimationGagne(int totalIterations, int joueur);
@@ -17,4 +19,6 @@ public interface InterfaceUtilisateur {
     void initializeAnimationPerde(int totalIterations, int joueur);
 
     void initializeAnimationDefausse(int totalIterations, int card1Faction, int card2Faction, int joueur);
+
+    void initializeAnimationTransition();
 }

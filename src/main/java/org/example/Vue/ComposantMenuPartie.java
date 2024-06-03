@@ -19,10 +19,10 @@ public class ComposantMenuPartie extends JFrame {
     ComposantMenuPartie(int axis, CollecteurEvenements control, Jeu jeu, DrawCheck drawCheck) {
         this.jeu = jeu;
         c = control;
-  
+
+        this.setUndecorated(true);
         // Setting up the frame
         this.setTitle("Menu de Claim");
-
         // Change l'icone de la fenetre principale
         try {
             this.setIconImage(ImageIO.read(new File("src/main/resources/Claim.png")));
