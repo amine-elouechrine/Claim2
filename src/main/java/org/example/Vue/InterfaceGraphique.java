@@ -17,7 +17,8 @@ public class InterfaceGraphique implements Runnable, InterfaceUtilisateur {
     AdaptateurClavier adaptateurClavier;
     AdaptateurTransitionPhases adaptateurTransitionPhases;
 
-    InterfaceGraphique(Jeu jeu, CollecteurEvenements c) {
+    InterfaceGraphique(Jeu jeu, CollecteurEvenements c,JFrame fenetre) {
+        this.fenetre = fenetre;
         j = jeu;
         control = c;
         adaptateurClavier = new AdaptateurClavier(control, new ComposantSauvegarde(control));
@@ -25,8 +26,8 @@ public class InterfaceGraphique implements Runnable, InterfaceUtilisateur {
 
     }
 
-    public static void demarrer(Jeu j, CollecteurEvenements c) {
-        InterfaceGraphique vue = new InterfaceGraphique(j, c);
+    public static void demarrer(Jeu j, CollecteurEvenements c, JFrame fenetre) {
+        InterfaceGraphique vue = new InterfaceGraphique(j, c, fenetre);
         c.ajouteInterfaceUtilisateur(vue);
         SwingUtilities.invokeLater(vue);
     }
@@ -73,6 +74,7 @@ public class InterfaceGraphique implements Runnable, InterfaceUtilisateur {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
         niv.setFocusable(true);
         niv.requestFocusInWindow();
         niv.addMouseListener(new AdaptateurSouris(niv, control));
@@ -86,16 +88,16 @@ public class InterfaceGraphique implements Runnable, InterfaceUtilisateur {
         menuPanel.setBackground(Color.DARK_GRAY);
 
         // Menu
-        JToggleButton menu = new JToggleButton("Menu");
+        RoundedButton  menu = new RoundedButton ("Menu");
 
         // Bouton nouvelle partie rapide
-        JButton nouvellePartie = new JButton("Nouvelle Partie");
+        RoundedButton nouvellePartie = new RoundedButton("Nouvelle Partie");
         nouvellePartie.addActionListener(new AdaptateurNouvellePartie(control));
 
         // Bouton règle
-        JButton regle = new JButton(("Aide"));
+        RoundedButton regle = new RoundedButton("Aide");
         // TODO : Ajouter l'adaptateur qui ouvre les règles
-        //aide.addActionListener(new AdaptateurAide(control));
+        regle.addActionListener(new AdaptateurHelpButton(control));
 
         menuPanel.add(menu);
         menuPanel.add(nouvellePartie);

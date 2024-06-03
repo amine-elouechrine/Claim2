@@ -66,6 +66,11 @@ public class ControleurMediateur implements CollecteurEvenements {
         }
     }
 
+
+    public String help(){
+        return jeu.help();
+    }
+
     public List<Card> getCardsFromPileScoreJ2(String factionName) {
         List<Card> List = jeu.getPlateau().getJoueur2().pileDeScore.getCardsOfFunction(factionName);
         if (List != null) {

@@ -24,12 +24,14 @@ public class InterfacePartieCustom extends JFrame implements Runnable {
 
     public InterfacePartieCustom() {
         this.setTitle("Claim jeu de carte");
-
+        BackgroundImage backgroundPanel = new BackgroundImage("/backgroundImage.jpg");
         try {
             this.setIconImage(ImageIO.read(getClass().getResource("/Claim.png")));
         } catch (IOException exc) {
             System.out.println("Erreur de chargement de l'icone");
         }
+        System.out.println("InterfacePartieCustom");
+        add(backgroundPanel);
 
 
         // Quand on quitte la fênetre
@@ -75,6 +77,11 @@ public class InterfacePartieCustom extends JFrame implements Runnable {
         gbc.gridwidth = 2;
         gbc.anchor = GridBagConstraints.CENTER;
         panel.add(startButton, gbc);
+        RoundedButton retourButton = new RoundedButton("Retour");
+        //rajouter le bouton retour coin bas droite
+        gbc.gridx = 2;
+        gbc.gridy = 3;
+        panel.add(retourButton, gbc);
 
 
         startButton.addActionListener(new ActionListener() {
@@ -111,7 +118,7 @@ public class InterfacePartieCustom extends JFrame implements Runnable {
                                 control = new ControleurMediateur(jeu, null);
                                 break;
                         }
-                        InterfaceGraphique.demarrer(jeu, control);
+                        InterfaceGraphique.demarrer(jeu, control, InterfacePartieCustom.this);
                         setVisible(false);
                     }
                 } catch (NumberFormatException ex) {

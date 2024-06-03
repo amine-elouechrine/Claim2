@@ -1,5 +1,7 @@
 package org.example.Vue;
 
+import org.example.Modele.Cards;
+
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -36,9 +38,20 @@ public class AdaptateurSouris extends MouseAdapter implements MouseListener {
             largeurR = niv.largeurCarte();
             System.out.println(niv.getPositionScorePile());
             if (niv.estDansPileDeScore(i, j)) {
-                System.out.println("Clic sur la pile de score");
+                //System.out.println("Clic sur la pile de score");
                 int x = niv.getLigneCliquee(j);
 
+                if(x==1){//Gobelin
+                    //Cards cardsPS=control.getCardsFromPileScoreJ1("Gobelin");
+                }else if(x==2) {//Nain
+
+                }else if(x==3){//Knight
+
+                }else if(x==4){//Doopelganger
+
+                }else{//Undead
+
+                }
             }
 
             // Si le joueurCourant est le joueur 1

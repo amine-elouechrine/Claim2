@@ -126,12 +126,13 @@ public class NiveauGraphique extends JComponent implements Observateur {
         jeu.ajouteObservateur(this);
         GestionClicPileScore gestionClicPileScore = new GestionClicPileScore(this, this.control);
         addMouseListener(gestionClicPileScore);
+
         rec = rejouer;
         drawC = drawCheck;
         fin = finPartie;
         // Load images
         String contenu=ResourceManager.readTextFile("/fileNames.txt");
-        System.out.println(contenu);
+        //System.out.println(contenu);
         String[] lignes = contenu.split("\n");
         for (String ligne : lignes) {
             acceptFile(new File(ligne));
@@ -159,9 +160,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
 
     }
 
-    public void loadImages(){
-        acceptFile(new File("icon_goblin.png"));
-    }
+
 
     /*
      * Peindre le plateau de jeu
@@ -610,6 +609,13 @@ public class NiveauGraphique extends JComponent implements Observateur {
         // Draw la carte gagnee avec la plus grand valeur
         g.drawImage(image, imageX, imageY, rectWidth / 4, rectHeight / 4, this);
     }
+    public void loadIcon(){
+        icon_goblin = imageMap.get("icon_goblin");
+        icon_knight = imageMap.get("icon_knight");
+        icon_undead = imageMap.get("icon_undead");
+        icon_dwarve = imageMap.get("icon_dwarve");
+        icon_doppleganger = imageMap.get("icon_doppleganger");
+    }
 
     private void calculScore(Graphics g, int i) {
 
@@ -655,6 +661,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
 
 
         }
+        loadIcon();
         // Draw icon goblin
         if (i == 1) {
             drawIcon(g, icon_goblin);
@@ -897,18 +904,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
         if (fileName.endsWith(".png")){
             String imageName = fileName.substring(0, fileName.lastIndexOf("."));
             Image image3= null;
-            /*
-            * try {
-            java.net.URL imgURL = getClass().getResource(path);
-            if (imgURL != null) {
-                backgroundImage = new ImageIcon(imgURL).getImage();
-            } else {
-                throw new IOException("Image not found");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.err.println("Erreur de chargement de l'image de fond");
-        }*/
+
             try {
                 String filenameModified = "/"+fileName;
                 System.out.println(filenameModified);

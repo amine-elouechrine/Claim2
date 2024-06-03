@@ -15,6 +15,6 @@ public class AdaptateurSauvegarde implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         sc.setVisible(true);
-        System.out.println("Clique sur le bouton Charger une partie");
+
     }
 }
