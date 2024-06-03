@@ -7,15 +7,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.io.File;
 import java.io.IOException;
 
 public class ComposantMenuPartie extends JFrame {
 
     CollecteurEvenements c;
-
     Jeu jeu;
-  
+
     ComposantMenuPartie(int axis, CollecteurEvenements control, Jeu jeu, DrawCheck drawCheck) {
         this.jeu = jeu;
         c = control;
@@ -25,7 +23,7 @@ public class ComposantMenuPartie extends JFrame {
         this.setTitle("Menu de Claim");
         // Change l'icone de la fenetre principale
         try {
-            this.setIconImage(ImageIO.read(new File("src/main/resources/Claim.png")));
+            this.setIconImage(ImageIO.read(getClass().getResource("/Claim.png")));
         } catch (IOException exc) {
             System.out.println("Erreur de chargement de l'icone");
         }
@@ -37,7 +35,7 @@ public class ComposantMenuPartie extends JFrame {
 
         // Boutons et FieldTexts Sauver et Charger une partie
         Box Sauvegarde = Box.createHorizontalBox();
-        JButton loadGameButton = new JButton("Sauvergarder ou Charger Partie");
+        RoundedButton loadGameButton = new RoundedButton("Sauvergarder ou Charger Partie");
         loadGameButton.addActionListener(new AdaptateurSauvegarde(control, new ComposantSauvegarde(control)));
         Sauvegarde.add(loadGameButton);
 
@@ -81,7 +79,7 @@ public class ComposantMenuPartie extends JFrame {
         // Bouton Nouvelle Partie
         panel.add(new ComposantNouvellePartie(axis, control, this));
 
-        // Bouton Nouvelle partie
+        // Bouton Sauvegarder/Charger Partie
         panel.add(Sauvegarde);
 
         // Ajout des checkBoxes
@@ -97,4 +95,3 @@ public class ComposantMenuPartie extends JFrame {
         this.add(panel);
     }
 }
-
