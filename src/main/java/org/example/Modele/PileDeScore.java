@@ -11,6 +11,23 @@ public class PileDeScore {
         cartesGagnees = new HashMap<>();
     }
 
+    // Constructeur de copie
+    public PileDeScore(PileDeScore other) {
+        this.cartesGagnees = new HashMap<>();
+        for (Map.Entry<String, List<Card>> entry : other.cartesGagnees.entrySet()) {
+            // Clone la liste de cartes pour chaque faction
+            List<Card> clonedList = new ArrayList<>();
+            for (Card card : entry.getValue()) {
+                clonedList.add(new Card(card));
+            }
+            this.cartesGagnees.put(entry.getKey(), clonedList);
+        }
+    }
+
+    public PileDeScore clone() {
+        return new PileDeScore(this);
+    }
+
     public List<Card> getAllCards() {
         List<Card> allCards = new ArrayList<>();
         for (List<Card> cards : cartesGagnees.values()) {
@@ -18,6 +35,19 @@ public class PileDeScore {
         }
         return allCards;
     }
+
+    // Méthode pour afficher la pile de score
+    public void printPileDeScore() {
+        for (Map.Entry<String, List<Card>> entry : cartesGagnees.entrySet()) {
+            String faction = entry.getKey();
+            List<Card> cards = entry.getValue();
+            System.out.println("Faction: " + faction);
+            for (Card card : cards) {
+                System.out.println("  - " + card.toString());
+            }
+        }
+    }
+
 
     public Map<String, List<Card>> getCartesGagnees() {
         return cartesGagnees;

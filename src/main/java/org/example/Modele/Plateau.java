@@ -46,6 +46,8 @@ public class Plateau {
         } else {
             this.joueurCourant = this.joueur2;
         }
+        this.defausse = other.defausse != null ? new Defausse(other.defausse) : null;
+        this.pioche = other.pioche != null ? new Cards(other.pioche) : null;
         this.phase = other.phase;
     }
 
@@ -88,10 +90,12 @@ public class Plateau {
         this.carteJoueur2 = state.getCarteJoueur2();
         this.joueur1 = state.getJoueur1();
         this.joueur2 = state.getJoueur2();
-        if (state.getJoueurCourant() == state.getJoueur1())
-            this.joueurCourant = this.joueur1 ;
-        else
+        if (state.getJoueurCourant() == state.getJoueur1()) {
+            this.joueurCourant = this.joueur1;
+        }else {
             this.joueurCourant = this.joueur2;
+        }
+        this.defausse = state.getDefausse();
         this.phase = false;
     }
 
@@ -137,6 +141,14 @@ public class Plateau {
             return joueur2;
         }else{
             return joueur1;
+        }
+    }
+
+    public Card getAdversaireCard(){
+        if(joueurCourant == joueur1){
+            return carteJoueur2;
+        }else{
+            return carteJoueur1;
         }
     }
 

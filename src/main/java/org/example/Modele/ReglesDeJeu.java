@@ -60,25 +60,45 @@ public class ReglesDeJeu {
         if (carte1.getFaction().equals("Doppelganger")) {
             if (carte2.getFaction().equals("Doppelganger")) {
                 return determinerCarteGagnante(carte1, carte2, plateau);
-            } else {
-                if (plateau.estLeader()) {
-                    return plateau.getCarteJoueur1();
-                } else {
-                    return plateau.getCarteJoueur2();
+
+            } else { // si la carte 1 est doppelganger et la carte 2 est une autre carte alors la carte 1 gagne
+                Player Adversaire = plateau.getJoueurNonCourant();
+                if(Adversaire == plateau.getJoueur1()){ // leader est joueur1
+                    if(plateau.getCarteJoueur1().getFaction().equals("Doppelganger")){ //si le leader a jouer doppelganger alors il gagne le trick
+                        return plateau.getCarteJoueur1();
+                    }else{ // si ce n'est pas le leader qui a jouer doppelganger alors on compare les valeurs des cartes
+                        return compareCard(carte1, carte2, plateau);
+                    }
+
+                }else{ // si l'adversaire est le joueur 2
+                    if(plateau.getCarteJoueur2().getFaction().equals("Doppelganger")) { //si le leader a jouer doppelganger alors il gagne le trick
+                        return plateau.getCarteJoueur2();
+                    }else{
+                        return compareCard(carte1, carte2, plateau);
+                    }
                 }
             }
-        } else {
-            if (carte1.getValeur() > carte2.getValeur()) {
-                return carte1;
-            } else if (carte1.getValeur() < carte2.getValeur()) {
-                return carte2;
-            } else {
-                if (plateau.estLeader()) {
-                    return plateau.getCarteJoueur1();
-                } else {
-                    return plateau.getCarteJoueur2();
+        } else { // si la carte 1 n'est pas un doppelganger
+            if (carte2.getFaction().equals("Doppelganger")) { // carte 2 est un doppelganger
+                Player Adversaire = plateau.getJoueurNonCourant();
+
+                if(Adversaire == plateau.getJoueur1()){ // leader est joueur1
+                    if(plateau.getCarteJoueur1().getFaction().equals("Doppelganger")){ //si le leader a jouer doppelganger alors il gagne le trick
+                        return plateau.getCarteJoueur1();
+                    }else{ // si ce n'est pas le leader qui a jouer doppelganger alors on compare les valeurs des cartes
+                        return compareCard(carte1, carte2, plateau);
+                    }
+                }else{ // si l'adversaire est le joueur 2
+                    if(plateau.getCarteJoueur2().getFaction().equals("Doppelganger")) { //si le leader a jouer doppelganger alors il gagne le trick
+                        return plateau.getCarteJoueur2();
+                    }else{
+                        return compareCard(carte1, carte2, plateau);
+                    }
                 }
+            } else {
+                return cardVScard(carte1, carte2, plateau);
             }
+
         }
     }
 
@@ -115,6 +135,21 @@ public class ReglesDeJeu {
         }
     }
 
+    public static Card compareCard(Card carte1, Card carte2 , Plateau plateau){
+        if(carte1.getValeur() > carte2.getValeur()){
+            return carte1;
+        }else if(carte1.getValeur() < carte2.getValeur()){
+            return carte2;
+        }else{
+            if(plateau.estLeader()){
+                return plateau.getCarteJoueur1();
+            }else{
+                return plateau.getCarteJoueur2();
+            }
+        }
+
+    }
+
 
     /**
      * Méthode pour déterminer quelle carte l'emporte entre deux cartes de meme faction selon la valeur des cartes.
@@ -125,18 +160,7 @@ public class ReglesDeJeu {
      */
     public static Card determinerCarteGagnante(Card carte1, Card carte2, Plateau plateau) {
         if (carte1.getFaction().equals(carte2.getFaction())) {
-            if (carte1.getValeur() > carte2.getValeur()) {
-                return carte1;
-            } else if (carte1.getValeur() < carte2.getValeur()) {
-                return carte2;
-            } else {
-                // En cas d'égalité, c'est le leader qui gagne le trick (carte affichée)
-                if (plateau.estLeader()) {
-                    return plateau.getCarteJoueur1();
-                } else {
-                    return plateau.getCarteJoueur2();
-                }
-            }
+            return compareCard(carte1, carte2, plateau);
         } else {
             if (plateau.estLeader()) {
                 return plateau.getCarteJoueur1();

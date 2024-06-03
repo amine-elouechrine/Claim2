@@ -24,38 +24,53 @@ public class IAMinMax {
 
     private static int nodeCount = 0;      // Variable pour compter les noeuds visités
 
+
+    // les erreurs rencontrer !
+    // il y a un decalage entre le score (l'evaluation) et l'affichage de maxEval !!!!
+    // lors de la minimisation tous les coup en le meme minEval ??? -infinie !!!
+    // lors de la minimisation les calculs sont incorrecte determiner coup possible ! parce que lors de la minimisation l'adversaire a deja jouer donc les calculs seront fais sur les tous les cartes qui sont dans la main de l'adversaire et non pas par rapport a la carte qu'il a jouer
     public static Result minimax(Node node, int depth, boolean maximizingPlayer, int alpha, int beta) {
+        Result evalResult;
 
-
-        // Incrémenter le compteur de nœuds
+        // Incrémenter le compteur de nodes
         nodeCount++;
 
         // Cas de base: si la profondeur est 0 ou si le jeu est terminé
-        if (depth == 0 || node.plateau.isEndOfGame()) {
-            int evaluation = evaluer(node);
-            Result result = new Result(evaluation, null);
+        if (node.plateau.isEndOfGame()) {
+            int evaluation = evaluer1(node);
+            System.out.println("Evaluation : " + evaluation);
+            Result result = new Result(evaluation, node.plateau.getCarteJoueur1()); // coup jouer par l'ia
+            System.out.println("carte jouer par l'ia" + node.plateau.getCarteJoueur1());
             return result;
         }
-        PlateauState savedState =new PlateauState(node.plateau); // Sauvegarder l'état du plateau
-        if (maximizingPlayer) { // si c'est le tour de l'ia (verifier isIaTurn dans le noeud si c'est vrai
+        PlateauState savedState =new PlateauState(node.plateau); // Sauvegarder l'état du plateau (clonage)
+        if (maximizingPlayer) { // si c'est le tour de l'ia
             int maxEval = Integer.MIN_VALUE;
             Card bestCard = null;
-            for (Coup c : Coup.determinerCoupsPossibles(node.plateau)) {
+            for (Coup c : Coup.determinerCoupsPossibles(node.plateau)) { // parcourir les coups possibles
                 //joueur un coup sur le meme plateau
                 node.plateau.jouerCarte(c.getCarte1());
                 node.plateau.switchJoueur();
                 node.plateau.jouerCarte(c.getCarte2());
                 Card carteGagnante = ReglesDeJeu.carteGagnante(c.getCarte1(), c.getCarte2(), node.plateau);
                 node.plateau.attribuerCarteSecondPhase(carteGagnante, new ReglesDeJeu());
+
                 //creer un nouveau noeud avec le plateau apres avoir jouer
-                Node child = new Node(node.plateau , c.getCarte1() );
-                Result evalResult = minimax(child, depth - 1, false , alpha, beta );
+                Node child = new Node(node.plateau , c.getCarte1()); // cree un nouveau noeud avec le plateau apres avoir jouer et la carte jouer par l'ia
+                if(child.plateau.getJoueurCourant().getName().equals("MinMax")){
+                    evalResult = minimax(child, depth - 1, true , alpha, beta );
+                }else{
+                    evalResult = minimax(child, depth - 1, false , alpha, beta );
+                }
+
                 //restaurer le plateau
                 node.plateau.restoreState(savedState);
                 //maxEval = Math.max(maxEval, eval);
                 if (evalResult.score > maxEval) {
                     maxEval = evalResult.score;
                     bestCard = c.getCarte1(); // La carte jouée par l'IA
+                    System.out.println("bestCard : " + bestCard);
+                    System.out.println("maxEval : " + maxEval);
                 }
                 alpha = Math.max(alpha, evalResult.score);
                 if (beta <= alpha) {
@@ -66,8 +81,13 @@ public class IAMinMax {
             node.setCarteJoueeParIa(bestCard); // Mettre à jour la carte jouée par l'IA
             Result result = new Result(maxEval, bestCard);
             //return maxEval;
-            return new Result(maxEval, bestCard);
-        } else {   // si c'est le tour de l'adversaire (isIaTurn doit etre false)
+            return result;
+        } else {   // lorsqu'on minimise lors du premiere appel c'est que l'adversaire a deja jouer don il faut ajouter la carte jouer par l'adversaire
+
+                    // pour resoudre le probleme de la minimisation il faut mettre les cartes 1 et 2 a null apres chaque tour
+                    // pour puisse faire une condition sur la carte jouer par l'adversaire et faire les coup possible que par rapport a cette carte
+
+
             int minEval = Integer.MAX_VALUE;
             Card bestCard = null;
             for (Coup c : Coup.determinerCoupsPossibles(node.plateau)) {
@@ -77,16 +97,22 @@ public class IAMinMax {
                 node.plateau.jouerCarte(c.getCarte2());
                 Card carteGagnante = ReglesDeJeu.carteGagnante(c.getCarte1(), c.getCarte2(), node.plateau);
                 node.plateau.attribuerCarteSecondPhase(carteGagnante, new ReglesDeJeu());
-                //creer un nouveau noeud avec le plateau apres avoir jouer
-                Node child = new Node(node.plateau , c.getCarte1());
 
-                Result evalResult = minimax(child, depth - 1, true, alpha, beta);
+                //creer un nouveau noeud avec le plateau apres avoir jouer
+                Node child = new Node(node.plateau , c.getCarte2()); // lorsqu'on est minimizant c'est le l'adversaire qui commence a jouer donc l'ia a la carte 2
+                if(child.plateau.getJoueurCourant().getName().equals("MinMax")){
+                    evalResult = minimax(child, depth - 1, true , alpha, beta );
+                }else{
+                    evalResult = minimax(child, depth - 1, false , alpha, beta );
+                }
                 //restaurer le plateau
                 node.plateau.restoreState(savedState);
                 //minEval = Math.min(minEval, eval);
                 if (evalResult.score < minEval) {
                     minEval = evalResult.score;
-                    bestCard = c.getCarte1(); // La carte jouée par l'IA, même si c'est un noeud adversaire pour la consistance
+                    bestCard = c.getCarte2(); // La carte jouée par l'IA, même si c'est un noeud adversaire pour la consistance
+                    System.out.println("bestCard : " + bestCard);
+                    System.out.println("minEval : " + minEval);
                 }
                 beta = Math.min(beta, evalResult.score);
                 if (beta <= alpha) {
@@ -97,7 +123,7 @@ public class IAMinMax {
             node.setCarteJoueeParIa(bestCard); // Mettre à jour la carte jouée par l'IA
             Result result = new Result(minEval, bestCard);
             //return minEval;
-            return new Result(minEval, bestCard);
+            return result;
         }
     }
 
@@ -111,6 +137,8 @@ public class IAMinMax {
      * @return La meilleure carte à jouer pour l'IA.
      */
     // carte jouer par l'ia (c'est la carte qui a le meilleur score) : (on peu passer soit node en paramettre soit plateau
+
+    // ==> pour apeller l'algo min max il faut a la fin de chaque tour remettre la carte de joueur1 et la carte de joueur2 a null !!!
     public static Card carteJouerIa(Plateau plateau){
         Node racine = new Node(plateau);
         Node nodeRacine = racine.clone();
@@ -120,11 +148,13 @@ public class IAMinMax {
         // si MinMax est leader
         if(nodeRacine.plateau.estLeader()){
             // Appel de l'algorithme Minimax pour évaluer le meilleur coup
-            result = minimax(nodeRacine, 13, true, 0, 1);
+            result = minimax(nodeRacine, 13, true,Integer.MIN_VALUE , Integer.MAX_VALUE);
+            System.out.println("maximizing .......");
             return result.coup;
         }else{
             // Appel de l'algorithme Minimax pour évaluer le meilleur coup
-            result = minimax(nodeRacine, 13, false, 0, 1);
+            result = minimax(nodeRacine, 13, false, Integer.MIN_VALUE, Integer.MAX_VALUE);
+            System.out.println("minimizing .......");
             return result.coup;
         }
 
@@ -157,7 +187,7 @@ public class IAMinMax {
                 }
             }
         }else{
-            //System.err.println("La défausse est null.");
+            System.err.println("La défausse est null.");
         }
 
         return nbrCarteTotFaction - nbrCarteDefausse;
@@ -175,19 +205,19 @@ public class IAMinMax {
     // est se qu'on a gagner une faction donner
     // il faut ajouter le faite que lorsque l'ia et l'adversaire on le meme nbr de carte il faux comarer la carte de plus haut valeur de l'ia avec celle de l'adversaire
     public static boolean gagnerFaction(Plateau plateau, String faction){
-        int nbrCarteFactionEnJeu = nbrCarteEnJeuFaction(plateau , faction);
-        // de l'ia  : il faut savoir si c'est le joueur1 ou le joueur2 qui est l'ia
-        int nbCartePileDeScoreFaction = plateau.getJoueur1().getPileDeScore().getCardFaction(faction).size();
-        // si les deux joueur on le meme nombre de carte de cette faction il faut comparer la carte de plus haute valeur
-        if((nbCartePileDeScoreFaction * 2) == nbrCarteFactionEnJeu){
+        // nbr de carte de cette faction qui sont en jeu de l'ia
+        int nbrCarteFactionIa = plateau.getJoueur1().getPileDeScore().getCardFaction(faction).size();
+        // nbr de carte de cette faction qui sont en jeu de l'autre joueur
+        int nbrCarteFactionAdversaire = plateau.getJoueur2().getPileDeScore().getCardFaction(faction).size();
+
+        if(nbrCarteFactionIa > nbrCarteFactionAdversaire) {
+            return true;
+        }else if(nbrCarteFactionIa < nbrCarteFactionAdversaire) {
+            return false;
+        }else{
             int carteMaxIaFaction = plateau.getJoueur1().getPileDeScore().maxValueOfFaction(faction);
             int carteMaxAdversaireFaction = plateau.getJoueur2().getPileDeScore().maxValueOfFaction(faction);
             return carteMaxIaFaction > carteMaxAdversaireFaction;
-            // si l'ia a plus de carte de cette faction que l'adversaire
-        }else if((nbCartePileDeScoreFaction * 2) > nbrCarteFactionEnJeu){
-            return true;
-        }else{ // si l'ia a moins de carte de cette faction que l'adversaire
-            return false;
         }
     }
 

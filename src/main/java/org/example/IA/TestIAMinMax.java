@@ -157,6 +157,10 @@ public class TestIAMinMax {
                 System.out.println("Fin de la partie. Victoire de " + winner);
                 partieTerminee = true;
             }
+
+            // mettre cartejoueur1 et cartejoueur2 a null
+            plateauInitial.setCarteJoueur1(null);
+            plateauInitial.setCarteJoueur2(null);
         }
 
         return winner;
@@ -165,6 +169,20 @@ public class TestIAMinMax {
 
 
     public static void main(String[] args) {
+
+        /*Plateau plateauInitial = TestFunctions.setPlateauPhase2();
+        List<Coup> coups = Coup.determinerCoupsPossibles(plateauInitial);
+        for (Coup coup : coups) {
+            coup.afficherCoup();
+        }*/
+
+        /*String winner;
+        Plateau plateau = TestFunctions.setPlateauPhase2();
+        plateau.getJoueur1().getHandScndPhase().printHand();
+        plateau.getJoueur2().getHandScndPhase().printHand();
+        winner = jouerPartieFacileMinMax(plateau);*/
+
+
         int scoreMinMax = 0;
         int scoreFacile = 0;
 
@@ -179,13 +197,34 @@ public class TestIAMinMax {
         System.out.println("entre 3 pour : Intermediaire vs Facile");
         int type = s.nextInt();
 
-        for (int i = 0; i < 100; i++) {
+        System.out.println("entrer 1 pour l'affichage des hand avant chaque partie : ");
+        int rep = s.nextInt();
+
+        for (int i = 0; i < 1; i++) {
             Plateau plateau;
             String winner;
 
             if(test == 1) {
+                // Test de la phase 2 de l'IA MinMax
+                //System.out.println("entrer 1 pour test avec des hand aleatoire : ");
+                //System.out.println("entrer 2 pour test avec des hand gagnant pour l'ia  : ");
+                //System.out.println("entrer 3 pour test avec des hand gagnant pour l'adversaire  : ");
+                //plateau = TestFunctions.setPlateauPhase2();
                 plateau = TestFunctions.setPlateauPhase2();
+
+                if(rep == 1){
+                    plateau.getJoueur1().getHandScndPhase().printHand();
+                    plateau.getJoueur2().getHandScndPhase().printHand();
+                    System.out.println("entrer un nombre pour continuer : ");
+                    int cont = s.nextInt();
+                }
+
                 winner = jouerPartieFacileMinMax(plateau);
+                System.out.println("pile de score : joueur1 : ");
+                plateau.getJoueur1().getPileDeScore().printPileDeScore();
+                System.out.println("\n\n");
+                System.out.println("pile de score : joueur2 : ");
+                plateau.getJoueur2().getPileDeScore().printPileDeScore();
 
             }else{ // Test d'une partie compelete
                 plateau = jouerPatie1(type);
@@ -194,6 +233,8 @@ public class TestIAMinMax {
                 plateau.setCarteJoueur2(null);
 
                 winner = jouerPartieFacileMinMax(plateau);
+
+
             }
 
             if (winner.equals("MinMax")) {

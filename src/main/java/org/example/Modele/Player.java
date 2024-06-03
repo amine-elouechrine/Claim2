@@ -11,6 +11,8 @@ public class Player extends GeneralPlayer {
     public Player(Player other) {
         super(other.Name);
         this.handScndPhase = new Hand(other.handScndPhase);
+        this.hand = new Hand(other.hand);
+        this.pileDeScore = new PileDeScore(other.pileDeScore);
     }
 
     @Override

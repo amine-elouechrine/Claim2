@@ -159,6 +159,31 @@ public class TestFunctions {
         return plateau;
     }
 
+    public static Plateau setPlateauSameHand(){
+        // Création des joueurs
+        Player joueur1 = new Player("MinMax");
+        Player joueur2 = new Player("Facile");
+
+        Cards pioche = new Cards();
+        pioche.addAllCards();
+        joueur1.setHandScndPhase(pioche.getHandOf13Cards());//ia
+
+        Hand handAdversaire = joueur1.getHandScndPhase().clone();
+        joueur2.setHandScndPhase(handAdversaire);//adversaire
+
+        // Initialisation du plateau avec les joueurs
+        Plateau plateau = new Plateau();
+        plateau.setPhase(false);//phase 2
+
+        // configuration du plateau
+        plateau.setJoueur1(joueur1);  // ia
+        plateau.setJoueur2(joueur2); // adversaire
+        plateau.setJoueurCourant(joueur1); // on commande par l'ia
+
+        return plateau;
+
+    }
+
 
 
 
