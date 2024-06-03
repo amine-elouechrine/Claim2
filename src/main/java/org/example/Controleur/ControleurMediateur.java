@@ -585,7 +585,9 @@ public class ControleurMediateur implements CollecteurEvenements {
         } else {
             joueur = 2;
         }
-        vue.initializeAnimationGagne(totalIterations, joueur);
+
+        String nomGagnant = gagnant.getName();
+        vue.initializeAnimationGagne(totalIterations, joueur, nomGagnant);
         mouvement = new AnimationGagne(totalIterations, this);
         animations.insereQueue(mouvement);
     }

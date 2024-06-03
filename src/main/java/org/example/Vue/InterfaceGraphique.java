@@ -30,6 +30,7 @@ public class InterfaceGraphique implements Runnable, InterfaceUtilisateur {
         c.ajouteInterfaceUtilisateur(vue);
         SwingUtilities.invokeLater(vue);
     }
+
     public void setWindowIcon(String path) {
         // Utilisez getClass().getResource pour obtenir l'URL de la ressource
         java.net.URL imgURL = getClass().getResource(path);
@@ -158,8 +159,8 @@ public class InterfaceGraphique implements Runnable, InterfaceUtilisateur {
     }
 
     @Override
-    public void initializeAnimationGagne(int totalIterations, int joueur) {
-        niv.initializeAnimationGagne(totalIterations, joueur);
+    public void initializeAnimationGagne(int totalIterations, int joueur, String nomGagnant) {
+        niv.initializeAnimationGagne(totalIterations, joueur, nomGagnant);
     }
 
     @Override

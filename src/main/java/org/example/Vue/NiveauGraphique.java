@@ -68,6 +68,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
     int imageX, imageY, textX, textY;
     int lineY;
     String faction;
+    String messageGagnant;
     int score;
     int val;
     FontMetrics fm;
@@ -255,7 +256,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
             if (control.isJoueurCourantJoueur1()) {
                 g.setFont(font_2);
                 g.setColor(Color.RED); // Utiliser la couleur actuelle
-                g.drawString("À toi de jouer", startHandXJ1, posHandYJ1 - rectHeight);
+                g.drawString("À toi de jouer", positionPileScoreJ1X, posHandYJ1 - rectHeight);
             }
 
             y = 10;
@@ -263,6 +264,8 @@ public class NiveauGraphique extends JComponent implements Observateur {
 
             drawHandJ2(g);
 
+
+            drawJoueurGagnant(g);
             // Dessine les decks de followers
 //            positionFollower1X = panelWidth / 9;
 //            positionFollower2X = panelWidth / 9;
@@ -317,7 +320,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
             y = 10;
             mainJ2 = control.getHandJ2P2();
             drawHandJ2(g);
-
+            drawJoueurGagnant(g);
             // Draw score pile
             x = rectWidth;
             y = hauteur() / 2 - rectHeight;
@@ -342,6 +345,18 @@ public class NiveauGraphique extends JComponent implements Observateur {
 
         drawCarteJoue(g, carteJ1F, carteJ1V, positionCarteJoueJ1X, positionCarteJoueJ1Y, currentCarteJoue1X, currentCarteJoue1Y);
         drawCarteJoue(g, carteJ2F, carteJ2V, positionCarteJoueJ2X, positionCarteJoueJ2Y, currentCarteJoue2X, currentCarteJoue2Y);
+    }
+
+    private void drawJoueurGagnant(Graphics2D g) {
+        g.setFont(font_2);
+        g.setColor(Color.RED);
+
+        if (messageGagnant != null) {
+            g.drawString(messageGagnant, positionCarteAfficheeX + rectHeight, posHandYJ1 - rectHeight);
+        } else {
+            g.drawString("", positionCarteAfficheeX + rectHeight, posHandYJ1 - rectHeight);
+        }
+
     }
 
     private void drawHandJ2(Graphics2D g) {
@@ -802,12 +817,15 @@ public class NiveauGraphique extends JComponent implements Observateur {
     }
 
     public void distribuer() {
+        if (currentCarteaganeeX != positionDeckX) {
+            messageGagnant = "";
+        }
         currentCarteaganeeX -= deltaX;
         currentCarteaganeeY -= deltaY;
         miseAJour();
     }
 
-    public void initializeAnimationGagne(int totalIterations, int joueur) {
+    public void initializeAnimationGagne(int totalIterations, int joueur, String nomGagnant) {
         this.totalIterations = totalIterations;
         if (joueur == 1) {
             this.deltaGagneX = (positionCarteAfficheeX - positionFollower1X) / (double) totalIterations;
@@ -819,11 +837,14 @@ public class NiveauGraphique extends JComponent implements Observateur {
 
         this.currentCarteaganeeX = positionCarteAfficheeX;
         this.currentCarteaganeeY = positionCarteAfficheeY;
+
+        this.messageGagnant = nomGagnant + " a gagné le tour";
     }
 
     public void distribuerGagne() {
         currentCarteaganeeX -= deltaGagneX;
         currentCarteaganeeY -= deltaGagneY;
+
         miseAJour();
     }
 

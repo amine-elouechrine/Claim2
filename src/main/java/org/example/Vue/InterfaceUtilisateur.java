@@ -12,7 +12,7 @@ public interface InterfaceUtilisateur {
 
     void initializeAnimationDistribuer(int totalIterations);
 
-    void initializeAnimationGagne(int totalIterations, int joueur);
+    void initializeAnimationGagne(int totalIterations, int joueur, String nomGagnant);
 
     void initializeAnimationPerde(int totalIterations, int joueur);
 
