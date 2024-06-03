@@ -16,7 +16,7 @@ public class ComposantSauverCharger extends Box {
 
         // Espace pour ecrire un nom de fichier de sauvegarde
         add(new JLabel("Nom fichier :"));
-        JTextField fichier = new JTextField();
+        RoundedTextField fichier = new RoundedTextField(20);
         fichier.setMaximumSize(new Dimension(
                 fichier.getMaximumSize().width, fichier.getMinimumSize().height));
         add(fichier);
