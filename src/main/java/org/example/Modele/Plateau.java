@@ -32,6 +32,7 @@ public class Plateau {
 
     /**
      * Constructeur de la classe Plateau pour l'intelligence artificielle pour puisse faire une copie du plateau.
+     *
      * @param
      */
     // Constructeur de copie phase 2
@@ -48,8 +49,12 @@ public class Plateau {
         this.phase = other.phase;
     }
 
-    public Plateau clone() {
-        return new Plateau(this);
+    /**
+     * constructeur de la classe Plateau pour les jeux de test.
+     */
+    public Plateau(Card carteJoeur1, Card carteJoueur2) {
+        this.carteJoueur1 = carteJoeur1;
+        this.carteJoueur2 = carteJoueur2;
     }
 
     // Sauvegarde l'état actuel du plateau
@@ -72,6 +77,10 @@ public class Plateau {
         return new PlateauState(clonedCarteJoueur1, clonedCarteJoueur2, clonedJoueur1, clonedJoueur2, CurrentPlayer);
     }*/
 
+    public Plateau clone() {
+        return new Plateau(this);
+    }
+
     // Restaure un état précédemment sauvegardé
     public void restoreState(PlateauState state) {
         this.carteJoueur1 = state.getCarteJoueur1();
@@ -79,21 +88,11 @@ public class Plateau {
         this.joueur1 = state.getJoueur1();
         this.joueur2 = state.getJoueur2();
         if (state.getJoueurCourant() == state.getJoueur1())
-            this.joueurCourant = this.joueur1 ;
+            this.joueurCourant = this.joueur1;
         else
             this.joueurCourant = this.joueur2;
         this.phase = false;
     }
-
-
-    /**
-     * constructeur de la classe Plateau pour les jeux de test.
-     */
-    public Plateau(Card carteJoeur1, Card carteJoueur2) {
-        this.carteJoueur1 = carteJoeur1;
-        this.carteJoueur2 = carteJoueur2;
-    }
-
 
     public Card getCardAdversaire() {
         if (joueurCourant == joueur1) {
@@ -122,10 +121,10 @@ public class Plateau {
         }
     }
 
-    public GeneralPlayer getAdversaire(){
-        if(joueurCourant == joueur1){
+    public GeneralPlayer getAdversaire() {
+        if (joueurCourant == joueur1) {
             return joueur2;
-        }else{
+        } else {
             return joueur1;
         }
     }
@@ -138,7 +137,6 @@ public class Plateau {
         sb.append(getCarteJoueur2().toString());
         return sb.toString();
     }
-
 
 
     public boolean getPhase() {
@@ -320,13 +318,15 @@ public class Plateau {
         Hand mainJoueur2 = pioche.getHandOf13Cards();
 
         // creation des joueurs
-        if(Objects.equals(nameJ1, "") && Objects.equals(nameJ2, "")) {
+        if (Objects.equals(nameJ1, ""))
             joueur1 = new Player("Joueur 1");
-            joueur2 = new Player("Joueur 2");
-        } else {
+        else
             joueur1 = new Player(nameJ1);
+
+        if (Objects.equals(nameJ2, ""))
+            joueur2 = new Player("Joueur 2");
+        else
             joueur2 = new Player(nameJ2);
-        }
 
         //initialiser les mains des joueurs
         joueur1.setHand(mainJoueur1);
@@ -363,15 +363,14 @@ public class Plateau {
 
     public Card jouerCarte(Card card) {
         Card carteJoue;
-        if(getPhase())
+        if (getPhase())
             carteJoue = joueurCourant.jouerCarte(card);
         else
             carteJoue = joueurCourant.jouerCarte2(card);
 
-        if(joueurCourant == joueur1) {
+        if (joueurCourant == joueur1) {
             setCarteJoueur1(carteJoue);
-        }
-        else if (joueurCourant == joueur2) {
+        } else if (joueurCourant == joueur2) {
             setCarteJoueur2(carteJoue);
         }
         return carteJoue;
@@ -437,7 +436,7 @@ public class Plateau {
         }
     }
 
-    
+
     // use applay sndphaserule function 
     public void attribuerCarteSecondPhase(Card winningCard, ReglesDeJeu r) {// on doit changer la fonction ApplyDwarveRule:c'est fait
         if (r.carteEgaux(carteJoueur1, carteJoueur2)) {
