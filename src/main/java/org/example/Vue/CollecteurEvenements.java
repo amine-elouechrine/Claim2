@@ -107,4 +107,6 @@ public interface CollecteurEvenements {
     List<Card> getCardsFromPileScoreJ1(String factionName);
 
     List<Card> getCardsFromPileScoreJ2(String factionName);
+
+    String getJoueurNomGagnant();
 }

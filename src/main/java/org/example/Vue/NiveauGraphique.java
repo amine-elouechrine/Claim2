@@ -252,7 +252,6 @@ public class NiveauGraphique extends JComponent implements Observateur {
         /* Phase 1 */
         if (control.getPhase()) {
 
-            System.out.println(currentTransparence);
             y = hauteur() - rectHeight - 10;
             main = control.getHandJ1P1();
             // Dessin des cartes de la main du joueur 1

@@ -29,13 +29,17 @@ public class ComposantFinPartie extends JFrame {
         JPanel panel = new JPanel();
         // panel.add(new JLabel(new ImageIcon("src/main/resources/Claim.png")));
         String JoueurGagnant = "";
-        JoueurGagnant = "test"; // TODO : Ajouter la fonction du joueur qui a gagné la partie dans ControleurMédiateur et l'appeler ici
+        JoueurGagnant = c.getJoueurNomGagnant(); // TODO : Ajouter la fonction du joueur qui a gagné la partie dans ControleurMédiateur et l'appeler ici
         panel.add(new JLabel("Le Joueur " + JoueurGagnant + " a gagné"));
         JButton ok = new JButton("OK");
         ok.addActionListener(new AdaptateurClose(this));
         panel.add(ok);
         this.setContentPane(panel);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        ok.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+            }
+        });
         this.pack();
         this.setLocationRelativeTo(null);
         // this.add(panel);

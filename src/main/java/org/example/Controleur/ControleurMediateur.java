@@ -406,10 +406,10 @@ public class ControleurMediateur implements CollecteurEvenements {
                         startAnimationPerde(iterations, IAgagnant);
                         startAnimationDefausse(iterations, card1Faction, card2Faction, IAgagnant);
 
-                        if (jeu.getJoueur1().getHand().size() + jeu.getJoueur2().getHand().size() == 0) {
+                        if ((jeu.getJoueur1().getHand().size() + jeu.getJoueur2().getHand().size() == 0)||!getPhase()) {
                             startTransition();
-                            dureePause = 7000;
-                        }else{
+                            dureePause = 6000;
+                        } else {
                             dureePause = 4500;
                         }
 
@@ -420,7 +420,7 @@ public class ControleurMediateur implements CollecteurEvenements {
                         Timer timer = new Timer(dureePause, new ActionListener() {
                             @Override
                             public void actionPerformed(ActionEvent e) {
-
+                                System.out.println("playtrick");
                                 jeu.playTrick();
                                 jeu.setCarteJouer();
                                 startDistributionAnimation(iterations);
@@ -454,10 +454,11 @@ public class ControleurMediateur implements CollecteurEvenements {
             startAnimationGagne(iterations, gagnant);
             startAnimationPerde(iterations, gagnant);
             startAnimationDefausse(iterations, card1Faction, card2Faction, gagnant);
+
             if (jeu.getJoueur1().getHand().size() + jeu.getJoueur2().getHand().size() == 0) {
                 startTransition();
-                dureePause = 7000;
-            }else{
+                dureePause = 6000;
+            } else {
                 dureePause = 4500;
             }
 
@@ -467,6 +468,7 @@ public class ControleurMediateur implements CollecteurEvenements {
             Timer timer = new Timer(dureePause, new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
+                    System.out.println("playtrick");
                     jeu.playTrick();
                     jeu.setCarteJouer();
                     startDistributionAnimation(iterations);
@@ -491,8 +493,6 @@ public class ControleurMediateur implements CollecteurEvenements {
 
     @Override
     public void tictac() {
-        //System.out.println(jeu.estFinPhase1());
-        //System.out.println(getPhase());
         if (!animationsSupportees) {
             animationsSupportees = true;
             animationsActives = true;
@@ -551,7 +551,6 @@ public class ControleurMediateur implements CollecteurEvenements {
 
 
     public void startTransition() {
-        System.out.println("STARTTRANSITION");
         vue.initializeAnimationTransition();
         mouvement = new AnimationTransition(this);
         animations.insereQueue(mouvement);
@@ -613,4 +612,49 @@ public class ControleurMediateur implements CollecteurEvenements {
     public boolean getPause() {
         return pause;
     }
+
+    public String getJoueurNomGagnant() {
+        int score;
+        int gagneFaction = 0;
+        String faction = "";
+        for (int i = 1; i <= 5; i++) {
+            switch (i) {
+                case 1:
+                    faction = "Goblins";
+                    break;
+                case 2:
+                    faction = "Dwarves";
+                    break;
+                case 3:
+                    faction = "Knight";
+                    break;
+                case 4:
+                    faction = "Doppelganger";
+                    break;
+                case 5:
+                    faction = "Undead";
+                    break;
+            }
+            score = getNbCardFactionFromPileScoreJ1(faction) - getNbCardFactionFromPileScoreJ2(faction);
+            if (score > 0) {
+                gagneFaction += 1;
+            }else if (score < 0){
+                gagneFaction -= 1;
+            }else{
+                if(isJoueur1WinningFactionOnEquality(faction)){
+                    gagneFaction+=1;
+                }else if (isJoueur2WinningFactionOnEquality(faction)){
+                    gagneFaction-=1;
+                }
+            }
+        }
+        if(gagneFaction>0){
+            return getNomJoueur1();
+        }else if(gagneFaction==0){
+            return  "match nul";
+        }else {
+            return getNomJoueur2();
+        }
+    }
+
 }
