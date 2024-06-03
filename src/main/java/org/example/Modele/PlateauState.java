@@ -12,6 +12,7 @@ public class PlateauState {
     private Player joueur2;
     private Player joueurCourant;
     private Defausse defausse;
+    private PileDeScore pileDeScore;
     private Boolean phase;
 
     public PlateauState(Card carteJoueur1, Card carteJoueur2,

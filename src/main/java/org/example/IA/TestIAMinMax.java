@@ -118,7 +118,7 @@ public class TestIAMinMax {
             if (plateauInitial.getJoueurCourant().getName().equals("MinMax")) {
                 // Tour de l'IA
                 System.out.println("Tour de l'IA...");
-                coupIa = iaMinMax.carteJouerIa(plateauInitial); // Profondeur de recherche = 13
+                coupIa = iaMinMax.carteJouerIa(plateauInitial); // Profondeur de recherche = 26
                 System.out.println("Carte choisie par l'IA: " + coupIa);
                 plateauInitial.jouerCarte(coupIa);
                 plateauInitial.switchJoueur();
@@ -140,9 +140,6 @@ public class TestIAMinMax {
             } else {
                 System.out.println("Tour de l'IA...");
                 coupIa = iaMinMax.carteJouerIa(plateauInitial); // Profondeur de recherche = 13
-                if (coupIa == null) {
-                    coupIa = plateauInitial.getJoueur1().getHandScndPhase().get(0);
-                }
                 System.out.println("Carte choisie par l'IA: " + coupIa);
                 plateauInitial.jouerCarte(coupIa);
                 //winningCard = ReglesDeJeu.carteGagnante(coupIa, coupAdversaire, plateauInitial);
@@ -158,9 +155,9 @@ public class TestIAMinMax {
                 partieTerminee = true;
             }
 
-            // mettre cartejoueur1 et cartejoueur2 a null
+            /*// mettre cartejoueur1 et cartejoueur2 a null
             plateauInitial.setCarteJoueur1(null);
-            plateauInitial.setCarteJoueur2(null);
+            plateauInitial.setCarteJoueur2(null);*/
         }
 
         return winner;
@@ -200,7 +197,7 @@ public class TestIAMinMax {
         System.out.println("entrer 1 pour l'affichage des hand avant chaque partie : ");
         int rep = s.nextInt();
 
-        for (int i = 0; i < 1; i++) {
+        for (int i = 0; i < 10; i++) {
             Plateau plateau;
             String winner;
 
@@ -210,6 +207,7 @@ public class TestIAMinMax {
                 //System.out.println("entrer 2 pour test avec des hand gagnant pour l'ia  : ");
                 //System.out.println("entrer 3 pour test avec des hand gagnant pour l'adversaire  : ");
                 //plateau = TestFunctions.setPlateauPhase2();
+
                 plateau = TestFunctions.setPlateauPhase2();
 
                 if(rep == 1){

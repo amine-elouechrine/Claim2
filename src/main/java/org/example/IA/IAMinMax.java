@@ -14,11 +14,11 @@ public class IAMinMax {
     // Classe pour encapsuler le score et le coup
     public static class Result {
         int score;
-        Card coup; //carte jouée par l'IA
+        Card carteIa; //carte jouée par l'IA
 
-        public Result(int score, Card coup) {
+        public Result(int score, Card carteIa) {
             this.score = score;
-            this.coup = coup;
+            this.carteIa = carteIa;
         }
     }
 
@@ -29,101 +29,142 @@ public class IAMinMax {
     // il y a un decalage entre le score (l'evaluation) et l'affichage de maxEval !!!!
     // lors de la minimisation tous les coup en le meme minEval ??? -infinie !!!
     // lors de la minimisation les calculs sont incorrecte determiner coup possible ! parce que lors de la minimisation l'adversaire a deja jouer donc les calculs seront fais sur les tous les cartes qui sont dans la main de l'adversaire et non pas par rapport a la carte qu'il a jouer
-    public static Result minimax(Node node, int depth, boolean maximizingPlayer, int alpha, int beta) {
+    public static Result minimax(Node node, int depth, int alpha, int beta) {
         Result evalResult;
 
         // Incrémenter le compteur de nodes
         nodeCount++;
 
         // Cas de base: si la profondeur est 0 ou si le jeu est terminé
-        if (node.plateau.isEndOfGame()) {
+        if (node.plateau.isEndOfGame() || depth == 0) {
             int evaluation = evaluer1(node);
             System.out.println("Evaluation : " + evaluation);
-            Result result = new Result(evaluation, node.plateau.getCarteJoueur1()); // coup jouer par l'ia
-            System.out.println("carte jouer par l'ia" + node.plateau.getCarteJoueur1());
+            System.out.println("la carte est : "+node.carteJoueeParIa);
+            Result result = new Result(evaluation, node.carteJoueeParIa);
             return result;
         }
+
+        Player leader;
         PlateauState savedState =new PlateauState(node.plateau); // Sauvegarder l'état du plateau (clonage)
-        if (maximizingPlayer) { // si c'est le tour de l'ia
+        List<Card> cartesJouables = new ArrayList<>();
+        if (node.plateau.estTourIa()) { // si c'est le tour de l'ia maximiser
+
+            assert node.plateau.getJoueurCourant().getName().equals("MinMax") ;
+
             int maxEval = Integer.MIN_VALUE;
             Card bestCard = null;
-            for (Coup c : Coup.determinerCoupsPossibles(node.plateau)) { // parcourir les coups possibles
-                //joueur un coup sur le meme plateau
-                node.plateau.jouerCarte(c.getCarte1());
-                node.plateau.switchJoueur();
-                node.plateau.jouerCarte(c.getCarte2());
-                Card carteGagnante = ReglesDeJeu.carteGagnante(c.getCarte1(), c.getCarte2(), node.plateau);
-                node.plateau.attribuerCarteSecondPhase(carteGagnante, new ReglesDeJeu());
 
-                //creer un nouveau noeud avec le plateau apres avoir jouer
-                Node child = new Node(node.plateau , c.getCarte1()); // cree un nouveau noeud avec le plateau apres avoir jouer et la carte jouer par l'ia
-                if(child.plateau.getJoueurCourant().getName().equals("MinMax")){
-                    evalResult = minimax(child, depth - 1, true , alpha, beta );
-                }else{
-                    evalResult = minimax(child, depth - 1, false , alpha, beta );
+            if(depth % 2 == 0){
+                cartesJouables = node.plateau.getJoueurCourant().getHandScndPhase().getAllCards();
+            }else{
+                Card carteAdversaire = node.plateau.getCardAdversaire();
+                cartesJouables = ReglesDeJeu.cartesJouables(carteAdversaire , node.plateau.getJoueurCourant().getHandScndPhase());
+            }
+
+            if (cartesJouables.isEmpty()) {
+                System.out.println("\n\n");
+                System.out.println("cartesJouables est vide.");
+                System.out.println("Aucune carte jouable pour l'IA.");
+                System.out.println("\n\n");
+                return new Result(maxEval, bestCard);
+            }
+
+            List<Card> cartesJouablesCopy = new ArrayList<>(cartesJouables);
+            for(Card c : cartesJouablesCopy) {
+                node.plateau.jouerCarte(c);
+                node.plateau.setCarteJoueur1(c);
+                System.out.println("carte jouer par l'ia : " + c + "au depth :" + depth);
+
+
+                if (depth % 2 == 1) { // determiner le gagnant
+                    Card carteGagnante = ReglesDeJeu.carteGagnante(node.plateau.getCarteJoueur1(), node.plateau.getCarteJoueur2(), node.plateau);
+                    node.plateau.attribuerCarteSecondPhase(carteGagnante, new ReglesDeJeu());
+                    node.plateau.setCarteJoueur1(null);
+                    node.plateau.setCarteJoueur2(null);
+
+                }else {
+                    node.plateau.switchJoueur(); // pour passer le tour a l'adversaire
+                    System.out.println("Tour après switchJoueur : " + (node.plateau.estTourIa() ? "IA" : "Adversaire"));
                 }
 
-                //restaurer le plateau
-                node.plateau.restoreState(savedState);
-                //maxEval = Math.max(maxEval, eval);
+                //creer un nouveau noeud avec le plateau apres avoir jouer
+                Node child = new Node(node.plateau);
+                child.setCarteJoueeParIa(c);
+                evalResult = minimax(child, depth - 1, alpha, beta);
+                //node.plateau.restoreState(savedState);
+
                 if (evalResult.score > maxEval) {
                     maxEval = evalResult.score;
-                    bestCard = c.getCarte1(); // La carte jouée par l'IA
-                    System.out.println("bestCard : " + bestCard);
+                    bestCard = node.plateau.getCarteJoueur1();
+                    System.out.println("bestCard IA: " + bestCard);
                     System.out.println("maxEval : " + maxEval);
                 }
                 alpha = Math.max(alpha, evalResult.score);
+                node.plateau.restoreState(savedState);
                 if (beta <= alpha) {
                     break; // Élagage alpha
                 }
             }
-            node.setScore(maxEval); // Mettre à jour la valeur d'évaluation du node
-            node.setCarteJoueeParIa(bestCard); // Mettre à jour la carte jouée par l'IA
-            Result result = new Result(maxEval, bestCard);
-            //return maxEval;
-            return result;
-        } else {   // lorsqu'on minimise lors du premiere appel c'est que l'adversaire a deja jouer don il faut ajouter la carte jouer par l'adversaire
+            return new Result(maxEval, bestCard);
 
-                    // pour resoudre le probleme de la minimisation il faut mettre les cartes 1 et 2 a null apres chaque tour
-                    // pour puisse faire une condition sur la carte jouer par l'adversaire et faire les coup possible que par rapport a cette carte
+        } else {   // c'est le tour de l'adversaire
+            assert node.plateau.getJoueurCourant().getName().equals("Facile") ;
 
 
             int minEval = Integer.MAX_VALUE;
             Card bestCard = null;
-            for (Coup c : Coup.determinerCoupsPossibles(node.plateau)) {
-                //joueur un coup sur le meme plateau
-                node.plateau.jouerCarte(c.getCarte1());
-                node.plateau.switchJoueur();
-                node.plateau.jouerCarte(c.getCarte2());
-                Card carteGagnante = ReglesDeJeu.carteGagnante(c.getCarte1(), c.getCarte2(), node.plateau);
-                node.plateau.attribuerCarteSecondPhase(carteGagnante, new ReglesDeJeu());
+
+            if(depth % 2 == 0){
+                cartesJouables = node.plateau.getJoueurCourant().getHandScndPhase().getAllCards();
+            }else{
+                Card carteAdversaire = node.plateau.getCardAdversaire();
+                cartesJouables = ReglesDeJeu.cartesJouables(carteAdversaire , node.plateau.getJoueurCourant().getHandScndPhase());
+            }
+
+            if (cartesJouables.isEmpty()) {
+                System.out.println("\n\n");
+                System.out.println("cartesJouables est vide.");
+                System.out.println("Aucune carte jouable pour l'IA.");
+                System.out.println("\n\n");
+                return new Result(minEval, bestCard);
+            }
+            List<Card> cartesJouablesCopy = new ArrayList<>(cartesJouables);
+            for(Card c : cartesJouablesCopy) {
+                node.plateau.jouerCarte(c);
+                node.plateau.setCarteJoueur2(c);
+                System.out.println("carte jouer par l'adversiare : " + c + "au depth :" + depth);
+
+                if (depth % 2 == 1 ) { // determiner le gagnant
+                    Card carteGagnante = ReglesDeJeu.carteGagnante(node.plateau.getCarteJoueur1(), node.plateau.getCarteJoueur2(), node.plateau);
+                    node.plateau.attribuerCarteSecondPhase(carteGagnante, new ReglesDeJeu());
+                    node.plateau.setCarteJoueur1(null);
+                    node.plateau.setCarteJoueur2(null);
+                }else {
+                    node.plateau.switchJoueur(); // pour passer le tour a l'adversaire
+                    System.out.println("Tour après switchJoueur : " + (node.plateau.estTourIa() ? "IA" : "Adversaire"));
+                }
 
                 //creer un nouveau noeud avec le plateau apres avoir jouer
-                Node child = new Node(node.plateau , c.getCarte2()); // lorsqu'on est minimizant c'est le l'adversaire qui commence a jouer donc l'ia a la carte 2
-                if(child.plateau.getJoueurCourant().getName().equals("MinMax")){
-                    evalResult = minimax(child, depth - 1, true , alpha, beta );
-                }else{
-                    evalResult = minimax(child, depth - 1, false , alpha, beta );
-                }
-                //restaurer le plateau
-                node.plateau.restoreState(savedState);
-                //minEval = Math.min(minEval, eval);
+                Node child = new Node(node.plateau);
+                child.setCarteJoueeParIa(node.plateau.getCarteJoueur1());
+                evalResult = minimax(child, depth - 1, alpha, beta);
+                //node.plateau.restoreState(savedState);
+
                 if (evalResult.score < minEval) {
                     minEval = evalResult.score;
-                    bestCard = c.getCarte2(); // La carte jouée par l'IA, même si c'est un noeud adversaire pour la consistance
-                    System.out.println("bestCard : " + bestCard);
+                    bestCard = node.plateau.getCarteJoueur2(); // carte jouer par l'adversaire
+                    System.out.println("bestCard Adversaire: " + bestCard);
                     System.out.println("minEval : " + minEval);
                 }
+
                 beta = Math.min(beta, evalResult.score);
+                node.plateau.restoreState(savedState);
                 if (beta <= alpha) {
                     break; // Élagage bêta
                 }
             }
-            node.setScore(minEval); // Mettre à jour la valeur d'évaluation du node
-            node.setCarteJoueeParIa(bestCard); // Mettre à jour la carte jouée par l'IA
-            Result result = new Result(minEval, bestCard);
-            //return minEval;
-            return result;
+            System.out.println("minEval : " + minEval+" bestCard is : " + bestCard);
+            return new Result(minEval, bestCard);
         }
     }
 
@@ -144,20 +185,10 @@ public class IAMinMax {
         Node nodeRacine = racine.clone();
         Result result;
 
-
-        // si MinMax est leader
-        if(nodeRacine.plateau.estLeader()){
-            // Appel de l'algorithme Minimax pour évaluer le meilleur coup
-            result = minimax(nodeRacine, 13, true,Integer.MIN_VALUE , Integer.MAX_VALUE);
-            System.out.println("maximizing .......");
-            return result.coup;
-        }else{
-            // Appel de l'algorithme Minimax pour évaluer le meilleur coup
-            result = minimax(nodeRacine, 13, false, Integer.MIN_VALUE, Integer.MAX_VALUE);
-            System.out.println("minimizing .......");
-            return result.coup;
-        }
-
+        result = minimax(nodeRacine, 26,Integer.MIN_VALUE , Integer.MAX_VALUE);
+        System.out.println("carte jouer par l'ia : " + result.carteIa);
+        System.out.println("score : " + result.score);
+        return result.carteIa;
     }
 
     // Méthode pour obtenir le nombre de nœuds

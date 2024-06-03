@@ -152,6 +152,15 @@ public class Plateau {
         }
     }
 
+    public boolean estTourIa(){
+        if(joueurCourant.getName().equals("MinMax")){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+
 
 
     public boolean getPhase() {
