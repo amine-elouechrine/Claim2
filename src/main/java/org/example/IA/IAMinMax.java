@@ -212,8 +212,7 @@ public class IAMinMax {
 
         List<Card> cartesJouablesCopy = new ArrayList<>(cartesJouables);
         if (cartesJouablesCopy.isEmpty()) {
-            System.out.println("wwww");
-            System.exit(result);
+
         }
 
         for (Card c : cartesJouablesCopy) {
