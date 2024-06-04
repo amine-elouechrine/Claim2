@@ -24,6 +24,7 @@ public class ComposantFinPartie extends JFrame {
             System.err.println("Erreur de chargement de l'icone");
         }
     }
+    //dfasdf
 
     public ComposantFinPartie(CollecteurEvenements control,NiveauGraphique niv) {
         this.c = control;
