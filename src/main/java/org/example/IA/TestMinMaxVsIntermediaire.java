@@ -17,7 +17,7 @@ public class TestMinMaxVsIntermediaire {
             if (plateauInitial.getJoueurCourant().getName().equals("MinMax")) {
                 // Tour de l'IA
                 System.out.println("Tour de l'IA...");
-                coupIa = iaMinMax.carteJouerIa(plateauInitial); // Profondeur de recherche = 13
+                coupIa = iaMinMax.carteJouerIa(plateauInitial, true); // Profondeur de recherche = 13
                 System.out.println("Carte choisie par l'IA: " + coupIa);
                 plateauInitial.jouerCarte(coupIa);
                 plateauInitial.switchJoueur();
@@ -36,7 +36,7 @@ public class TestMinMaxVsIntermediaire {
                 plateauInitial.jouerCarte(coupAdversaire);
             } else {
                 System.out.println("Tour de l'IA...");
-                coupIa = iaMinMax.carteJouerIa(plateauInitial); // Profondeur de recherche = 13
+                coupIa = iaMinMax.carteJouerIa(plateauInitial,false); // Profondeur de recherche = 13
                 if (coupIa == null) {
                     coupIa = plateauInitial.getJoueur1().getHandScndPhase().get(0);
                 }

@@ -14,7 +14,7 @@ public class Cards extends CardCollection {
 
 
 
-// Constructeur de copie
+    // Constructeur de copie
     public Cards(Cards other) {
         this.cards = new ArrayList<>();
         for (Card card : other.cards) {
@@ -235,6 +235,7 @@ public class Cards extends CardCollection {
             hand.addCard(getCard());
         }
         hand = ranger(hand);
+        shuffle();
         return hand;
     }
 

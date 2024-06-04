@@ -131,7 +131,7 @@ public class Hand extends CardCollection{
      */
     // Obtenir toutes les cartes de la main
     public List<Card> getAllCards() {
-        return cards;
+        return getCards();
     }
 
 

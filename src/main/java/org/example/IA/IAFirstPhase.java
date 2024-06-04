@@ -5,10 +5,7 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Scanner;
 
-/*public class IAFirstPhase {
-    ReglesDeJeu r = new ReglesDeJeu();
-    Player IA;
-    Player adversaire ;
+public class IAFirstPhase {
 
     public IAFirstPhase(){
 
@@ -19,10 +16,10 @@ import java.util.Scanner;
         for (Card carte : plateau.getPioche().getCards()){
             mean += carte.getWeight(carte);
         }
-        for (Card carte : adversaire.getHand().getAllCards()){
+        for (Card carte : plateau.getJoueur2().getHand().getAllCards()){
             mean += carte.getWeight(carte);
         }
-        int taille = plateau.getPioche().getSize() + adversaire.getHand().size();
+        int taille = plateau.getPioche().getSize() + plateau.getJoueur2().getHand().size();
         if (taille!=0)
             return mean/taille;
         else
@@ -38,6 +35,7 @@ import java.util.Scanner;
                 maxCard = card.getValeur();
             }
         }
+        //IAhand.removeCard(card);
         return card;
     }
 
@@ -50,6 +48,7 @@ import java.util.Scanner;
                 minCArd = carte.getWeight(carte);
             }
         }
+        //IAhand.removeCard(card);
         return card;
     }
 
@@ -63,12 +62,14 @@ import java.util.Scanner;
                 mincard = carte;
             }
         }
+        //IAhand.removeCard(mincard);
         return mincard;
     }
 
     public Card minMaxCard(Hand IAhand,Card carteAdversaire) {
         Card highestSmallerCard = null;
         int opponentValue = carteAdversaire.getValeur();
+        List<Card> carteJouables = ReglesDeJeu.cartesJouables(carteAdversaire,IAhand);
         boolean in =false ;
         for (Card carte : carteJouables) {
             if (carte.getFaction().equals(carteAdversaire.getFaction())) {
@@ -154,10 +155,11 @@ import java.util.Scanner;
     }
 
 
-    Plateau p = new Plateau();
-    IA = new Player("IA");
-    adversaire = new Player("joueur1");
-    Cards pioche = new Cards();
+    /*public IAFirstPhase(ReglesDeJeu r){
+        Plateau p = new Plateau();
+        IA = new Player("IA");
+        adversaire = new Player("joueur1");
+        Cards pioche = new Cards();
         pioche.addAllCards();
         pioche.shuffle();
         IA.setHand(pioche.getHandOf13Cards());
@@ -167,48 +169,53 @@ import java.util.Scanner;
         p.setJoueur2(adversaire);
         p.setJoueurCourant(IA);
         p.setPhase(true);
-    int mean =  moyenneDuPoids(p);
+        int mean =  moyenneDuPoids(p);
 
         while(!(p.getJoueur1().getHand().isEmpty())&&!(p.getJoueur1().getHand().isEmpty())) {
-        p.setCardAffiche(p.getPioche().getCard());
-        Card premiereCarte ;
-        System.out.println("on va jouer sur la carte "+ p.getCarteAffichee());
-        if (p.getJoueurCourant().getName().equals("IA")){
-            premiereCarte = jouerCarteIA(p);
-            p.setCarteJoueur1(premiereCarte);
-            System.out.println("L'IA a choisie la carte " + premiereCarte);
+            p.setCardAffiche(p.getPioche().getCard());
+            Card premiereCarte ;
+            System.out.println("on va jouer sur la carte "+ p.getCarteAffichee());
+            if (p.getJoueurCourant().getName().equals("IA")){
+                premiereCarte = jouerCarteIA(p);
+                p.setCarteJoueur1(premiereCarte);
+                System.out.println("L'IA a choisie la carte " + premiereCarte);
+            }
+            else{
+                premiereCarte = getCardAdversaireIfLeader(p);
+                p.setCarteJoueur2(premiereCarte);
+            }
+            p.switchJoueur();
+            Card deuxiemeCarte ;
+            if (p.getJoueurCourant().getName().equals("IA")){
+                deuxiemeCarte = jouerCarteIA(p);
+                System.out.println("L'IA a choisie la carte " + deuxiemeCarte);
+                p.setCarteJoueur1(deuxiemeCarte);
+            }
+            else{
+                deuxiemeCarte = getCardAdversaireIfNotLeader(p,premiereCarte);
+                p.setCarteJoueur2(deuxiemeCarte);
+            }
+            Card WinningCard = r.carteGagnante(p.getCarteJoueur1(),p.getCarteJoueur2(),p);
+            if (WinningCard == p.getCarteJoueur1()){
+                p.getJoueur1().getHandScndPhase().addCard(p.getCarteAffichee());
+                p.getJoueur2().getHandScndPhase().addCard(p.getPioche().getCard());
+                p.setJoueurCourant(p.getJoueur1());
+            }
+            else{
+                p.getJoueur2().getHandScndPhase().addCard(p.getCarteAffichee());
+                p.getJoueur1().getHandScndPhase().addCard(p.getPioche().getCard());
+                p.setJoueurCourant(p.getJoueur2());
+            }
+            mean=moyenneDuPoids(p);
         }
-        else{
-            premiereCarte = getCardAdversaireIfLeader(p);
-            p.setCarteJoueur2(premiereCarte);
-        }
-        p.switchJoueur();
-        Card deuxiemeCarte ;
-        if (p.getJoueurCourant().getName().equals("IA")){
-            deuxiemeCarte = jouerCarteIA(p);
-            System.out.println("L'IA a choisie la carte " + deuxiemeCarte);
-            p.setCarteJoueur1(deuxiemeCarte);
-        }
-        else{
-            deuxiemeCarte = getCardAdversaireIfNotLeader(p,premiereCarte);
-            p.setCarteJoueur2(deuxiemeCarte);
-        }
-        Card WinningCard = r.carteGagnante(p.getCarteJoueur1(),p.getCarteJoueur2(),p);
-        if (WinningCard == p.getCarteJoueur1()){
-            p.getJoueur1().getHandScndPhase().addCard(p.getCarteAffichee());
-            p.getJoueur2().getHandScndPhase().addCard(p.getPioche().getCard());
-            p.setJoueurCourant(p.getJoueur1());
-        }
-        else{
-            p.getJoueur2().getHandScndPhase().addCard(p.getCarteAffichee());
-            p.getJoueur1().getHandScndPhase().addCard(p.getPioche().getCard());
-            p.setJoueurCourant(p.getJoueur2());
-        }
-        mean=moyenneDuPoids(p);
-    }
         System.out.println("voici la main de seconde phase de L'IA");
         for (Card carte :p.getJoueur1().getHandScndPhase().getCards()){
-        System.out.println(carte);
+            System.out.println(carte);
+        }
     }
+    public static void main (String [] args){
+        ReglesDeJeu r = new ReglesDeJeu();;
+        new IAFirstPhase(r);
+
+    }*/
 }
-*/

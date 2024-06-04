@@ -41,11 +41,13 @@ public class Plateau {
         this.carteJoueur2 = other.carteJoueur2 != null ? new Card(other.carteJoueur2) : null;
         this.joueur1 = other.joueur1 != null ? new Player(other.joueur1) : null;
         this.joueur2 = other.joueur2 != null ? new Player(other.joueur2) : null;
-        if (other.joueurCourant == other.joueur1) {
+        if (other.joueurCourant.getName().equals(other.joueur1.getName())) {
             this.joueurCourant = this.joueur1;
         } else {
             this.joueurCourant = this.joueur2;
         }
+        this.defausse = other.defausse != null ? new Defausse(other.defausse) : null;
+        this.pioche = other.pioche != null ? new Cards(other.pioche) : null;
         this.phase = other.phase;
     }
 
@@ -88,10 +90,12 @@ public class Plateau {
         this.carteJoueur2 = state.getCarteJoueur2();
         this.joueur1 = state.getJoueur1();
         this.joueur2 = state.getJoueur2();
-        if (state.getJoueurCourant() == state.getJoueur1())
-            this.joueurCourant = this.joueur1 ;
-        else
+        if (state.getJoueurCourant() == state.getJoueur1()) {
+            this.joueurCourant = this.joueur1;
+        }else {
             this.joueurCourant = this.joueur2;
+        }
+        this.defausse = state.getDefausse();
         this.phase = false;
     }
 
@@ -139,6 +143,23 @@ public class Plateau {
             return joueur1;
         }
     }
+
+    public Card getAdversaireCard(){
+        if(joueurCourant == joueur1){
+            return carteJoueur2;
+        }else{
+            return carteJoueur1;
+        }
+    }
+
+    public boolean estTourIa(){
+        if(joueurCourant.getName().equals("MinMax")){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
 
 
 
@@ -453,12 +474,14 @@ public class Plateau {
     public void attribuerCarteSecondPhase(Card winningCard, ReglesDeJeu r) {// on doit changer la fonction ApplyDwarveRule:c'est fait
         if (r.carteEgaux(carteJoueur1, carteJoueur2)) {
             // determiner le leader
-            if (joueurCourant.getName().equals(joueur2.getName())) { // si le joueur 1 est le leader
-                r.applySecondPhaseRules(joueur1, joueur2, carteJoueur1, carteJoueur2);
-                joueurCourant = joueur1;
-            } else {
+            if (joueurCourant.getName().equals(joueur1.getName())) { // si le joueur 1 est le leader
                 r.applySecondPhaseRules(joueur2, joueur1, carteJoueur2, carteJoueur1);
                 joueurCourant = joueur2;
+            } else {
+
+
+                r.applySecondPhaseRules(joueur1, joueur2, carteJoueur1, carteJoueur2);
+                joueurCourant = joueur1;
             }
         } else {
             if (winningCard == carteJoueur1) {

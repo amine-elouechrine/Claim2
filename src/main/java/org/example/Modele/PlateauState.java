@@ -11,6 +11,8 @@ public class PlateauState {
     private Player joueur1;
     private Player joueur2;
     private Player joueurCourant;
+    private Defausse defausse;
+    private PileDeScore pileDeScore;
     private Boolean phase;
 
     public PlateauState(Card carteJoueur1, Card carteJoueur2,
@@ -34,6 +36,7 @@ public class PlateauState {
         } else {
             this.joueurCourant = this.joueur2;
         }
+        this.defausse = other.defausse != null ? new Defausse(other.defausse) : null;
         this.phase = other.phase;
     }
 
@@ -60,6 +63,10 @@ public class PlateauState {
 
     public Boolean getPhase() {
         return phase;
+    }
+
+    public Defausse getDefausse() {
+        return defausse;
     }
 
 }
