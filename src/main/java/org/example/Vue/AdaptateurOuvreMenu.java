@@ -6,24 +6,29 @@ import java.awt.event.ActionListener;
 
 public class AdaptateurOuvreMenu implements ActionListener {
 
-    JToggleButton toggle;
+    RoundedButton bouton;
     JFrame fenetre;
     NiveauGraphique niv;
+    boolean menuVisible;
 
-
-    AdaptateurOuvreMenu(JToggleButton t, JFrame f, NiveauGraphique n) {
-        toggle = t;
+    AdaptateurOuvreMenu(RoundedButton b, JFrame f, NiveauGraphique n) {
+        bouton = b;
         fenetre = f;
         niv = n;
+        menuVisible = false;
         f.setVisible(false);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (toggle.isSelected()) {
+        System.out.println("Ouverture/Fermeture du menu");
+        menuVisible = !menuVisible;
+        if (menuVisible) {
             fenetre.setVisible(true);
+            bouton.setText("Fermer Menu");
         } else {
             fenetre.setVisible(false);
+            bouton.setText("Ouvrir Menu");
             niv.requestFocus();
         }
     }

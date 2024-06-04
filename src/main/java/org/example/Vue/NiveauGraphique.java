@@ -135,43 +135,6 @@ public class NiveauGraphique extends JComponent implements Observateur {
         for (String ligne : lignes) {
             acceptFile(new File(ligne));
         }
-
-        /*
-        String directoryPath = "src/main/resources/";
-        File directory = new File(directoryPath);
-        File[] files = directory.listFiles();*/
-
-        // Charge l'image et le nom correspondant dans un hashmap
-        if (files != null) {
-            Arrays.stream(files).filter(File::isFile).forEach(this::acceptFile);
-        } else {
-            System.out.println("No files found in the directory.");
-        }
-
-
-
-        // Chargement icons
-        icon_goblin = imageMap.get("icon_goblin");
-        icon_knight = imageMap.get("icon_knight");
-        icon_undead = imageMap.get("icon_undead");
-        icon_dwarve = imageMap.get("icon_dwarve");
-        icon_doppleganger = imageMap.get("icon_doppleganger");*/
-
-
-    }
-
-    public static BufferedImage imageToBufferedImage(Image image) {
-        // Crée un BufferedImage avec le type ARGB (avec canal alpha) de la même taille que l'image
-        BufferedImage bufferedImage = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
-
-        // Obtient le contexte graphique du BufferedImage
-        Graphics2D g2d = bufferedImage.createGraphics();
-
-        // Dessine l'image sur le BufferedImage
-        g2d.drawImage(image, 0, 0, null);
-        g2d.dispose();
-
-        return bufferedImage;
     }
 
     public void loadImages() {

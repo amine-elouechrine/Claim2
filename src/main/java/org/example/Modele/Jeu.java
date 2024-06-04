@@ -142,9 +142,11 @@ public class Jeu extends Observable {
     public int[][] getCarteJouable(Card carteJoue, Hand main) {
         return getListeCarte(ReglesDeJeu.cartesJouables(carteJoue, main));
     }
+
     public int[][] getCarteJouableGagnante(Card carteJoue, Hand main) {
         return getListeCarte(ReglesDeJeu.cartesJouablesGagnant(carteJoue, ReglesDeJeu.cartesJouables(carteJoue, main), getPlateau()));
     }
+
     public int[][] getCarteJouablePerdante(Card carteJoue, Hand main) {
         return getListeCarte(ReglesDeJeu.cartesJouablesPerdant(carteJoue, ReglesDeJeu.cartesJouables(carteJoue, main), getPlateau()));
     }
@@ -260,7 +262,7 @@ public class Jeu extends Observable {
         else
             carteGagnante = ReglesDeJeu.carteGagnante(getPlateau().getCarteJoueur1(), getPlateau().getCarteJoueur2(), getPlateau());
 
-        if(carteGagnante == getPlateau().getCarteJoueur1())
+        if (carteGagnante == getPlateau().getCarteJoueur1())
             return getPlateau().getJoueur1();
         else
             return getPlateau().getJoueur2();
@@ -287,8 +289,14 @@ public class Jeu extends Observable {
     public void refaireCoup() {
         g.refaire(getPlateau());
     }
-    public void clearStackAnnule(){g.clearStackAnnule();}
-    public void clearStackRefaire(){g.clearStackRefaire();}
+
+    public void clearStackAnnule() {
+        g.clearStackAnnule();
+    }
+
+    public void clearStackRefaire() {
+        g.clearStackRefaire();
+    }
 
     public void addAction() {
         g.addToHistory(getPlateau());
@@ -350,4 +358,20 @@ public class Jeu extends Observable {
         }
     }
 
+    public String help() {
+        if (plateau.getPhase()) {//si phase 1
+            if (plateau.estLeader2()) {
+                return "Si la carte affichée au milieu est une carte que vous pensez être utile pour la phase 2, alors vous pouvez jouer une carte de votre main qui vous permettra de gagner la carte affichée";
+            } else {
+                return "Pour gagner la carte affiché au milieu, il faut jouer une carte de la meme faction, les cartes qui vous permettent de gagner la manche sont en vert";
+            }
+        } else {
+            if (plateau.estLeader2()) {
+                return "C'est à vous de commencer la manche, jouer une carte que vous pensez être utile pour gagner la manche et dominer la faction";
+            } else {
+                //phase 2
+                return "C'est à vous de jouer, il faut jouer une carte de la même faction que la carte de l'adversaire pour gagner la manche ou un doppleganger";
+            }
+        }
+    }
 }

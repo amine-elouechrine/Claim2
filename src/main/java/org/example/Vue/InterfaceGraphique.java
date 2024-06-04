@@ -5,6 +5,8 @@ import org.example.Modele.Jeu;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 
@@ -85,16 +87,15 @@ public class InterfaceGraphique implements Runnable, InterfaceUtilisateur {
         menuPanel.setBackground(Color.DARK_GRAY);
 
         // Menu
-        JToggleButton menu = new JToggleButton("Menu");
+        RoundedButton  menu = new RoundedButton ("Menu");
 
         // Bouton nouvelle partie rapide
-        JButton nouvellePartie = new JButton("Nouvelle Partie");
+        RoundedButton nouvellePartie = new RoundedButton("Nouvelle Partie");
         nouvellePartie.addActionListener(new AdaptateurNouvellePartie(control));
 
         // Bouton règle
-        JButton regle = new JButton(("Aide"));
-        // TODO : Ajouter l'adaptateur qui ouvre les règles
-        //aide.addActionListener(new AdaptateurAide(control));
+        RoundedButton regle = new RoundedButton("Aide");
+        regle.addActionListener(new AdaptateurHelpButton(control));
 
         menuPanel.add(menu);
         menuPanel.add(nouvellePartie);
