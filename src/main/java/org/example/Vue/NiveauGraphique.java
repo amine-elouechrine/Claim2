@@ -126,57 +126,36 @@ public class NiveauGraphique extends JComponent implements Observateur {
         control = c;
         jeu = j;
         jeu.ajouteObservateur(this);
+        GestionClicPileScore gestionClicPileScore = new GestionClicPileScore(this, this.control);
+        addMouseListener(gestionClicPileScore);
+        // Dans le constructeur de NiveauGraphique ou une méthode d'initialisation
+        // Ajoutez cette ligne
+
         rec = rejouer;
         drawC = drawCheck;
         fin = finPartie;
         // Load images
+
+
         String contenu = ResourceManager.readTextFile("/fileNames.txt");
         String[] lignes = contenu.split("\n");
         for (String ligne : lignes) {
             acceptFile(new File(ligne));
         }
 
+
         /*
         String directoryPath = "src/main/resources/";
         File directory = new File(directoryPath);
         File[] files = directory.listFiles();
 
-        // Charge l'image et le nom correspondant dans un hashmap
-        if (files != null) {
-            Arrays.stream(files).filter(File::isFile).forEach(this::acceptFile);
-        } else {
-            System.out.println("No files found in the directory.");
-        }
 
 
-
-        // Chargement icons
-        icon_goblin = imageMap.get("icon_goblin");
-        icon_knight = imageMap.get("icon_knight");
-        icon_undead = imageMap.get("icon_undead");
-        icon_dwarve = imageMap.get("icon_dwarve");
-        icon_doppleganger = imageMap.get("icon_doppleganger");*/
 
 
     }
 
-    public static BufferedImage imageToBufferedImage(Image image) {
-        // Crée un BufferedImage avec le type ARGB (avec canal alpha) de la même taille que l'image
-        BufferedImage bufferedImage = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
 
-        // Obtient le contexte graphique du BufferedImage
-        Graphics2D g2d = bufferedImage.createGraphics();
-
-        // Dessine l'image sur le BufferedImage
-        g2d.drawImage(image, 0, 0, null);
-        g2d.dispose();
-
-        return bufferedImage;
-    }
-
-    public void loadImages() {
-        acceptFile(new File("icon_goblin.png"));
-    }
 
     /*
      * Peindre le plateau de jeu
@@ -188,6 +167,18 @@ public class NiveauGraphique extends JComponent implements Observateur {
         super.paintComponent(g);
         paintGameBoard(g);
     }
+
+    public boolean isCoordinateInPlayer1Hand(int x, int y) {
+        // Vérifie si la coordonnée X se trouve dans la plage horizontale de la main du joueur 1
+        if (x >= startHandXJ1 && x <= (startHandXJ1 + totalWidthJ1)) {
+            // Vérifie si la coordonnée Y se trouve dans la plage verticale de la main du joueur 1
+            if (y >= posHandYJ1 && y <= (posHandYJ1 + rectHeight)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     private void paintGameBoard(Graphics2D g) {
         // Set bigger font size
@@ -248,6 +239,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
             fin.messageLabel.setText("Le Joueur " + fin.JoueurGagnant + " a gagné");
             rec.setVisible(true);
             fin.setVisible(true);
+            drawScorePile(g);
         }
 
         /* Phase 1 */
@@ -269,14 +261,16 @@ public class NiveauGraphique extends JComponent implements Observateur {
 
             // Ajouter "À toi de jouer" pour le joueur 1
             if (control.isJoueurCourantJoueur1()) {
-                g.setFont(font_2);
+                g.setFont(new Font("Segoe UI", Font.BOLD, 20));
                 g.setColor(Color.RED); // Utiliser la couleur actuelle
+
                 g.drawString("À toi de jouer", positionPileScoreJ1X - 30, posHandYJ1 - 23);
             }
 
             y = 10;
             mainJ2 = control.getHandJ2P1();
             drawHandJ2(g);
+
 
 
             drawJoueurGagnant(g);
@@ -370,6 +364,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
 
         drawCarteJoue(g, carteJ1F, carteJ1V, positionCarteJoueJ1X, positionCarteJoueJ1Y, currentCarteJoue1X, currentCarteJoue1Y);
         drawCarteJoue(g, carteJ2F, carteJ2V, positionCarteJoueJ2X, positionCarteJoueJ2Y, currentCarteJoue2X, currentCarteJoue2Y);
+
     }
 
     private void drawHiddenHand(Graphics2D g, int nbCardHand) {
@@ -659,6 +654,13 @@ public class NiveauGraphique extends JComponent implements Observateur {
         // Draw la carte gagnee avec la plus grand valeur
         g.drawImage(image, imageX, imageY, rectWidth / 4, rectHeight / 4, this);
     }
+    public void loadIcon(){
+        icon_goblin = imageMap.get("icon_goblin");
+        icon_knight = imageMap.get("icon_knight");
+        icon_undead = imageMap.get("icon_undead");
+        icon_dwarve = imageMap.get("icon_dwarve");
+        icon_doppleganger = imageMap.get("icon_doppleganger");
+    }
 
     private void calculScore(Graphics g, int i) {
 
@@ -704,6 +706,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
 
 
         }
+        loadIcon();
         // Draw icon goblin
         if (i == 1) {
             drawIcon(g, icon_goblin);
@@ -730,6 +733,28 @@ public class NiveauGraphique extends JComponent implements Observateur {
         g.dispose();
 
         return grayImage;
+    }
+    // Vérifie si un clic est sur le deck des followers
+    public boolean isClickOnFollowerDeck(int clickX, int clickY) {
+        // Vérifie si le clic est sur le deck du Joueur 1
+        if (clickX >= positionFollower1X && clickX <= positionFollower1X + rectWidth &&
+                clickY >= positionFollower1Y && clickY <= positionFollower1Y + rectHeight) {
+            return true;
+        }
+        // Si le clic n'est pas sur l'un des decks
+        return false;
+    }
+
+    public boolean isMouseOverFollowerDeck(int mouseX, int mouseY) {
+        // Vérifie si la souris est au-dessus du deck du Joueur 1
+        if (mouseX >= positionFollower1X && mouseX <= positionFollower1X + rectWidth &&
+                mouseY >= positionFollower1Y && mouseY <= positionFollower1Y + rectHeight) {
+
+
+            return true;
+        }
+        // Si la souris n'est pas au-dessus du deck
+        return false;
     }
 
     // Dessine les decks de followers
@@ -1023,7 +1048,9 @@ public class NiveauGraphique extends JComponent implements Observateur {
         String fileName = file.getName();
         if (fileName.endsWith(".png")) {
             String imageName = fileName.substring(0, fileName.lastIndexOf("."));
-            Image image3 = null;
+            Image image3= null;
+
+
             try {
                 String filenameModified = "/" + fileName;
                 java.net.URL imageURL = getClass().getResource(filenameModified);

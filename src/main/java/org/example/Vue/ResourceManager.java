@@ -28,9 +28,4 @@ public class ResourceManager {
         return content.toString();
     }
 
-    public static void main(String[] args) {
-        // Exemple d'utilisation de readTextFile
-        String fileContent = readTextFile("/fileNames.txt");
-        System.out.println(fileContent);
-    }
 }

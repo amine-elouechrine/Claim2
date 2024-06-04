@@ -23,10 +23,12 @@ public class ComposantRejouer extends JFrame {
 
         // Change l'icone de la fenetre principale
         try {
-            this.setIconImage(ImageIO.read(new File("src/main/resources/Claim.png")));
+            this.setIconImage(ImageIO.read(getClass().getResource("/Claim.png")));
+
         } catch (IOException exc) {
             System.out.println("Erreur de chargement de l'icone");
         }
+
 
         // setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(300, 200); // Augmentez la hauteur pour inclure les nouveaux champs de texte

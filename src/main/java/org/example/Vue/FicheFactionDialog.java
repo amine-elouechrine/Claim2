@@ -22,7 +22,7 @@ public class FicheFactionDialog extends JDialog {
         panelJ1.setBorder(BorderFactory.createTitledBorder(control.getNomJoueur1()));
 
         for (Card card : cardsJ1) {
-            panelJ1.add(new JLabel(card.toString()));  // Remplacez par un affichage graphique de la carte si disponible
+            panelJ1.add(new JLabel(card.getValeur()+" de "+card.getFaction()));  // Remplacez par un affichage graphique de la carte si disponible
         }
 
         // Panel pour les cartes du joueur 2
@@ -30,7 +30,7 @@ public class FicheFactionDialog extends JDialog {
         panelJ2.setLayout(new GridLayout(0, 1));
         panelJ2.setBorder(BorderFactory.createTitledBorder(control.getNomJoueur2()));
         for (Card card : cardsJ2) {
-            panelJ2.add(new JLabel(card.toString()));  // Remplacez par un affichage graphique de la carte si disponible
+            panelJ2.add(new JLabel(card.getValeur()+" de "+card.getFaction()));  // Remplacez par un affichage graphique de la carte si disponible
         }
 
         add(panelJ1, BorderLayout.WEST);

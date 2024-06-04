@@ -66,6 +66,11 @@ public class ControleurMediateur implements CollecteurEvenements {
         }
     }
 
+
+    public String help(){
+        return jeu.help();
+    }
+
     public List<Card> getCardsFromPileScoreJ2(String factionName) {
         List<Card> List = jeu.getPlateau().getJoueur2().pileDeScore.getCardsOfFunction(factionName);
         if (List != null) {
@@ -515,6 +520,18 @@ public class ControleurMediateur implements CollecteurEvenements {
         }
     }
 
+    private void testFin() {
+        if (jeu.estFinPhase1()) {
+            jeu.switchPhase();
+            if (estFinPartie()){
+                //System.exit(0);
+            }
+
+        }
+    }
+
+
+
     public void ajouteInterfaceUtilisateur(InterfaceUtilisateur v) {
         vue = v;
     }
@@ -596,6 +613,11 @@ public class ControleurMediateur implements CollecteurEvenements {
         vue.initializeAnimationDefausse(totalIterations, card1Faction, card2Faction, joueur);
         mouvement = new AnimationDefausse(totalIterations, this, delay);
         animations.insereQueue(mouvement);
+    }
+
+    public List<Card> getFollowerDeckJ1(){
+        return jeu.getPlateau().getJoueur1().getHandScndPhase().getCards();
+
     }
 
     public void setPause(boolean pause) {

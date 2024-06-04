@@ -20,20 +20,23 @@ import org.example.IA.IA;
 
 public class InterfacePartieCustom extends JFrame implements Runnable {
 
-    private JTextField joueur1Field;
-    private JTextField joueur2Field;
+    private RoundedTextField joueur1Field;
+    private RoundedTextField joueur2Field;
     private JComboBox<String> IA1ComboBox;
 
     IA ia;
 
     public InterfacePartieCustom() {
         this.setTitle("Claim jeu de carte");
-
+        BackgroundImage backgroundPanel = new BackgroundImage("/backgroundImage.jpg");
         try {
-            this.setIconImage(ImageIO.read(new File("src/main/resources/Claim.png")));
+            this.setIconImage(ImageIO.read(getClass().getResource("/Claim.png")));
         } catch (IOException exc) {
             System.out.println("Erreur de chargement de l'icone");
         }
+        System.out.println("InterfacePartieCustom");
+        add(backgroundPanel);
+
 
         // Quand on quitte la fênetre
         this.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
@@ -48,7 +51,7 @@ public class InterfacePartieCustom extends JFrame implements Runnable {
 
 
         JLabel joueur1Label = new JLabel("Nom du joueur 1 : ");
-        joueur1Field = new JTextField(10);
+        joueur1Field = new RoundedTextField(10);
         panel.add(joueur1Label, gbc);
         gbc.gridx++;
         panel.add(joueur1Field, gbc);
@@ -56,7 +59,7 @@ public class InterfacePartieCustom extends JFrame implements Runnable {
         gbc.gridy++;
 
         JLabel joueur2Label = new JLabel("Nom du joueur 2 : ");
-        joueur2Field = new JTextField(10);
+        joueur2Field = new RoundedTextField(10);
         panel.add(joueur2Label, gbc);
         gbc.gridx++;
         panel.add(joueur2Field, gbc);
@@ -74,10 +77,15 @@ public class InterfacePartieCustom extends JFrame implements Runnable {
         gbc.gridy++;
 
         gbc.gridx = 0;
-        JButton startButton = new JButton("Commencer le jeu");
+        RoundedButton startButton = new RoundedButton("Commencer le jeu");
         gbc.gridwidth = 2;
         gbc.anchor = GridBagConstraints.CENTER;
         panel.add(startButton, gbc);
+        RoundedButton retourButton = new RoundedButton("Retour");
+        //rajouter le bouton retour coin bas droite
+        gbc.gridx = 2;
+        gbc.gridy = 3;
+        panel.add(retourButton, gbc);
 
 
         startButton.addActionListener(new ActionListener() {
@@ -115,9 +123,11 @@ public class InterfacePartieCustom extends JFrame implements Runnable {
 
                                 break;
                         }
-                        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+                        InterfaceGraphique.demarrer(jeu, control, InterfacePartieCustom.this);
+
+                        /*ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
                         scheduler.scheduleAtFixedRate(control::tictac, 0, 100, TimeUnit.MILLISECONDS);
-                        InterfaceGraphique.demarrer(jeu, control);
+                        InterfaceGraphique.demarrer(jeu, control);*/
                         setVisible(false);
                     }
                 } catch (NumberFormatException ex) {
