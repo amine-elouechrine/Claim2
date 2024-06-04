@@ -13,11 +13,7 @@ public class AdaptateurAnnuler implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        try {
-            control.annuler();
-        } catch (IOException ex) {
-            throw new RuntimeException(ex);
-        }
+        control.annuler();
         System.out.println("Clique sur le bouton annuler");
     }
 }

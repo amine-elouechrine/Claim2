@@ -18,9 +18,9 @@ public class ComposantMenuPartie extends JFrame {
         this.jeu = jeu;
         c = control;
 
+        this.setUndecorated(true);
         // Setting up the frame
         this.setTitle("Menu de Claim");
-
         // Change l'icone de la fenetre principale
         try {
             this.setIconImage(ImageIO.read(getClass().getResource("/Claim.png")));
@@ -54,6 +54,20 @@ public class ComposantMenuPartie extends JFrame {
             }
         });
 
+        // Check box pour caché la main du joueur 1
+        JLabel drawHandJ1Label = new JLabel("Cacher la main du Joueur 1 :");
+        JCheckBox drawHandJ1CheckBox = new JCheckBox();
+        drawHandJ1CheckBox.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                // Update the boolean state based on the checkbox status
+                drawCheck.setDrawHandJ1Toggle(e.getStateChange() == ItemEvent.SELECTED);
+                // Optionally, print the state to the console for debugging
+                System.out.println("Checkbox Hand J1 is checked: " + drawCheck.isDrawHandJ1Toggle());
+                jeu.metAJour();
+            }
+        });
+
         // Toggle de l'affichage de la pile de score
         JLabel drawScorePileLabel = new JLabel("Afficher les cartes et infos de la pile de score :");
         JCheckBox drawScorePileCheckBox = new JCheckBox();
@@ -72,6 +86,7 @@ public class ComposantMenuPartie extends JFrame {
         // Panel en plus pour les checkbox
         JPanel panel1 = new JPanel(new FlowLayout(FlowLayout.LEFT));
         JPanel panel2 = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JPanel panel3 = new JPanel(new FlowLayout(FlowLayout.LEFT));
 
         // Boutons Annuler et Refaire coup
         panel.add(new ComposantAnnulerRefaire(axis, control));
@@ -87,9 +102,12 @@ public class ComposantMenuPartie extends JFrame {
         panel1.add(drawHandCheckBox);
         panel2.add(drawScorePileLabel);
         panel2.add(drawScorePileCheckBox);
+        panel3.add(drawHandJ1Label);
+        panel3.add(drawHandJ1CheckBox);
 
         panel.add(panel1);
         panel.add(panel2);
+        panel.add(panel3);
 
         // this.pack();
         this.add(panel);

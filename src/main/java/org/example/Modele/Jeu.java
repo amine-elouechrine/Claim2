@@ -21,25 +21,6 @@ public class Jeu extends Observable {
         r = new ReglesDeJeu();
     }
 
-    public String help(){
-        if(plateau.getPhase()){//si phase 1
-            if(plateau.estLeader2()){
-
-                return "Si la carte affiche au milieu est une carte que vous pensez etre utile pour la phase 2 alors vous pouvez jouer une carte de votre main qui vous permettra de gagner la carte affichee";
-            }else{
-                return "Pour gagner la carte affiche au milieu il faut jouer une carte de la meme faction, les cartes qui vous permez de gagner la manche sont entoure en vert";
-            }
-        }
-        else{
-            if(plateau.estLeader2()){
-                return "C'est a vous de commencer la manche, jouer une carte que vous pensez etre utile pour gagner la mache et dominer la faction";
-            }else{
-                //phase 2
-                return "C'est a vous de jouer il faut jouer une carte de la meme faction que la carte de l'adversaire pour gagner la manche";
-            }
-        }
-    }
-
     public boolean getPhase() {
         return getPlateau().getPhase();
     }
@@ -252,7 +233,7 @@ public class Jeu extends Observable {
                 carteGagnante = ReglesDeJeu.carteGagnante(getPlateau().getCarteJoueur2(), getPlateau().getCarteJoueur1(), getPlateau());
             else
                 carteGagnante = ReglesDeJeu.carteGagnante(getPlateau().getCarteJoueur1(), getPlateau().getCarteJoueur2(), getPlateau());
-            System.out.println("la carte gagnante est " + carteGagnante);
+            // System.out.println("la carte gagnante est " + carteGagnante);
             getPlateau().attribuerCarteFirstPhase(carteGagnante, r);
             if (estFinPhase1()) {
                 switchPhase();
@@ -266,7 +247,7 @@ public class Jeu extends Observable {
                 carteGagnante = ReglesDeJeu.carteGagnante(getPlateau().getCarteJoueur2(), getPlateau().getCarteJoueur1(), getPlateau());
             else
                 carteGagnante = ReglesDeJeu.carteGagnante(getPlateau().getCarteJoueur1(), getPlateau().getCarteJoueur2(), getPlateau());
-            System.out.println("la carte gagnante est " + carteGagnante);
+            // System.out.println("la carte gagnante est " + carteGagnante);
             getPlateau().attribuerCarteSecondPhase(carteGagnante, r);
 
         }
@@ -299,7 +280,7 @@ public class Jeu extends Observable {
         return joueur.getName();
     }
 
-    public void annulerCoup() throws IOException {
+    public void annulerCoup() {
         g.annuler(getPlateau());
     }
 
@@ -324,4 +305,49 @@ public class Jeu extends Observable {
     public Player getJoueur1() {
         return getPlateau().getJoueur1();
     }
+
+    public String getJoueurNomGagnant() {
+        int score;
+        int gagneFaction = 0;
+        String faction = "";
+        for (int i = 1; i <= 5; i++) {
+            switch (i) {
+                case 1:
+                    faction = "Goblins";
+                    break;
+                case 2:
+                    faction = "Dwarves";
+                    break;
+                case 3:
+                    faction = "Knight";
+                    break;
+                case 4:
+                    faction = "Doppelganger";
+                    break;
+                case 5:
+                    faction = "Undead";
+                    break;
+            }
+            score = getNbCardFactionFromPileScoreJ1(faction) - getNbCardFactionFromPileScoreJ2(faction);
+            if (score > 0) {
+                gagneFaction += 1;
+            } else if (score < 0) {
+                gagneFaction -= 1;
+            } else {
+                if ((getMaxValueoOfFactionFromPileScoreJ1(faction) > getMaxValueoOfFactionFromPileScoreJ2(faction))) {
+                    gagneFaction += 1;
+                } else if (getMaxValueoOfFactionFromPileScoreJ1(faction) < getMaxValueoOfFactionFromPileScoreJ2(faction)) {
+                    gagneFaction -= 1;
+                }
+            }
+        }
+        if (gagneFaction > 0) {
+            return getJoueur1().Name;
+        } else if (gagneFaction == 0) {
+            return "match nul";
+        } else {
+            return getJoueur2().Name;
+        }
+    }
+
 }

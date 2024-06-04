@@ -52,7 +52,6 @@ public class GestionClicPileScore implements MouseListener {
             if (!PDSJ1.isEmpty() || !PDSJ2.isEmpty()) {
                 FicheFactionDialog dialog = new FicheFactionDialog(owner, factionCliquee, PDSJ1, PDSJ2, control);
                 dialog.setVisible(true);
-
             }
         }
     }

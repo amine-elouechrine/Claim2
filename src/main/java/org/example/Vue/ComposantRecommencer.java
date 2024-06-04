@@ -40,7 +40,7 @@ public class ComposantRecommencer extends Box implements Observateur {
 
         // Change l'icone de la fenetre principale
         try {
-            parentFrame.setIconImage(ImageIO.read(new File("src/main/resources/assets/gaufre.png")));
+            parentFrame.setIconImage(ImageIO.read(new File("src/main/resources/Claim.png")));
         } catch (
                 IOException exc) {
             System.out.println("Erreur de chargement de l'icone");

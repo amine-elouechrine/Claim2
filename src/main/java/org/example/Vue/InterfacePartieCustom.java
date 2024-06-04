@@ -7,8 +7,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import org.example.Controleur.ControleurMediateur;
+import org.example.IA.Difficile;
 import org.example.IA.Facile;
 import org.example.IA.Intermediare;
 import org.example.Modele.Jeu;
@@ -16,23 +20,20 @@ import org.example.IA.IA;
 
 public class InterfacePartieCustom extends JFrame implements Runnable {
 
-    private RoundedTextField joueur1Field;
-    private RoundedTextField joueur2Field;
+    private JTextField joueur1Field;
+    private JTextField joueur2Field;
     private JComboBox<String> IA1ComboBox;
 
     IA ia;
 
     public InterfacePartieCustom() {
         this.setTitle("Claim jeu de carte");
-        BackgroundImage backgroundPanel = new BackgroundImage("/backgroundImage.jpg");
+
         try {
-            this.setIconImage(ImageIO.read(getClass().getResource("/Claim.png")));
+            this.setIconImage(ImageIO.read(new File("src/main/resources/Claim.png")));
         } catch (IOException exc) {
             System.out.println("Erreur de chargement de l'icone");
         }
-        System.out.println("InterfacePartieCustom");
-        add(backgroundPanel);
-
 
         // Quand on quitte la fênetre
         this.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
@@ -47,7 +48,7 @@ public class InterfacePartieCustom extends JFrame implements Runnable {
 
 
         JLabel joueur1Label = new JLabel("Nom du joueur 1 : ");
-        joueur1Field = new RoundedTextField(10);
+        joueur1Field = new JTextField(10);
         panel.add(joueur1Label, gbc);
         gbc.gridx++;
         panel.add(joueur1Field, gbc);
@@ -55,14 +56,14 @@ public class InterfacePartieCustom extends JFrame implements Runnable {
         gbc.gridy++;
 
         JLabel joueur2Label = new JLabel("Nom du joueur 2 : ");
-        joueur2Field = new RoundedTextField(10);
+        joueur2Field = new JTextField(10);
         panel.add(joueur2Label, gbc);
         gbc.gridx++;
         panel.add(joueur2Field, gbc);
         gbc.gridx = 0;
         gbc.gridy++;
 
-        String[] options = {"Humain", "Facile", "Intermédiaire", "Difficile"};
+        String[] options = {"IA Facile", "IA Intermédiaire", "IA Difficile", "Humain"};
         IA1ComboBox = new JComboBox<>(options);
 
         gbc.gridx = 0;
@@ -73,15 +74,10 @@ public class InterfacePartieCustom extends JFrame implements Runnable {
         gbc.gridy++;
 
         gbc.gridx = 0;
-        RoundedButton startButton = new RoundedButton("Commencer le jeu");
+        JButton startButton = new JButton("Commencer le jeu");
         gbc.gridwidth = 2;
         gbc.anchor = GridBagConstraints.CENTER;
         panel.add(startButton, gbc);
-        RoundedButton retourButton = new RoundedButton("Retour");
-        //rajouter le bouton retour coin bas droite
-        gbc.gridx = 2;
-        gbc.gridy = 3;
-        panel.add(retourButton, gbc);
 
 
         startButton.addActionListener(new ActionListener() {
@@ -96,29 +92,32 @@ public class InterfacePartieCustom extends JFrame implements Runnable {
                         String IA1Selected = (String) IA1ComboBox.getSelectedItem();
                         ControleurMediateur control;
                         switch (IA1Selected) {
-                            case "Facile":
+                            case "IA Facile":
                                 ia = new Facile();
                                 jeu = new Jeu(true, joueur1, "IA Facile");
                                 control = new ControleurMediateur(jeu, ia);
                                 break;
-                            case "Intermédiaire":
+                            case "IA Intermédiaire":
                                 // Création de l'IA
                                 ia = new Intermediare();
                                 jeu = new Jeu(true, joueur1, "IA Intermediare");
                                 control = new ControleurMediateur(jeu, ia);
                                 break;
-                            case "Difficile":
+                            case "IA Difficile":
                                 // Création de l'IA
-                                ia = new Intermediare();
-                                jeu = new Jeu(true, joueur1, "IA Intermediare");
+                                ia = new Difficile();
+                                jeu = new Jeu(true, joueur1, "IA Difficile");
                                 control = new ControleurMediateur(jeu, ia);
                                 break;
                             default:
                                 jeu = new Jeu(false, joueur1, joueur2);
                                 control = new ControleurMediateur(jeu, null);
+
                                 break;
                         }
-                        InterfaceGraphique.demarrer(jeu, control, InterfacePartieCustom.this);
+                        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+                        scheduler.scheduleAtFixedRate(control::tictac, 0, 100, TimeUnit.MILLISECONDS);
+                        InterfaceGraphique.demarrer(jeu, control);
                         setVisible(false);
                     }
                 } catch (NumberFormatException ex) {
