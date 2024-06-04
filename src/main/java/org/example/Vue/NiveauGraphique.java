@@ -271,7 +271,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
             if (control.isJoueurCourantJoueur1()) {
                 g.setFont(font_2);
                 g.setColor(Color.RED); // Utiliser la couleur actuelle
-                g.drawString("À toi de jouer", positionPileScoreJ1X, posHandYJ1 - rectHeight);
+                g.drawString("À toi de jouer", positionPileScoreJ1X - 30, posHandYJ1 - 23);
             }
 
             y = 10;
@@ -314,8 +314,10 @@ public class NiveauGraphique extends JComponent implements Observateur {
             positionPileScoreJ2X = positionPileScoreJ1X;
             positionPileScoreJ2Y = y;
             // Pile de score J1
+            g.drawString("Pile de score J1", x * 3, y + rectHeight * 2 + 20);
             g.drawImage(imageMap.get("carte_score"), x * 3, y + rectHeight, rectWidth, rectHeight, this);
             // Pile de score J2
+            g.drawString("Pile de score J2", x * 3, y - 20);
             g.drawImage(imageMap.get("carte_score"), x * 3, y, rectWidth, rectHeight, this);
             if (drawC.isDrawScorePileToggle())
                 drawScorePile(g);
@@ -330,7 +332,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
             if (control.isJoueurCourantJoueur1()) {
                 g.setFont(font_2);
                 g.setColor(Color.RED); // Utiliser la couleur actuelle
-                g.drawString("À toi de jouer", positionPileScoreJ1X, posHandYJ1 - rectHeight);
+                g.drawString("À toi de jouer", positionPileScoreJ1X - 30, posHandYJ1 - 23);
             }
             y = hauteur() - rectHeight - 10;
             main = control.getHandJ1P2();
@@ -509,7 +511,9 @@ public class NiveauGraphique extends JComponent implements Observateur {
         y = positionDeckY - rectHeight - 20;
         positionDefausseX = x;
         positionDefausseY = y;
+
         // g.fillRect(x, y, rectHeight, rectWidth); // Rectangle latéral
+        g.drawString("Défausse", x, y - 10);
         g.drawImage(imageMap.get("carte_placement_defausse"), x, y, rectWidth, rectHeight, this);
     }
 
@@ -519,6 +523,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
         positionDeckX = largeur() - largeur() / 8;
         positionDeckY = hauteur() / 2;
         // g.fillRect(x, y, rectHeight, rectWidth); // Rectangle latéral
+        g.drawString("Pioche", positionDeckX, positionDeckY + rectHeight + 20);
         g.drawImage(imageMap.get("carte_deck"), positionDeckX, positionDeckY, rectWidth, rectHeight, this);
     }
 
@@ -729,7 +734,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
 
     // Dessine les decks de followers
     private void drawFollowerDeck(Graphics g) {
-
+        g.setColor(Color.ORANGE);
         x = (panelWidth - rectWidth * 2) + 20;
         // Draw follower deck Joueur 1
         // x = startHandXJ1 + totalWidthJ1 + 20;
@@ -737,6 +742,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
         // g.fillRect(x, y, rectWidth, rectHeight);
         positionFollower1X = x;
         positionFollower1Y = y;
+        g.drawString("Seconde Main J1", x - 20, y - 20);
         g.drawImage(imageMap.get("carte_placement_follower"), x, y, rectWidth, rectHeight, this);
 
         // Draw follower deck Joueur 2
@@ -745,6 +751,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
         // g.fillRect(x, y, rectWidth, rectHeight);
         positionFollower2X = x;
         positionFollower2Y = y;
+        g.drawString("Seconde Main J2", x - 20, y + rectHeight + 20);
         g.drawImage(imageMap.get("carte_placement_follower"), x, y, rectWidth, rectHeight, this);
     }
 
