@@ -5,10 +5,8 @@ import org.example.IA.IA;
 import org.example.IA.Intermediare;
 import org.example.Modele.Jeu;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
@@ -43,6 +41,10 @@ public class InterfaceInitiale extends JFrame implements Runnable {
 
         // Making the frame visible
         setVisible(true);
+    }
+
+    public static void demarrer() {
+        SwingUtilities.invokeLater(InterfaceInitiale::new);
     }
 
     public void setWindowIcon(String path) {
@@ -118,17 +120,13 @@ public class InterfaceInitiale extends JFrame implements Runnable {
     }
 
     private void showRules() {
-        JOptionPane.showMessageDialog(this, "Voici les règles du jeu...");
+        new ComposantRegle();
     }
 
     private ImageIcon resizeIcon(ImageIcon icon, int width, int height) {
         Image img = icon.getImage();
         Image resizedImg = img.getScaledInstance(width, height, Image.SCALE_SMOOTH);
         return new ImageIcon(resizedImg);
-    }
-
-    public static void demarrer() {
-        SwingUtilities.invokeLater(InterfaceInitiale::new);
     }
 
     @Override

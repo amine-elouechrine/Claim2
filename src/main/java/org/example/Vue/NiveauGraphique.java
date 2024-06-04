@@ -139,7 +139,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
         /*
         String directoryPath = "src/main/resources/";
         File directory = new File(directoryPath);
-        File[] files = directory.listFiles();
+        File[] files = directory.listFiles();*/
 
         // Charge l'image et le nom correspondant dans un hashmap
         if (files != null) {
@@ -1022,8 +1022,22 @@ public class NiveauGraphique extends JComponent implements Observateur {
 //        }
         miseAJour();
     }
+        public static BufferedImage imageToBufferedImage(Image image) {
+            // Crée un BufferedImage avec le type ARGB (avec canal alpha) de la même taille que l'image
+            BufferedImage bufferedImage = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
 
-    // Pour charger les images dans le hashMap
+            // Obtient le contexte graphique du BufferedImage
+            Graphics2D g2d = bufferedImage.createGraphics();
+
+            // Dessine l'image sur le BufferedImage
+            g2d.drawImage(image, 0, 0, null);
+            g2d.dispose();
+
+            return bufferedImage;
+        }
+
+
+        // Pour charger les images dans le hashMap
     private void acceptFile(File file) {
         String fileName = file.getName();
         if (fileName.endsWith(".png")) {

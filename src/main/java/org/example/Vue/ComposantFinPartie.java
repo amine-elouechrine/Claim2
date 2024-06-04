@@ -5,7 +5,6 @@ import org.example.Patternes.Observateur;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -14,6 +13,7 @@ import java.io.IOException;
 public class ComposantFinPartie extends JFrame implements Observateur {
 
     CollecteurEvenements c;
+
     public void setWindowIcon(String path) {
         // Utilisez getClass().getResource pour obtenir l'URL de la ressource
         java.net.URL imgURL = getClass().getResource(path);
