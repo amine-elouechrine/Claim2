@@ -5,16 +5,23 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.ArrayList;
 
+/**
+ * @brief Cette classe représente la pioche de jeu. Elle hérite de la classe CardCollection.
+ */
 public class Cards extends CardCollection {
 
-    // Constructeur
+    /**
+     * @brief Constructeur de la classe Cards.
+     * Initialise une liste vide pour stocker les cartes.
+     */
     public Cards() {
         super();
     }
 
-
-
-// Constructeur de copie
+    /**
+     * @brief Constructeur de copie.
+     * @param other La pioche à copier.
+     */
     public Cards(Cards other) {
         this.cards = new ArrayList<>();
         for (Card card : other.cards) {
@@ -22,11 +29,17 @@ public class Cards extends CardCollection {
         }
     }
 
+    /**
+     * @brief Clone la pioche actuelle.
+     * @return Une nouvelle instance de Cards avec les mêmes cartes.
+     */
     public Cards clone() {
         return new Cards(this);
     }
 
-    // Méthode pour créer les cartes Gobelin
+    /**
+     * @brief Ajoute toutes les cartes à la pioche en créant les cartes pour chaque faction et en les melangeant.
+     */
     public void addAllCards() {
         createGobelinCards();
         createKnightCards();
@@ -36,6 +49,24 @@ public class Cards extends CardCollection {
         shuffle();
     }
 
+    /**
+     * @brief Prend une carte spécifique de la pioche et l'enlève de la pioche.
+     * @param card La carte à prendre.
+     * @return La carte prise, ou null si la carte n'est pas trouvée.
+     */
+    public Card getCard(Card card) {
+        for (Card c : cards) {
+            if (c.equals(card)) {
+                cards.remove(c);
+                return c;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * @brief Crée les cartes de la faction Gobelins.
+     */
     private void createGobelinCards() {
         for (int i = 0; i < 5; i++) {
             addCard(new Card(0, "Goblins"));
@@ -45,151 +76,51 @@ public class Cards extends CardCollection {
         }
     }
 
-    // Méthode pour obtenir le nombre de cartes de chaque faction dans le jeu (c'etait utiliser dans l'heurestique phase2)
-    public static int getNbCarteGobelins(){
-        return 14;
-    }
-
-    public static int getNbCarteKnights(){
-        return 8;
-    }
-
-    public static int getNbCarteUndeads(){
-        return 10;
-    }
-
-    public static int getNbCarteDwarves(){
-        return 10;
-    }
-
-    public static int getNbCarteDoppelgangers(){
-        return 10;
-    }
-
-    public static int getNbCarteFaction(String faction){
-        switch (faction) {
-            case "Goblins":
-                return getNbCarteGobelins();
-            case "Knight":
-                return getNbCarteKnights();
-            case "Undead":
-                return getNbCarteUndeads();
-            case "Dwarves":
-                return getNbCarteDwarves();
-            case "Doppelganger":
-                return getNbCarteDoppelgangers();
-            default:
-                return 0;
-        }
-    }
-
-
-
-    // Méthode pour créer les cartes Knight
-    private void createKnightCards() {
+    /**
+     * @brief Crée les cartes de la faction Knight.
+     */    private void createKnightCards() {
         for (int i = 2; i < 10; i++) {
             addCard(new Card(i, "Knight"));
         }
     }
 
-    // Méthode pour créer les cartes Undead
-    private void createUndeadCards() {
+    /**
+     * @brief Crée les cartes de la faction Undead.
+     */    private void createUndeadCards() {
         for (int i = 0; i < 10; i++) {
             addCard(new Card(i, "Undead"));
         }
     }
 
-    // Méthode pour créer les cartes Dwarve
-    private void createDwarveCards() {
+    /**
+     * @brief Crée les cartes de la faction Dwarve.
+     */    private void createDwarveCards() {
         for (int i = 0; i < 10; i++) {
             addCard(new Card(i, "Dwarves"));
         }
     }
 
-    // Méthode pour créer les cartes Doppelganger
-    private void createDoppelgangerCards() {
+    /**
+     * @brief Crée les cartes de la faction Doppelgangers.
+     */    private void createDoppelgangerCards() {
         for (int i = 0; i < 10; i++) {
             addCard(new Card(i, "Doppelganger"));
         }
     }
 
 
-    public Card max_valeur() {
-        if (cards.isEmpty()) {
-            throw new IllegalStateException("La pile de cartes est vide.");
-        }
-
-        Card maxCard = cards.get(0);
-        for (Card card : cards) {
-            if (card.getValeur() > maxCard.getValeur()) {
-                maxCard = card;
-            }
-        }
-
-        return maxCard;
-    }
-
-    public Cards getCardsOfSameFactionAs(Card opponentCard) {
-        if (cards.isEmpty()) {
-            throw new IllegalStateException("La pile de cartes est vide.");
-        }
-
-        Cards cardsOfSameFaction = new Cards();
-        Class<?> opponentCardClass = opponentCard.getClass();
-
-        for (Card card : cards) {
-            if (card.getClass() == opponentCardClass) {
-                cardsOfSameFaction.setCard(card);
-            }
-        }
-
-        return cardsOfSameFaction;
-    }
-
-    // Méthode pour obtenir la carte la plus grande qui est plus petite que la carte jouée par l'adversaire
-    public Card getHighestCardSmallerThan(Card opponentCard,Hand hand ) {
-        if (hand.isEmpty()) {
-            throw new IllegalStateException("La pile de cartes est vide.");
-        }
-
-        Card highestSmallerCard = null;
-        int opponentValue = opponentCard.getValeur();
-
-        for (Card card : hand.getCards()) {
-            int cardValue = card.getValeur();
-            if (cardValue < opponentValue && (highestSmallerCard == null || cardValue > highestSmallerCard.getValeur())) {
-                highestSmallerCard = card;
-            }
-        }
-
-        return highestSmallerCard;
-    }
-
-    public Card min_valeur() {
-        if (cards.isEmpty()) {
-            throw new IllegalStateException("La pile de cartes est vide.");
-        }
-
-        Card minCard = cards.get(0);
-        for (Card card : cards) {
-            // Si la valeur de la carte actuelle est inférieure à la valeur de la carte minimale
-            // ou si la valeur est égale mais la faction a un score plus bas, mettre à jour la carte minimale
-            if (card.getValeur() < minCard.getValeur() ||
-                    (card.getValeur() == minCard.getValeur() && card.getFactionScore() < minCard.getFactionScore())) {
-                minCard = card;
-            }
-        }
-
-        return minCard;
-    }
-
-
-    // Méthode pour mélanger les cartes dans la pile
+    /**
+     * @brief Mélange les cartes dans la pioche.
+     */
     public void shuffle() {
         Collections.shuffle(cards);
     }
 
-    // Méthode pour obtenir une carte de la pile
+    /**
+     * @brief Obtient une carte de la pioche.
+     * @return La première carte de la pioche.
+     * @throws IllegalStateException si la pioche est vide.
+     */
     public Card getCard() {
         if (cards.isEmpty()) {
             throw new IllegalStateException("La pile de cartes est vide.");
@@ -197,20 +128,35 @@ public class Cards extends CardCollection {
         return removeCard(0);
     }
 
-    // Méthode pour obtenir toutes les cartes de la pile
+    /**
+     * @brief Obtient toutes les cartes de la pioche.
+     * @return La liste des cartes dans la pioche.
+     */
     public List<Card> getCards() {
         return cards;
     }
 
+    /**
+     * @brief Vérifie si la pioche est vide.
+     * @return true si la pioche est vide, sinon false.
+     */
     public boolean isEmpty() {
         return cards.isEmpty();
     }
 
+    /**
+     * @brief Ajoute une carte à la pioche.
+     * @param c La carte à ajouter.
+     */
     public void setCard(Card c) {
         addCard(c);
     }
 
-    // Méthode pour obtenir une main de 13 cartes à partir de la pile
+    /**
+     * @brief Obtient une main de 13 cartes à partir de la pioche.
+     * @return Une nouvelle instance de Hand contenant 13 cartes de la pioche.
+     * @throws IllegalStateException si la pioche contient moins de 13 cartes.
+     */
     public Hand getHandOf13Cards() {
         if (cards.size() < 13) {
             throw new IllegalStateException("La pile de cartes contient moins de 13 cartes.");
@@ -220,10 +166,18 @@ public class Cards extends CardCollection {
             hand.addCard(getCard());
         }
         hand = ranger(hand);
+        shuffle();
         return hand;
     }
 
-    // Méthode pour ranger la main par ordre de faction puis valeurs
+    /**
+     * @brief Trie la main par ordre de faction puis de valeur.
+     * Cette méthode est utilisée pour des fins d'interface graphique, notamment
+     * pour que lorsque l'adversaire va jouer, les cartes jouables soient encadrées en vert
+     * et pour que l'affichage soit correct.
+     * @param hand La main à trier.
+     * @return Une nouvelle instance de Hand contenant les cartes triées.
+     */
     public static Hand ranger(Hand hand) {
         List<Card> cards = hand.getAllCards();
 
@@ -238,12 +192,14 @@ public class Cards extends CardCollection {
                 }
             }
         });
-
         Hand sortedHand = new Hand();
         sortedHand.setHand(cards);
         return sortedHand;
     }
 
+    /**
+     * @brief Retire la première carte de la pioche.
+     */
     public void removeCard() {
         cards.remove(0);
     }

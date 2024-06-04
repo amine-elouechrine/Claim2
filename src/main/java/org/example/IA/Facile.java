@@ -12,7 +12,7 @@ public class Facile extends IA {
 
 
     public Facile() {
-        super("IA Facile");
+        super("Facile");
         rand = new Random();
     }
 
@@ -91,32 +91,6 @@ public class Facile extends IA {
     }
 
 
-    /*public Card jouer_coup_phase2_F(Plateau plateau) {
-        System.out.println(";;;''''''"+handScndPhase.size());
-        if(suivre_faction){
-            Hand carteJouable;
-            carteJouable = getCardsOfSameFaction(carte_adversaire.getFaction());
-            if(carteJouable.isEmpty()){
-                //je peux pas suivre la faction de l'adversaire
-                int index = rand.nextInt(handScndPhase.getAllCards().size());
-                Card carte = handScndPhase.getAllCards().get(index);
-                return carte;
-                //System.out.println("jouer carte : " + carte.getFaction() + " " + carte.getValeur());
-            }else{
-                int index = rand.nextInt(carteJouable.getAllCards().size());
-                Card carte = carteJouable.getAllCards().get(index);
-                //System.out.println("jouer carte : " + carte.getFaction() + " " + carte.getValeur());
-                return carte;
-            }
-        }else{
-            int index = rand.nextInt(handScndPhase.getAllCards().size());
-            Card carte = handScndPhase.getAllCards().get(index);
-            //System.out.println("jouer carte par facile: " + carte.getFaction() + " " + carte.getValeur());
-            return carte;
-        }
-    }*/
-
-    // mainIA : doit etre handScndPhase
     public Card jouerCoupPhase2F(Plateau plateau) {
         //System.out.println(";;;''''''" + handScndPhase.size());
         if (!plateau.estLeader()) {
