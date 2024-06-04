@@ -337,12 +337,15 @@ public class NiveauGraphique extends JComponent implements Observateur {
             y = hauteur() - rectHeight - 10;
             main = control.getHandJ1P2();
 
-
             // Dessin des cartes de la main du joueur 1
-            for (int i = 0; i < nbCardHandJ1; i++) {
-                x = startHandXJ1 + i * (rectWidth + spacing);
-                drawHand(g, i, main, control.getNomJoueur2());
+            if(drawC.isDrawHandJ1Toggle()) {
+                drawHiddenHand(g, nbCardHandJ1);
             }
+            else
+                for (int i = 0; i < nbCardHandJ1; i++) {
+                    x = startHandXJ1 + i * (rectWidth + spacing);
+                    drawHand(g, i, main, control.getNomJoueur2());
+                }
 
             y = 10;
             mainJ2 = control.getHandJ2P2();
