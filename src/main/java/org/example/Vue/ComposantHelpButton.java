@@ -11,7 +11,7 @@ public class ComposantHelpButton extends JButton {
     public ComposantHelpButton() { // on a pas besoin du controlleur ni du jeu c'est juste un pop-up qui s'affiche
         super("Help");
         // Ajouter un écouteur d'action à ce bouton
-        addActionListener(new AdaptateurHelpButton());
+        //addActionListener(new AdaptateurHelpButton());
     }
 
     // Méthode principale pour tester le composant

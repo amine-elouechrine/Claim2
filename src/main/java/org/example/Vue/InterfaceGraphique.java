@@ -65,7 +65,7 @@ public class InterfaceGraphique implements Runnable, InterfaceUtilisateur {
         DrawCheck drawCheck = new DrawCheck();
 
         // Fin de la partie
-        ComposantFinPartie finPartie = new ComposantFinPartie(control,niv);
+        ComposantFinPartie finPartie = new ComposantFinPartie(control, j);
 
 
         // Dessin du NiveauGraphique
