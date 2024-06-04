@@ -18,9 +18,9 @@ public class ComposantSauvegarde extends JFrame {
 
         // Change l'icone de la fenetre principale
         try {
-            this.setIconImage(ImageIO.read(getClass().getResource("/Claim.png")));
+            this.setIconImage(ImageIO.read(new File("src/main/resources/Claim.png")));
         } catch (IOException exc) {
-            System.out.println("Erreur de chargement de l'icone");
+            System.out.println("Erreur de chargement de l'icone de la fenetre de sauvegarde");
         }
 
         setSize(200, 150); // Augmentez la hauteur pour inclure les nouveaux champs de texte

@@ -8,6 +8,8 @@ import org.example.Modele.Jeu;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -69,7 +71,7 @@ public class InterfaceInitiale extends JFrame implements Runnable {
         RoundedButton startQuickGame = createButton("Partie Rapide", "src/main/resources/startIcon.png", e -> startQuickGame(), buttonSize);
         RoundedButton startGameButton = createButton("Commencer une partie", "src/main/resources/startIcon.png", e -> startGame(), buttonSize);
         RoundedButton rulesButton = createButton("Règles du jeu", "src/main/resources/rulesIcon.jpg", e -> showRules(), buttonSize);
-        RoundedButton quitButton = createButton("Quitter", "src/main/resources/quitIcon.png", e -> System.exit(0), buttonSize);
+
         // Add buttons to the panel with constraints to space them
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10); // Add spacing between buttons
@@ -83,8 +85,6 @@ public class InterfaceInitiale extends JFrame implements Runnable {
         gbc.gridy = 2;
         buttonPanel.add(rulesButton, gbc);
 
-        gbc.gridy = 3;
-        buttonPanel.add(quitButton, gbc);
         return buttonPanel;
     }
 
@@ -115,7 +115,7 @@ public class InterfaceInitiale extends JFrame implements Runnable {
         CollecteurEvenements control = new ControleurMediateur(jeu, ia);
         ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
         scheduler.scheduleAtFixedRate(control::tictac, 0, 100, TimeUnit.MILLISECONDS);
-        InterfaceGraphique.demarrer(jeu, control,this);
+        InterfaceGraphique.demarrer(jeu, control);
         this.setVisible(false);
     }
 

@@ -83,8 +83,6 @@ public interface CollecteurEvenements {
 
     boolean getPause();
 
-    public List<Card> getFollowerDeckJ1();
-
     /* Adaptateurs */
     void refaire();
   
@@ -109,8 +107,6 @@ public interface CollecteurEvenements {
     List<Card> getCardsFromPileScoreJ1(String factionName);
 
     List<Card> getCardsFromPileScoreJ2(String factionName);
-
-    String help();
 
     String getJoueurNomGagnant();
 }

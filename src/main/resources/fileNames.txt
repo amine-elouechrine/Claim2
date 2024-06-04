@@ -80,4 +80,3 @@
 /undead_8.png
 /undead_9.png
 /yellow_square.png
-/f8-claim-rulebook-1.png

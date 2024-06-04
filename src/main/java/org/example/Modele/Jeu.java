@@ -21,25 +21,6 @@ public class Jeu extends Observable {
         r = new ReglesDeJeu();
     }
 
-    public String help(){
-        if(plateau.getPhase()){//si phase 1
-            if(plateau.estLeader2()){
-
-                return "Si la carte affiche au milieu est une carte que vous pensez etre utile pour la phase 2 alors vous pouvez jouer une carte de votre main qui vous permettra de gagner la carte affichee";
-            }else{
-                return "Pour gagner la carte affiche au milieu il faut jouer une carte de la meme faction, les cartes qui vous permez de gagner la manche sont entoure en vert";
-            }
-        }
-        else{
-            if(plateau.estLeader2()){
-                return "C'est a vous de commencer la manche, jouer une carte que vous pensez etre utile pour gagner la mache et dominer la faction";
-            }else{
-                //phase 2
-                return "C'est a vous de jouer il faut jouer une carte de la meme faction que la carte de l'adversaire pour gagner la manche";
-            }
-        }
-    }
-
     public boolean getPhase() {
         return getPlateau().getPhase();
     }

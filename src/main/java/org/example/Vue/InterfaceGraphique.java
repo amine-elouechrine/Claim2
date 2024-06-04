@@ -16,15 +16,14 @@ public class InterfaceGraphique implements Runnable, InterfaceUtilisateur {
     CollecteurEvenements control;
     AdaptateurClavier adaptateurClavier;
 
-    InterfaceGraphique(Jeu jeu, CollecteurEvenements c,JFrame fenetre) {
-        this.fenetre = fenetre;
+    InterfaceGraphique(Jeu jeu, CollecteurEvenements c) {
         j = jeu;
         control = c;
         adaptateurClavier = new AdaptateurClavier(control, new ComposantSauvegarde(control));
     }
 
-    public static void demarrer(Jeu j, CollecteurEvenements c, JFrame fenetre) {
-        InterfaceGraphique vue = new InterfaceGraphique(j, c, fenetre);
+    public static void demarrer(Jeu j, CollecteurEvenements c) {
+        InterfaceGraphique vue = new InterfaceGraphique(j, c);
         c.ajouteInterfaceUtilisateur(vue);
         SwingUtilities.invokeLater(vue);
     }
@@ -67,19 +66,17 @@ public class InterfaceGraphique implements Runnable, InterfaceUtilisateur {
         // Fin de la partie
         ComposantFinPartie finPartie = new ComposantFinPartie(control, j);
 
-
         // Dessin du NiveauGraphique
         try {
             niv = new NiveauGraphique(j, control, rec, finPartie, drawCheck);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
         niv.setFocusable(true);
         niv.requestFocusInWindow();
         niv.addMouseListener(new AdaptateurSouris(niv, control, drawCheck));
         niv.addKeyListener(adaptateurClavier);
-        niv.addMouseMotionListener(new ChangementDeCourseur(control, niv));
+
         // Fenetre InterfaceGraphique
         fenetre.add(niv);
 
@@ -88,16 +85,16 @@ public class InterfaceGraphique implements Runnable, InterfaceUtilisateur {
         menuPanel.setBackground(Color.DARK_GRAY);
 
         // Menu
-        RoundedButton  menu = new RoundedButton ("Menu");
+        JToggleButton menu = new JToggleButton("Menu");
 
         // Bouton nouvelle partie rapide
-        RoundedButton nouvellePartie = new RoundedButton("Nouvelle Partie");
+        JButton nouvellePartie = new JButton("Nouvelle Partie");
         nouvellePartie.addActionListener(new AdaptateurNouvellePartie(control));
 
         // Bouton règle
-        RoundedButton regle = new RoundedButton("Aide");
+        JButton regle = new JButton(("Aide"));
         // TODO : Ajouter l'adaptateur qui ouvre les règles
-        regle.addActionListener(new AdaptateurHelpButton(control));
+        //aide.addActionListener(new AdaptateurAide(control));
 
         menuPanel.add(menu);
         menuPanel.add(nouvellePartie);

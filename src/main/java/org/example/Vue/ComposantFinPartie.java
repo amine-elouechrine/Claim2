@@ -13,6 +13,19 @@ import java.io.IOException;
 public class ComposantFinPartie extends JFrame implements Observateur {
 
     CollecteurEvenements c;
+
+    public void setWindowIcon(String path) {
+        // Utilisez getClass().getResource pour obtenir l'URL de la ressource
+        java.net.URL imgURL = getClass().getResource(path);
+        if (imgURL != null) {
+            ImageIcon icon = new ImageIcon(imgURL);
+            Image image = icon.getImage();
+            setIconImage(image); // Méthode à appeler sur JFrame pour définir l'icône
+        } else {
+            System.err.println("Erreur de chargement de l'icone");
+        }
+    }
+  
     Jeu jeu;
     String JoueurGagnant = "";
     JLabel messageLabel;
