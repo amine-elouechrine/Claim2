@@ -46,7 +46,7 @@ public class ControleurMediateur implements CollecteurEvenements {
     public ControleurMediateur(Jeu j, IA ia) {
         jeu = j;
         animations = new SequenceListe<>();
-        dureePause = 4500;
+        //dureePause = 4500;
         iterations = 60;
         animationsSupportees = false;
         animationsActives = false;
@@ -287,7 +287,7 @@ public class ControleurMediateur implements CollecteurEvenements {
         if (pause) {
             return;
         }
-        dureePause = 4500;
+        //dureePause = 4500;
         jeu.clearStackAnnule();
         jeu.clearStackRefaire();
         jeu.getPlateau().initialiserJeu(jeu.estIA(), jeu.getNomJoueur(jeu.getJoueur1()), jeu.getNomJoueur(jeu.getJoueur2()));
@@ -384,6 +384,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 
     public void tourIA(Runnable callback) {
 
+        dureePause = 4500;
         if (estFinPartie()) {
             // Calcul des scores
             System.out.println("La partie est terminée\n");
@@ -406,11 +407,9 @@ public class ControleurMediateur implements CollecteurEvenements {
                         startAnimationPerde(iterations, IAgagnant);
                         startAnimationDefausse(iterations, card1Faction, card2Faction, IAgagnant);
 
-                        if ((jeu.getJoueur1().getHand().size() + jeu.getJoueur2().getHand().size() == 0)||!getPhase()) {
+                        if ((jeu.getJoueur1().getHand().size() + jeu.getJoueur2().getHand().size() == 0) || !getPhase()) {
                             startTransition();
                             dureePause = 6000;
-                        } else {
-                            dureePause = 4500;
                         }
 
                         if (!getPhase()) {
@@ -420,7 +419,7 @@ public class ControleurMediateur implements CollecteurEvenements {
                         Timer timer = new Timer(dureePause, new ActionListener() {
                             @Override
                             public void actionPerformed(ActionEvent e) {
-                                System.out.println("playtrick");
+                                System.out.println("dureepasueIA = "+dureePause);
                                 jeu.playTrick();
                                 jeu.setCarteJouer();
                                 startDistributionAnimation(iterations);
@@ -446,6 +445,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 
 
     private void jouerCarte(int index, Runnable callback) {
+        dureePause = 4500;
         Card carteJoue = jeu.getPlateau().jouerCarte(index);
         if (jeu.estCarteJoueJ1() && jeu.estCarteJoueJ2()) {
             gagnant = getJoueurGagnant();
@@ -458,17 +458,16 @@ public class ControleurMediateur implements CollecteurEvenements {
             if (jeu.getJoueur1().getHand().size() + jeu.getJoueur2().getHand().size() == 0) {
                 startTransition();
                 dureePause = 6000;
-            } else {
-                dureePause = 4500;
             }
 
             if (!getPhase()) {
                 dureePause = 2000;
             }
+
             Timer timer = new Timer(dureePause, new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    System.out.println("playtrick");
+                    System.out.println("dureepasue = "+dureePause);
                     jeu.playTrick();
                     jeu.setCarteJouer();
                     startDistributionAnimation(iterations);
@@ -493,6 +492,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 
     @Override
     public void tictac() {
+        //System.out.println(getPhase());
         if (!animationsSupportees) {
             animationsSupportees = true;
             animationsActives = true;
@@ -504,7 +504,7 @@ public class ControleurMediateur implements CollecteurEvenements {
                 a.tictac();
                 if (a.estTerminee()) {
                     if (a == mouvement) {
-                        testFin();
+                        //testFin();
                         mouvement = null;
                     }
                     it.supprime();
@@ -638,21 +638,21 @@ public class ControleurMediateur implements CollecteurEvenements {
             score = getNbCardFactionFromPileScoreJ1(faction) - getNbCardFactionFromPileScoreJ2(faction);
             if (score > 0) {
                 gagneFaction += 1;
-            }else if (score < 0){
+            } else if (score < 0) {
                 gagneFaction -= 1;
-            }else{
-                if(isJoueur1WinningFactionOnEquality(faction)){
-                    gagneFaction+=1;
-                }else if (isJoueur2WinningFactionOnEquality(faction)){
-                    gagneFaction-=1;
+            } else {
+                if (isJoueur1WinningFactionOnEquality(faction)) {
+                    gagneFaction += 1;
+                } else if (isJoueur2WinningFactionOnEquality(faction)) {
+                    gagneFaction -= 1;
                 }
             }
         }
-        if(gagneFaction>0){
+        if (gagneFaction > 0) {
             return getNomJoueur1();
-        }else if(gagneFaction==0){
-            return  "match nul";
-        }else {
+        } else if (gagneFaction == 0) {
+            return "match nul";
+        } else {
             return getNomJoueur2();
         }
     }
