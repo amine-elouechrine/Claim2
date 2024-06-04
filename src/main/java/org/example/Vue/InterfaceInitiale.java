@@ -115,7 +115,7 @@ public class InterfaceInitiale extends JFrame implements Runnable {
         CollecteurEvenements control = new ControleurMediateur(jeu, ia);
         ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
         scheduler.scheduleAtFixedRate(control::tictac, 0, 100, TimeUnit.MILLISECONDS);
-        InterfaceGraphique.demarrer(jeu, control, this);
+        InterfaceGraphique.demarrer(jeu, control,this);
         this.setVisible(false);
     }
 
