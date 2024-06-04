@@ -103,7 +103,7 @@ public class testIAFirstPhase {
             if (plateauInitial.getJoueurCourant().getName().equals("MinMax")) {
                 // Tour de l'IA
                 System.out.println("Tour de l'IA...");
-                premiere = iaMinMax.carteJouerIa(plateauInitial); // Profondeur de recherche = 13
+                premiere = iaMinMax.carteJouerIa(plateauInitial, true); // Profondeur de recherche = 13
                 System.out.println("Carte choisie par l'IA: " + premiere);
                 plateauInitial.jouerCarte(premiere);
                 plateauInitial.switchJoueur();
@@ -126,7 +126,7 @@ public class testIAFirstPhase {
                 //winningCard = ReglesDeJeu.carteGagnante(coupIa, coupAdversaire, plateauInitial);
             } else {
                 System.out.println("Tour de l'IA...");
-                deuxieme = iaMinMax.carteJouerIa(plateauInitial); // Profondeur de recherche = 13
+                deuxieme = iaMinMax.carteJouerIa(plateauInitial, false); // Profondeur de recherche = 13
                 if (deuxieme == null) {
                     deuxieme = plateauInitial.getJoueur1().getHandScndPhase().get(0);
                 }
@@ -158,7 +158,7 @@ public class testIAFirstPhase {
             Plateau plateau;
             String winner;
 
-             // Test d'une partie compelete
+            // Test d'une partie compelete
             plateau = jouerPatie1();
             System.out.println("Fin de la phase 1 \n\n\n");
             plateau.setCarteJoueur1(null);

@@ -39,7 +39,6 @@ public class TestIAMinMax {
                 //coupIa = intermediare.jouerCoupPhase1(plateauInitial);
                 System.out.println("Carte choisie par l'IA: " + coupIa);
                 plateauInitial.jouerCarte(coupIa);
-                plateauInitial.setCarteJoueur1(coupIa);
                 plateauInitial.switchJoueur();
             }else{
                 // Tour de l'adversaire
@@ -47,7 +46,6 @@ public class TestIAMinMax {
                 coupAdversaire = carteAleatoire(plateauInitial);
                 System.out.println("Carte jouée par l'adversaire : " + coupAdversaire);
                 plateauInitial.jouerCarte(coupAdversaire);
-                plateauInitial.setCarteJoueur2(coupAdversaire);
                 plateauInitial.switchJoueur();
             }
             // -------------------------------------------------------------------------
@@ -56,7 +54,6 @@ public class TestIAMinMax {
                 coupAdversaire = carteAleatoire(plateauInitial);
                 System.out.println("Carte jouée par l'adversaire : " + coupAdversaire);
                 plateauInitial.jouerCarte(coupAdversaire);
-                plateauInitial.setCarteJoueur2(coupAdversaire);
                 // attribution des cartes
                 //winningCard = ReglesDeJeu.carteGagnante(coupIa, coupAdversaire, plateauInitial);
             } else {
@@ -64,8 +61,9 @@ public class TestIAMinMax {
                 coupIa = iaFirstPhase.jouerCarteIA(plateauInitial); // Profondeur de recherche = 13
                 //coupIa = intermediare.jouerCoupPhase1(plateauInitial);
                 System.out.println("Carte choisie par l'IA: " + coupIa);
-                plateauInitial.jouerCarte(coupIa);
-                plateauInitial.setCarteJoueur1(coupIa);
+                //plateauInitial.jouerCarte(coupIa);
+                plateauInitial.getJoueurCourant().getHand().removeCard(coupIa);
+                plateauInitial.setCarteJoueur2(coupIa);
                 // attribution des cartes
                 //winningCard = ReglesDeJeu.carteGagnante(coupAdversaire,coupIa, plateauInitial);
             }
@@ -73,6 +71,8 @@ public class TestIAMinMax {
             winningCard = ReglesDeJeu.carteGagnante(coupIa, coupAdversaire, plateauInitial);
             System.out.println("Carte gagnante : " + winningCard);
             plateauInitial.attribuerCarteFirstPhase(winningCard, new ReglesDeJeu());
+            plateauInitial.setCarteJoueur1(null);
+            plateauInitial.setCarteJoueur2(null);
 
             if (plateauInitial.estFinPhase(plateauInitial.getPhase())) {
                 partieTerminee = true;
@@ -115,39 +115,43 @@ public class TestIAMinMax {
         // Création d'un plateau de jeu initial
 
         while (!partieTerminee) {
+            Card c1, c2;
             if (plateauInitial.getJoueurCourant().getName().equals("MinMax")) {
                 // Tour de l'IA
                 System.out.println("Tour de l'IA...");
-                coupIa = iaMinMax.carteJouerIa(plateauInitial); // Profondeur de recherche = 26
-                System.out.println("Carte choisie par l'IA: " + coupIa);
-                plateauInitial.jouerCarte(coupIa);
+                c1 = iaMinMax.carteJouerIa(plateauInitial, false);
+                System.out.println("Carte choisie par l'IA: " + c1);
+                plateauInitial.jouerCarte(c1);
                 plateauInitial.switchJoueur();
             } else {
                 // Tour de l'adversaire
                 System.out.println("Tour de l'adversaire...");
-                coupAdversaire = carteAleatoire(plateauInitial);
-                System.out.println("Carte jouée par l'adversaire : " + coupAdversaire);
-                plateauInitial.jouerCarte(coupAdversaire);
+                c1 = carteAleatoire(plateauInitial);
+                System.out.println("Carte jouée par l'adversaire : " + c1);
+                plateauInitial.jouerCarte(c1);
                 plateauInitial.switchJoueur();
             }
 
-            if (plateauInitial.getJoueurCourant().getName().equals("Facile")) {
-                System.out.println("Tour de l'adversaire...");
-                coupAdversaire = carteAleatoire(plateauInitial);
-                System.out.println("Carte jouée par l'adversaire : " + coupAdversaire);
-                plateauInitial.jouerCarte(coupAdversaire);
+            if (plateauInitial.getJoueurCourant().getName().equals("MinMax")) {
+                System.out.println("Tour de l'IA...");
+                c2 = iaMinMax.carteJouerIa(plateauInitial, false);
+                System.out.println("Carte choisie par l'IA: " + c2);
+
+                plateauInitial.jouerCarte(c2);
                 //winningCard = ReglesDeJeu.carteGagnante(coupAdversaire, coupIa, plateauInitial);
             } else {
-                System.out.println("Tour de l'IA...");
-                coupIa = iaMinMax.carteJouerIa(plateauInitial); // Profondeur de recherche = 13
-                System.out.println("Carte choisie par l'IA: " + coupIa);
-                plateauInitial.jouerCarte(coupIa);
+                System.out.println("Tour de l'adversaire...");
+                c2 = carteAleatoire(plateauInitial); // Profondeur de recherche = 13
+                System.out.println("Carte jouée par l'adversaire : " + c2);
+                plateauInitial.jouerCarte(c2);
                 //winningCard = ReglesDeJeu.carteGagnante(coupIa, coupAdversaire, plateauInitial);
             }
 
-            winningCard = ReglesDeJeu.carteGagnante(coupIa, coupAdversaire, plateauInitial);
+            winningCard = ReglesDeJeu.carteGagnante(c1, c2, plateauInitial);
             System.out.println("Carte gagnante : " + winningCard);
             plateauInitial.attribuerCarteSecondPhase(winningCard, new ReglesDeJeu());
+            plateauInitial.setCarteJoueur1(null);
+            plateauInitial.setCarteJoueur2(null);
 
             if (plateauInitial.isEndOfGame()) {
                 winner = ReglesDeJeu.determinerGagnantPartie(plateauInitial.getJoueur1(), plateauInitial.getJoueur2());
@@ -197,7 +201,7 @@ public class TestIAMinMax {
         System.out.println("entrer 1 pour l'affichage des hand avant chaque partie : ");
         int rep = s.nextInt();
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 50; i++) {
             Plateau plateau;
             String winner;
 
@@ -206,9 +210,10 @@ public class TestIAMinMax {
                 //System.out.println("entrer 1 pour test avec des hand aleatoire : ");
                 //System.out.println("entrer 2 pour test avec des hand gagnant pour l'ia  : ");
                 //System.out.println("entrer 3 pour test avec des hand gagnant pour l'adversaire  : ");
-                //plateau = TestFunctions.setPlateauPhase2();
-
                 plateau = TestFunctions.setPlateauPhase2();
+
+
+                //plateau = TestFunctions.configurationPerdante();
 
                 if(rep == 1){
                     plateau.getJoueur1().getHandScndPhase().printHand();
@@ -263,7 +268,7 @@ public class TestIAMinMax {
         if(plateau.estLeader()){
             cartesJouable = cartesJoueurCourant.getCards();
         }else{
-            Card carteAdversaire = plateau.getCarteJoueur1();
+            Card carteAdversaire = plateau.getCardAdversaire();
             cartesJouable = ReglesDeJeu.cartesJouables(carteAdversaire , cartesJoueurCourant);
         }
         // choisir une carte aleatoire de cartes Jouables

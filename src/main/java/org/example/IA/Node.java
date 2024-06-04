@@ -3,12 +3,15 @@ package org.example.IA;
 import org.example.Modele.Card;
 import org.example.Modele.Plateau;
 
+import java.util.List;
+
 
 public class Node {
 
     public int score;
     public Plateau plateau;
     Card carteJoueeParIa; // carte jouée par l'IA
+    Node pere;
 
 
     public Node() {
