@@ -11,18 +11,12 @@ public class PlateauState {
     private Player joueur1;
     private Player joueur2;
     private Player joueurCourant;
+    private Defausse defausse;
+    private PileDeScore pileDeScore;
     private Boolean phase;
 
-    public PlateauState(Card carteJoueur1, Card carteJoueur2,
-                        Player joueur1, Player joueur2 , Player CurrentPlayer) {
-        this.carteJoueur1 = carteJoueur1;
-        this.carteJoueur2 = carteJoueur2;
-        this.joueur1 = joueur1;
-        this.joueur2 = joueur2;
-        this.joueurCourant = joueur1 ;
-        this.phase = false;
-    }
 
+    // ajouter pioche et defausse
     public PlateauState(Plateau other){
         this.carteJoueur1 = other.carteJoueur1 != null ? new Card(other.carteJoueur1) : null;
         this.carteJoueur2 = other.carteJoueur2 != null ? new Card(other.carteJoueur2) : null;
@@ -33,6 +27,7 @@ public class PlateauState {
         } else {
             this.joueurCourant = this.joueur2;
         }
+        this.defausse = other.defausse != null ? new Defausse(other.defausse) : null;
         this.phase = other.phase;
     }
 
@@ -59,6 +54,10 @@ public class PlateauState {
 
     public Boolean getPhase() {
         return phase;
+    }
+
+    public Defausse getDefausse() {
+        return defausse;
     }
 
 }

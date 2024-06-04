@@ -86,7 +86,7 @@ public interface CollecteurEvenements {
     /* Adaptateurs */
     void refaire();
   
-    void annuler() throws IOException;
+    void annuler() ;
   
     void sauve(String filename) throws FileNotFoundException;
   
@@ -107,4 +107,8 @@ public interface CollecteurEvenements {
     List<Card> getCardsFromPileScoreJ1(String factionName);
 
     List<Card> getCardsFromPileScoreJ2(String factionName);
+
+    String getJoueurNomGagnant();
+
+    String help();
 }

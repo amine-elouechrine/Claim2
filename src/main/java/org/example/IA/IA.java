@@ -5,65 +5,15 @@ import org.example.Modele.*;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.example.IA.IA_intermediareVSIA_Facile.plateau;
+import static org.example.Modele.ReglesDeJeu.carteGagnante;
+
 import static org.example.Modele.ReglesDeJeu.carteGagnante;
 
 public abstract class IA extends GeneralPlayer {
 
-    boolean amoi = false;
-
     public IA(String Name) {
         super(Name);
-    }
-
-    public static IA determinerGagnantMancheIA(IA joueur1, IA joueur2, Card carteJoueur1, Card carteJoueur2, Plateau plateau) {
-        Card carteGagnante = carteGagnante(carteJoueur1, carteJoueur2, plateau);
-
-        if (carteGagnante == carteJoueur1) {
-            return joueur1;
-        } else {
-            return joueur2;
-        }
-    }
-
-    public static IA determinerGagnantPartieIA(IA joueur1, IA joueur2) {
-        PileDeScore pileDeScoreJoueur1 = joueur1.pileDeScore;
-        PileDeScore pileDeScoreJoueur2 = joueur2.pileDeScore;
-
-        // Initialiser un compteur pour chaque joueur pour suivre le nombre de factions qu'ils ont gagnées
-        int factionsGagneesJoueur1 = 0;
-        int factionsGagneesJoueur2 = 0;
-
-        List<String> factions = Arrays.asList("Goblins", "Knights", "Undead", "Dwarves", "Doppelgangers");
-        // Calcul du nombre de factions gagnées par chaque joueur
-        for (String faction : factions) {
-            List<Card> cartesJoueur1 = pileDeScoreJoueur1.getCardFaction(faction);
-            List<Card> cartesJoueur2 = pileDeScoreJoueur2.getCardFaction(faction);
-
-            if (cartesJoueur1.size() > cartesJoueur2.size()) {
-                factionsGagneesJoueur1++;
-            } else if (cartesJoueur2.size() > cartesJoueur1.size()) {
-                factionsGagneesJoueur2++;
-            } else {
-                // Si les deux joueurs ont le même nombre de cartes, comparez les valeurs des cartes
-                int valeurMaxJoueur1 = ReglesDeJeu.getMaxCardValue(cartesJoueur1);
-                int valeurMaxJoueur2 = ReglesDeJeu.getMaxCardValue(cartesJoueur2);
-
-                if (valeurMaxJoueur1 > valeurMaxJoueur2) {
-                    factionsGagneesJoueur1++;
-                } else if (valeurMaxJoueur2 > valeurMaxJoueur1) {
-                    factionsGagneesJoueur2++;
-                }
-            }
-        }
-        //add to pile de score
-
-
-        // Déterminer le gagnant de la partie en fonction du nombre de factions remportées
-        if (factionsGagneesJoueur1 > factionsGagneesJoueur2) {
-            return joueur1;
-        } else {
-            return joueur2;
-        }
     }
 
     public static Card determinerCarteGagnanteIA(Card carte1, Card carte2) {
@@ -81,7 +31,9 @@ public abstract class IA extends GeneralPlayer {
     }
 
     // public abstract Card jouer_coup_phase1(Hand mainIA, boolean suivre_faction, Card carte_adversaire);
-    public abstract Card jouerCoupPhase1(Plateau plateau);
+    public Card jouerCoupPhase1(Plateau plateau) {
+        return null;
+    }
 
     // public abstract Card jouer_coup_phase2(Hand mainIA, boolean suivre_faction, Card carte_adversaire);
     public abstract Card jouerCoupPhase2(Plateau plateau);
@@ -93,7 +45,7 @@ public abstract class IA extends GeneralPlayer {
      * @return la liste de cartes de la meme faction que la carte passée en paramètre (opponentCard)
      */
     public Hand getCardsOfSameFaction(Plateau plateau) {
-        Hand hand = plateau.getJoueurCourant().getHand();
+        Hand hand = plateau.getJoueurCourant().getHandScndPhase();
         String faction = plateau.getCardAdversaire().getFaction();
         if (hand == null || hand.isEmpty()) {
             return new Hand();
@@ -136,7 +88,7 @@ public abstract class IA extends GeneralPlayer {
      * @param card
      * @return la carte plus grand que ladversaire mais pas forcement la plus grande carte dans le hand
      */
-    public Card getSmallestHigherCard(Card card, List<Card> CarteSameFaction) {
+    public static Card getSmallestHigherCard(Card card, List<Card> CarteSameFaction) {
 
         if (CarteSameFaction == null || CarteSameFaction.isEmpty()) {
             throw new IllegalArgumentException("La liste de cartes de même faction est vide ou nulle.");
@@ -161,7 +113,7 @@ public abstract class IA extends GeneralPlayer {
         pileDeScore.addCard(card);
     }
 
-    public Card getLowestValueCard(List<Card> hand) {
+    public static Card getLowestValueCard(List<Card> hand) {
         if (hand == null || hand.isEmpty()) {
             throw new IllegalStateException("La liste de cartes est vide ou nulle.");
         }
@@ -218,8 +170,8 @@ public abstract class IA extends GeneralPlayer {
         return highestSmallerCard;
     }
 
-
-    public boolean containsKnight() {
+    public static boolean containsKnight(Plateau plaateau) {
+        Hand hand = plateau.getJoueurCourant().getHand();
         if (hand == null || hand.getAllCards().isEmpty()) {
             return false;
         }
@@ -232,6 +184,5 @@ public abstract class IA extends GeneralPlayer {
 
         return false;
     }
-
 
 }

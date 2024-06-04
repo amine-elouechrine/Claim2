@@ -24,11 +24,11 @@ public class ComposantSauverCharger extends Box {
         box.add(createGlue());
 
         // Ajout du bouton sauver
-        JButton sauver = new JButton("Sauver");
+        RoundedButton sauver = new RoundedButton("Sauver");
         sauver.addActionListener(new AdaptateurSauver(control, fichier));
 
         // Ajout du bouton charger
-        JButton charger = new JButton("Charger");
+        RoundedButton charger = new RoundedButton("Charger");
         charger.addActionListener(new AdaptateurCharger(control, fichier));
 
         box.add(sauver);
