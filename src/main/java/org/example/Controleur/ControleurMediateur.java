@@ -410,7 +410,7 @@ public class ControleurMediateur implements CollecteurEvenements {
                         }
                         startAnimationDefausse(iterations, card1Faction, card2Faction, IAgagnant);
 
-                        if ((jeu.getJoueur1().getHand().size() + jeu.getJoueur2().getHand().size() == 0)) {
+                        if ((jeu.getJoueur1().getHand().size() + jeu.getJoueur2().getHand().size() == 0) && getPhase()) {
                             startTransition();
                             dureePause = 6000;
                         }
@@ -459,7 +459,7 @@ public class ControleurMediateur implements CollecteurEvenements {
             }
             startAnimationDefausse(iterations, card1Faction, card2Faction, gagnant);
 
-            if ((jeu.getJoueur1().getHand().size() + jeu.getJoueur2().getHand().size() == 0)) {
+            if ((jeu.getJoueur1().getHand().size() + jeu.getJoueur2().getHand().size() == 0) && getPhase()) {
                 startTransition();
                 dureePause = 6000;
             }
@@ -539,7 +539,6 @@ public class ControleurMediateur implements CollecteurEvenements {
 
     public void transition() {
         vue.transition();
-        System.out.println("start transition");
     }
 
 
@@ -547,7 +546,6 @@ public class ControleurMediateur implements CollecteurEvenements {
         vue.initializeAnimationTransition();
         mouvement = new AnimationTransition(this);
         animations.insereQueue(mouvement);
-        System.out.println("start transition");
     }
 
     public void startDistributionAnimation(int totalIterations) {

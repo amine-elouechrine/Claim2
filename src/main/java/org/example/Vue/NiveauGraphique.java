@@ -7,6 +7,10 @@ import org.example.Patternes.Observateur;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -77,7 +81,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
     FontMetrics fm;
     int textWidth;
     int textHeight;
-
+    boolean fini;
     // private static final double RECTANGLE_SCALE_FACTOR = 0.05; // Adjust this value for scaling
 
     // Boolean pour les cartes jouables
@@ -246,8 +250,22 @@ public class NiveauGraphique extends JComponent implements Observateur {
         if (control.estFinPartie()) {
             fin.JoueurGagnant = jeu.getJoueurNomGagnant();
             fin.messageLabel.setText("Le Joueur " + fin.JoueurGagnant + " a gagné");
-            rec.setVisible(true);
-            fin.setVisible(true);
+            fin.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosing(WindowEvent e) {
+                    rec.setVisible(true);
+                }
+            });
+            fin.ok.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    fin.setVisible(false);
+                    rec.setVisible(true);
+                }
+            });
+            if(!control.getPause()){
+                fin.setVisible(true);
+            }
         }
 
         /* Phase 1 */
@@ -999,7 +1017,6 @@ public class NiveauGraphique extends JComponent implements Observateur {
         currentCarteJoue1Y -= deltaDefausse1Y;
         currentCarteJoue2X -= deltaDefausse2X;
         currentCarteJoue2Y -= deltaDefausse2Y;
-
         miseAJour();
     }
 
@@ -1010,16 +1027,17 @@ public class NiveauGraphique extends JComponent implements Observateur {
 
     public void transition() {
         currentTransparence += deltaTransparence;
-//        if (currentTransparence > 170) {
-//            currentCarteJoue1X = -999;
-//            currentCarteJoue1Y = -999;
-//            currentCarteJoue2X = -999;
-//            currentCarteJoue2Y = -999;
-//            currentCarteaganeeX = -999;
-//            currentCarteaganeeY = -999;
-//            currentCartePerdeX = -999;
-//            currentCartePerdeY = -999;
-//        }
+
+        if (currentTransparence > 170) {
+            currentCarteJoue1X = -999;
+            currentCarteJoue1Y = -999;
+            currentCarteJoue2X = -999;
+            currentCarteJoue2Y = -999;
+            currentCarteaganeeX = -999;
+            currentCarteaganeeY = -999;
+            currentCartePerdeX = -999;
+            currentCartePerdeY = -999;
+        }
         miseAJour();
     }
 
