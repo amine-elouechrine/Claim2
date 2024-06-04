@@ -58,7 +58,7 @@ public class TestFunctions {
         Plateau p = new Plateau();
 
         //creation des joueurs
-        Player IA = new Player("MinMax");
+        Player IA = new Player("IA Difficile");
         Player adversaire = new Player("Facile");
 
         // creation de la pioche
@@ -82,7 +82,7 @@ public class TestFunctions {
 
     // faire un plateau avec configuration qui fait perdre l'ia forcement
     public static Plateau configurationPerdante(){
-        Player joueur2 = new Player("MinMax");
+        Player joueur2 = new Player("IA Difficile");
         Player joueur1 = new Player("Facile");
         // creation des mains des joueurs
         Cards pioche = new Cards();
@@ -94,34 +94,34 @@ public class TestFunctions {
         // Knight 2, Knight 3
         // Undead 0, Undead 1, Undead 2
         // Donner une main à l'IA qui lui fait perdre
-        joueur2.getHandScndPhase().addCard(new Card(0, "Goblin"));
-        joueur2.getHandScndPhase().addCard(new Card(0, "Goblin"));
-        joueur2.getHandScndPhase().addCard(new Card(0, "Goblin"));
-        joueur2.getHandScndPhase().addCard(new Card(0, "Goblin"));
-        joueur2.getHandScndPhase().addCard(new Card(0, "Goblin"));
-        joueur2.getHandScndPhase().addCard(new Card(1, "Goblin"));
-        joueur2.getHandScndPhase().addCard(new Card(2, "Goblin"));
-        joueur2.getHandScndPhase().addCard(new Card(1, "Dwarves"));
-        joueur2.getHandScndPhase().addCard(new Card(2, "Knight"));
-        joueur2.getHandScndPhase().addCard(new Card(3, "Knight"));
-        joueur2.getHandScndPhase().addCard(new Card(0, "Undead"));
-        joueur2.getHandScndPhase().addCard(new Card(1, "Undead"));
-        joueur2.getHandScndPhase().addCard(new Card(2, "Undead"));
+        joueur1.getHandScndPhase().addCard(new Card(0, "Goblin"));
+        joueur1.getHandScndPhase().addCard(new Card(0, "Goblin"));
+        joueur1.getHandScndPhase().addCard(new Card(0, "Goblin"));
+        joueur1.getHandScndPhase().addCard(new Card(0, "Goblin"));
+        joueur1.getHandScndPhase().addCard(new Card(0, "Goblin"));
+        joueur1.getHandScndPhase().addCard(new Card(1, "Goblin"));
+        joueur1.getHandScndPhase().addCard(new Card(2, "Goblin"));
+        joueur1.getHandScndPhase().addCard(new Card(1, "Dwarves"));
+        joueur1.getHandScndPhase().addCard(new Card(2, "Knight"));
+        joueur1.getHandScndPhase().addCard(new Card(3, "Knight"));
+        joueur1.getHandScndPhase().addCard(new Card(0, "Undead"));
+        joueur1.getHandScndPhase().addCard(new Card(1, "Undead"));
+        joueur1.getHandScndPhase().addCard(new Card(2, "Undead"));
 
         // donner au joueur 2 les cartes qui lui font gagner
-        joueur1.getHandScndPhase().addCard(new Card(3, "Goblin"));
-        joueur1.getHandScndPhase().addCard(new Card(4, "Goblin"));
-        joueur1.getHandScndPhase().addCard(new Card(5, "Goblin"));
-        joueur1.getHandScndPhase().addCard(new Card(6, "Goblin"));
-        joueur1.getHandScndPhase().addCard(new Card(7, "Goblin"));
-        joueur1.getHandScndPhase().addCard(new Card(9, "Goblin"));
-        joueur1.getHandScndPhase().addCard(new Card(8, "Goblin"));
-        joueur1.getHandScndPhase().addCard(new Card(6, "Doppelganger"));
-        joueur1.getHandScndPhase().addCard(new Card(8, "Doppelganger"));
-        joueur1.getHandScndPhase().addCard(new Card(7, "Doppelganger"));
-        joueur1.getHandScndPhase().addCard(new Card(5, "Doppelganger"));
-        joueur1.getHandScndPhase().addCard(new Card(4, "Doppelganger"));
-        joueur1.getHandScndPhase().addCard(new Card(9, "Doppelganger"));
+        joueur2.getHandScndPhase().addCard(new Card(3, "Goblin"));
+        joueur2.getHandScndPhase().addCard(new Card(4, "Goblin"));
+        joueur2.getHandScndPhase().addCard(new Card(5, "Goblin"));
+        joueur2.getHandScndPhase().addCard(new Card(6, "Goblin"));
+        joueur2.getHandScndPhase().addCard(new Card(7, "Goblin"));
+        joueur2.getHandScndPhase().addCard(new Card(9, "Goblin"));
+        joueur2.getHandScndPhase().addCard(new Card(8, "Goblin"));
+        joueur2.getHandScndPhase().addCard(new Card(6, "Doppelganger"));
+        joueur2.getHandScndPhase().addCard(new Card(8, "Doppelganger"));
+        joueur2.getHandScndPhase().addCard(new Card(7, "Doppelganger"));
+        joueur2.getHandScndPhase().addCard(new Card(5, "Doppelganger"));
+        joueur2.getHandScndPhase().addCard(new Card(4, "Doppelganger"));
+        joueur2.getHandScndPhase().addCard(new Card(9, "Doppelganger"));
 
         // Initialisation du plateau avec les joueurs
         Plateau plateau = new Plateau();
@@ -139,7 +139,7 @@ public class TestFunctions {
 
     public static Plateau setPlateauPhase2() {
         // Création des joueurs
-        Player joueur2 = new Player("MinMax");
+        Player joueur2 = new Player("IA Difficile");
         Player joueur1 = new Player("Facile");
 
         // creation des mains des joueurs
@@ -162,7 +162,7 @@ public class TestFunctions {
 
     public static Plateau setPlateauSameHand(){
         // Création des joueurs
-        Player joueur1 = new Player("MinMax");
+        Player joueur1 = new Player("IA Difficile");
         Player joueur2 = new Player("Facile");
 
         Cards pioche = new Cards();

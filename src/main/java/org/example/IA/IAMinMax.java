@@ -191,17 +191,17 @@ public class IAMinMax {
 
     public static boolean gagnerFaction(Plateau plateau, String faction) {
         // nbr de carte de cette faction qui sont en jeu de l'ia
-        int nbrCarteFactionIa = plateau.getJoueur1().getName().equals("MinMax")?plateau.getJoueur1().getPileDeScore().getCardFaction(faction).size():plateau.getJoueur2().getPileDeScore().getCardFaction(faction).size();
+        int nbrCarteFactionIa = plateau.getJoueur1().getName().equals("IA Difficile")?plateau.getJoueur1().getPileDeScore().getCardFaction(faction).size():plateau.getJoueur2().getPileDeScore().getCardFaction(faction).size();
         // nbr de carte de cette faction qui sont en jeu de l'autre joueur
-        int nbrCarteFactionAdversaire = plateau.getJoueur2().getName().equals("MinMax")?plateau.getJoueur1().getPileDeScore().getCardFaction(faction).size():plateau.getJoueur2().getPileDeScore().getCardFaction(faction).size();
+        int nbrCarteFactionAdversaire = plateau.getJoueur2().getName().equals("IA Difficile")?plateau.getJoueur1().getPileDeScore().getCardFaction(faction).size():plateau.getJoueur2().getPileDeScore().getCardFaction(faction).size();
 
         if (nbrCarteFactionIa > nbrCarteFactionAdversaire) {
             return true;
         } else if (nbrCarteFactionIa < nbrCarteFactionAdversaire) {
             return false;
         } else {
-            int carteMaxIaFaction = plateau.getJoueur1().getName().equals("MinMax")?plateau.getJoueur1().getPileDeScore().maxValueOfFaction(faction):plateau.getJoueur2().getPileDeScore().maxValueOfFaction(faction);
-            int carteMaxAdversaireFaction = plateau.getJoueur1().getName().equals("MinMax")?plateau.getJoueur2().getPileDeScore().maxValueOfFaction(faction):plateau.getJoueur2().getPileDeScore().maxValueOfFaction(faction);
+            int carteMaxIaFaction = plateau.getJoueur1().getName().equals("IA Difficile")?plateau.getJoueur1().getPileDeScore().maxValueOfFaction(faction):plateau.getJoueur2().getPileDeScore().maxValueOfFaction(faction);
+            int carteMaxAdversaireFaction = plateau.getJoueur1().getName().equals("IA Difficile")?plateau.getJoueur2().getPileDeScore().maxValueOfFaction(faction):plateau.getJoueur2().getPileDeScore().maxValueOfFaction(faction);
             return carteMaxIaFaction > carteMaxAdversaireFaction;
         }
     }
@@ -210,7 +210,7 @@ public class IAMinMax {
         Plateau plateau = node.getPlateau();
         int scoreIa = 0;
         int nbrFactionGagner;
-        int nbrCarteGagner = plateau.getJoueur1().equals("MinMax")
+        int nbrCarteGagner = plateau.getJoueur1().equals("IA Difficile")
                 ? plateau.getJoueur1().getPileDeScore().getAllCards().size()
                 : plateau.getJoueur2().getPileDeScore().getAllCards().size();
 
