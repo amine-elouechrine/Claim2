@@ -59,7 +59,7 @@ public class InterfacePartieCustom extends JFrame implements Runnable {
         gbc.gridx = 0;
         gbc.gridy++;
 
-        String[] options = {"Humain", "Facile", "Intermédiaire", "Difficile"};
+        String[] options = {"IA Facile", "IA Intermédiaire", "IA Difficile", "Humain"};
         IA1ComboBox = new JComboBox<>(options);
 
         gbc.gridx = 0;
