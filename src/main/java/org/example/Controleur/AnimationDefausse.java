@@ -29,7 +29,6 @@ public class AnimationDefausse extends Animation {
             control.distribuerDefausse();
         }
 
-
     }
 
     @Override

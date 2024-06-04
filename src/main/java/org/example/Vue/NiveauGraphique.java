@@ -190,7 +190,6 @@ public class NiveauGraphique extends JComponent implements Observateur {
     }
 
     private void paintGameBoard(Graphics2D g) {
-
         // Set bigger font size
         font = g.getFont().deriveFont(Font.BOLD, largeur() / 25f); // Adjust font size based on panel width
         g.setFont(font);
@@ -245,6 +244,8 @@ public class NiveauGraphique extends JComponent implements Observateur {
 
 
         if (control.estFinPartie()) {
+            fin.JoueurGagnant = jeu.getJoueurNomGagnant();
+            fin.messageLabel.setText("Le Joueur " + fin.JoueurGagnant + " a gagné");
             rec.setVisible(true);
             fin.setVisible(true);
         }
@@ -252,7 +253,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
         /* Phase 1 */
         if (control.getPhase()) {
 
-            // System.out.println(currentTransparence);
+
             y = hauteur() - rectHeight - 10;
             main = control.getHandJ1P1();
             // Dessin des cartes de la main du joueur 1
@@ -991,22 +992,23 @@ public class NiveauGraphique extends JComponent implements Observateur {
     }
 
     public void initializeAnimationTransition() {
-        this.deltaTransparence = 6;
+        this.deltaTransparence = 3;
         this.currentTransparence = transparence;
     }
 
     public void transition() {
         currentTransparence += deltaTransparence;
-        if (currentTransparence > 170) {
-            currentCarteJoue1X = -999;
-            currentCarteJoue1Y = -999;
-            currentCarteJoue2X = -999;
-            currentCarteJoue2Y = -999;
-            currentCarteaganeeX = -999;
-            currentCarteaganeeY = -999;
-            currentCartePerdeX = -999;
-            currentCartePerdeY = -999;
-        }
+//        if (currentTransparence > 170) {
+//            currentCarteJoue1X = -999;
+//            currentCarteJoue1Y = -999;
+//            currentCarteJoue2X = -999;
+//            currentCarteJoue2Y = -999;
+//            currentCarteaganeeX = -999;
+//            currentCarteaganeeY = -999;
+//            currentCartePerdeX = -999;
+//            currentCartePerdeY = -999;
+//        }
+        miseAJour();
     }
 
     // Pour charger les images dans le hashMap

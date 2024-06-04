@@ -305,4 +305,49 @@ public class Jeu extends Observable {
     public Player getJoueur1() {
         return getPlateau().getJoueur1();
     }
+
+    public String getJoueurNomGagnant() {
+        int score;
+        int gagneFaction = 0;
+        String faction = "";
+        for (int i = 1; i <= 5; i++) {
+            switch (i) {
+                case 1:
+                    faction = "Goblins";
+                    break;
+                case 2:
+                    faction = "Dwarves";
+                    break;
+                case 3:
+                    faction = "Knight";
+                    break;
+                case 4:
+                    faction = "Doppelganger";
+                    break;
+                case 5:
+                    faction = "Undead";
+                    break;
+            }
+            score = getNbCardFactionFromPileScoreJ1(faction) - getNbCardFactionFromPileScoreJ2(faction);
+            if (score > 0) {
+                gagneFaction += 1;
+            } else if (score < 0) {
+                gagneFaction -= 1;
+            } else {
+                if ((getMaxValueoOfFactionFromPileScoreJ1(faction) > getMaxValueoOfFactionFromPileScoreJ2(faction))) {
+                    gagneFaction += 1;
+                } else if (getMaxValueoOfFactionFromPileScoreJ1(faction) < getMaxValueoOfFactionFromPileScoreJ2(faction)) {
+                    gagneFaction -= 1;
+                }
+            }
+        }
+        if (gagneFaction > 0) {
+            return getJoueur1().Name;
+        } else if (gagneFaction == 0) {
+            return "match nul";
+        } else {
+            return getJoueur2().Name;
+        }
+    }
+
 }
