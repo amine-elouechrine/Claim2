@@ -41,13 +41,15 @@ public class ComposantMenuPartie extends JFrame {
         loadGameButton.addActionListener(new AdaptateurSauvegarde(control, new ComposantSauvegarde(control)));
         Sauvegarde.add(loadGameButton);
 
-        RoundedButton regles = new RoundedButton("Règle de jeu");
-        regles.addActionListener(new ActionListener() {
+        Box regles = Box.createHorizontalBox();
+        RoundedButton r = new RoundedButton("Règle de jeu");
+        r.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new ComposantRegle();
             }
         });
+        regles.add(r);
 
         // Check box pour le dessin de la main adverse
         JLabel drawHandLabel = new JLabel("Afficher la main de l'adversaire :");
