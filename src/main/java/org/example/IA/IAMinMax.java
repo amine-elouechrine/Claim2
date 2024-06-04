@@ -37,7 +37,7 @@ public class IAMinMax {
         nodeCount++;
 
         // Cas de base: si la profondeur est 0 ou si le jeu est terminé
-        if (node.plateau.isEndOfGame()) {
+        if (node.plateau.estFinPartie()) {
             int evaluation = evaluer1(node);
             //System.out.println("Evaluation : " + evaluation);
             int result = evaluation;

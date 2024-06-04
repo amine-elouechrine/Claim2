@@ -200,6 +200,18 @@ public class Plateau {
 
     }
 
+    /**
+     * verifier si c'est la fin du jeu
+     *
+     * @return true si c'est la fin du jeu, false sinon
+     */
+    public boolean estFinPartie() {
+        if (phase == false) { // si on est dans la 2eme phase
+            return estFinPhase(getPhase());
+        }
+        return false;
+    }
+
 
     public boolean estPartieTerminer() {
         if (phase == false) { // si on est dans la 2eme phase
