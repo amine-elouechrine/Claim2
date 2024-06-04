@@ -83,6 +83,8 @@ public interface CollecteurEvenements {
 
     boolean getPause();
 
+    public List<Card> getFollowerDeckJ1();
+
     /* Adaptateurs */
     void refaire();
   

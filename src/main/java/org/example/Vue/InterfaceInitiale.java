@@ -10,6 +10,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.Executors;
@@ -118,10 +119,33 @@ public class InterfaceInitiale extends JFrame implements Runnable {
         InterfaceGraphique.demarrer(jeu, control,this);
         this.setVisible(false);
     }
-
     private void showRules() {
-        JOptionPane.showMessageDialog(this, "Voici les règles du jeu...");
+
+        SwingUtilities.invokeLater(() -> {
+            JFrame frame = new JFrame("Image Display");
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.setSize(500, 640);
+            Image backgroundImage = null;
+            // Charge l'image depuis un fichier (remplacez le chemin par le vôtre)
+            try {
+                java.net.URL imgURL = getClass().getResource("/f8-claim-rulebook.png");
+                if (imgURL != null) {
+                    backgroundImage = new ImageIcon(imgURL).getImage();
+                    JLabel label = new JLabel(new ImageIcon(backgroundImage));
+                    frame.add(label);
+                } else {
+                    throw new IOException("Image not found");
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                System.err.println("Erreur de chargement de l'image de fond");
+            }
+
+        });
+
     }
+
+
 
     private ImageIcon resizeIcon(ImageIcon icon, int width, int height) {
         Image img = icon.getImage();

@@ -25,7 +25,7 @@ public class ComposantFinPartie extends JFrame {
         }
     }
 
-    public ComposantFinPartie(CollecteurEvenements control) {
+    public ComposantFinPartie(CollecteurEvenements control,NiveauGraphique niv) {
         this.c = control;
         this.setVisible(false);
         // Setting up the frame
@@ -37,7 +37,7 @@ public class ComposantFinPartie extends JFrame {
         JPanel panel = new JPanel();
         // panel.add(new JLabel(new ImageIcon("src/main/resources/Claim.png")));
         String JoueurGagnant = "";
-        JoueurGagnant = "test"; // TODO : Ajouter la fonction du joueur qui a gagné la partie dans ControleurMédiateur et l'appeler ici
+        JoueurGagnant = "test"; 
         panel.add(new JLabel("Le Joueur " + JoueurGagnant + " a gagné"));
         RoundedButton ok = new RoundedButton("OK");
         ok.addActionListener(new AdaptateurClose(this));
@@ -47,5 +47,7 @@ public class ComposantFinPartie extends JFrame {
         this.pack();
         this.setLocationRelativeTo(null);
         // this.add(panel);
+
+
     }
 }

@@ -124,7 +124,8 @@ public class NiveauGraphique extends JComponent implements Observateur {
         jeu.ajouteObservateur(this);
         GestionClicPileScore gestionClicPileScore = new GestionClicPileScore(this, this.control);
         addMouseListener(gestionClicPileScore);
-
+        // Dans le constructeur de NiveauGraphique ou une méthode d'initialisation
+        // Ajoutez cette ligne
         rec = rejouer;
         drawC = drawCheck;
         fin = finPartie;
@@ -135,25 +136,9 @@ public class NiveauGraphique extends JComponent implements Observateur {
         for (String ligne : lignes) {
             acceptFile(new File(ligne));
         }
-        /*String directoryPath = "src/main/resources/";
-        File directory = new File(directoryPath);
-        File[] files = directory.listFiles();
-
-        // Charge l'image et le nom correspondant dans un hashmap
-        if (files != null) {
-            Arrays.stream(files).filter(File::isFile).forEach(this::acceptFile);
-        } else {
-            System.out.println("No files found in the directory.");
-        }
 
 
 
-        // Chargement icons
-        icon_goblin = imageMap.get("icon_goblin");
-        icon_knight = imageMap.get("icon_knight");
-        icon_undead = imageMap.get("icon_undead");
-        icon_dwarve = imageMap.get("icon_dwarve");
-        icon_doppleganger = imageMap.get("icon_doppleganger");*/
 
 
     }
@@ -170,6 +155,18 @@ public class NiveauGraphique extends JComponent implements Observateur {
         super.paintComponent(g);
         paintGameBoard(g);
     }
+
+    public boolean isCoordinateInPlayer1Hand(int x, int y) {
+        // Vérifie si la coordonnée X se trouve dans la plage horizontale de la main du joueur 1
+        if (x >= startHandXJ1 && x <= (startHandXJ1 + totalWidthJ1)) {
+            // Vérifie si la coordonnée Y se trouve dans la plage verticale de la main du joueur 1
+            if (y >= posHandYJ1 && y <= (posHandYJ1 + rectHeight)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     private void paintGameBoard(Graphics2D g) {
 
@@ -226,6 +223,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
         if (control.estFinPartie()) {
             rec.setVisible(true);
             fin.setVisible(true);
+            drawScorePile(g);
         }
 
         /* Phase 1 */
@@ -241,9 +239,9 @@ public class NiveauGraphique extends JComponent implements Observateur {
 
             // Ajouter "À toi de jouer" pour le joueur 1
             if (control.isJoueurCourantJoueur1()) {
-                g.setFont(font_2);
+                g.setFont(new Font("Segoe UI", Font.BOLD, 20));
                 g.setColor(Color.RED); // Utiliser la couleur actuelle
-                g.drawString("À toi de jouer", startHandXJ1, posHandYJ1 - rectHeight);
+                g.drawString("À toi de jouer", 20, 500);
             }
 
             y = 10;
@@ -251,12 +249,9 @@ public class NiveauGraphique extends JComponent implements Observateur {
 
             drawHandJ2(g);
 
-            // Dessine les decks de followers
-//            positionFollower1X = panelWidth / 9;
-//            positionFollower2X = panelWidth / 9;
-//            positionFollower1Y = hauteur() - rectHeight - 20;
-//            positionFollower2Y = 20;
-            drawFollowerDeck(g);
+
+
+              drawFollowerDeck(g);
 
             // Draw carte a gagne
             positionCarteAfficheeX = rectWidth * 5 / 2 + largeur() / 2;
@@ -272,9 +267,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
             // Animation perdre
             drawAnimationPerde(g);
 
-            // Draw defausse
-//            positionDefausseX = largeur() - largeur() / 8;
-//            positionDefausseY = hauteur() / 2 + rectHeight / 4;
+
             drawDefausse(g);
 
             // Draw score pile
@@ -330,6 +323,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
 
         drawCarteJoue(g, carteJ1F, carteJ1V, positionCarteJoueJ1X, positionCarteJoueJ1Y, currentCarteJoue1X, currentCarteJoue1Y);
         drawCarteJoue(g, carteJ2F, carteJ2V, positionCarteJoueJ2X, positionCarteJoueJ2Y, currentCarteJoue2X, currentCarteJoue2Y);
+
     }
 
     private void drawHandJ2(Graphics2D g) {
@@ -681,6 +675,28 @@ public class NiveauGraphique extends JComponent implements Observateur {
         g.dispose();
 
         return grayImage;
+    }
+    // Vérifie si un clic est sur le deck des followers
+    public boolean isClickOnFollowerDeck(int clickX, int clickY) {
+        // Vérifie si le clic est sur le deck du Joueur 1
+        if (clickX >= positionFollower1X && clickX <= positionFollower1X + rectWidth &&
+                clickY >= positionFollower1Y && clickY <= positionFollower1Y + rectHeight) {
+            return true;
+        }
+        // Si le clic n'est pas sur l'un des decks
+        return false;
+    }
+
+    public boolean isMouseOverFollowerDeck(int mouseX, int mouseY) {
+        // Vérifie si la souris est au-dessus du deck du Joueur 1
+        if (mouseX >= positionFollower1X && mouseX <= positionFollower1X + rectWidth &&
+                mouseY >= positionFollower1Y && mouseY <= positionFollower1Y + rectHeight) {
+
+
+            return true;
+        }
+        // Si la souris n'est pas au-dessus du deck
+        return false;
     }
 
     // Dessine les decks de followers

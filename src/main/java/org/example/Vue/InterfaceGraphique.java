@@ -66,7 +66,7 @@ public class InterfaceGraphique implements Runnable, InterfaceUtilisateur {
         // Toggle state
         DrawCheck drawCheck = new DrawCheck();
         // Fin de la partie
-        ComposantFinPartie finPartie = new ComposantFinPartie(control);
+        ComposantFinPartie finPartie = new ComposantFinPartie(control,niv);
 
         // Dessin du NiveauGraphique
         try {
@@ -79,7 +79,7 @@ public class InterfaceGraphique implements Runnable, InterfaceUtilisateur {
         niv.requestFocusInWindow();
         niv.addMouseListener(new AdaptateurSouris(niv, control));
         niv.addKeyListener(adaptateurClavier);
-
+        niv.addMouseMotionListener(new ChangementDeCourseur(control, niv));
         // Fenetre InterfaceGraphique
         fenetre.add(niv);
 

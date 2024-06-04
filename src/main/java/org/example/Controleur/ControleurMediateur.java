@@ -548,8 +548,10 @@ public class ControleurMediateur implements CollecteurEvenements {
     private void testFin() {
         if (jeu.estFinPhase1()) {
             jeu.switchPhase();
-            if (estFinPartie())
-                System.exit(0);
+            if (estFinPartie()){
+                //System.exit(0);
+            }
+
         }
     }
 
@@ -622,6 +624,11 @@ public class ControleurMediateur implements CollecteurEvenements {
         vue.initializeAnimationDefausse(totalIterations, card1Faction, card2Faction, joueur);
         mouvement = new AnimationDefausse(totalIterations, this, delay);
         animations.insereQueue(mouvement);
+    }
+
+    public List<Card> getFollowerDeckJ1(){
+        return jeu.getPlateau().getJoueur1().getHandScndPhase().getCards();
+
     }
 
     public void setPause(boolean pause) {
