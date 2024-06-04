@@ -111,7 +111,8 @@ public class IAFirstPhase {
         }
     }
 
-    public Card jouerCarteIA(Plateau p ){
+    public Card jouerCarteIA(Plateau p)
+    {
         int mean =  moyenneDuPoids(p);
         Card carteIA;
         if (p.getCarteJoueur1()==null && p.getCarteJoueur2() ==null){

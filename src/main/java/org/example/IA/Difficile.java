@@ -3,11 +3,11 @@ package org.example.IA;
 import org.example.Modele.Card;
 import org.example.Modele.Plateau;
 
-public class Difficile extends IA{
+public class Difficile extends IA {
 
     IAFirstPhase ia;
     public Difficile() {
-        super("MinMax");
+        super("IA Difficile");
     }
 
     @Override

@@ -89,20 +89,20 @@ public class InterfacePartieCustom extends JFrame implements Runnable {
                         String IA1Selected = (String) IA1ComboBox.getSelectedItem();
                         ControleurMediateur control;
                         switch (IA1Selected) {
-                            case "Facile":
+                            case "IA Facile":
                                 ia = new Facile();
                                 jeu = new Jeu(true, joueur1, "IA Facile");
                                 control = new ControleurMediateur(jeu, ia);
                                 break;
-                            case "Intermédiaire":
+                            case "IA Intermédiaire":
                                 // Création de l'IA
                                 ia = new Intermediare();
                                 jeu = new Jeu(true, joueur1, "IA Intermediare");
                                 control = new ControleurMediateur(jeu, ia);
                                 break;
-                            case "Difficile":
+                            case "IA Difficile":
                                 // Création de l'IA
-                                ia = new Difficile(); // TODO : Ajouter l'IA Min-Max
+                                ia = new Difficile();
                                 jeu = new Jeu(true, joueur1, "IA Difficile");
                                 control = new ControleurMediateur(jeu, ia);
                                 break;
