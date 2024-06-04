@@ -43,7 +43,7 @@ public class TestIAMinMax {
             }else{
                 // Tour de l'adversaire
                 System.out.println("Tour de l'adversaire...");
-                coupAdversaire = carteAleatoire(plateauInitial);
+                coupAdversaire = intermediare.jouerCoupPhase1(plateauInitial);
                 System.out.println("Carte jouée par l'adversaire : " + coupAdversaire);
                 plateauInitial.jouerCarte(coupAdversaire);
                 plateauInitial.switchJoueur();
@@ -51,7 +51,7 @@ public class TestIAMinMax {
             // -------------------------------------------------------------------------
             if (plateauInitial.getJoueurCourant().getName().equals("Facile")) {
                 System.out.println("Tour de l'adversaire...");
-                coupAdversaire = carteAleatoire(plateauInitial);
+                coupAdversaire = intermediare.jouerCoupPhase1(plateauInitial);
                 System.out.println("Carte jouée par l'adversaire : " + coupAdversaire);
                 plateauInitial.jouerCarte(coupAdversaire);
                 // attribution des cartes
@@ -62,8 +62,7 @@ public class TestIAMinMax {
                 //coupIa = intermediare.jouerCoupPhase1(plateauInitial);
                 System.out.println("Carte choisie par l'IA: " + coupIa);
                 //plateauInitial.jouerCarte(coupIa);
-                plateauInitial.getJoueurCourant().getHand().removeCard(coupIa);
-                plateauInitial.setCarteJoueur2(coupIa);
+                plateauInitial.jouerCarte(coupIa);
                 // attribution des cartes
                 //winningCard = ReglesDeJeu.carteGagnante(coupAdversaire,coupIa, plateauInitial);
             }
@@ -102,7 +101,7 @@ public class TestIAMinMax {
 
 
 
-    public static String jouerPartieFacileMinMax(Plateau plateauInitial) {
+    public static String jouerPartieFacileMinMax(Plateau plateauInitial,Intermediare intermediare) {
         Card coupIa = null;
         Card coupAdversaire = null;
         Card winningCard;
@@ -126,7 +125,7 @@ public class TestIAMinMax {
             } else {
                 // Tour de l'adversaire
                 System.out.println("Tour de l'adversaire...");
-                c1 = carteAleatoire(plateauInitial);
+                c1 = intermediare.jouerCoupPhase2(plateauInitial);
                 System.out.println("Carte jouée par l'adversaire : " + c1);
                 plateauInitial.jouerCarte(c1);
                 plateauInitial.switchJoueur();
@@ -141,7 +140,7 @@ public class TestIAMinMax {
                 //winningCard = ReglesDeJeu.carteGagnante(coupAdversaire, coupIa, plateauInitial);
             } else {
                 System.out.println("Tour de l'adversaire...");
-                c2 = carteAleatoire(plateauInitial); // Profondeur de recherche = 13
+                c2 = intermediare.jouerCoupPhase2(plateauInitial); // Profondeur de recherche = 13
                 System.out.println("Carte jouée par l'adversaire : " + c2);
                 plateauInitial.jouerCarte(c2);
                 //winningCard = ReglesDeJeu.carteGagnante(coupIa, coupAdversaire, plateauInitial);
@@ -186,6 +185,7 @@ public class TestIAMinMax {
 
         int scoreMinMax = 0;
         int scoreFacile = 0;
+        Intermediare intermediare = new Intermediare() ;
 
         // laisser l'utilisateur choisir la strategie de l'ia
         Scanner s = new Scanner(System.in) ;
@@ -201,7 +201,7 @@ public class TestIAMinMax {
         System.out.println("entrer 1 pour l'affichage des hand avant chaque partie : ");
         int rep = s.nextInt();
 
-        for (int i = 0; i < 50; i++) {
+        for (int i = 0; i < 100; i++) {
             Plateau plateau;
             String winner;
 
@@ -222,7 +222,7 @@ public class TestIAMinMax {
                     int cont = s.nextInt();
                 }
 
-                winner = jouerPartieFacileMinMax(plateau);
+                winner = jouerPartieFacileMinMax(plateau,intermediare);
                 System.out.println("pile de score : joueur1 : ");
                 plateau.getJoueur1().getPileDeScore().printPileDeScore();
                 System.out.println("\n\n");
@@ -235,7 +235,7 @@ public class TestIAMinMax {
                 plateau.setCarteJoueur1(null);
                 plateau.setCarteJoueur2(null);
 
-                winner = jouerPartieFacileMinMax(plateau);
+                winner = jouerPartieFacileMinMax(plateau,intermediare);
 
 
             }

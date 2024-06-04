@@ -93,7 +93,7 @@ public abstract class IA extends GeneralPlayer {
      * @return la liste de cartes de la meme faction que la carte passée en paramètre (opponentCard)
      */
     public Hand getCardsOfSameFaction(Plateau plateau) {
-        Hand hand = plateau.getJoueurCourant().getHand();
+        Hand hand = plateau.getJoueurCourant().getHandScndPhase();
         String faction = plateau.getCardAdversaire().getFaction();
         if (hand == null || hand.isEmpty()) {
             return new Hand();

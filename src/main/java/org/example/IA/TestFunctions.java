@@ -153,8 +153,8 @@ public class TestFunctions {
         plateau.setPhase(false);//phase 2
 
         // configuration du plateau
-        plateau.setJoueur1(joueur1);  // ia
-        plateau.setJoueur2(joueur2); // adversaire
+        plateau.setJoueur2(joueur1);  // ia
+        plateau.setJoueur1(joueur2); // adversaire
         plateau.setJoueurCourant(joueur2); // on commande par l'ia
 
         return plateau;

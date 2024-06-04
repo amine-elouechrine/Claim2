@@ -107,7 +107,7 @@ public class Intermediare extends IA {
 		if (!plateau.estLeader2()) {
 			cardToPlay = jouerAvecSuiviFactionPhase2(plateau);
 		} else {
-			cardToPlay = getHighestValueCard(plateau.getJoueurCourant().getHand().getAllCards());
+			cardToPlay = getHighestValueCard(plateau.getJoueurCourant().getHandScndPhase() .getAllCards());
 		}
 		//System.out.println("---------------Carte jouée par l'IA : " + cardToPlay.getFaction() + " " + cardToPlay.getValeur());
 		return cardToPlay;
@@ -147,7 +147,7 @@ public class Intermediare extends IA {
 		Hand cartesJouables = getCardsOfSameFaction(plateau);
 
 		if (cartesJouables.isEmpty()) {
-			return getLowestValueCard((plateau.getJoueurCourant().getHand().getAllCards()));
+			return getLowestValueCard((plateau.getJoueurCourant().getHandScndPhase().getAllCards()));
 		} else {
 			return getSmallestHigherCard(cartesJouables, plateau.getCardAdversaire());
 		}
@@ -155,7 +155,7 @@ public class Intermediare extends IA {
 
 
 	private Card jouerAvecNains(Plateau plateau) {
-		List<Card> carteJouable = getCardsOfSameFaction2(plateau.getJoueurCourant().getHand(), plateau.getCardAdversaire().getFaction()).getAllCards();
+		List<Card> carteJouable = getCardsOfSameFaction2(plateau.getJoueurCourant().getHandScndPhase(), plateau.getCardAdversaire().getFaction()).getAllCards();
 
 		if (getLowestValueCard(carteJouable).getValeur() > plateau.getCardAdversaire().getValeur()) {
 			return getHighestValueCard(carteJouable);
