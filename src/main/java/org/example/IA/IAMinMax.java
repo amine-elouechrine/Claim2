@@ -22,6 +22,14 @@ public class IAMinMax {
 
     private static int nodeCount = 0; // Variable pour compter les noeuds visités
 
+    // les erreurs rencontrer !
+    // il y a un decalage entre le score (l'evaluation) et l'affichage de maxEval
+    // !!!!
+    // lors de la minimisation tous les coup en le meme minEval ??? -infinie !!!
+    // lors de la minimisation les calculs sont incorrecte determiner coup possible
+    // ! parce que lors de la minimisation l'adversaire a deja jouer donc les
+    // calculs seront fais sur les tous les cartes qui sont dans la main de
+    // l'adversaire et non pas par rapport a la carte qu'il a jouer
     public static int minimax(Node node, int depth, int alpha, int beta) {
         int evalResult;
 

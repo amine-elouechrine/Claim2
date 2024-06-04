@@ -58,7 +58,7 @@ public class TestFunctions {
         Plateau p = new Plateau();
 
         //creation des joueurs
-        Player IA = new Player("IA Difficile");
+        Player IA = new Player("MinMax");
         Player adversaire = new Player("Facile");
 
         // creation de la pioche
@@ -79,67 +79,95 @@ public class TestFunctions {
         return p; // retourner le plteau apres construction
     }
 
+    public static Hand winnerHand(){
+        Hand hand = new Hand();
+        hand.addCard(new Card(3, "Goblin"));
+        hand.addCard(new Card(4, "Goblin"));
+        hand.addCard(new Card(5, "Goblin"));
+        hand.addCard(new Card(6, "Goblin"));
+        hand.addCard(new Card(7, "Goblin"));
+        hand.addCard(new Card(9, "Goblin"));
+        hand.addCard(new Card(8, "Goblin"));
+        hand.addCard(new Card(6, "Doppelganger"));
+        hand.addCard(new Card(8, "Doppelganger"));
+        hand.addCard(new Card(7, "Doppelganger"));
+        hand.addCard(new Card(5, "Doppelganger"));
+        hand.addCard(new Card(4, "Doppelganger"));
+        hand.addCard(new Card(9, "Doppelganger"));
+
+        return hand ;
+    }
+
+    public static Hand loserHand() {
+        Hand hand = new Hand();
+        hand.addCard(new Card(0, "Goblin"));
+        hand.addCard(new Card(0, "Goblin"));
+        hand.addCard(new Card(0, "Goblin"));
+        hand.addCard(new Card(0, "Goblin"));
+        hand.addCard(new Card(0, "Goblin"));
+        hand.addCard(new Card(1, "Goblin"));
+        hand.addCard(new Card(2, "Goblin"));
+        hand.addCard(new Card(1, "Dwarves"));
+        hand.addCard(new Card(2, "Knight"));
+        hand.addCard(new Card(3, "Knight"));
+        hand.addCard(new Card(0, "Undead"));
+        hand.addCard(new Card(1, "Undead"));
+        hand.addCard(new Card(2, "Undead"));
+
+        return hand;
+    }
 
     // faire un plateau avec configuration qui fait perdre l'ia forcement
     public static Plateau configurationPerdante(){
-        Player joueur2 = new Player("IA Difficile");
+        Player IA = new Player("MinMax");
         Player joueur1 = new Player("Facile");
         // creation des mains des joueurs
         Cards pioche = new Cards();
         pioche.addAllCards();
 
-        // Donner une main à l'IA qui lui fait perdre
-        // 5 * Goblins 0
-        // Dwarves 0, Dwarves 1, Dwarves 2
-        // Knight 2, Knight 3
-        // Undead 0, Undead 1, Undead 2
-        // Donner une main à l'IA qui lui fait perdre
-        joueur1.getHandScndPhase().addCard(new Card(0, "Goblin"));
-        joueur1.getHandScndPhase().addCard(new Card(0, "Goblin"));
-        joueur1.getHandScndPhase().addCard(new Card(0, "Goblin"));
-        joueur1.getHandScndPhase().addCard(new Card(0, "Goblin"));
-        joueur1.getHandScndPhase().addCard(new Card(0, "Goblin"));
-        joueur1.getHandScndPhase().addCard(new Card(1, "Goblin"));
-        joueur1.getHandScndPhase().addCard(new Card(2, "Goblin"));
-        joueur1.getHandScndPhase().addCard(new Card(1, "Dwarves"));
-        joueur1.getHandScndPhase().addCard(new Card(2, "Knight"));
-        joueur1.getHandScndPhase().addCard(new Card(3, "Knight"));
-        joueur1.getHandScndPhase().addCard(new Card(0, "Undead"));
-        joueur1.getHandScndPhase().addCard(new Card(1, "Undead"));
-        joueur1.getHandScndPhase().addCard(new Card(2, "Undead"));
-
-        // donner au joueur 2 les cartes qui lui font gagner
-        joueur2.getHandScndPhase().addCard(new Card(3, "Goblin"));
-        joueur2.getHandScndPhase().addCard(new Card(4, "Goblin"));
-        joueur2.getHandScndPhase().addCard(new Card(5, "Goblin"));
-        joueur2.getHandScndPhase().addCard(new Card(6, "Goblin"));
-        joueur2.getHandScndPhase().addCard(new Card(7, "Goblin"));
-        joueur2.getHandScndPhase().addCard(new Card(9, "Goblin"));
-        joueur2.getHandScndPhase().addCard(new Card(8, "Goblin"));
-        joueur2.getHandScndPhase().addCard(new Card(6, "Doppelganger"));
-        joueur2.getHandScndPhase().addCard(new Card(8, "Doppelganger"));
-        joueur2.getHandScndPhase().addCard(new Card(7, "Doppelganger"));
-        joueur2.getHandScndPhase().addCard(new Card(5, "Doppelganger"));
-        joueur2.getHandScndPhase().addCard(new Card(4, "Doppelganger"));
-        joueur2.getHandScndPhase().addCard(new Card(9, "Doppelganger"));
+        joueur1.setHandScndPhase(winnerHand());
+        IA.setHandScndPhase(loserHand());
 
         // Initialisation du plateau avec les joueurs
         Plateau plateau = new Plateau();
         plateau.setPhase(false);//phase 2
 
         // configuration du plateau
-        plateau.setJoueur1(joueur1);  // ia
-        plateau.setJoueur2(joueur2); // adversaire
-        plateau.setJoueurCourant(joueur1); // on commande par l'ia
+        plateau.setJoueur1(joueur1);
+        plateau.setJoueur2(IA);
+        plateau.setJoueurCourant(joueur1);
 
         return plateau;
 
     }
 
+    public static Plateau configurationGagnante(){
+        Player IA = new Player("MinMax");
+        Player joueur1 = new Player("Facile");
+        // creation des mains des joueurs
+        Cards pioche = new Cards();
+        pioche.addAllCards();
+
+        joueur1.setHandScndPhase(loserHand());
+        IA.setHandScndPhase(winnerHand());
+
+        // Initialisation du plateau avec les joueurs
+        Plateau plateau = new Plateau();
+        plateau.setPhase(false);//phase 2
+
+        // configuration du plateau
+        plateau.setJoueur1(joueur1);
+        plateau.setJoueur2(IA);
+        plateau.setJoueurCourant(joueur1);
+
+        return plateau;
+    }
+
+
 
     public static Plateau setPlateauPhase2() {
         // Création des joueurs
-        Player joueur2 = new Player("IA Difficile");
+        Player joueur2 = new Player("MinMax");
         Player joueur1 = new Player("Facile");
 
         // creation des mains des joueurs
@@ -162,7 +190,7 @@ public class TestFunctions {
 
     public static Plateau setPlateauSameHand(){
         // Création des joueurs
-        Player joueur1 = new Player("IA Difficile");
+        Player joueur1 = new Player("MinMax");
         Player joueur2 = new Player("Facile");
 
         Cards pioche = new Cards();
