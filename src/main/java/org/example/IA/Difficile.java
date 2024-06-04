@@ -6,8 +6,10 @@ import org.example.Modele.Plateau;
 public class Difficile extends IA {
 
     IAFirstPhase ia;
+    IAMinMax iaMinMax;
     public Difficile() {
         super("IA Difficile");
+        ia = new IAFirstPhase();
     }
 
     @Override
