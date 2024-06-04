@@ -126,8 +126,6 @@ public class NiveauGraphique extends JComponent implements Observateur {
         control = c;
         jeu = j;
         jeu.ajouteObservateur(this);
-        GestionClicPileScore gestionClicPileScore = new GestionClicPileScore(this, this.control);
-        addMouseListener(gestionClicPileScore);
         rec = rejouer;
         drawC = drawCheck;
         fin = finPartie;
@@ -137,7 +135,9 @@ public class NiveauGraphique extends JComponent implements Observateur {
         for (String ligne : lignes) {
             acceptFile(new File(ligne));
         }
-        /*String directoryPath = "src/main/resources/";
+
+        /*
+        String directoryPath = "src/main/resources/";
         File directory = new File(directoryPath);
         File[] files = directory.listFiles();
 
@@ -253,13 +253,19 @@ public class NiveauGraphique extends JComponent implements Observateur {
         /* Phase 1 */
         if (control.getPhase()) {
 
+
             y = hauteur() - rectHeight - 10;
             main = control.getHandJ1P1();
             // Dessin des cartes de la main du joueur 1
-            for (int i = 0; i < nbCardHandJ1; i++) {
-                x = startHandXJ1 + i * (rectWidth + spacing);
-                drawHand(g, i, main, control.getNomJoueur2());
+
+            if(drawC.isDrawHandJ1Toggle()) {
+                drawHiddenHand(g, nbCardHandJ1);
             }
+            else
+                for (int i = 0; i < nbCardHandJ1; i++) {
+                    x = startHandXJ1 + i * (rectWidth + spacing);
+                    drawHand(g, i, main, control.getNomJoueur2());
+                }
 
             // Ajouter "À toi de jouer" pour le joueur 1
             if (control.isJoueurCourantJoueur1()) {
@@ -270,7 +276,6 @@ public class NiveauGraphique extends JComponent implements Observateur {
 
             y = 10;
             mainJ2 = control.getHandJ2P1();
-
             drawHandJ2(g);
 
 
@@ -321,6 +326,12 @@ public class NiveauGraphique extends JComponent implements Observateur {
             /* Phase 2 */
         } else if (!control.getPhase()) {
 
+            // Ajouter "À toi de jouer" pour le joueur 1
+            if (control.isJoueurCourantJoueur1()) {
+                g.setFont(font_2);
+                g.setColor(Color.RED); // Utiliser la couleur actuelle
+                g.drawString("À toi de jouer", positionPileScoreJ1X, posHandYJ1 - rectHeight);
+            }
             y = hauteur() - rectHeight - 10;
             main = control.getHandJ1P2();
             // Dessin des cartes de la main du joueur 1
@@ -359,6 +370,15 @@ public class NiveauGraphique extends JComponent implements Observateur {
         drawCarteJoue(g, carteJ2F, carteJ2V, positionCarteJoueJ2X, positionCarteJoueJ2Y, currentCarteJoue2X, currentCarteJoue2Y);
     }
 
+    private void drawHiddenHand(Graphics2D g, int nbCardHand) {
+        for (int i = 0; i < nbCardHand; i++) {
+            x = startHandXJ2 + i * (rectWidth + spacing);
+            g.setColor(Color.GRAY);
+            image = imageMap.get("backside");
+            g.drawImage(image, x, y, rectWidth, rectHeight, this);
+        }
+    }
+
     private void drawJoueurGagnant(Graphics2D g) {
         g.setFont(font_2);
         g.setColor(Color.RED);
@@ -374,12 +394,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
     private void drawHandJ2(Graphics2D g) {
         if (!drawC.isDrawHandToggle()) {
             // Dessin de la main face caché du joueur 2 si il est une IA
-            for (int i = 0; i < nbCardHandJ2; i++) {
-                x = startHandXJ2 + i * (rectWidth + spacing);
-                g.setColor(Color.GRAY);
-                image = imageMap.get("backside");
-                g.drawImage(image, x, y, rectWidth, rectHeight, this);
-            }
+            drawHiddenHand(g, nbCardHandJ2);
         } else {
             // Dessin de la main du joueur 2
             for (int i = 0; i < nbCardHandJ2; i++) {
@@ -459,31 +474,32 @@ public class NiveauGraphique extends JComponent implements Observateur {
 
         for (int i = 0; i < numRows; i++) {
             lineY = y + i * cellHeight;
-            assignFactionToNumber(i);
+            faction = assignFactionToNumber(i);
             // Calcul de score
             calculScore(g, i);
         }
     }
 
-    private void assignFactionToNumber(int indice) {
-        faction = "";
+    public String assignFactionToNumber(int indice) {
+        String fact = "";
         switch (indice) {
             case 1:
-                faction = "Goblins";
+                fact = "Goblins";
                 break;
             case 2:
-                faction = "Dwarves";
+                fact = "Dwarves";
                 break;
             case 3:
-                faction = "Knight";
+                fact = "Knight";
                 break;
             case 4:
-                faction = "Doppelganger";
+                fact = "Doppelganger";
                 break;
             case 5:
-                faction = "Undead";
+                fact = "Undead";
                 break;
         }
+        return fact;
     }
 
     /* Dessine la défausse pour la phase */
@@ -515,7 +531,6 @@ public class NiveauGraphique extends JComponent implements Observateur {
     /* Dessine la main selon un couple d'entier */
     private void drawHand(Graphics2D g, int i, int[][] main, String Joueur) {
         // jeu.getPlateau().getJoueur1().getHand().printHand();
-
         getStrImage(main[i][1]);
         strImage += "_" + main[i][0];
         image = imageMap.get(strImage);

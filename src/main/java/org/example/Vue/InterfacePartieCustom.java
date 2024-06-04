@@ -59,7 +59,7 @@ public class InterfacePartieCustom extends JFrame implements Runnable {
         gbc.gridx = 0;
         gbc.gridy++;
 
-        String[] options = {"Humain", "Facile", "Intermédiaire", "Difficile"};
+        String[] options = {"IA Facile", "IA Intermédiaire", "IA Difficile", "Humain"};
         IA1ComboBox = new JComboBox<>(options);
 
         gbc.gridx = 0;
@@ -101,7 +101,7 @@ public class InterfacePartieCustom extends JFrame implements Runnable {
                                 break;
                             case "Difficile":
                                 // Création de l'IA
-                                ia = new Intermediare();
+                                ia = new Intermediare(); // TODO : Ajouter l'IA Min-Max
                                 jeu = new Jeu(true, joueur1, "IA Intermediare");
                                 control = new ControleurMediateur(jeu, ia);
                                 break;
