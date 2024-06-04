@@ -325,6 +325,12 @@ public class NiveauGraphique extends JComponent implements Observateur {
             /* Phase 2 */
         } else if (!control.getPhase()) {
 
+            // Ajouter "À toi de jouer" pour le joueur 1
+            if (control.isJoueurCourantJoueur1()) {
+                g.setFont(font_2);
+                g.setColor(Color.RED); // Utiliser la couleur actuelle
+                g.drawString("À toi de jouer", positionPileScoreJ1X, posHandYJ1 - rectHeight);
+            }
             y = hauteur() - rectHeight - 10;
             main = control.getHandJ1P2();
             // Dessin des cartes de la main du joueur 1
