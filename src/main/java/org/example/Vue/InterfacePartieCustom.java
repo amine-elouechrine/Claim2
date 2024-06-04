@@ -7,6 +7,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import org.example.Controleur.ControleurMediateur;
 import org.example.IA.Facile;
@@ -88,18 +91,18 @@ public class InterfacePartieCustom extends JFrame implements Runnable {
                         String IA1Selected = (String) IA1ComboBox.getSelectedItem();
                         ControleurMediateur control;
                         switch (IA1Selected) {
-                            case "Facile":
+                            case "IA Facile":
                                 ia = new Facile();
                                 jeu = new Jeu(true, joueur1, "IA Facile");
                                 control = new ControleurMediateur(jeu, ia);
                                 break;
-                            case "Intermédiaire":
+                            case "IA Intermédiaire":
                                 // Création de l'IA
                                 ia = new Intermediare();
                                 jeu = new Jeu(true, joueur1, "IA Intermediare");
                                 control = new ControleurMediateur(jeu, ia);
                                 break;
-                            case "Difficile":
+                            case "IA Difficile":
                                 // Création de l'IA
                                 ia = new Intermediare(); // TODO : Ajouter l'IA Min-Max
                                 jeu = new Jeu(true, joueur1, "IA Intermediare");
@@ -108,8 +111,11 @@ public class InterfacePartieCustom extends JFrame implements Runnable {
                             default:
                                 jeu = new Jeu(false, joueur1, joueur2);
                                 control = new ControleurMediateur(jeu, null);
+
                                 break;
                         }
+                        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+                        scheduler.scheduleAtFixedRate(control::tictac, 0, 100, TimeUnit.MILLISECONDS);
                         InterfaceGraphique.demarrer(jeu, control);
                         setVisible(false);
                     }

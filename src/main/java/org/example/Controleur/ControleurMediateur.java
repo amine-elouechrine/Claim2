@@ -46,7 +46,7 @@ public class ControleurMediateur implements CollecteurEvenements {
     public ControleurMediateur(Jeu j, IA ia) {
         jeu = j;
         animations = new SequenceListe<>();
-        //dureePause = 4500;
+        dureePause = 4500;
         iterations = 60;
         animationsSupportees = false;
         animationsActives = false;
