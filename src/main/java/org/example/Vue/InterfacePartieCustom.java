@@ -101,7 +101,7 @@ public class InterfacePartieCustom extends JFrame implements Runnable {
                                 break;
                             case "Difficile":
                                 // Création de l'IA
-                                ia = new Intermediare();
+                                ia = new Intermediare(); // TODO : Ajouter l'IA Min-Max
                                 jeu = new Jeu(true, joueur1, "IA Intermediare");
                                 control = new ControleurMediateur(jeu, ia);
                                 break;
