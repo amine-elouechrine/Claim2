@@ -126,8 +126,6 @@ public class NiveauGraphique extends JComponent implements Observateur {
         control = c;
         jeu = j;
         jeu.ajouteObservateur(this);
-        GestionClicPileScore gestionClicPileScore = new GestionClicPileScore(this, this.control);
-        addMouseListener(gestionClicPileScore);
         rec = rejouer;
         drawC = drawCheck;
         fin = finPartie;
@@ -252,7 +250,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
         /* Phase 1 */
         if (control.getPhase()) {
 
-            System.out.println(currentTransparence);
+            // System.out.println(currentTransparence);
             y = hauteur() - rectHeight - 10;
             main = control.getHandJ1P1();
             // Dessin des cartes de la main du joueur 1
@@ -459,31 +457,32 @@ public class NiveauGraphique extends JComponent implements Observateur {
 
         for (int i = 0; i < numRows; i++) {
             lineY = y + i * cellHeight;
-            assignFactionToNumber(i);
+            faction = assignFactionToNumber(i);
             // Calcul de score
             calculScore(g, i);
         }
     }
 
-    private void assignFactionToNumber(int indice) {
-        faction = "";
+    public String assignFactionToNumber(int indice) {
+        String fact = "";
         switch (indice) {
             case 1:
-                faction = "Goblins";
+                fact = "Goblins";
                 break;
             case 2:
-                faction = "Dwarves";
+                fact = "Dwarves";
                 break;
             case 3:
-                faction = "Knight";
+                fact = "Knight";
                 break;
             case 4:
-                faction = "Doppelganger";
+                fact = "Doppelganger";
                 break;
             case 5:
-                faction = "Undead";
+                fact = "Undead";
                 break;
         }
+        return fact;
     }
 
     /* Dessine la défausse pour la phase */

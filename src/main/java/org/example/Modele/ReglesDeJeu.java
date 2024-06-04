@@ -220,9 +220,12 @@ public class ReglesDeJeu {
                 cartesGagnates.add(carte);
             }
         }
+        // Affichage
+        /*
         for(Card carte : cartesGagnates) {
             System.out.println(carte.toString());
         }
+         */
         return cartesGagnates;
     }
 
