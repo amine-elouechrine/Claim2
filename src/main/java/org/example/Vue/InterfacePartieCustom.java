@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.IOException;
 
 import org.example.Controleur.ControleurMediateur;
+import org.example.IA.Facile;
 import org.example.IA.Intermediare;
 import org.example.Modele.Jeu;
 import org.example.IA.IA;
@@ -58,7 +59,7 @@ public class InterfacePartieCustom extends JFrame implements Runnable {
         gbc.gridx = 0;
         gbc.gridy++;
 
-        String[] options = {"Humain", "Facile", "Difficile"};
+        String[] options = {"IA Facile", "IA Intermédiaire", "IA Difficile", "Humain"};
         IA1ComboBox = new JComboBox<>(options);
 
         gbc.gridx = 0;
@@ -81,23 +82,31 @@ public class InterfacePartieCustom extends JFrame implements Runnable {
                 try {
                     String joueur1 = joueur1Field.getText();
                     String joueur2 = joueur2Field.getText();
-
+                    Jeu jeu;
                     if (joueur1 != null && joueur2 != null) {
-                        Jeu jeu = new Jeu();
+
                         String IA1Selected = (String) IA1ComboBox.getSelectedItem();
                         ControleurMediateur control;
                         switch (IA1Selected) {
                             case "Facile":
+                                ia = new Facile();
+                                jeu = new Jeu(true, joueur1, "IA Facile");
+                                control = new ControleurMediateur(jeu, ia);
+                                break;
+                            case "Intermédiaire":
+                                // Création de l'IA
                                 ia = new Intermediare();
+                                jeu = new Jeu(true, joueur1, "IA Intermediare");
                                 control = new ControleurMediateur(jeu, ia);
                                 break;
                             case "Difficile":
                                 // Création de l'IA
-                                ia = new Intermediare();
+                                ia = new Intermediare(); // TODO : Ajouter l'IA Min-Max
+                                jeu = new Jeu(true, joueur1, "IA Intermediare");
                                 control = new ControleurMediateur(jeu, ia);
                                 break;
-
                             default:
+                                jeu = new Jeu(false, joueur1, joueur2);
                                 control = new ControleurMediateur(jeu, null);
                                 break;
                         }

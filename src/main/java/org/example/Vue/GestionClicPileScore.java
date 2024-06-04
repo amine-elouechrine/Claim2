@@ -10,8 +10,8 @@ import java.util.List;
 
 public class GestionClicPileScore implements MouseListener {
 
-    private NiveauGraphique niveauGraphique;
-    private  CollecteurEvenements control;
+    NiveauGraphique niveauGraphique;
+    CollecteurEvenements control;
 
     public GestionClicPileScore(NiveauGraphique niveauGraphique, CollecteurEvenements control) {
         this.niveauGraphique = niveauGraphique;
@@ -27,9 +27,9 @@ public class GestionClicPileScore implements MouseListener {
             factionCliquee = "Dwarves";
         } else if (ligne == 3) {
             factionCliquee = "Knight";
-        }else if(ligne == 4){
-            factionCliquee = "Doppelganger";}
-        else if(ligne == 5){
+        } else if (ligne == 4) {
+            factionCliquee = "Doppelganger";
+        } else if (ligne == 5) {
             factionCliquee = "Undead";
         }
         return factionCliquee;
@@ -44,31 +44,32 @@ public class GestionClicPileScore implements MouseListener {
             // Obtenir le nom de la faction pour la ligne cliquée
             String factionCliquee = getFactionForLine(ligneCliquee);
             List<Card> PDSJ1 = control.getCardsFromPileScoreJ1(factionCliquee);
-            List<Card> PDSJ2= control.getCardsFromPileScoreJ2(factionCliquee);
+            List<Card> PDSJ2 = control.getCardsFromPileScoreJ2(factionCliquee);
             // Afficher la fenêtre modale avec les cartes de la faction pour les deux joueurs
             Frame owner = (Frame) SwingUtilities.getWindowAncestor(niveauGraphique);
 
-                // Obtenir le propriétaire de la fenêtre
-                if(!PDSJ1.isEmpty() || !PDSJ2.isEmpty()){
-                    FicheFactionDialog dialog = new FicheFactionDialog(owner, factionCliquee, PDSJ1, PDSJ2);
-                    dialog.setVisible(true);
-
-                }
-
-
+            // Obtenir le propriétaire de la fenêtre
+            if (!PDSJ1.isEmpty() || !PDSJ2.isEmpty()) {
+                FicheFactionDialog dialog = new FicheFactionDialog(owner, factionCliquee, PDSJ1, PDSJ2, control);
+                dialog.setVisible(true);
+            }
         }
-
-
-
     }
 
     // D'autres méthodes de l'interface MouseListener
     @Override
-    public void mousePressed(MouseEvent e) {}
+    public void mousePressed(MouseEvent e) {
+    }
+
     @Override
-    public void mouseReleased(MouseEvent e) {}
+    public void mouseReleased(MouseEvent e) {
+    }
+
     @Override
-    public void mouseEntered(MouseEvent e) {}
+    public void mouseEntered(MouseEvent e) {
+    }
+
     @Override
-    public void mouseExited(MouseEvent e) {}
+    public void mouseExited(MouseEvent e) {
+    }
 }

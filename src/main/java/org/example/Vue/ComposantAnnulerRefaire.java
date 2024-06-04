@@ -9,16 +9,14 @@ public class ComposantAnnulerRefaire extends Box {
 
         Box box = Box.createHorizontalBox();
 
-        JButton annuler = new JButton("Annuler");
+        RoundedButton annuler = new RoundedButton("Annuler");
         annuler.addActionListener(new AdaptateurAnnuler(c));
 
-        JButton refaire = new JButton("Refaire");
+        RoundedButton refaire = new RoundedButton("Refaire");
         refaire.addActionListener(new AdaptateurRefaire(c));
 
         box.add(annuler);
-        box.add(Box.createHorizontalStrut(20));
         box.add(refaire);
-        box.setAlignmentX(Component.LEFT_ALIGNMENT);
         add(box);
     }
 }

@@ -1,10 +1,7 @@
 package org.example.Modele;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Stack;
+import java.util.*;
 
 public class GestionAnnuleRefaire {
     Stack<Plateau> annule;
@@ -53,9 +50,14 @@ public class GestionAnnuleRefaire {
     /**
      * Méthode pour vider la pile refaire
      */
-    public void clearStack() {
+    public void clearStackRefaire() {
         while (!refaire.empty()) {
             refaire.pop();
+        }
+    }
+    public void clearStackAnnule() {
+        while (!annule.empty()) {
+            annule.pop();
         }
     }
 
@@ -210,7 +212,7 @@ public class GestionAnnuleRefaire {
     public void addToHistory(Plateau plateau) {
         Plateau p = clonePlateau(plateau);
         annule.push(p);
-        clearStack();
+        clearStackRefaire();
     }
 
 
@@ -259,6 +261,7 @@ public class GestionAnnuleRefaire {
         Hand hand = new Hand();
         String[] card = r.readLine().split(":");
         while (!(card[0].isEmpty())) {
+            System.out.println(card[0]);
             String faction = card[0];
             int valeur = Integer.parseInt(card[1]);
             Card carte = new Card(valeur, faction);
@@ -315,10 +318,40 @@ public class GestionAnnuleRefaire {
         }
         return cards;
     }
-
+    public void sauvePlateau(PrintStream p , Plateau plateau){
+        if (plateau.phase) p.println("FirstPhase");
+        else p.println("SecondPhase");
+        //on va ecrire tous les infos du joueur 1
+        saveInfoPlayer(plateau.getJoueur1(), p, plateau.phase);
+        //on va ecrire tous les infos du joueur 2
+        saveInfoPlayer(plateau.getJoueur2(), p, plateau.phase);
+        //on va ecrire les infos du plateau
+        p.println(plateau.getJoueurCourant().getName());
+        saveCards(plateau.getPioche(), p);
+        p.println();//saute de ligne pour separer la pioche de la defausse
+        //ecriture de la defausse
+        saveDefausse(plateau.getDefausse(), p);
+        p.println();
+        //ecriture de la carte affiché
+        if (plateau.phase) {
+            p.println(plateau.getCarteAffichee().getFaction() + ":" + plateau.getCarteAffichee().getValeur());
+        }
+        if (plateau.getCarteJoueur1() != null) {
+            p.println(plateau.getCarteJoueur1().getFaction() + ":" + plateau.getCarteJoueur1().getValeur());
+        } else {
+            p.println();
+        }
+        if (plateau.getCarteJoueur2() != null) {
+            p.println(plateau.getCarteJoueur2().getFaction() + ":" + plateau.getCarteJoueur2().getValeur());
+        } else {
+            p.println();
+        }
+    }
     public void sauve(String filename,Plateau plateau) throws FileNotFoundException {
         PrintStream p = new PrintStream(new File(filename));
-        //si on est dans la premiere on va ecrire toute les infos
+        sauvePlateau(p,plateau);
+        sauvePile(p);
+        /*//si on est dans la premiere on va ecrire toute les infos
         //on ecrit la phase ou on est
         if (plateau.phase) p.println("FirstPhase");
         else p.println("SecondPhase");
@@ -345,6 +378,18 @@ public class GestionAnnuleRefaire {
         if (plateau.getCarteJoueur2() != null) {
             p.println(plateau.getCarteJoueur2().getFaction() + ":" + plateau.getCarteJoueur2().getValeur());
         } else {
+            p.println();
+        }*/
+    }
+    public void  sauvePile (PrintStream p) throws FileNotFoundException {
+        p.println(annule.size());
+        Stack<Plateau> ns = new Stack<>() ;
+        while(!annule.isEmpty()){
+           ns.push(annule.pop()) ;
+        }
+        while(!ns.isEmpty()){
+            Plateau pl = ns.pop();
+            sauvePlateau(p,pl);
             p.println();
         }
     }
@@ -403,15 +448,17 @@ public class GestionAnnuleRefaire {
         }
         return plateau;
     }
-
-    public Plateau restaure(String Filename) throws IOException {
-        BufferedReader r = new BufferedReader(new FileReader(Filename));
+    public Plateau restaurePlateau(BufferedReader r) throws IOException {
         String Phase = r.readLine();
         boolean phase;
+        if (Phase.equals("")){
+            Phase = r.readLine();
+        }
         if (Phase.equals("FirstPhase")) {
             phase = true;
-        } else {
-            phase = false;
+        }
+        else{
+            phase=false ;
         }
         Player joueur1 = restaureInfoPlayer(r, phase);
 
@@ -428,6 +475,23 @@ public class GestionAnnuleRefaire {
         Card carteJoueur2 = restaureCardIfExist(r);
 
         return setPlateau(phase, carteAffiche, carteJoueur1, carteJoueur2, defausse, joueur1, joueur2, pioche, nameCurrentPlayer);
+    }
+
+    public Plateau restaure(String Filename) throws IOException {
+        BufferedReader r = new BufferedReader(new FileReader(Filename));
+        Plateau pl = restaurePlateau(r);
+        restaurePile(r);
+        return pl;
+    }
+    public void restaurePile(BufferedReader r) throws IOException {
+        clearStackAnnule();
+        String Char = r.readLine();
+        int taille =Integer.parseInt(Char);
+        for (int i =0;i<taille ;i++){
+            Plateau pl  = restaurePlateau(r);
+            annule.push(pl);
+
+        }
     }
 
     /*public Plateau getPlateau() {

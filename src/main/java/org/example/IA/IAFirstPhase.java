@@ -102,7 +102,7 @@ public class IAFirstPhase {
         }
     }
     public Card getCardIAIfNotLeader (Hand IAhand , Plateau p , int mean,Card carteJoue){
-        if (p.getCarteAffichee().getWeight(p.getCarteAffichee())>mean){
+        if (p.getCarteAffichee().getWeight(p.getCarteAffichee()) > mean){
             return minMaxCard(p.getJoueurCourant().getHand(),carteJoue) ;
         }
         else{

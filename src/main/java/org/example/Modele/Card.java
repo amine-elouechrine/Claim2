@@ -49,8 +49,8 @@ public class Card {
         this.value = card.value;
         this.faction = card.faction;
     }
-    
-    
+
+
     public Card clone() {
         // Assuming Card has a copy constructor
         return new Card(this);
@@ -99,7 +99,7 @@ public class Card {
     public String getFaction() {
         return faction;
     }
-    
+
     public int getFactionScore() {
         switch (faction) {
             case "Undead":

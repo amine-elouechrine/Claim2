@@ -209,12 +209,12 @@ public class IA_intermediareVSIA_Facile {
         plateau = new Plateau();
         Facile=new Facile();
         Intermediare=new Intermediare();
-        plateau.initialiserJeu();
+        plateau.initialiserJeu(true, "", "");
         plateau.getJoueur1().getHand().printHand();
         System.out.println("------------------------------------------------");
         plateau.getJoueur2().getHand().printHand();
        while(i<1000){
-           plateau.initialiserJeu();
+           plateau.initialiserJeu(true, "", "");
            if(i %2 == 0) {
                plateau.setJoueurCourant(plateau.getJoueur1());
            }else {

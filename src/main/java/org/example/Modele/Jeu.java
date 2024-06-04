@@ -11,10 +11,11 @@ public class Jeu extends Observable {
     Plateau plateau;
     GestionAnnuleRefaire g;
     ReglesDeJeu r;
+    boolean estIA;
 
-    public Jeu() {
+    public Jeu(boolean ia, String nameJ1, String nameJ2) {
         plateau = new Plateau();
-        plateau.initialiserJeu();
+        plateau.initialiserJeu(ia, nameJ1, nameJ2);
         g = new GestionAnnuleRefaire();
         g.addToHistory(getPlateau());
         r = new ReglesDeJeu();
@@ -84,6 +85,10 @@ public class Jeu extends Observable {
 
     public boolean estFinPartie() {
         return getPlateau().isEndOfGame();
+    }
+
+    public boolean estIA() {
+        return estIA;
     }
 
     private int[][] getListeCarte(List<Card> listeCarte) {
@@ -228,7 +233,7 @@ public class Jeu extends Observable {
                 carteGagnante = ReglesDeJeu.carteGagnante(getPlateau().getCarteJoueur2(), getPlateau().getCarteJoueur1(), getPlateau());
             else
                 carteGagnante = ReglesDeJeu.carteGagnante(getPlateau().getCarteJoueur1(), getPlateau().getCarteJoueur2(), getPlateau());
-            System.out.println("la carte gagnante est " + carteGagnante);
+            // System.out.println("la carte gagnante est " + carteGagnante);
             getPlateau().attribuerCarteFirstPhase(carteGagnante, r);
             if (estFinPhase1()) {
                 switchPhase();
@@ -242,7 +247,7 @@ public class Jeu extends Observable {
                 carteGagnante = ReglesDeJeu.carteGagnante(getPlateau().getCarteJoueur2(), getPlateau().getCarteJoueur1(), getPlateau());
             else
                 carteGagnante = ReglesDeJeu.carteGagnante(getPlateau().getCarteJoueur1(), getPlateau().getCarteJoueur2(), getPlateau());
-            System.out.println("la carte gagnante est " + carteGagnante);
+            // System.out.println("la carte gagnante est " + carteGagnante);
             getPlateau().attribuerCarteSecondPhase(carteGagnante, r);
 
         }
@@ -282,6 +287,8 @@ public class Jeu extends Observable {
     public void refaireCoup() {
         g.refaire(getPlateau());
     }
+    public void clearStackAnnule(){g.clearStackAnnule();}
+    public void clearStackRefaire(){g.clearStackRefaire();}
 
     public void addAction() {
         g.addToHistory(getPlateau());

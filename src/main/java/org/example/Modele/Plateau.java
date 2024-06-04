@@ -35,7 +35,6 @@ public class Plateau {
      * @param
      */
     // Constructeur de copie phase 2
-    // ajouter la defausse et la pioche pour la phase 2
     public Plateau(Plateau other) {
         this.carteJoueur1 = other.carteJoueur1 != null ? new Card(other.carteJoueur1) : null;
         this.carteJoueur2 = other.carteJoueur2 != null ? new Card(other.carteJoueur2) : null;
@@ -59,17 +58,8 @@ public class Plateau {
     /*public PlateauState saveState() {
 
         // Cloner les cartes des joueurs
-        if(carteJoueur1 == null){
-            carteJoueur1 = new Card();
-        }else{
-            carteJoueur1 = carteJoueur1.clone();
-        }
-        if(carteJoueur2 == null){
-            carteJoueur2 = new Card();
-        }else{
-            carteJoueur2 = carteJoueur2.clone();
-        }
-
+        Card clonedCarteJoueur1 = carteJoueur1.clone();
+        Card clonedCarteJoueur2 = carteJoueur2.clone();
 
         // Cloner les joueurs
         Player clonedJoueur1 = joueur1.clone();
@@ -196,8 +186,7 @@ public class Plateau {
      * @return true si c'est la fin du jeu, false sinon
      */
     public boolean isEndOfGame() {
-        return !phase && getJoueur1().getHand().isEmpty() && getJoueur2().getHand().isEmpty() ;
-
+        return !phase && getJoueur1().getHand().isEmpty() && getJoueur2().getHand().isEmpty();
     }
 
     /**
@@ -353,7 +342,7 @@ public class Plateau {
     /**
      *
      */
-    public void initialiserJeu() {
+    public void initialiserJeu(boolean ia, String nameJ1, String nameJ2) {
         //creation des cartes de jeu et shuffle (pioche)
         pioche = new Cards();
         pioche.addAllCards();
@@ -363,9 +352,16 @@ public class Plateau {
         Hand mainJoueur1 = pioche.getHandOf13Cards();
         Hand mainJoueur2 = pioche.getHandOf13Cards();
 
-        //creation des joueurs
-        joueur1 = new Player("Joueur 1");
-        joueur2 = new Player("Joueur 2");
+        // creation des joueurs
+        if (Objects.equals(nameJ1, ""))
+            joueur1 = new Player("Joueur 1");
+        else
+            joueur1 = new Player(nameJ1);
+
+        if (Objects.equals(nameJ2, ""))
+            joueur2 = new Player("Joueur 2");
+        else
+            joueur2 = new Player(nameJ2);
 
         //initialiser les mains des joueurs
         joueur1.setHand(mainJoueur1);
@@ -448,7 +444,6 @@ public class Plateau {
 
     // use apply phirst phase rule function
     public void attribuerCarteFirstPhase(Card winningCard, ReglesDeJeu r) {
-
         if (r.carteEgaux(carteJoueur1, carteJoueur2)) {
             // determiner le leader
             if (joueurCourant.getName() == joueur2.getName()) { // si le joueur 1 est le leader
@@ -475,14 +470,14 @@ public class Plateau {
                 joueurCourant = joueur2;
             }
         }
-
+        
     }
 
 
 
 
-
-    // use applay sndphaserule function
+    
+    // use applay sndphaserule function 
     public void attribuerCarteSecondPhase(Card winningCard, ReglesDeJeu r) {// on doit changer la fonction ApplyDwarveRule:c'est fait
         if (r.carteEgaux(carteJoueur1, carteJoueur2)) {
             // determiner le leader
