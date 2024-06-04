@@ -14,6 +14,7 @@ public class ComposantMenuPartie extends JFrame {
     CollecteurEvenements c;
     Jeu jeu;
 
+
     ComposantMenuPartie(int axis, CollecteurEvenements control, Jeu jeu, DrawCheck drawCheck) {
         this.jeu = jeu;
         c = control;
@@ -68,6 +69,8 @@ public class ComposantMenuPartie extends JFrame {
             }
         });
 
+
+
         // Toggle de l'affichage de la pile de score
         JLabel drawScorePileLabel = new JLabel("Afficher les cartes et infos de la pile de score :");
         JCheckBox drawScorePileCheckBox = new JCheckBox();
@@ -96,7 +99,7 @@ public class ComposantMenuPartie extends JFrame {
 
         // Bouton Sauvegarder/Charger Partie
         panel.add(Sauvegarde);
-
+        panel.add(new ComposantRegles());
         // Ajout des checkBoxes
         panel1.add(drawHandLabel);
         panel1.add(drawHandCheckBox);
