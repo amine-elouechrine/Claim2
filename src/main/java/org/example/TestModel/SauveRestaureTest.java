@@ -76,6 +76,7 @@ public class SauveRestaureTest {
 
         // sauvgarder le hand
         g.saveHand(main , p);
+        p.println();
 
         // reccuperer le hand
         Hand main2 = g.restaureHand(r);
@@ -235,5 +236,38 @@ public class SauveRestaureTest {
             System.out.println("test failed !");
         }
     }
+
+    /**
+     * Comparaison de deux mains de cartes.
+     * @param o Objet à comparer avec la main courante.
+     * @return `true` si les deux mains contiennent les mêmes cartes (même nom et valeur), `false` sinon.
+     */
+    /*@Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Hand hand = (Hand) o;
+
+        // Comparaison des tailles des mains
+        if (this.getCards().size() != hand.getCards().size()) return false;
+
+        // Tri des cartes des deux mains par nom
+        this.getCards().sort(Comparator.comparing(Card::getName));
+        hand.getCards().sort(Comparator.comparing(Card::getName));
+
+        // Comparaison des cartes par nom et valeur
+        for (int i = 0; i < this.getCards().size(); i++) {
+            Card card1 = this.getCards().get(i);
+            Card card2 = hand.getCards().get(i);
+
+            if (!card1.getName().equals(card2.getName()) || card1.getValue() != card2.getValue()) {
+                return false;
+            }
+        }
+
+        return true;
+    }*/
+
+    // il faut une fonction equal pour verifier deux carte
 
 }

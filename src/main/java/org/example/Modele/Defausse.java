@@ -17,7 +17,10 @@ public class Defausse extends CardCollection {
         super();
     }
 
-    // Constructeur de copie
+    /**
+     * @brief Constructeur de copie.
+     * @param other La defausse a recopier.
+     */
     public Defausse(Defausse other) {
         this.cards = new ArrayList<>();
         for (Card card : other.cards) {
@@ -25,6 +28,10 @@ public class Defausse extends CardCollection {
         }
     }
 
+    /**
+     * @brief Clone la defausse actuelle.
+     * @return Une nouvelle instance de defausse avec les mêmes cartes actuelles.
+     */
     public Defausse clone() {
         return new Defausse(this);
     }

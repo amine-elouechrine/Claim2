@@ -234,7 +234,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 
     /* Methodes qui modifient le jeu */
     @Override
-    public void annuler() throws IOException {
+    public void annuler() {
         if (pause) {
             return;
         }
@@ -292,7 +292,7 @@ public class ControleurMediateur implements CollecteurEvenements {
         if (pause) {
             return;
         }
-        dureePause = 4500;
+        //dureePause = 4500;
         jeu.clearStackAnnule();
         jeu.clearStackRefaire();
         jeu.getPlateau().initialiserJeu(jeu.estIA(), jeu.getNomJoueur(jeu.getJoueur1()), jeu.getNomJoueur(jeu.getJoueur2()));
@@ -353,50 +353,6 @@ public class ControleurMediateur implements CollecteurEvenements {
         jeu.metAJour();
     }
 
-//    public void joueTour(int index) {
-//        pause = true;
-//        System.out.println("pause start");
-//
-//        IAreste = false;
-//        if (estFinPartie()) {
-//            // Calcul des scores
-//            System.out.println("La partie est terminée\n");
-//        } else {
-//            // Application des règles de jeu pour la selection de carte
-//            if (carteLeader != null) {
-//                jouable = jeu.estCarteJouable(carteLeader, index);
-//            }
-//            if (jouable && !IAestJoueurCourant()) {
-//                jeu.addAction();
-//                jouerCarte(index);
-//                System.out.println("Joueur COUP");
-//            }
-//            if (iaJeu != null) {
-//                if (jeu.getJoueur2() == jeu.getJoueurCourant() || jeu.getJoueur2() == gagnant) {
-//                    timerIA();
-//                    IAreste = true;
-//                    System.out.println("IA COUP1");
-//                }
-//                Timer timer = new Timer(dureePause + 700, new ActionListener() {
-//                    @Override
-//                    public void actionPerformed(ActionEvent e) {
-//                        if (jeu.getJoueur2() == jeu.getJoueurCourant() && IAreste) {
-//                            System.out.println("IA COUP2");
-//                            timerIA();
-//                            IAreste = false;
-//                            System.out.println("IA COUP2 fini");
-//                        }
-//                    }
-//                });
-//                timer.setRepeats(false);
-//                timer.start();
-//            }
-//        }
-//        System.out.println("fini joue tour");
-//
-//        //pause = false;
-//    }
-
     public void joueTour(int index) {
         pause = true;
         IAreste = false;
@@ -424,14 +380,17 @@ public class ControleurMediateur implements CollecteurEvenements {
                 });
             }
         }
+
         if (!(jeu.estCarteJoueJ1() && jeu.estCarteJoueJ2())) {
             pause = false;
         }
+
     }
 
 
     public void tourIA(Runnable callback) {
 
+        dureePause = 4500;
         if (estFinPartie()) {
             // Calcul des scores
             System.out.println("La partie est terminée\n");
@@ -450,9 +409,16 @@ public class ControleurMediateur implements CollecteurEvenements {
                         Player IAgagnant = getJoueurGagnant();
                         int card1Faction = getCarteJoueur1F();
                         int card2Faction = getCarteJoueur2F();
-                        startAnimationGagne(iterations, IAgagnant);
-                        startAnimationPerde(iterations, IAgagnant);
+                        if (getPhase()) {
+                            startAnimationGagne(iterations, IAgagnant);
+                            startAnimationPerde(iterations, IAgagnant);
+                        }
                         startAnimationDefausse(iterations, card1Faction, card2Faction, IAgagnant);
+
+                        if ((jeu.getJoueur1().getHand().size() + jeu.getJoueur2().getHand().size() == 0)) {
+                            startTransition();
+                            dureePause = 6000;
+                        }
 
                         if (!getPhase()) {
                             dureePause = 2000;
@@ -486,18 +452,27 @@ public class ControleurMediateur implements CollecteurEvenements {
 
 
     private void jouerCarte(int index, Runnable callback) {
+        dureePause = 4500;
         Card carteJoue = jeu.getPlateau().jouerCarte(index);
         if (jeu.estCarteJoueJ1() && jeu.estCarteJoueJ2()) {
             gagnant = getJoueurGagnant();
             int card1Faction = getCarteJoueur1F();
             int card2Faction = getCarteJoueur2F();
-            startAnimationGagne(iterations, gagnant);
-            startAnimationPerde(iterations, gagnant);
+            if (getPhase()) {
+                startAnimationGagne(iterations, gagnant);
+                startAnimationPerde(iterations, gagnant);
+            }
             startAnimationDefausse(iterations, card1Faction, card2Faction, gagnant);
+
+            if ((jeu.getJoueur1().getHand().size() + jeu.getJoueur2().getHand().size() == 0)) {
+                startTransition();
+                dureePause = 6000;
+            }
 
             if (!getPhase()) {
                 dureePause = 2000;
             }
+
             Timer timer = new Timer(dureePause, new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -536,7 +511,7 @@ public class ControleurMediateur implements CollecteurEvenements {
                 a.tictac();
                 if (a.estTerminee()) {
                     if (a == mouvement) {
-                        testFin();
+                        //testFin();
                         mouvement = null;
                     }
                     it.supprime();
@@ -554,6 +529,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 
         }
     }
+
 
 
     public void ajouteInterfaceUtilisateur(InterfaceUtilisateur v) {
@@ -578,6 +554,18 @@ public class ControleurMediateur implements CollecteurEvenements {
         vue.distribuerDefausse();
     }
 
+    public void transition() {
+        vue.transition();
+        System.out.println("start transition");
+    }
+
+
+    public void startTransition() {
+        vue.initializeAnimationTransition();
+        mouvement = new AnimationTransition(this);
+        animations.insereQueue(mouvement);
+        System.out.println("start transition");
+    }
 
     public void startDistributionAnimation(int totalIterations) {
         vue.initializeAnimationDistribuer(totalIterations);
@@ -592,7 +580,9 @@ public class ControleurMediateur implements CollecteurEvenements {
         } else {
             joueur = 2;
         }
-        vue.initializeAnimationGagne(totalIterations, joueur);
+
+        String nomGagnant = gagnant.getName();
+        vue.initializeAnimationGagne(totalIterations, joueur, nomGagnant);
         mouvement = new AnimationGagne(totalIterations, this);
         animations.insereQueue(mouvement);
     }
@@ -612,7 +602,7 @@ public class ControleurMediateur implements CollecteurEvenements {
     public void startAnimationDefausse(int totalIterations, int card1Faction, int card2Faction, Player gagnant) {
         int delay = 210;
         if (!jeu.getPhase()) {
-            delay = 70;
+            delay = 30;
         }
         int joueur;
         if (gagnant == jeu.getJoueur1()) {
@@ -620,7 +610,6 @@ public class ControleurMediateur implements CollecteurEvenements {
         } else {
             joueur = 2;
         }
-
         vue.initializeAnimationDefausse(totalIterations, card1Faction, card2Faction, joueur);
         mouvement = new AnimationDefausse(totalIterations, this, delay);
         animations.insereQueue(mouvement);
@@ -637,5 +626,9 @@ public class ControleurMediateur implements CollecteurEvenements {
 
     public boolean getPause() {
         return pause;
+    }
+
+    public String getJoueurNomGagnant() {
+        return jeu.getJoueurNomGagnant();
     }
 }

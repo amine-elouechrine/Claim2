@@ -3,18 +3,18 @@ package org.example.Controleur;
 
 import org.example.Vue.NiveauGraphique;
 
-public class AnimationDefausse extends Animation {
+public class AnimationTransition extends Animation {
     int duration;
     int initialDelay;
     boolean delayCompleted;
 
 
-    public AnimationDefausse(int d, ControleurMediateur control,int delay) {
+    public AnimationTransition(ControleurMediateur control) {
         super(1, control);
-        initialDelay = delay;
-        duration = d;
-        delayCompleted = false;
+        duration = 60;
         control.setPause(true);
+        initialDelay = 240;
+        delayCompleted = false;
     }
 
     @Override
@@ -26,8 +26,11 @@ public class AnimationDefausse extends Animation {
             }
         } else {
             duration--;
-            control.distribuerDefausse();
+            control.transition();
         }
+//        if (estTerminee()) {
+//            control.setPause(false);
+//        }
 
     }
 

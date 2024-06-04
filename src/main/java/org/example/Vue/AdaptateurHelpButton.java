@@ -19,6 +19,19 @@ public class AdaptateurHelpButton implements ActionListener{
     public void actionPerformed(ActionEvent e) {
         String help = c.help();
 
+/*import javax.swing.*;
+
+public class AdaptateurHelpButton implements ActionListener{
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        // Chemin de l'image à afficher
+        String imagePath = "src/main/resources/Claim.png"; // Remplacez par le chemin réel de votre image
+
+        // Créer une icône à partir de l'image
+        ImageIcon icon = new ImageIcon(imagePath);*/
+
+
         // Créer un JDialog
         JDialog dialog = new JDialog();
         dialog.setTitle("Aide");
@@ -63,6 +76,7 @@ public class AdaptateurHelpButton implements ActionListener{
         // Afficher le JDialog
         dialog.setVisible(true);
     }
+
     private void addResizeListener(JDialog dialog, JLabel label, ImageIcon icon) {
         dialog.addComponentListener(createComponentAdapter(dialog, label, icon));
     }

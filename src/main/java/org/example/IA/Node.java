@@ -3,12 +3,15 @@ package org.example.IA;
 import org.example.Modele.Card;
 import org.example.Modele.Plateau;
 
+import java.util.List;
+
 
 public class Node {
 
     public int score;
     public Plateau plateau;
     Card carteJoueeParIa; // carte jouée par l'IA
+    Node pere;
 
 
     public Node() {
@@ -17,7 +20,7 @@ public class Node {
 
     public Node(Plateau plateau, Card carteJoueeParIa) {
         this.plateau = plateau;
-        this.score = 0;
+        //this.score = 0;
         this.carteJoueeParIa = carteJoueeParIa;
     }
 
@@ -29,7 +32,7 @@ public class Node {
     // Constructeur de copie
     public Node(Node other) {
         this.score = other.score;
-        this.plateau = other.plateau != null ? new Plateau(other.plateau) : null;
+        this.plateau = other.plateau != null ? new Plateau(other.plateau) : null; // clonage de plateau
 
     }
 
