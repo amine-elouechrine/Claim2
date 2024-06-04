@@ -119,7 +119,7 @@ public class InterfaceInitiale extends JFrame implements Runnable {
         InterfaceGraphique.demarrer(jeu, control,this);
         this.setVisible(false);
     }
-    private void showRules() {
+    public void showRules() {
         String rules =
                 "Set up\n" +
                         "Shuffle all cards and place them in a face-down deck in the middle of the table.\n" +
