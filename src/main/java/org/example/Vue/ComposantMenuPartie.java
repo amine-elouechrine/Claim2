@@ -5,6 +5,8 @@ import org.example.Modele.Jeu;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.io.IOException;
@@ -38,6 +40,14 @@ public class ComposantMenuPartie extends JFrame {
         RoundedButton loadGameButton = new RoundedButton("Sauvergarder ou Charger Partie");
         loadGameButton.addActionListener(new AdaptateurSauvegarde(control, new ComposantSauvegarde(control)));
         Sauvegarde.add(loadGameButton);
+
+        RoundedButton regles = new RoundedButton("Règle de jeu");
+        regles.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new ComposantRegle();
+            }
+        });
 
         // Check box pour le dessin de la main adverse
         JLabel drawHandLabel = new JLabel("Afficher la main de l'adversaire :");
@@ -96,6 +106,9 @@ public class ComposantMenuPartie extends JFrame {
 
         // Bouton Sauvegarder/Charger Partie
         panel.add(Sauvegarde);
+
+        // Bouton Règle
+        panel.add(regles);
 
         // Ajout des checkBoxes
         panel1.add(drawHandLabel);
