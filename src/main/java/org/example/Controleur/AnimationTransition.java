@@ -28,9 +28,9 @@ public class AnimationTransition extends Animation {
             duration--;
             control.transition();
         }
-        if (estTerminee()) {
-            control.setPause(false);
-        }
+//        if (estTerminee()) {
+//            control.setPause(false);
+//        }
 
     }
 
