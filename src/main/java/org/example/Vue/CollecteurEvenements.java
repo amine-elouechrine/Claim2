@@ -86,7 +86,7 @@ public interface CollecteurEvenements {
     /* Adaptateurs */
     void refaire();
   
-    void annuler() throws IOException;
+    void annuler() ;
   
     void sauve(String filename) throws FileNotFoundException;
   

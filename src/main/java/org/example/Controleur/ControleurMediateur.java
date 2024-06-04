@@ -229,7 +229,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 
     /* Methodes qui modifient le jeu */
     @Override
-    public void annuler() throws IOException {
+    public void annuler() {
         if (pause) {
             return;
         }

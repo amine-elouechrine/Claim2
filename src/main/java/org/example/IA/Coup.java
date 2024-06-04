@@ -29,21 +29,61 @@ public class Coup {
     }
 
     public static List<Coup> determinerCoupsPossibles(Plateau plateau) {
+        // nbr de carte ia
+        int nbrCarteIa = plateau.getJoueurCourant().getHandScndPhase().getAllCards().size();
+        // nbr de carte adversaire
+        int nbrCarteAdversaire = plateau.getAdversaire().getHandScndPhase().getAllCards().size();
+        if(!(plateau.getAdversaire().getName().equals("MinMax"))){ // si l'ia n'est pas leader (c'est a dire l'humain qui a deja jouer)
 
-        GeneralPlayer currentPlayer = plateau.getJoueurCourant();
-        GeneralPlayer opponentPlayer = plateau.getAdversaire();
-        List<Card> currentPlayerHand = currentPlayer.getHandScndPhase().getAllCards();
-        Hand opponentHand = opponentPlayer.getHandScndPhase();
-
-        List<Coup> coupsPossibles = new ArrayList<>();
-        for (Card carteLeader : currentPlayerHand) {
-            List<Card> carteJouable = ReglesDeJeu.cartesJouables(carteLeader, opponentHand);
-            for (Card carteAdversaire : carteJouable) {
-                coupsPossibles.add(new Coup(carteLeader, carteAdversaire, currentPlayer.getName()));
-            }
         }
-        return coupsPossibles;
+        if(plateau.getCarteJoueur1() == null && plateau.getCarteJoueur2() == null) {
+            GeneralPlayer currentPlayer = plateau.getJoueurCourant();
+            GeneralPlayer opponentPlayer = plateau.getAdversaire();
+
+            List<Card> currentPlayerHand = currentPlayer.getHandScndPhase().getAllCards();
+            Hand opponentHand = opponentPlayer.getHandScndPhase();
+
+            List<Coup> coupsPossibles = new ArrayList<>();
+            for (Card carteLeader : currentPlayerHand) {
+                List<Card> carteJouable = ReglesDeJeu.cartesJouables(carteLeader, opponentHand);
+                for (Card carteAdversaire : carteJouable) {
+                    coupsPossibles.add(new Coup(carteLeader, carteAdversaire, currentPlayer.getName()));
+                }
+            }
+            return coupsPossibles;
+        }else{ // si on fait l'appel a l'algo minMax avec minimisation l'aversaire a deja jouer donc pour la 1er simulation on doit suivre sa faction et sa carte
+            List<Coup> coupsPossibles = new ArrayList<>();
+            Card adversaireCard = plateau.getAdversaireCard();
+            List<Card> carteJouable = ReglesDeJeu.cartesJouables(adversaireCard, plateau.getJoueurCourant().getHandScndPhase());
+            for (Card carte : carteJouable) { // on doit determiner les cartes que l'ia peut jouer
+                coupsPossibles.add(new Coup(carte, adversaireCard, plateau.getJoueurCourant().getName()));
+            }
+            // remettre la carte jouer par l'adversaire dans sa hand pour faire la simulation et le remettre comme joueur courant
+            plateau.getAdversaire().getHandScndPhase().addCard(adversaireCard);
+            plateau.switchJoueur();
+
+            return coupsPossibles;
+
+        }
     }
 
+    /**
+     * lorsque l'adversaire est le leader on doit determiner les cartes que l'ia peut jouer
+     * donc dans l'algo de minmax lors de la minimisation on doit determiner les cartes que l'ia peut jouer la 1er fois
+     * @return
+     */
+    public static List<Card> determinerCarteIaPossible(Plateau plateau){
+        Card adversaireCard = plateau.getAdversaireCard();
+        Hand IaHand = plateau.getJoueurCourant().getHandScndPhase();
+        return ReglesDeJeu.cartesJouables(adversaireCard, IaHand);
+    }
+
+
+
+    public void afficherCoup(){
+        System.out.println("Le leader est : " + leader);
+        System.out.println("La carte du leader est : " + carte1);
+        System.out.println("La carte de l'adversaire est : " + carte2);
+    }
 
 }
