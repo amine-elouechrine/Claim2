@@ -2,15 +2,31 @@ package org.example.IA;
 import org.example.Modele.*;
 
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
 public class IAFirstPhase {
-
+    HashMap<String ,Integer> diversity;
     public IAFirstPhase(){
+        diversity=new HashMap<>();
+        diversity.put("Goblins",0);
+        diversity.put("Dwarves",0);
+        diversity.put("Knight",0);
+        diversity.put("Doppelganger",0);
+        diversity.put("Undead",0);
 
     }
-
+    public boolean ShouldTakeCard(String faction ){
+        if(!diversity.containsKey(faction))
+            return true;
+        int minCount = 11 ;
+        for(int count : diversity.values()){
+            if(count <minCount)
+                minCount=count ;
+        }
+        return diversity.get(faction)==minCount ;
+    }
     public int moyenneDuPoids(Plateau plateau){
         int mean =0 ;
         for (Card carte : plateau.getPioche().getCards()){
@@ -94,7 +110,7 @@ public class IAFirstPhase {
     }
 
     public Card getCardIAIfLeader(Hand IAhand ,Plateau p,int mean){
-        if(p.getCarteAffichee().getWeight(p.getCarteAffichee())>mean){
+        if(p.getCarteAffichee().getWeight(p.getCarteAffichee())>mean || ShouldTakeCard(p.getCarteAffichee().getFaction())){
             return getCardIa(IAhand);
         }
         else {
@@ -102,7 +118,7 @@ public class IAFirstPhase {
         }
     }
     public Card getCardIAIfNotLeader (Hand IAhand , Plateau p , int mean,Card carteJoue){
-        if (p.getCarteAffichee().getWeight(p.getCarteAffichee())>mean){
+        if (p.getCarteAffichee().getWeight(p.getCarteAffichee())>mean ||  (ShouldTakeCard(p.getCarteAffichee().getFaction()) && p.getJoueurCourant().getHand().size()<9)){
             return minMaxCard(p.getJoueurCourant().getHand(),carteJoue) ;
         }
         else{
@@ -122,6 +138,7 @@ public class IAFirstPhase {
         else{
             carteIA = getCardIAIfNotLeader(p.getJoueurCourant().getHand(),p,mean,p.getCardAdversaire());
         }
+        diversity.put(carteIA.getFaction(),diversity.get(carteIA.getFaction())+1);
         return carteIA ;
     }
 }

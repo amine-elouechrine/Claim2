@@ -22,6 +22,14 @@ public class IAMinMax {
 
     private static int nodeCount = 0; // Variable pour compter les noeuds visités
 
+    // les erreurs rencontrer !
+    // il y a un decalage entre le score (l'evaluation) et l'affichage de maxEval
+    // !!!!
+    // lors de la minimisation tous les coup en le meme minEval ??? -infinie !!!
+    // lors de la minimisation les calculs sont incorrecte determiner coup possible
+    // ! parce que lors de la minimisation l'adversaire a deja jouer donc les
+    // calculs seront fais sur les tous les cartes qui sont dans la main de
+    // l'adversaire et non pas par rapport a la carte qu'il a jouer
     public static int minimax(Node node, int depth, int alpha, int beta) {
         int evalResult;
 
@@ -191,17 +199,17 @@ public class IAMinMax {
 
     public static boolean gagnerFaction(Plateau plateau, String faction) {
         // nbr de carte de cette faction qui sont en jeu de l'ia
-        int nbrCarteFactionIa = plateau.getJoueur1().getName().equals("MinMax")?plateau.getJoueur1().getPileDeScore().getCardFaction(faction).size():plateau.getJoueur2().getPileDeScore().getCardFaction(faction).size();
+        int nbrCarteFactionIa = plateau.getJoueur1().getName().equals("IA Difficile")?plateau.getJoueur1().getPileDeScore().getCardFaction(faction).size():plateau.getJoueur2().getPileDeScore().getCardFaction(faction).size();
         // nbr de carte de cette faction qui sont en jeu de l'autre joueur
-        int nbrCarteFactionAdversaire = plateau.getJoueur2().getName().equals("MinMax")?plateau.getJoueur1().getPileDeScore().getCardFaction(faction).size():plateau.getJoueur2().getPileDeScore().getCardFaction(faction).size();
+        int nbrCarteFactionAdversaire = plateau.getJoueur2().getName().equals("IA Difficile")?plateau.getJoueur1().getPileDeScore().getCardFaction(faction).size():plateau.getJoueur2().getPileDeScore().getCardFaction(faction).size();
 
         if (nbrCarteFactionIa > nbrCarteFactionAdversaire) {
             return true;
         } else if (nbrCarteFactionIa < nbrCarteFactionAdversaire) {
             return false;
         } else {
-            int carteMaxIaFaction = plateau.getJoueur1().getName().equals("MinMax")?plateau.getJoueur1().getPileDeScore().maxValueOfFaction(faction):plateau.getJoueur2().getPileDeScore().maxValueOfFaction(faction);
-            int carteMaxAdversaireFaction = plateau.getJoueur1().getName().equals("MinMax")?plateau.getJoueur2().getPileDeScore().maxValueOfFaction(faction):plateau.getJoueur2().getPileDeScore().maxValueOfFaction(faction);
+            int carteMaxIaFaction = plateau.getJoueur1().getName().equals("IA Difficile")?plateau.getJoueur1().getPileDeScore().maxValueOfFaction(faction):plateau.getJoueur2().getPileDeScore().maxValueOfFaction(faction);
+            int carteMaxAdversaireFaction = plateau.getJoueur1().getName().equals("IA Difficile")?plateau.getJoueur2().getPileDeScore().maxValueOfFaction(faction):plateau.getJoueur2().getPileDeScore().maxValueOfFaction(faction);
             return carteMaxIaFaction > carteMaxAdversaireFaction;
         }
     }
@@ -210,7 +218,7 @@ public class IAMinMax {
         Plateau plateau = node.getPlateau();
         int scoreIa = 0;
         int nbrFactionGagner;
-        int nbrCarteGagner = plateau.getJoueur1().equals("MinMax")
+        int nbrCarteGagner = plateau.getJoueur1().equals("IA Difficile")
                 ? plateau.getJoueur1().getPileDeScore().getAllCards().size()
                 : plateau.getJoueur2().getPileDeScore().getAllCards().size();
 
