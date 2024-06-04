@@ -6,8 +6,10 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Cette classe représente le plateau de jeu dans lequel les cartes sont placées pendant la partie.
- * Elle contient la carte affichée, les cartes des joueurs, la pioche, la défausse et les joueurs.
+ * La classe Plateau représente le plateau de jeu dans lequel les cartes sont placées pendant la partie.
+ * Elle contient les informations essentielles au déroulement du jeu,
+ * telles que les cartes des joueurs, la pioche, la défausse,
+ * les joueurs eux-mêmes et la carte affichée sur le plateau.
  */
 
 public class Plateau {
@@ -54,25 +56,6 @@ public class Plateau {
         return new Plateau(this);
     }
 
-    // Sauvegarde l'état actuel du plateau
-    /*public PlateauState saveState() {
-
-        // Cloner les cartes des joueurs
-        Card clonedCarteJoueur1 = carteJoueur1.clone();
-        Card clonedCarteJoueur2 = carteJoueur2.clone();
-
-        // Cloner les joueurs
-        Player clonedJoueur1 = joueur1.clone();
-        Player clonedJoueur2 = joueur2.clone();
-
-        Player CurrentPlayer ;
-        if(joueur1 == joueurCourant){
-            CurrentPlayer = clonedJoueur1 ;
-        }else{
-            CurrentPlayer = clonedJoueur2 ;
-        }
-        return new PlateauState(clonedCarteJoueur1, clonedCarteJoueur2, clonedJoueur1, clonedJoueur2, CurrentPlayer);
-    }*/
 
     // Restaure un état précédemment sauvegardé
     public void restoreState(PlateauState state) {
@@ -195,14 +178,6 @@ public class Plateau {
      * @return true si c'est la fin du jeu, false sinon
      */
     public boolean estFinPartie() {
-        if (phase == false) { // si on est dans la 2eme phase
-            return estFinPhase(getPhase());
-        }
-        return false;
-    }
-
-
-    public boolean estPartieTerminer() {
         if (phase == false) { // si on est dans la 2eme phase
             return estFinPhase(getPhase());
         }
@@ -434,6 +409,9 @@ public class Plateau {
         }
     }
 
+    /**
+     * Permet de changer le joueur courant en passant au joueur suivant.
+     */
     public void switchJoueur() {
         if (joueurCourant == joueur1) {
             joueurCourant = joueur2;
@@ -442,7 +420,14 @@ public class Plateau {
         }
     }
 
-    // use apply phirst phase rule function
+
+    /**
+     * Attribue les cartes aux joueurs après la fin d'un tour lors de la première phase (découverte des cartes).
+     * applique les regles de jeu de la 1er phase pour determiner la gagne de chaque joueur
+     *
+     * @param winningCard La carte gagnante de la phase.
+     * @param r L'instance des règles du jeu.
+     */
     public void attribuerCarteFirstPhase(Card winningCard, ReglesDeJeu r) {
         if (r.carteEgaux(carteJoueur1, carteJoueur2)) {
             // determiner le leader
@@ -474,19 +459,21 @@ public class Plateau {
     }
 
 
-
-
-    
-    // use applay sndphaserule function 
+    /**
+     * Attribue les cartes aux joueurs après la fin d'un tour lors de la deuxième phase (bataille).
+     * applique les regles de jeu de la 2eme phase pour determiner la gagne de chaque joueur
+     *
+     * @param winningCard La carte gagnante de la phase.
+     * @param r L'instance des règles du jeu.
+     */
     public void attribuerCarteSecondPhase(Card winningCard, ReglesDeJeu r) {// on doit changer la fonction ApplyDwarveRule:c'est fait
+        // fait dans carte gagnante
         if (r.carteEgaux(carteJoueur1, carteJoueur2)) {
             // determiner le leader
-            if (joueurCourant.getName().equals(joueur1.getName())) { // si le joueur 1 est le leader
+            if (joueurCourant.getName().equals(joueur1.getName())) {
                 r.applySecondPhaseRules(joueur2, joueur1, carteJoueur2, carteJoueur1);
                 joueurCourant = joueur2;
             } else {
-
-
                 r.applySecondPhaseRules(joueur1, joueur2, carteJoueur1, carteJoueur2);
                 joueurCourant = joueur1;
             }
@@ -501,10 +488,23 @@ public class Plateau {
         }
     }
 
+    /**
+     * Vérifie si une carte pré-sélectionnée est jouable dans la main du joueur.
+     *
+     * @param preselected La liste des cartes pré-sélectionnées.
+     * @param indice L'indice de la carte dans la main du joueur.
+     * @param hand La main du joueur.
+     * @return True si la carte est jouable, False sinon.
+     */
     public boolean coupJouable(List<Card> preselected, int indice, Hand hand) {
         return preselected.contains(hand.getCard(indice));
     }
 
+    /**
+     * Vérifie si la partie est dans la première phase (découverte des cartes).
+     *
+     * @return True si la partie est dans la première phase, False sinon.
+     */
     public Boolean estPhase1() {
         return !(joueur1.getHand().isEmpty() && joueur2.getHand().isEmpty());
     }
@@ -532,23 +532,6 @@ public class Plateau {
         return Objects.hash(carteJoueur1, carteJoueur2, joueur1.pileDeScore, joueur2.pileDeScore, joueurCourant.getName(), phase);
     }
 
-    public void setPlateau(boolean phase, Card carteAffichee, Card carteJoueur1, Card carteJoueur2, Defausse defausse, Player joueur1, Player joueur2, Cards pioche, String nameCurrentPlayer, Hand mainJ1, Hand mainJ2) {
-        setPhase(phase);
-        setCarteAffichee(carteAffichee);
-        setCarteJoueur1(carteJoueur1);
-        setCarteJoueur2(carteJoueur2);
-        setDefausse(defausse);
-        setJoueur1(joueur1);
-        setJoueur2(joueur2);
-        setPioche();
-        getJoueur1().setHand(mainJ1);
-        getJoueur2().setHand(mainJ2);
-        if (nameCurrentPlayer.equals(getJoueur1().getName())) {
-            joueurCourant = getJoueur1();
-        } else {
-            joueurCourant = getJoueur2();
-        }
-    }
 
     public Boolean estPhase1_2() {
         return phase;
@@ -559,6 +542,5 @@ public class Plateau {
         joueur2.setHand(hand2);
 
     }
-
 
 }

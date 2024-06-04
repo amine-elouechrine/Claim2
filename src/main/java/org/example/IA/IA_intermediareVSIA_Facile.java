@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
-import static org.example.IA.IA.determinerGagnantMancheIA;
 
 public class IA_intermediareVSIA_Facile {
     static IA Facile;

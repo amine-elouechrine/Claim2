@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * @brief Cette classe représente la main d'un joueur pendant un tour de jeu. Elle hérite de la classe CardCollection.
+ */
 public class Hand extends CardCollection{
 
     /**
@@ -14,8 +17,10 @@ public class Hand extends CardCollection{
         super();
     }
 
-
-    // Constructeur de copie
+    /**
+     * @brief Constructeur de copie.
+     * @param other La main à copier.
+     */
     public Hand(Hand other) {
         this.cards = new ArrayList<>();
         for (Card card : other.cards) {
@@ -23,11 +28,19 @@ public class Hand extends CardCollection{
         }
     }
 
+    /**
+     * @brief Clone la main actuelle.
+     * @return Une nouvelle instance de Hand avec les mêmes cartes.
+     */
     @Override
     public Hand clone() {
         return new Hand(this);
     }
 
+    /**
+     * @brief Représentation sous forme de chaîne de caractères de la main.
+     * @return Une chaîne de caractères représentant la main.
+     */
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -42,46 +55,69 @@ public class Hand extends CardCollection{
         return sb.toString();
     }
 
-
+    /**
+     * @brief Définit les cartes de la main.
+     * @param cards La liste des cartes à définir.
+     */
     public void setHand(List<Card> cards) {
         this.cards = cards;
     }
 
     /**
-     * Ajoute une carte à la main.
-     *
+     * @brief Ajoute une carte à la main.
      * @param card La carte à ajouter à la main.
      */
-    // Ajouter une carte à la main
     public void addCard(Card card) {
         cards.add(card);
     }
 
-    /*
-     * Retire une carte de la main.
-     * @param card La carte à retirer de la main.
+    /**
+     * @brief Retire une carte de la main à l'index spécifié.
+     * @param i L'index de la carte à retirer.
+     * @return La carte qui a été retirée.
      */
-    // Retirer une carte de la main
     public Card removeCard(int i) {
         return cards.remove(i);
     }
 
+    /**
+     * @brief Retire une carte spécifique de la main.
+     * @param card La carte à retirer.
+     */
     public void removeCard(Card card) {
         cards.remove(card);
     }
-    public Card getCard(int i) {return cards.get(i);} 
 
+    /**
+     * @brief Obtient une carte de la main à l'index spécifié.
+     * @param i L'index de la carte à obtenir.
+     * @return La carte à l'index spécifié.
+     */
+    public Card getCard(int i) {return cards.get(i);}
+
+    /**
+     * @brief Vérifie si la main est vide.
+     * @return true si la main est vide, sinon false.
+     */
     public boolean isEmpty() {
         return cards.isEmpty();
     }
 
-
+    /**
+     * @brief Vérifie si la main contient une carte spécifique.
+     * @param card La carte à vérifier.
+     * @return true si la main contient la carte, sinon false.
+     */
     public boolean contains(Card card) {
         return cards.contains(card);
     }
 
 
-    // si le hand du joueur contient une carte de la meme faction que la carte passée en paramètre
+    /**
+     * @brief Vérifie si la main contient une carte de la même faction que celle passée en paramètre.
+     * @param carte La carte dont on veut vérifier la faction.
+     * @return true si la main contient une carte de la même faction, sinon false.
+     */
     public boolean containsCardOFaction(Card carte) {
         for (Card card : cards) {
             if (card.getFaction().equals(carte.getFaction())) {
@@ -99,7 +135,6 @@ public class Hand extends CardCollection{
         if (cards == null || cards.isEmpty()) {
             throw new IllegalStateException("La main est vide ou nulle.");
         }
-
         Card minCard = cards.get(0);
 
         for (Card handCard : cards) {
@@ -125,61 +160,17 @@ public class Hand extends CardCollection{
     }
 
     /**
-     * Récupère toutes les cartes de la main.
-     *
+     * @brief Récupère toutes les cartes de la main.
      * @return La liste des cartes dans la main.
      */
-    // Obtenir toutes les cartes de la main
     public List<Card> getAllCards() {
         return getCards();
     }
 
 
-    //public Card getLargestSmallerCard(Card card) 
-    //public Card getLowestCardWithFactionScore() {
-
-    public Card getLargestSmallerCard(Card card) {
-        if (cards == null || cards.isEmpty()) {
-            throw new IllegalStateException("La main est vide ou nulle.");
-        }
-
-        Card largestSmallerCard = null;
-
-        for (Card handCard : cards) {
-            // Vérifier si la carte est plus grande que celle passée en paramètre
-            if (handCard.getValeur() > card.getValeur()) {
-                // Vérifier si la carte trouvée est plus petite que la carte actuellement retenue
-                if (largestSmallerCard == null || handCard.getValeur() < largestSmallerCard.getValeur()) {
-                    largestSmallerCard = handCard;
-                }
-            }
-        }
-
-        if (largestSmallerCard == null) {
-            throw new IllegalStateException("Aucune carte plus grande mais plus petite trouvée.");
-        }
-
-        return largestSmallerCard;
-    }
-
-
-    public Card getRandomCard() {
-        if (cards == null || cards.isEmpty()) {
-            throw new IllegalStateException("La main est vide ou nulle.");
-        }
-
-        Random random = new Random();
-        int randomIndex = random.nextInt(cards.size());
-        Card randomCard = cards.get(randomIndex);
-        cards.remove(randomIndex);
-        return randomCard;
-    }
-
-
     /**
-     * Vide la main en supprimant toutes les cartes.
+     * @brief Vide la main en supprimant toutes les cartes.
      */
-    // Vider la main
     public void clear() {
         cards.clear();
     }
@@ -187,32 +178,9 @@ public class Hand extends CardCollection{
 
     /**
      * Renvoie le nombre de cartes dans la main.
-     *
      * @return Le nombre de cartes dans la main.
      */
-    // Obtenir le nombre de cartes dans la main
     public int size() {
         return cards.size();
     }
-
-
-    public Card get(int i) {
-        if (i < 0 || i >= cards.size()) {
-            throw new IndexOutOfBoundsException("Index hors limites: " + i);
-        }
-        return cards.get(i);
-    }
-    
-    
-    /*public Card getRandomCard() {
-        if (cards == null || cards.isEmpty()) {
-            throw new IllegalStateException("La main est vide ou nulle.");
-        }
-
-        Random random = new Random();
-        int randomIndex = random.nextInt(cards.size());
-        Card randomCard = cards.get(randomIndex);
-        cards.remove(randomIndex);
-        return randomCard;
-    }*/
 }

@@ -5,21 +5,21 @@ import java.util.List;
 import java.util.Arrays;
 
 /**
- * La classe ReglesDeJeu contient les règles spécifiques du jeu.
- * Elle définit des méthodes pour déterminer la carte gagnante entre deux cartes,
+ * @file ReglesDeJeu.java
+ * @brief Contient les règles spécifiques du jeu.
+ *
+ * La classe ReglesDeJeu définit les méthodes pour déterminer la carte gagnante entre deux cartes,
  * le gagnant d'une manche, les cartes jouables par un joueur en fonction de la carte jouée par l'adversaire,
  * le gagnant d'une partie, ainsi que l'application des règles spéciales des factions.
- * Ces règles sont essentielles pour le bon déroulement du jeu et l'attribution des points.
  */
 public class ReglesDeJeu {
 
-    // Méthode pour déterminer quelle carte l'emporte entre deux cartes selon les règles du jeu
-
     /**
      * Méthode pour déterminer quelle carte l'emporte entre deux cartes selon les règles du jeu.
-     *
      * @param carte1 La première carte jouer .
      * @param carte2 La deuxième carte jouer .
+     * @param plateau Le plateau de jeu.
+     * l'ordre de passage en paramettre des cartes n'est pas important
      * @return La carte gagnante ou null en cas d'égalité.
      */
     public static Card carteGagnante(Card carte1, Card carte2, Plateau plateau) {
@@ -45,16 +45,11 @@ public class ReglesDeJeu {
 
     /**
      * Méthode pour déterminer quelle carte l'emporte entre un Doppelganger et une autre carte.
-     * si carte1 est doppeleganger et carte2 est doppelganger alors on compare les valeurs des cartes
-     * si carte1 est doppelganger et carte2 est une autre carte alors la carte gagnante est la carte1
-     *
      * @param carte1
      * @param carte2
+     * @param plateau Le plateau de jeu.
      * @return La carte gagnante
      */
-    // si le leader a jouer doppelganger et l'autre joueur a jouer une autre carte alors le leader gagne le trick
-    // si le leader a jouer doppelganger et l'autre joueur a jouer doppelganger alors on compare les valeurs des cartes
-    // si le leader a jouer une autre carte et l'autre joueur a jouer doppelganger alors on compare les valeurs des cartes
     public static Card DoppelgangerVsCard(Card carte1, Card carte2, Plateau plateau) {
         // si les deux cartes sont des doppelgangers alors on compare les valeurs des cartes
         if (carte1.getFaction().equals("Doppelganger")) {
@@ -107,6 +102,7 @@ public class ReglesDeJeu {
      *
      * @param carte1
      * @param carte2
+     * @param plateau Le plateau de jeu.
      * @return carte1 si faction de carte2 est differente sinon elle retourne la carte gagnante
      */
     public static Card cardVScard(Card carte1, Card carte2, Plateau plateau) {
@@ -123,7 +119,6 @@ public class ReglesDeJeu {
 
     /**
      * Méthode pour déterminer quelle carte l'emporte entre un Gobelin et un Chevalier.
-     *
      * @return La carte gagnante.
      */
     public static Card GobelinVsKnight(Card carte1, Card carte2) {
@@ -135,6 +130,14 @@ public class ReglesDeJeu {
         }
     }
 
+    /**
+     * Méthode pour déterminer quelle carte l'emporte entre deux cartes de même faction selon la valeur des cartes.
+     *
+     * @param carte1 La première carte.
+     * @param carte2 La deuxième carte.
+     * @param plateau Le plateau de jeu.
+     * @return La carte gagnante ou null en cas d'égalité.
+     */
     public static Card compareCard(Card carte1, Card carte2 , Plateau plateau){
         if(carte1.getValeur() > carte2.getValeur()){
             return carte1;
@@ -195,14 +198,6 @@ public class ReglesDeJeu {
     }
 
 
-    public static Player determinerPerdantManche(Player joueur1, Player joueur2, Player gagnant) {
-        if (gagnant == joueur1) {
-            return joueur2;
-        } else {
-            return joueur1;
-        }
-    }
-
     /**
      * Méthode pour déterminer quelles cartes le deuxième joueur peut jouer en fonction de la carte jouée par le premier joueur.
      *
@@ -224,13 +219,18 @@ public class ReglesDeJeu {
         if (cartesJouables.isEmpty()) {
             cartesJouables.addAll(mainJoueur.getAllCards());
         }
-
-        // A AJOUTER !!!!
-        // lorsqu'il y a plus de carte de meme faction mais qu'il reste des doppleganger il faut ajouter tout la main
-
         return cartesJouables;
     }
 
+    /**
+     * Méthode pour déterminer quelles cartes sont gagnantes parmi les cartes jouables
+     *utilise pour la distinction entre les cartes gagnantes et les cartes perdantes (Vue)
+     *
+     * @param carteAdversaire La carte jouée par l'adversaire.
+     * @param carteJouable la liste des cartes jouables par le joueur
+     * @param plateau Le plateau de jeu
+     * @return La liste des cartes gagnantes
+     */
     public static  List<Card> cartesJouablesGagnant(Card carteAdversaire, List<Card> carteJouable , Plateau plateau) {
         List<Card> cartesGagnates = new ArrayList<>();
         for (Card carte : carteJouable) {
@@ -242,6 +242,15 @@ public class ReglesDeJeu {
         return cartesGagnates;
     }
 
+    /**
+     * Méthode pour déterminer quelles cartes sont perdantes parmi les cartes jouables
+     * utilise pour la distinction entre les cartes gagnantes et les cartes perdantes (Vue)
+     *
+     * @param carteAdversaire La carte jouée par l'adversaire.
+     * @param carteJouable la liste des cartes jouables par le joueur
+     * @param plateau Le plateau de jeu
+     * @return La liste des cartes perdantes
+     */
     public static List<Card> cartesJouablesPerdant(Card carteAdversaire, List<Card> carteJouable , Plateau plateau) {
         List<Card> cartesPerdantes = new ArrayList<>();
         for (Card carte : carteJouable) {
@@ -252,9 +261,6 @@ public class ReglesDeJeu {
         }
         return cartesPerdantes;
     }
-
-
-
 
 
     /**
@@ -303,28 +309,12 @@ public class ReglesDeJeu {
         }
     }
 
-    /**
-     * Fonction pour obtenir la valeur maximale d'une liste de cartes.
-     *
-     * @param cartes La liste de cartes.
-     * @return La valeur maximale.
-     */
-    public static int getMaxCardValue(List<Card> cartes) {
-        int max = Integer.MIN_VALUE;
-        for (Card carte : cartes) {
-            if (carte.getValeur() > max) {
-                max = carte.getValeur();
-            }
-        }
-        return max;
-    }
-
 
     /**
      * Méthode pour appliquer les règles spéciales des factions (1ère phase uniquement).
      *
      * @param trickWinner Le joueur remportant le tour.
-     * @param /plateau    Le plateau de jeu.
+     * @param plateau Le plateau de jeu.
      */
     // Méthode pour appliquer les règles spéciales des factions (1er phase uniquement)
     // 1er phase si une carte de type undead etait jouer par l'un des joueur celui qui gagne le tour gagne les cartes undead (de lui meme et la carte de l'adversaire si elle est undead)
@@ -348,7 +338,13 @@ public class ReglesDeJeu {
 
     }
 
-
+    /**
+     * Méthode pour vérifier si deux cartes sont égales en terme de faction et de valeur.
+     *
+     * @param carteJoueur1 La première carte.
+     * @param carteJoueur2 La deuxième carte.
+     * @return true si les cartes sont égales, false sinon.
+     */
     public boolean carteEgaux(Card carteJoueur1, Card carteJoueur2) {
         if (carteJoueur1.getFaction().equals(carteJoueur2.getFaction()) && carteJoueur1.getValeur() == carteJoueur2.getValeur()) {
             return true;
@@ -363,26 +359,28 @@ public class ReglesDeJeu {
      * Méthode pour appliquer les règles spéciales des factions à une manche dans la 1ere phase.
      *
      * @param trickWinner Le joueur remportant le tour.
-     * @param /           Le plateau de jeu.
+     * @param cardPlayer1 carte jouer par le joueur 1
+     * @param cardPlayer2 carte jouer par le joueur 2
+     * @param defausse defausse de jeu
      */
     public void applyFirstPhaseRules(GeneralPlayer trickWinner, Card cardPlayer1, Card cardPlayer2, Defausse defausse) {
         applyUndeadRule(trickWinner, cardPlayer1, cardPlayer2, defausse);
     }
 
 
+    /**
+     * Méthode pour appliquer les règles spéciales des factions à une manche dans la 1ere phase.
+     *
+     * @param trickwinner Le joueur remportant le tour.
+     * @param trickLoser le joueur perdant le tour
+     * @param trickWinnerCard carte du joueur gagnant le tour
+     * @param trickLoserCard carte du joueur perdant
+     */
     public void applySecondPhaseRules(GeneralPlayer trickwinner, GeneralPlayer trickLoser, Card trickWinnerCard, Card trickLoserCard) { //: le gagnant prends dans sa pile de score les deux cartes jouées dans le tour classique sinon
         ApplyDwarvesRules(trickwinner, trickLoser, trickWinnerCard, trickLoserCard);
     }
 
-    /**
-     * Méthode pour appliquer les règles spéciales des factions (2ème phase uniquement).
-     *
-     * @param trickwinner Le joueur remportant le tour.
-     * @param trickLoser  Le joueur perdant le tour.
-     * @param /plateau    Le plateau de jeu.
-     */
-    // Méthode pour appliquer les règles spéciales des factions (2eme phase uniquement)
-    // 2eme phase si une carte de type Dwarves etait jouer par l'un des joueur celui qui perd le tour gagne les cartes dwarves (de lui meme et la carte de l'adversaire si elle est dwarves)
+
     public void ApplyDwarvesRules(GeneralPlayer trickwinner, GeneralPlayer trickLoser, Card trickWinnerCard, Card trickLoserCard) {
         // Vérifier si la carte jouée par le joueur perdant est de la faction Dwarves
         if (trickWinnerCard.getFaction().equals("Dwarves")) {
@@ -401,28 +399,10 @@ public class ReglesDeJeu {
             // Ajouter la carte jouée par le joueur gagnant à sa pile de score
             trickwinner.getPileDeScore().addCard(trickLoserCard);
         }
-
     }
 
     /**
-     * Méthode pour appliquer les règles spéciales des factions (1ere phase uniquement).
-     * le joueur qui gagne le tour prends la carte affichée et la carte de l'adversaire si elle est de la faction Dwarves
-     * le joueur qui perd le tour prends une carte de la pioche sans la regarder
-     * @param plateau Le plateau de jeu.
-     * @param r Les regles du jeu.
-     */
-    /*public void playerWinsFirstPhaseManche(Plateau plateau , ReglesDeJeu r){
-        r.applyFirstPhaseRules(plateau.joueurCourant, plateau);
-        plateau.getJoueurCourant().handScndPhase.addCard(plateau.getCarteAffichee()); // le gagnant prends la carte affichee
-        r.switchJoueur(plateau); //passe le tour a l'autre joueur
-        plateau.joueurCourant.handScndPhase.addCard(plateau.getPioche().getCard());// il prends une carte de la pile
-        r.switchJoueur(plateau);//c'est fait pour que le joueur commence le premier dans le prochain coup
-
-    }*/
-
-    /**
      * methode pour changer le joueur qui tient le tour
-     *
      * @param p le plateau de jeu
      */
     public void switchJoueur(Plateau p) {
@@ -430,20 +410,6 @@ public class ReglesDeJeu {
             p.joueurCourant = p.joueur2;
         } else if (p.joueurCourant == p.joueur2) {
             p.joueurCourant = p.joueur1;
-        }
-    }
-
-    /**
-     * Méthode pour attribuer une carte à un joueur.
-     *
-     * @param plateau Le plateau de jeu.
-     * @param card    La carte à attribuer.
-     */
-    public void attributCard(Plateau plateau, Card card) {
-        if (plateau.joueurCourant == plateau.joueur1) {
-            plateau.carteJoueur1 = card;
-        } else {
-            plateau.carteJoueur2 = card;
         }
     }
 

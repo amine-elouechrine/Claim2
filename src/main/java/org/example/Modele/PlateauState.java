@@ -15,15 +15,6 @@ public class PlateauState {
     private PileDeScore pileDeScore;
     private Boolean phase;
 
-    public PlateauState(Card carteJoueur1, Card carteJoueur2,
-                        Player joueur1, Player joueur2 , Player CurrentPlayer) {
-        this.carteJoueur1 = carteJoueur1;
-        this.carteJoueur2 = carteJoueur2;
-        this.joueur1 = joueur1;
-        this.joueur2 = joueur2;
-        this.joueurCourant = joueur1 ;
-        this.phase = false;
-    }
 
     // ajouter pioche et defausse
     public PlateauState(Plateau other){

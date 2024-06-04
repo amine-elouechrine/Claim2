@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.IOException;
 
 import org.example.Controleur.ControleurMediateur;
+import org.example.IA.Difficile;
 import org.example.IA.Facile;
 import org.example.IA.Intermediare;
 import org.example.Modele.Jeu;
@@ -101,8 +102,8 @@ public class InterfacePartieCustom extends JFrame implements Runnable {
                                 break;
                             case "Difficile":
                                 // Création de l'IA
-                                ia = new Intermediare(); // TODO : Ajouter l'IA Min-Max
-                                jeu = new Jeu(true, joueur1, "IA Intermediare");
+                                ia = new Difficile(); // TODO : Ajouter l'IA Min-Max
+                                jeu = new Jeu(true, joueur1, "IA Difficile");
                                 control = new ControleurMediateur(jeu, ia);
                                 break;
                             default:
