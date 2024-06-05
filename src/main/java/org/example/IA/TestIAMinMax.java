@@ -4,6 +4,7 @@ import java.util.*;
 
 import org.example.Modele.*;
 
+//import static org.example.IA.IA.determinerGagnantMancheIA;
 
 public class TestIAMinMax {
 
@@ -200,7 +201,7 @@ public class TestIAMinMax {
         System.out.println("entrer 1 pour l'affichage des hand avant chaque partie : ");
         int rep = s.nextInt();
 
-        for (int i = 0; i < 50; i++) {
+        for (int i = 0; i < 100; i++) {
             Plateau plateau;
             String winner;
 
@@ -278,4 +279,5 @@ public class TestIAMinMax {
 
 
 }
+
 

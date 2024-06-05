@@ -183,13 +183,15 @@ public class ReglesDeJeu {
      * @param carteJoueur2 La carte jouée par le deuxième joueur.
      * @return Le joueur gagnant ou null en cas d'égalité.
      */
-    public static Player determinerGagnantManche(Player joueur1, Player joueur2, Card carteJoueur1, Card carteJoueur2, Plateau Plateau) {
-        Card carteGagnante = carteGagnante(carteJoueur1, carteJoueur2, Plateau);
-
-        if (carteGagnante == carteJoueur1) {
-            return joueur1;
-        } else if (carteGagnante == carteJoueur2) {
+    public static Player determinerGagnantManche(Player joueur1, Player joueur2, Card carteJoueur1, Card carteJoueur2, Plateau plateau) {
+        Card carteGagnante = carteGagnante(carteJoueur1, carteJoueur2, plateau);
+        if (carteJoueur1.equals(carteJoueur2)){
+            return plateau.getJoueurNonCourant();
+        }
+        if (carteGagnante == carteJoueur2) {
             return joueur2;
+        } else if (carteGagnante == carteJoueur1) {
+            return joueur1;
         } else {
             return null; // En cas d'égalité
         }
@@ -314,7 +316,7 @@ public class ReglesDeJeu {
      * Méthode pour appliquer les règles spéciales des factions (1ère phase uniquement).
      *
      * @param trickWinner Le joueur remportant le tour.
-     * @param plateau Le plateau de jeu.
+     * @param //plateau Le plateau de jeu.
      */
     // Méthode pour appliquer les règles spéciales des factions (1er phase uniquement)
     // 1er phase si une carte de type undead etait jouer par l'un des joueur celui qui gagne le tour gagne les cartes undead (de lui meme et la carte de l'adversaire si elle est undead)

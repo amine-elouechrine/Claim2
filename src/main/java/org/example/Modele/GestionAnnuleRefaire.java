@@ -55,11 +55,18 @@ public class GestionAnnuleRefaire {
             refaire.pop();
         }
     }
+    /**
+     * @brief Vide la pile des actions annulées.
+     */
     public void clearStackAnnule() {
         while (!annule.empty()) {
             annule.pop();
         }
     }
+    /**
+     * @brief Annule la dernière action effectuée sur le plateau.
+     * @param p Le plateau de jeu à modifier.
+     */
 
     public void annuler(Plateau p) {
         if (peutAnnuler()) {
@@ -82,7 +89,10 @@ public class GestionAnnuleRefaire {
             p.setJoueurCourant(np.getJoueurCourant());
         }
     }
-
+    /**
+     * @brief Refait la dernière action annulée sur le plateau.
+     * @param p Le plateau de jeu à modifier.
+     */
     public void refaire(Plateau p) {
         if (peutRefaire()) {
             Plateau np = refaire.pop();
@@ -104,6 +114,11 @@ public class GestionAnnuleRefaire {
             p.setJoueurCourant(np.getJoueurCourant());
         }
     }
+    /**
+     * @brief Clone un plateau de jeu.
+     * @param plateau Le plateau de jeu à cloner.
+     * @return Un nouveau plateau identique au plateau passé en paramètre.
+     */
     public Plateau clonePlateau(Plateau plateau){
         Plateau p = new Plateau();
 
@@ -208,26 +223,41 @@ public class GestionAnnuleRefaire {
         return p;
     }
 
-    // Ajoute un plateau à la pile annule
+    /**
+     * @brief Ajoute un plateau à l'historique des actions annulées.
+     * @param plateau Le plateau à ajouter.
+     */
     public void addToHistory(Plateau plateau) {
         Plateau p = clonePlateau(plateau);
         annule.push(p);
         clearStackRefaire();
     }
 
-
+    /**
+     * @brief Sauvegarde une main de cartes dans un flux de sortie.
+     * @param hand La main de cartes à sauvegarder.
+     * @param p Le flux de sortie.
+     */
     public void saveHand(Hand hand, PrintStream p) {
         for (Card card : hand.getAllCards()) {
             p.println(card.getFaction() + ":" + card.getValeur());
         }
     }
-
+    /**
+     * @brief Sauvegarde une collection de cartes dans un flux de sortie.
+     * @param cards La collection de cartes à sauvegarder.
+     * @param p Le flux de sortie.
+     */
     public void saveCards(Cards cards, PrintStream p) {
         for (Card card : cards.getCards()) {
             p.println(card.getFaction() + ":" + card.getValeur());
         }
     }
-
+    /**
+     * @brief Sauvegarde une pile de score dans un flux de sortie.
+     * @param pile La pile de score à sauvegarder.
+     * @param p Le flux de sortie.
+     */
     public void savePileDeScore(PileDeScore pile, PrintStream p) {
         for (Map.Entry<String, List<Card>> entry : pile.getPileDeScore().entrySet()) {
             String key = entry.getKey();
@@ -239,13 +269,22 @@ public class GestionAnnuleRefaire {
 
         }
     }
-
+    /**
+     * @brief Sauvegarde une défausse dans un flux de sortie.
+     * @param defausse La défausse à sauvegarder.
+     * @param p Le flux de sortie.
+     */
     public void saveDefausse(Defausse defausse, PrintStream p) {
         for (Card card : defausse.getCartes()) {
             p.println(card.getFaction() + ":" + card.getValeur());
         }
     }
-
+    /**
+     * @brief Sauvegarde les informations d'un joueur dans un flux de sortie.
+     * @param j Le joueur dont les informations sont à sauvegarder.
+     * @param p Le flux de sortie dans lequel les informations du joueur sont écrites.
+     * @param phase Indique si le jeu est en phase 1 ou non.
+     */
     public void saveInfoPlayer(Player j, PrintStream p, boolean phase) {
         p.println(j.getName());
         saveHand(j.getHand(), p);//l'ecriture de la main du joueur
@@ -256,7 +295,12 @@ public class GestionAnnuleRefaire {
         p.println();
         p.println(j.getScore());
     }
-
+    /**
+     * @brief Restaure la main d'un joueur à partir d'un flux de lecture.
+     * @param r Le flux de lecture à partir duquel la main est restaurée.
+     * @return La main restaurée.
+     * @throws IOException Si une erreur d'entrée/sortie se produit.
+     */
     public Hand restaureHand(BufferedReader r) throws IOException {
         Hand hand = new Hand();
         String[] card = r.readLine().split(":");
@@ -270,7 +314,12 @@ public class GestionAnnuleRefaire {
         }
         return hand;
     }
-
+    /**
+     * @brief Restaure la pile de score d'un joueur à partir d'un flux de lecture.
+     * @param r Le flux de lecture à partir duquel la pile de score est restaurée.
+     * @return La pile de score restaurée.
+     * @throws IOException Si une erreur d'entrée/sortie se produit.
+     */
     public PileDeScore restaurePileDeScore(BufferedReader r) throws IOException {//restaurer la pile de score
         PileDeScore pileDeScore = new PileDeScore();
         String[] line = r.readLine().split(":");
@@ -287,7 +336,12 @@ public class GestionAnnuleRefaire {
         }
         return pileDeScore;
     }
-
+    /**
+     * @brief Restaure la défausse à partir d'un flux de lecture.
+     * @param r Le flux de lecture à partir duquel la défausse est restaurée.
+     * @return La défausse restaurée.
+     * @throws IOException Si une erreur d'entrée/sortie se produit.
+     */
     public Defausse restaureDefausse(BufferedReader r) throws IOException {
         Defausse defausse = new Defausse();
         String[] line = r.readLine().split(":");
@@ -300,7 +354,12 @@ public class GestionAnnuleRefaire {
         }
         return defausse;
     }
-
+    /**
+     * @brief Restaure un ensemble de cartes à partir d'un flux de lecture.
+     * @param r Le flux de lecture à partir duquel les cartes sont restaurées.
+     * @return Les cartes restaurées.
+     * @throws IOException Si une erreur d'entrée/sortie se produit.
+     */
     public Cards restaureCards(BufferedReader r) throws IOException {
         ArrayList<Card> list = new ArrayList<>();
         String[] line = r.readLine().split(":");
@@ -318,6 +377,11 @@ public class GestionAnnuleRefaire {
         }
         return cards;
     }
+    /**
+     * @brief Sauvegarde l'état d'un plateau de jeu dans un flux de sortie.
+     * @param p Le flux de sortie dans lequel l'état du plateau est écrit.
+     * @param plateau Le plateau de jeu à sauvegarder.
+     */
     public void sauvePlateau(PrintStream p , Plateau plateau){
         if (plateau.phase) p.println("FirstPhase");
         else p.println("SecondPhase");
@@ -347,40 +411,23 @@ public class GestionAnnuleRefaire {
             p.println();
         }
     }
+    /**
+     * @brief Sauvegarde l'état d'un plateau de jeu dans un fichier.
+     * @param filename Le nom du fichier où sauvegarder le plateau.
+     * @param plateau Le plateau de jeu à sauvegarder.
+     * @throws FileNotFoundException Si le fichier ne peut pas être créé ou ouvert.
+     */
     public void sauve(String filename,Plateau plateau) throws FileNotFoundException {
         PrintStream p = new PrintStream(new File(filename));
         sauvePlateau(p,plateau);
         sauvePile(p);
-        /*//si on est dans la premiere on va ecrire toute les infos
-        //on ecrit la phase ou on est
-        if (plateau.phase) p.println("FirstPhase");
-        else p.println("SecondPhase");
-        //on va ecrire tous les infos du joueur 1
-        saveInfoPlayer(plateau.getJoueur1(), p, plateau.phase);
-        //on va ecrire tous les infos du joueur 2
-        saveInfoPlayer(plateau.getJoueur2(), p, plateau.phase);
-        //on va ecrire les infos du plateau
-        p.println(plateau.getJoueurCourant().getName());
-        saveCards(plateau.getPioche(), p);
-        p.println();//saute de ligne pour separer la pioche de la defausse
-        //ecriture de la defausse
-        saveDefausse(plateau.getDefausse(), p);
-        p.println();
-        //ecriture de la carte affiché
-        if (plateau.phase) {
-            p.println(plateau.getCarteAffichee().getFaction() + ":" + plateau.getCarteAffichee().getValeur());
-        }
-        if (plateau.getCarteJoueur1() != null) {
-            p.println(plateau.getCarteJoueur1().getFaction() + ":" + plateau.getCarteJoueur1().getValeur());
-        } else {
-            p.println();
-        }
-        if (plateau.getCarteJoueur2() != null) {
-            p.println(plateau.getCarteJoueur2().getFaction() + ":" + plateau.getCarteJoueur2().getValeur());
-        } else {
-            p.println();
-        }*/
+
     }
+    /**
+     * @brief Sauvegarde la pile des plateaux annulés dans un flux de sortie.
+     * @param p Le flux de sortie dans lequel la pile des plateaux annulés est écrite.
+     * @throws FileNotFoundException Si le fichier ne peut pas être créé ou ouvert.
+     */
     public void  sauvePile (PrintStream p) throws FileNotFoundException {
         p.println(annule.size());
         Stack<Plateau> ns = new Stack<>() ;
@@ -393,7 +440,12 @@ public class GestionAnnuleRefaire {
             p.println();
         }
     }
-
+    /**
+     * @brief Restaure une carte à partir d'un flux de lecture.
+     * @param r Le flux de lecture à partir duquel la carte est restaurée.
+     * @return La carte restaurée.
+     * @throws IOException Si une erreur d'entrée/sortie se produit.
+     */
     public Card restaureCard(BufferedReader r) throws IOException {
         String[] carte = r.readLine().split(":");
         String faction = carte[0];
@@ -401,7 +453,12 @@ public class GestionAnnuleRefaire {
         return new Card(valeur, faction);
 
     }
-
+    /**
+     * @brief Restaure une carte si elle existe à partir d'un flux de lecture.
+     * @param r Le flux de lecture à partir duquel la carte est restaurée.
+     * @return La carte restaurée ou null si elle n'existe pas.
+     * @throws IOException Si une erreur d'entrée/sortie se produit.
+     */
     public Card restaureCardIfExist(BufferedReader r) throws IOException {
         String[] line = r.readLine().split(":");
         if (line[0].isEmpty()) {
@@ -412,7 +469,13 @@ public class GestionAnnuleRefaire {
             return new Card(valeur, faction);
         }
     }
-
+    /**
+     * @brief Restaure les informations d'un joueur à partir d'un flux de lecture.
+     * @param r Le flux de lecture à partir duquel les informations du joueur sont restaurées.
+     * @param phase Indique si le jeu est en phase 1 ou non.
+     * @return Le joueur restauré.
+     * @throws IOException Si une erreur d'entrée/sortie se produit.
+     */
     public Player restaureInfoPlayer(BufferedReader r, boolean phase) throws IOException {
         String namePlayer1 = r.readLine();
         Hand handP1J1 = restaureHand(r);
@@ -429,7 +492,20 @@ public class GestionAnnuleRefaire {
         joueur1.setPileDeScore(pileJ1);
         return joueur1;
     }
-
+    /**
+     * @brief Crée un plateau avec les paramètres spécifiés.
+     * @param phase Indique la phase du jeu.
+     * @param carteAffichee La carte affichée sur le plateau.
+     * @param carteJoueur1 La carte du joueur 1.
+     * @param carteJoueur2 La carte du joueur 2.
+     * @param defausse La défausse du jeu.
+     * @param joueur1 Le joueur 1.
+     * @param joueur2 Le joueur 2.
+     * @param pioche La pioche du jeu.
+     * @param nameCurrentPlayer Le nom du joueur courant.
+     * @return Le plateau créé avec les paramètres spécifiés.
+     * @throws IOException Si une erreur d'entrée/sortie se produit.
+     */
     public Plateau setPlateau(boolean phase, Card carteAffichee, Card carteJoueur1, Card carteJoueur2, Defausse defausse, Player joueur1, Player joueur2, Cards pioche, String nameCurrentPlayer) throws IOException {
         Plateau plateau = new Plateau();
         plateau.setPhase(phase);
@@ -448,6 +524,12 @@ public class GestionAnnuleRefaire {
         }
         return plateau;
     }
+    /**
+     * @brief Restaure un plateau à partir d'un flux de lecture.
+     * @param r Le flux de lecture à partir duquel le plateau est restauré.
+     * @return Le plateau restauré.
+     * @throws IOException Si une erreur d'entrée/sortie se produit.
+     */
     public Plateau restaurePlateau(BufferedReader r) throws IOException {
         String Phase = r.readLine();
         boolean phase;
@@ -476,13 +558,23 @@ public class GestionAnnuleRefaire {
 
         return setPlateau(phase, carteAffiche, carteJoueur1, carteJoueur2, defausse, joueur1, joueur2, pioche, nameCurrentPlayer);
     }
-
+    /**
+     * @brief Restaure un plateau à partir d'un fichier.
+     * @param Filename Le nom du fichier contenant les informations du plateau à restaurer.
+     * @return Le plateau restauré.
+     * @throws IOException Si une erreur d'entrée/sortie se produit.
+     */
     public Plateau restaure(String Filename) throws IOException {
         BufferedReader r = new BufferedReader(new FileReader(Filename));
         Plateau pl = restaurePlateau(r);
         restaurePile(r);
         return pl;
     }
+    /**
+     * @brief Restaure la pile des plateaux annulés à partir d'un flux de lecture.
+     * @param r Le flux de lecture à partir duquel la pile des plateaux annulés est restaurée.
+     * @throws IOException Si une erreur d'entrée/sortie se produit.
+     */
     public void restaurePile(BufferedReader r) throws IOException {
         clearStackAnnule();
         String Char = r.readLine();
@@ -493,19 +585,5 @@ public class GestionAnnuleRefaire {
 
         }
     }
-
-    /*public Plateau getPlateau() {
-        return getPlateau();
-    }
-
-
-    /* pour sauve restaure il faut stocker le plateau actuell les piles de refaire & annule mais il faut aussi stocker la main de chaque joueur  */
-    /*public void sauve(String fileName) {
-        try {
-            System.out.println("le sauvegarde dans le fichier " + fileName + " est en cours");
-        } catch (Exception e) {
-            System.out.println("Erreur lors de la sauvegarde");
-        }
-    }*/
 }
 
