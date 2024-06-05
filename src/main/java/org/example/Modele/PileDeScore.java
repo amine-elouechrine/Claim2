@@ -4,15 +4,29 @@ import java.util.List;
 import java.util.Map;
 import java.util.ArrayList;
 
+/**
+ * La classe PileDeScore représente la pile de score d'un joueur dans un jeu de cartes.
+ * Elle est implémentée en utilisant une HashMap où les clés sont
+ * des chaînes de caractères représentant les différentes factions,
+ * et les valeurs sont des listes de cartes associées à chaque faction.
+ * Cette structure permet de stocker et d'organiser les cartes gagnées par
+ * le joueur selon leurs factions respectives
+ */
 public class PileDeScore {
     private Map<String, List<Card>> cartesGagnees;
 
+    /**
+     * @brief Constructeur par défaut initialise une pile de score vide.
+     */
     public PileDeScore() {
         cartesGagnees = new HashMap<>();
     }
 
-    // Constructeur de copie
-    public PileDeScore(PileDeScore other) {
+    /**
+     * @brief Constructeur de copie.
+     *
+     * @param other L'objet PileDeScore à copier.
+     */    public PileDeScore(PileDeScore other) {
         this.cartesGagnees = new HashMap<>();
         for (Map.Entry<String, List<Card>> entry : other.cartesGagnees.entrySet()) {
             // Clone la liste de cartes pour chaque faction
@@ -24,10 +38,20 @@ public class PileDeScore {
         }
     }
 
+    /**
+     * @brief Crée un clone de l'objet PileDeScore actuel.
+     *
+     * @return Un nouvel objet PileDeScore qui est une copie de l'instance actuelle.
+     */
     public PileDeScore clone() {
         return new PileDeScore(this);
     }
 
+    /**
+     * @brief Récupère toutes les cartes dans la pile de score.
+     *
+     * @return Une liste de toutes les cartes.
+     */
     public List<Card> getAllCards() {
         List<Card> allCards = new ArrayList<>();
         for (List<Card> cards : cartesGagnees.values()) {
@@ -36,7 +60,9 @@ public class PileDeScore {
         return allCards;
     }
 
-    // Méthode pour afficher la pile de score
+    /**
+     * @brief Affiche la pile de score.
+     */
     public void printPileDeScore() {
         for (Map.Entry<String, List<Card>> entry : cartesGagnees.entrySet()) {
             String faction = entry.getKey();
@@ -48,21 +74,31 @@ public class PileDeScore {
         }
     }
 
-
-    public Map<String, List<Card>> getCartesGagnees() {
-        return cartesGagnees;
-    }
+    /**
+     * @brief Récupère la pile de score.
+     *
+     * @return Une carte représentant la pile de score.
+     */
     public Map<String, List<Card>> getPileDeScore() {
         return cartesGagnees;
     }
-    // getCardFaction(String faction) : List<Card> return tous les cartes de cette faction dans cartes gagnées
-    // Récupère toutes les cartes d'une faction donnée
+
+    /**
+     * @brief Récupère toutes les cartes d'une faction donnée.
+     *
+     * @param faction La faction dont les cartes doivent être récupérées.
+     * @return Une liste de cartes appartenant à la faction spécifiée.
+     */
     public List<Card> getCardFaction(String faction) {
         return cartesGagnees.getOrDefault(faction, new ArrayList<>());
     }
 
-    // Retourner la plus grand valeur de card d'une faction
-    public int maxValueOfFaction(String faction){
+    /**
+     * @brief Retourne la valeur la plus élevée d'une carte d'une faction donnée.
+     *
+     * @param faction La faction dont la carte à la valeur la plus élevée doit être récupérée.
+     * @return La valeur la plus élevée d'une carte dans la faction spécifiée, ou Integer.MIN_VALUE si la faction n'a pas de cartes.
+     */    public int maxValueOfFaction(String faction){
         List<Card> factionCards = getCardFaction(faction);
         if (factionCards.isEmpty()) {
             return Integer.MIN_VALUE;
@@ -75,8 +111,12 @@ public class PileDeScore {
         }
         return maxValue;
     }
-    // addCard(Card carte) : void ajouter une carte dans cartes gagnées dans la faction corrspondante 
-    // Ajoute une carte à la faction correspondante
+
+    /**
+     * @brief Ajoute une carte à la pile de score sous la faction appropriée.
+     *
+     * @param carte La carte à ajouter.
+     */
     public void addCard(Card carte) {
         String faction = carte.getFaction();
         if (cartesGagnees.containsKey(faction)) {

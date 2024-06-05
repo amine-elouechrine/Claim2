@@ -9,6 +9,7 @@ public class Player extends GeneralPlayer {
         super(Name);
     }
 
+
     public Player(Player other) {
         super(other.Name);
         this.handScndPhase = new Hand(other.handScndPhase);
@@ -21,7 +22,6 @@ public class Player extends GeneralPlayer {
      * @param indexCard carte à jouer.
      * @return La carte jouée, ou null si la carte n'est pas dans la main du joueur.
      */
-
     public Card jouerCarte(int indexCard) {
         Card carte = hand.getCard(indexCard);
         // Vérifie si la carte est présente dans la main du joueur
