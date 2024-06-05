@@ -26,6 +26,8 @@ public class InterfaceInitiale extends JFrame implements Runnable {
         // Set window icon
         setWindowIcon("/Claim.png");
 
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+
         // Create and set up the background panel
         BackgroundImage backgroundPanel = new BackgroundImage("/backgroundImage.jpg");
         backgroundPanel.setLayout(new GridBagLayout()); // Use GridBagLayout

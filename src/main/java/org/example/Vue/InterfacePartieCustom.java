@@ -36,7 +36,7 @@ public class InterfacePartieCustom extends JFrame implements Runnable {
         }
 
         // Quand on quitte la fênetre
-        this.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
+        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setSize(1000, 650); // Set initial size
         setLocationRelativeTo(null);
 
