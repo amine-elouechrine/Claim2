@@ -158,6 +158,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
     }
 
     private void paintGameBoard(Graphics2D g) {
+        g.drawImage(imageMap.get("backBlue"),0, 0, getWidth(), getHeight(), this);
         // Set bigger font size
         font = g.getFont().deriveFont(Font.BOLD, largeur() / 25f); // Adjust font size based on panel width
         g.setFont(font);
