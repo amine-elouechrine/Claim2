@@ -111,4 +111,6 @@ public interface CollecteurEvenements {
     String getJoueurNomGagnant();
 
     String help();
+
+    List<Card> getFollowerDeckJ1();
 }

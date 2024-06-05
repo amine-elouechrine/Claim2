@@ -7,6 +7,10 @@ import org.example.Patternes.Observateur;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -77,7 +81,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
     FontMetrics fm;
     int textWidth;
     int textHeight;
-
+    boolean fini;
     // private static final double RECTANGLE_SCALE_FACTOR = 0.05; // Adjust this value for scaling
 
     // Boolean pour les cartes jouables
@@ -135,6 +139,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
         for (String ligne : lignes) {
             acceptFile(new File(ligne));
         }
+        loadIcon();
     }
 
     public void loadImages() {
@@ -153,6 +158,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
     }
 
     private void paintGameBoard(Graphics2D g) {
+        g.drawImage(imageMap.get("backBlue"),0, 0, getWidth(), getHeight(), this);
         // Set bigger font size
         font = g.getFont().deriveFont(Font.BOLD, largeur() / 25f); // Adjust font size based on panel width
         g.setFont(font);
@@ -209,8 +215,22 @@ public class NiveauGraphique extends JComponent implements Observateur {
         if (control.estFinPartie()) {
             fin.JoueurGagnant = jeu.getJoueurNomGagnant();
             fin.messageLabel.setText("Le Joueur " + fin.JoueurGagnant + " a gagné");
-            rec.setVisible(true);
-            fin.setVisible(true);
+            fin.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosing(WindowEvent e) {
+                    rec.setVisible(true);
+                }
+            });
+            fin.ok.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    fin.setVisible(false);
+                    rec.setVisible(true);
+                }
+            });
+            if (!control.getPause()) {
+                fin.setVisible(true);
+            }
         }
 
         /* Phase 1 */
@@ -221,10 +241,9 @@ public class NiveauGraphique extends JComponent implements Observateur {
             main = control.getHandJ1P1();
             // Dessin des cartes de la main du joueur 1
 
-            if(drawC.isDrawHandJ1Toggle()) {
+            if (drawC.isDrawHandJ1Toggle()) {
                 drawHiddenHand(g, nbCardHandJ1);
-            }
-            else
+            } else
                 for (int i = 0; i < nbCardHandJ1; i++) {
                     x = startHandXJ1 + i * (rectWidth + spacing);
                     drawHand(g, i, main, control.getNomJoueur2());
@@ -288,7 +307,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
             transparence = 0;
             drawTransitionAnimation(g);
 
-        /* Phase 2 */
+            /* Phase 2 */
         } else if (!control.getPhase()) {
 
             // Ajouter "À toi de jouer" pour le joueur 1
@@ -301,10 +320,9 @@ public class NiveauGraphique extends JComponent implements Observateur {
             main = control.getHandJ1P2();
 
             // Dessin des cartes de la main du joueur 1
-            if(drawC.isDrawHandJ1Toggle()) {
+            if (drawC.isDrawHandJ1Toggle()) {
                 drawHiddenHand(g, nbCardHandJ1);
-            }
-            else
+            } else
                 for (int i = 0; i < nbCardHandJ1; i++) {
                     x = startHandXJ1 + i * (rectWidth + spacing);
                     drawHand(g, i, main, control.getNomJoueur2());
@@ -710,7 +728,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
         // g.fillRect(x, y, rectWidth, rectHeight);
         positionFollower1X = x;
         positionFollower1Y = y;
-        g.drawString("Seconde Main J1", x - 20, y - 20);
+        g.drawString("Seconde Main J1", x - 30, y - 20);
         g.drawImage(imageMap.get("carte_placement_follower"), x, y, rectWidth, rectHeight, this);
 
         // Draw follower deck Joueur 2
@@ -719,7 +737,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
         // g.fillRect(x, y, rectWidth, rectHeight);
         positionFollower2X = x;
         positionFollower2Y = y;
-        g.drawString("Seconde Main J2", x - 20, y + rectHeight + 20);
+        g.drawString("Seconde Main J2", x - 30, y + rectHeight + 20);
         g.drawImage(imageMap.get("carte_placement_follower"), x, y, rectWidth, rectHeight, this);
     }
 
@@ -743,6 +761,24 @@ public class NiveauGraphique extends JComponent implements Observateur {
         g.drawString("Fin de la phase 1", x, y1);
         g.drawString("Début de la phase 2! ", x, y2);
 
+    }
+
+
+    // Vérifie si un clic est sur le deck des followers
+    public boolean isClickOnFollowerDeck(int clickX, int clickY) {
+        // Vérifie si le clic est sur le deck du Joueur 1
+        if (clickX >= positionFollower1X && clickX <= positionFollower1X + rectWidth &&
+                clickY >= positionFollower1Y && clickY <= positionFollower1Y + rectHeight) {
+            return true;
+        }
+        // Si le clic n'est pas sur l'un des decks
+        return false;
+    }
+
+    public boolean isMouseOverFollowerDeck(int mouseX, int mouseY) {
+        // Vérifie si la souris est au-dessus du deck du Joueur 1
+        return mouseX >= positionFollower1X && mouseX <= positionFollower1X + rectWidth &&
+                mouseY >= positionFollower1Y && mouseY <= positionFollower1Y + rectHeight;
     }
 
     /* Getteurs */
@@ -962,7 +998,6 @@ public class NiveauGraphique extends JComponent implements Observateur {
         currentCarteJoue1Y -= deltaDefausse1Y;
         currentCarteJoue2X -= deltaDefausse2X;
         currentCarteJoue2Y -= deltaDefausse2Y;
-
         miseAJour();
     }
 
@@ -973,34 +1008,36 @@ public class NiveauGraphique extends JComponent implements Observateur {
 
     public void transition() {
         currentTransparence += deltaTransparence;
-//        if (currentTransparence > 170) {
-//            currentCarteJoue1X = -999;
-//            currentCarteJoue1Y = -999;
-//            currentCarteJoue2X = -999;
-//            currentCarteJoue2Y = -999;
-//            currentCarteaganeeX = -999;
-//            currentCarteaganeeY = -999;
-//            currentCartePerdeX = -999;
-//            currentCartePerdeY = -999;
-//        }
+
+        if (currentTransparence > 170) {
+            currentCarteJoue1X = -999;
+            currentCarteJoue1Y = -999;
+            currentCarteJoue2X = -999;
+            currentCarteJoue2Y = -999;
+            currentCarteaganeeX = -999;
+            currentCarteaganeeY = -999;
+            currentCartePerdeX = -999;
+            currentCartePerdeY = -999;
+        }
         miseAJour();
     }
-        public static BufferedImage imageToBufferedImage(Image image) {
-            // Crée un BufferedImage avec le type ARGB (avec canal alpha) de la même taille que l'image
-            BufferedImage bufferedImage = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
 
-            // Obtient le contexte graphique du BufferedImage
-            Graphics2D g2d = bufferedImage.createGraphics();
+    public static BufferedImage imageToBufferedImage(Image image) {
+        // Crée un BufferedImage avec le type ARGB (avec canal alpha) de la même taille que l'image
+        BufferedImage bufferedImage = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
 
-            // Dessine l'image sur le BufferedImage
-            g2d.drawImage(image, 0, 0, null);
-            g2d.dispose();
+        // Obtient le contexte graphique du BufferedImage
+        Graphics2D g2d = bufferedImage.createGraphics();
 
-            return bufferedImage;
-        }
+        // Dessine l'image sur le BufferedImage
+        g2d.drawImage(image, 0, 0, null);
+        g2d.dispose();
+
+        return bufferedImage;
+    }
 
 
-        // Pour charger les images dans le hashMap
+    // Pour charger les images dans le hashMap
     private void acceptFile(File file) {
         String fileName = file.getName();
         if (fileName.endsWith(".png")) {
@@ -1021,6 +1058,12 @@ public class NiveauGraphique extends JComponent implements Observateur {
         }
     }
 
-
+    public void loadIcon() {
+        icon_goblin = imageMap.get("icon_goblin");
+        icon_knight = imageMap.get("icon_knight");
+        icon_undead = imageMap.get("icon_undead");
+        icon_dwarve = imageMap.get("icon_dwarve");
+        icon_doppleganger = imageMap.get("icon_doppleganger");
+    }
 }
 

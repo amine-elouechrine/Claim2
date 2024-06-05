@@ -7,9 +7,10 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.util.List;
 
-public class AdaptateurSouris extends MouseAdapter implements MouseListener {
+public class AdaptateurSouris extends MouseAdapter implements MouseMotionListener, MouseListener {
 
     int i, j;
     int largeurR, hauteurR;
@@ -27,13 +28,21 @@ public class AdaptateurSouris extends MouseAdapter implements MouseListener {
 
     }
 
+    @Override
+    public void mouseMoved(MouseEvent e) {
+        if (niv.isMouseOverFollowerDeck(e.getX(), e.getY())) {
+            niv.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        } else {
+            niv.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+        }
+    }
 
     @Override
     public void mousePressed(MouseEvent e) {
 
         if (control.getPause())
             return;
-        if(!control.getPause()) {
+        if (!control.getPause()) {
             // Clic sur le niveau graphique
             i = e.getX();
             j = e.getY();
@@ -71,7 +80,23 @@ public class AdaptateurSouris extends MouseAdapter implements MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        if(!drawCheck.isDrawScorePileToggle()) {
+
+        if (niv.isClickOnFollowerDeck(i, j)) {
+            // ouvrire une fenetre de dialogue pour afficher les carte dans le follower deck
+            List<Card> cards = control.getFollowerDeckJ1();
+            if (cards.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Le deck est vide", "Contenu de la liste", JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }
+            StringBuilder message = new StringBuilder("Liste des cartes :\n");
+            for (Card card : cards) {
+                message.append(" ").append(card.getValeur() + " de " + card.getFaction()).append("\n");
+            }
+
+            JOptionPane.showMessageDialog(null, message.toString(), "Contenu de la liste", JOptionPane.INFORMATION_MESSAGE);
+        }
+
+        if (!drawCheck.isDrawScorePileToggle()) {
             return;
         }
         if (niv.estDansPileDeScore(e.getX(), e.getY())) {
