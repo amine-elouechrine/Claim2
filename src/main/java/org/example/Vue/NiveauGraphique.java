@@ -778,7 +778,6 @@ public class NiveauGraphique extends JComponent implements Observateur {
         // Vérifie si la souris est au-dessus du deck du Joueur 1
         return mouseX >= positionFollower1X && mouseX <= positionFollower1X + rectWidth &&
                 mouseY >= positionFollower1Y && mouseY <= positionFollower1Y + rectHeight;
-        // Si la souris n'est pas au-dessus du deck
     }
 
     /* Getteurs */

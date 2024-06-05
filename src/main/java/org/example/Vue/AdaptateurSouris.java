@@ -34,7 +34,6 @@ public class AdaptateurSouris extends MouseAdapter implements MouseMotionListene
             niv.setCursor(new Cursor(Cursor.HAND_CURSOR));
         } else {
             niv.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-
         }
     }
 

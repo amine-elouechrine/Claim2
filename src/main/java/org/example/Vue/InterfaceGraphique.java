@@ -76,6 +76,7 @@ public class InterfaceGraphique implements Runnable, InterfaceUtilisateur {
         }
         niv.setFocusable(true);
         niv.requestFocusInWindow();
+        niv.addMouseMotionListener(new AdaptateurSouris(niv, control, drawCheck));
         niv.addMouseListener(new AdaptateurSouris(niv, control, drawCheck));
         niv.addKeyListener(adaptateurClavier);
 
