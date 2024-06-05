@@ -354,6 +354,10 @@ public class ControleurMediateur implements CollecteurEvenements {
         jeu.metAJour();
     }
 
+    public List<Card> getFollowerDeckJ1(){
+        return jeu.getJoueur1().getHandScndPhase().getAllCards();
+    }
+
     public void joueTour(int index) {
         pause = true;
         IAreste = false;
