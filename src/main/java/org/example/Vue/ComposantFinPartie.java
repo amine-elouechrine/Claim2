@@ -30,6 +30,7 @@ public class ComposantFinPartie extends JFrame implements Observateur {
     Jeu jeu;
     String JoueurGagnant = "";
     JLabel messageLabel;
+    JButton ok;
 
     public ComposantFinPartie(CollecteurEvenements control,Jeu jeu) {
         this.c = control;
@@ -51,15 +52,10 @@ public class ComposantFinPartie extends JFrame implements Observateur {
         messageLabel = new JLabel("Le Joueur " + JoueurGagnant + " a gagné");
         panel.add(messageLabel);
 
-        JButton ok = new JButton("OK");
+        ok = new JButton("OK");
         ok.addActionListener(new AdaptateurClose(this));
         panel.add(ok);
         this.setContentPane(panel);
-        ok.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                dispose();
-            }
-        });
         this.pack();
         this.setLocationRelativeTo(null);
         // this.add(panel);
