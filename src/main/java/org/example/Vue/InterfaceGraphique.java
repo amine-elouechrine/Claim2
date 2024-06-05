@@ -108,7 +108,7 @@ public class InterfaceGraphique implements Runnable, InterfaceUtilisateur {
         fenetre.add(bh, BorderLayout.NORTH);
 
 
-        Timer chrono = new Timer(1, new AdaptateurTemps(control));
+        Timer chrono = new Timer(10, new AdaptateurTemps(control));
         chrono.start();
 
         fenetre.pack();
