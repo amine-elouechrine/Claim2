@@ -1,3 +1,6 @@
+/backBlue.png
+/back.png
+/back1.png
 /backside.png
 /carte_0.png
 /carte_1.png
