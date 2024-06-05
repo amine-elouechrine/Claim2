@@ -728,7 +728,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
         // g.fillRect(x, y, rectWidth, rectHeight);
         positionFollower1X = x;
         positionFollower1Y = y;
-        g.drawString("Seconde Main J1", x - 20, y - 20);
+        g.drawString("Seconde Main J1", x - 30, y - 20);
         g.drawImage(imageMap.get("carte_placement_follower"), x, y, rectWidth, rectHeight, this);
 
         // Draw follower deck Joueur 2
@@ -737,7 +737,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
         // g.fillRect(x, y, rectWidth, rectHeight);
         positionFollower2X = x;
         positionFollower2Y = y;
-        g.drawString("Seconde Main J2", x - 20, y + rectHeight + 20);
+        g.drawString("Seconde Main J2", x - 30, y + rectHeight + 20);
         g.drawImage(imageMap.get("carte_placement_follower"), x, y, rectWidth, rectHeight, this);
     }
 
