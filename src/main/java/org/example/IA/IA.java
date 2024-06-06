@@ -170,14 +170,14 @@ public abstract class IA extends GeneralPlayer {
         return highestSmallerCard;
     }
 
-    public static boolean containsKnight(Plateau plaateau) {
+    public static boolean containsKnight(Plateau plateau) {
         Hand hand = plateau.getJoueurCourant().getHand();
         if (hand == null || hand.getAllCards().isEmpty()) {
             return false;
         }
 
         for (Card card : hand.getAllCards()) {
-            if (card.getFaction().equals("Chevalier")) {
+            if (card.getFaction().equals("Knight")) {
                 return true;
             }
         }

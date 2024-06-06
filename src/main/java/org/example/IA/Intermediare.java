@@ -98,7 +98,7 @@ public class Intermediare extends IA {
 
 
 	public Card jouerChevalier(Plateau plateau) {
-		Hand chevaliers = getCardsOfSameFaction(plateau, "Chevalier");
+		Hand chevaliers = getCardsOfSameFaction(plateau, "Knight");
 		return chevaliers.getMin();
 	}
 
@@ -115,7 +115,7 @@ public class Intermediare extends IA {
 
 	private Card jouerAvecSuiviFactionPhase2(Plateau plateau) {
 		Card cardToPlay;
-		if (plateau.getCardAdversaire().getFaction().equals("Nains")) {
+		if (plateau.getCardAdversaire().getFaction().equals("Dwarves")) {
 			cardToPlay = jouerAvecNains(plateau);
 		} else {
 			cardToPlay = suivreFactionAdversaire(plateau);

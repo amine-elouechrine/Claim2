@@ -153,7 +153,7 @@ public class GestionAnnuleRefaire {
 
         // creation de la pile de score
         PileDeScore nPileDeScore = new PileDeScore();
-        for (Map.Entry<String, List<Card>> entry : nPileDeScore.getPileDeScore().entrySet()) {
+        for (Map.Entry<String, List<Card>> entry : plateau.getJoueur1().getPileDeScore().getPileDeScore().entrySet()) {
             List<Card> cards = entry.getValue();
             for (Card card : cards) {
                 nPileDeScore.addCard(card);

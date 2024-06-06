@@ -27,7 +27,7 @@ public class ReglesDeJeu {
         String faction2 = carte2.getFaction();
 
         // Règle spéciale pour les Gobelins et les Chevaliers
-        if ((faction1.equals("Goblins") && faction2.equals("Knights") )|| (faction1.equals("Knights") && faction2.equals("Goblins"))) {
+        if ((faction1.equals("Goblins") && faction2.equals("Knight") ) || (faction1.equals("Knight") && faction2.equals("Goblins"))) {
             return GobelinVsKnight(carte1, carte2);
         }
 
@@ -122,12 +122,11 @@ public class ReglesDeJeu {
      * @return La carte gagnante.
      */
     public static Card GobelinVsKnight(Card carte1, Card carte2) {
-
         if (carte1.getFaction().equals("Goblins") && carte2.getFaction().equals("Knights")) {
-            return carte2; // Le Chevalier bat toujours le Gobelin
-        } else {
-            return carte1; // Le Chevalier bat toujours le Gobelin
+            return carte2;
         }
+        else
+            return carte1;
     }
 
     /**
