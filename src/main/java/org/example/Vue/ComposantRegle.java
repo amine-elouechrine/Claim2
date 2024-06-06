@@ -1,10 +1,13 @@
 package org.example.Vue;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Objects;
 
 public class ComposantRegle extends JScrollPane {
@@ -16,10 +19,11 @@ public class ComposantRegle extends JScrollPane {
 
     public ComposantRegle() {
         // Chemin de l'image dans les ressources
-        String imagePath = Objects.requireNonNull(getClass().getResource("/rulebook.png")).getPath();
+        // String imagePath = Objects.requireNonNull(getClass().getResource("/rulebook.png")).getPath();
 
         // Chargement de l'image
-        imageIcon = new ImageIcon(imagePath);
+        // imageIcon = new ImageIcon(imagePath);
+        imageIcon = loadImageIcon("/rulebook.png");
         imageLabel = new JLabel(imageIcon);
 
         // Convertir ImageIcon en BufferedImage pour redimensionnement
@@ -82,4 +86,42 @@ public class ComposantRegle extends JScrollPane {
         imageLabel.repaint();
     }
 
+    public static BufferedImage imageToBufferedImage(Image image) {
+        // Crée un BufferedImage avec le type ARGB (avec canal alpha) de la même taille que l'image
+        BufferedImage bufferedImage = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+
+        // Obtient le contexte graphique du BufferedImage
+        Graphics2D g2d = bufferedImage.createGraphics();
+
+        // Dessine l'image sur le BufferedImage
+        g2d.drawImage(image, 0, 0, null);
+        g2d.dispose();
+
+        return bufferedImage;
+    }
+
+    private BufferedImage loadImage(String path) {
+        try (InputStream is = getClass().getResourceAsStream(path)) {
+            if (is == null) {
+                throw new IOException("Image not found: " + path);
+            }
+            return ImageIO.read(is);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private ImageIcon loadImageIcon(String path) {
+        try (InputStream is = getClass().getResourceAsStream(path)) {
+            if (is == null) {
+                throw new IOException("Image not found: " + path);
+            }
+            BufferedImage image = ImageIO.read(is);
+            return new ImageIcon(image);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }
