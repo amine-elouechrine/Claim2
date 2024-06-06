@@ -455,7 +455,6 @@ public class Plateau {
                 joueurCourant = joueur2;
             }
         }
-        
     }
 
 
