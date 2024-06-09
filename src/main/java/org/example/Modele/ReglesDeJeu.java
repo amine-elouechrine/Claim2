@@ -28,7 +28,6 @@ public class ReglesDeJeu {
 
         // Règle spéciale pour les Gobelins et les Chevaliers
         if ((faction1.equals("Goblins") && faction2.equals("Knight")) || (faction1.equals("Knight") && faction2.equals("Goblins"))) {
-            System.out.println("gobelin versus knight");
             return GobelinVsKnight(carte1, carte2);
         }
 
@@ -43,7 +42,20 @@ public class ReglesDeJeu {
             return cardVScard(carte1, carte2, plateau);
         }
     }
+    public static Card compareCard(Card carte1, Card carte2 , Plateau plateau){
+        if(carte1.getValeur() > carte2.getValeur()){
+            return carte1;
+        }else if(carte1.getValeur() < carte2.getValeur()){
+            return carte2;
+        }else{
+            if(plateau.estLeader()){
+                return plateau.getCarteJoueur1();
+            }else{
+                return plateau.getCarteJoueur2();
+            }
+        }
 
+    }
     /**
      * Méthode pour déterminer quelle carte l'emporte entre un Doppelganger et une autre carte.
      * si carte1 est doppeleganger et carte2 est doppelganger alors on compare les valeurs des cartes
@@ -57,30 +69,49 @@ public class ReglesDeJeu {
     // si le leader a jouer doppelganger et l'autre joueur a jouer doppelganger alors on compare les valeurs des cartes
     // si le leader a jouer une autre carte et l'autre joueur a jouer doppelganger alors on compare les valeurs des cartes
     public static Card DoppelgangerVsCard(Card carte1, Card carte2, Plateau plateau) {
-        // si le leader a jouer doppelganger et l'autre joueur a jouer une autre carte alors le leader gagne le trick
-        // si le leader a jouer doppelganger et l'autre joueur a jouer doppelganger alors on compare les valeurs des cartes
-        // si le leader a jouer une autre carte et l'autre joueur a jouer doppelganger alors on compare les valeurs des cartes
-
         // si les deux cartes sont des doppelgangers alors on compare les valeurs des cartes
         if (carte1.getFaction().equals("Doppelganger")) {
             if (carte2.getFaction().equals("Doppelganger")) {
                 return determinerCarteGagnante(carte1, carte2, plateau);
-            } else {
-                return carte1;
-            }
-        } else {
-            if (carte2.getFaction().equals("Doppelganger")) {
-                if (carte1.getValeur() > carte2.getValeur()) {
-                    return carte1;
-                } else if (carte1.getValeur() < carte2.getValeur()) {
-                    return carte2;
-                } else {
-                    return carte1;
-                }
 
+            } else { // si la carte 1 est doppelganger et la carte 2 est une autre carte alors la carte 1 gagne
+                Player Adversaire = plateau.getJoueurNonCourant();
+                if(Adversaire == plateau.getJoueur1()){ // leader est joueur1
+                    if(plateau.getCarteJoueur1().getFaction().equals("Doppelganger")){ //si le leader a jouer doppelganger alors il gagne le trick
+                        return plateau.getCarteJoueur1();
+                    }else{ // si ce n'est pas le leader qui a jouer doppelganger alors on compare les valeurs des cartes
+                        return compareCard(carte1, carte2, plateau);
+                    }
+
+                }else{ // si l'adversaire est le joueur 2
+                    if(plateau.getCarteJoueur2().getFaction().equals("Doppelganger")) { //si le leader a jouer doppelganger alors il gagne le trick
+                        return plateau.getCarteJoueur2();
+                    }else{
+                        return compareCard(carte1, carte2, plateau);
+                    }
+                }
+            }
+        } else { // si la carte 1 n'est pas un doppelganger
+            if (carte2.getFaction().equals("Doppelganger")) { // carte 2 est un doppelganger
+                Player Adversaire = plateau.getJoueurNonCourant();
+
+                if(Adversaire == plateau.getJoueur1()){ // leader est joueur1
+                    if(plateau.getCarteJoueur1().getFaction().equals("Doppelganger")){ //si le leader a jouer doppelganger alors il gagne le trick
+                        return plateau.getCarteJoueur1();
+                    }else{ // si ce n'est pas le leader qui a jouer doppelganger alors on compare les valeurs des cartes
+                        return compareCard(carte1, carte2, plateau);
+                    }
+                }else{ // si l'adversaire est le joueur 2
+                    if(plateau.getCarteJoueur2().getFaction().equals("Doppelganger")) { //si le leader a jouer doppelganger alors il gagne le trick
+                        return plateau.getCarteJoueur2();
+                    }else{
+                        return compareCard(carte1, carte2, plateau);
+                    }
+                }
             } else {
                 return cardVScard(carte1, carte2, plateau);
             }
+
         }
     }
 
@@ -93,7 +124,12 @@ public class ReglesDeJeu {
      */
     public static Card cardVScard(Card carte1, Card carte2, Plateau plateau) {
         if (!(carte2.getFaction().equals(carte1.getFaction()))) {
-            return carte1;
+            if(plateau.getJoueur1().getName().equals(plateau.getJoueurCourant().getName())){
+                return plateau.getCarteJoueur2();
+            }
+            else{
+                return plateau.getCarteJoueur1();
+            }
         } else {
             return determinerCarteGagnante(carte1, carte2, plateau);
         }

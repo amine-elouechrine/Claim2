@@ -2,6 +2,7 @@ package org.example.Modele;
 
 //import javax.smartcardio.Card;
 
+import java.sql.SQLOutput;
 import java.util.List;
 import java.util.Objects;
 
@@ -420,7 +421,6 @@ public class Plateau {
         }
     }
 
-
     /**
      * Attribue les cartes aux joueurs après la fin d'un tour lors de la première phase (découverte des cartes).
      * applique les regles de jeu de la 1er phase pour determiner la gagne de chaque joueur
@@ -429,6 +429,7 @@ public class Plateau {
      * @param r L'instance des règles du jeu.
      */
     public void attribuerCarteFirstPhase(Card winningCard, ReglesDeJeu r) {
+        System.out.println("carte Gagnante : " + winningCard);
         if (r.carteEgaux(carteJoueur1, carteJoueur2)) {
             // determiner le leader
             if (joueurCourant.getName() == joueur2.getName()) { // si le joueur 1 est le leader
@@ -443,12 +444,12 @@ public class Plateau {
                 joueurCourant = joueur2;
             }
         } else {
-            if (winningCard == carteJoueur1) {
+            if (winningCard .equals(carteJoueur1) ) {
                 joueur1.getHandScndPhase().addCard(carteAffichee);
                 joueur2.getHandScndPhase().addCard(pioche.getCard());
                 r.applyFirstPhaseRules(joueur1, carteJoueur1, carteJoueur2, defausse);
                 joueurCourant = joueur1;
-            } else if (winningCard == carteJoueur2) {
+            } else {
                 joueur2.getHandScndPhase().addCard(carteAffichee);
                 joueur1.getHandScndPhase().addCard(pioche.getCard());
                 r.applyFirstPhaseRules(joueur2, carteJoueur2, carteJoueur1, defausse);
@@ -466,18 +467,17 @@ public class Plateau {
      * @param r L'instance des règles du jeu.
      */
     public void attribuerCarteSecondPhase(Card winningCard, ReglesDeJeu r) {// on doit changer la fonction ApplyDwarveRule:c'est fait
-        // fait dans carte gagnante
         if (r.carteEgaux(carteJoueur1, carteJoueur2)) {
             // determiner le leader
-            if (joueurCourant.getName().equals(joueur1.getName())) {
-                r.applySecondPhaseRules(joueur2, joueur1, carteJoueur2, carteJoueur1);
-                joueurCourant = joueur2;
-            } else {
+            if (joueurCourant.getName().equals(joueur2.getName())) { // si le joueur 1 est le leader
                 r.applySecondPhaseRules(joueur1, joueur2, carteJoueur1, carteJoueur2);
                 joueurCourant = joueur1;
+            } else {
+                r.applySecondPhaseRules(joueur2, joueur1, carteJoueur2, carteJoueur1);
+                joueurCourant = joueur2;
             }
         } else {
-            if (winningCard == carteJoueur1) {
+            if (winningCard.equals(carteJoueur1) ) {
                 r.applySecondPhaseRules(joueur1, joueur2, carteJoueur1, carteJoueur2);
                 joueurCourant = joueur1;
             } else { // winningCard == carteJoueur2

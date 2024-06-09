@@ -43,7 +43,7 @@ public class TestIAMinMax {
             }else{
                 // Tour de l'adversaire
                 System.out.println("Tour de l'adversaire...");
-                coupAdversaire = intermediare.jouerCoupPhase1(plateauInitial);
+                coupAdversaire = carteAleatoire(plateauInitial);
                 System.out.println("Carte jouée par l'adversaire : " + coupAdversaire);
                 plateauInitial.jouerCarte(coupAdversaire);
                 plateauInitial.switchJoueur();
@@ -51,7 +51,7 @@ public class TestIAMinMax {
             // -------------------------------------------------------------------------
             if (plateauInitial.getJoueurCourant().getName().equals("Facile")) {
                 System.out.println("Tour de l'adversaire...");
-                coupAdversaire = intermediare.jouerCoupPhase1(plateauInitial);
+                coupAdversaire = carteAleatoire(plateauInitial);
                 System.out.println("Carte jouée par l'adversaire : " + coupAdversaire);
                 plateauInitial.jouerCarte(coupAdversaire);
                 // attribution des cartes
@@ -201,7 +201,7 @@ public class TestIAMinMax {
         System.out.println("entrer 1 pour l'affichage des hand avant chaque partie : ");
         int rep = s.nextInt();
 
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 10; i++) {
             Plateau plateau;
             String winner;
 
