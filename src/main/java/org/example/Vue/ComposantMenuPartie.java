@@ -51,6 +51,18 @@ public class ComposantMenuPartie extends JFrame {
         });
         regles.add(r);
 
+        //return menu bouton
+        Box retourMenu = Box.createHorizontalBox();
+        RoundedButton retourBtn = new RoundedButton("Retour au menu principal");
+        retourBtn.addActionListener(e -> {
+            for (Window window : Window.getWindows()) {
+                window.dispose();
+            }
+            InterfaceInitiale.demarrer();        });
+        retourMenu.add(retourBtn);
+
+
+
         // Check box pour le dessin de la main adverse
         JLabel drawHandLabel = new JLabel("Afficher la main de l'adversaire :");
         JCheckBox drawHandCheckBox = new JCheckBox();
@@ -111,6 +123,8 @@ public class ComposantMenuPartie extends JFrame {
 
         // Bouton Règle
         panel.add(regles);
+
+        panel.add(retourMenu);
 
         // Ajout des checkBoxes
         panel1.add(drawHandLabel);
