@@ -5,11 +5,11 @@ import org.example.Modele.Jeu;
 import javax.swing.*;
 import java.awt.*;
 
-public class ComposantSauverCharger extends Box {
+public class ComposantCharger extends Box {
 
     CollecteurEvenements control;
 
-    ComposantSauverCharger(int axis, CollecteurEvenements c) {
+    ComposantCharger(int axis, CollecteurEvenements c) {
         super(axis);
         control = c;
 
@@ -25,16 +25,10 @@ public class ComposantSauverCharger extends Box {
 
         box.add(createGlue());
 
-        // Ajout du bouton sauver
-        RoundedButton sauver = new RoundedButton("Sauver");
-        sauver.addActionListener(new AdaptateurSauver(control, fichier));
-
         // Ajout du bouton charger
         RoundedButton charger = new RoundedButton("Charger");
         charger.addActionListener(new AdaptateurCharger(control, fichier, new Jeu(true, "", "")));
 
-        box.add(sauver);
-        box.add(Box.createHorizontalStrut(20));
         box.add(charger);
         box.setAlignmentX(Component.LEFT_ALIGNMENT);
         add(box);

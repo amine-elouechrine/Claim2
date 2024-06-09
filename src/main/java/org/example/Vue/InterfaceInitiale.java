@@ -8,8 +8,6 @@ import org.example.Modele.Jeu;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.IOException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -69,10 +67,16 @@ public class InterfaceInitiale extends JFrame implements Runnable {
         // Create a common dimension for buttons
         Dimension buttonSize = new Dimension(250, 60);
 
+
+        // Creer un jeu null pour charger les sauvegarde :
+        CollecteurEvenements control = new ControleurMediateur(new Jeu(false, "J1", "J2"), null);
+
         // Create buttons
-        RoundedButton startQuickGame = createButton("Partie Rapide", "src/main/resources/startIcon.png", e -> startQuickGame(), buttonSize);
-        RoundedButton startGameButton = createButton("Commencer une partie", "src/main/resources/startIcon.png", e -> startGame(), buttonSize);
-        RoundedButton rulesButton = createButton("Règles du jeu", "src/main/resources/rulesIcon.jpg", e -> showRules(), buttonSize);
+        RoundedButton startQuickGame = createButton("Partie Rapide", "/startIcon.png", e -> startQuickGame(), buttonSize);
+        RoundedButton startGameButton = createButton("Commencer une partie", "/startIcon.png", e -> startGame(), buttonSize);
+        RoundedButton rulesButton = createButton("Règles du jeu", "/rulesIcon.jpg", e -> showRules(), buttonSize);
+        RoundedButton chargeGame = createButton("Charger une sauvegarde", "/startIcon.png", e -> loadGame(), buttonSize);
+        chargeGame.addActionListener(new AdaptateurChargement(control, new ComposantChargement(control)));
 
         // Add buttons to the panel with constraints to space them
         GridBagConstraints gbc = new GridBagConstraints();
@@ -83,11 +87,16 @@ public class InterfaceInitiale extends JFrame implements Runnable {
 
         gbc.gridy = 1;
         buttonPanel.add(startGameButton, gbc);
-
         gbc.gridy = 2;
+        buttonPanel.add(chargeGame, gbc);
+        gbc.gridy = 3;
         buttonPanel.add(rulesButton, gbc);
 
         return buttonPanel;
+    }
+
+    private void loadGame() {
+        ;
     }
 
     private RoundedButton createButton(String text, String iconPath, ActionListener actionListener, Dimension size) {

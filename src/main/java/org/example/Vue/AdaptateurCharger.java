@@ -1,5 +1,7 @@
 package org.example.Vue;
 
+import org.example.Modele.Jeu;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -8,10 +10,12 @@ import java.io.IOException;
 public class AdaptateurCharger implements ActionListener {
     CollecteurEvenements control;
     JTextField fichier;
+    Jeu jeu;
 
-    AdaptateurCharger(CollecteurEvenements c, JTextField f) {
+    AdaptateurCharger(CollecteurEvenements c, JTextField f, Jeu j) {
         control = c;
         fichier = f;
+        jeu = j;
     }
 
     /*
@@ -25,6 +29,7 @@ public class AdaptateurCharger implements ActionListener {
             filename = "save";
         try {
             control.restaure(filename);
+            InterfaceGraphique.demarrer(jeu, control);
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }

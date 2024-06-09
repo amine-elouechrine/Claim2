@@ -8,13 +8,11 @@ import org.example.Modele.Player;
 import org.example.Structures.Iterateur;
 import org.example.Structures.Sequence;
 import org.example.Structures.SequenceListe;
-import org.example.Vue.CollecteurEvenements;
+import org.example.Vue.*;
 import org.example.Modele.GestionAnnuleRefaire;
 import org.example.Vue.CollecteurEvenements;
 import org.example.Modele.Jeu;
 import org.example.Patternes.Observable;
-import org.example.Vue.InterfaceGraphique;
-import org.example.Vue.InterfaceUtilisateur;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

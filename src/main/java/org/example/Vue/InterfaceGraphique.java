@@ -2,12 +2,8 @@ package org.example.Vue;
 
 import org.example.Modele.Jeu;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.File;
 import java.io.IOException;
 
 public class InterfaceGraphique implements Runnable, InterfaceUtilisateur {
@@ -21,7 +17,7 @@ public class InterfaceGraphique implements Runnable, InterfaceUtilisateur {
     InterfaceGraphique(Jeu jeu, CollecteurEvenements c) {
         j = jeu;
         control = c;
-        adaptateurClavier = new AdaptateurClavier(control, new ComposantSauvegarde(control));
+        adaptateurClavier = new AdaptateurClavier(control, new ComposantChargement(control));
     }
 
     public static void demarrer(Jeu j, CollecteurEvenements c) {

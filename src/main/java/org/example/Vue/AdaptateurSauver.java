@@ -8,6 +8,7 @@ import java.io.FileNotFoundException;
 public class AdaptateurSauver implements ActionListener {
     CollecteurEvenements control;
     JTextField fichier;
+    JFrame owner;
 
     AdaptateurSauver(CollecteurEvenements c, JTextField f) {
         control = c;
@@ -25,6 +26,7 @@ public class AdaptateurSauver implements ActionListener {
             filename = "save";
         try {
             control.sauve(filename);
+            new ComposantSauvegardeReussie(owner);
         } catch (FileNotFoundException ex) {
             throw new RuntimeException(ex);
         }

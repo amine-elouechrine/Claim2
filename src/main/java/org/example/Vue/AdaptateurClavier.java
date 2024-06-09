@@ -3,14 +3,13 @@ package org.example.Vue;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.io.IOException;
 
 public class AdaptateurClavier extends KeyAdapter implements KeyListener {
 
     CollecteurEvenements control;
-    ComposantSauvegarde sc;
+    ComposantChargement sc;
 
-    AdaptateurClavier(CollecteurEvenements control, ComposantSauvegarde sauvegarde) {
+    AdaptateurClavier(CollecteurEvenements control, ComposantChargement sauvegarde) {
         this.control = control;
         sc = sauvegarde;
     }
